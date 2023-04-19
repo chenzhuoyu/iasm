@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMSCR_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMSCR_EL2, Statistical Profiling Control Register (EL2)</h1><p>The PMSCR_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides EL2 controls for Statistical Profiling.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_SPE is implemented. Otherwise, direct accesses to PMSCR_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>PMSCR_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_8">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="24"><a href="#fieldset_0-63_8">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6">PCT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">TS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">PA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">CX</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">E2SPE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">E0HSPE</a></td></tr></tbody></table><h4 id="fieldset_0-63_8">Bits [63:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_6">PCT, bits [7:6]</h4><div class="field"><p>Physical Timestamp. If timestamp sampling is enabled, determines which counter is collected. The behavior depends on the Profiling Buffer owning Exception level.</p>
+<p>If <span class="xref">FEAT_ECV</span> is implemented, this is a two-bit field as shown. Otherwise, bit[7] is <span class="arm-defined-word">RES0</span>.</p><table class="valuetable"><tr><th>PCT</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td><p>Virtual timestamp. The collected timestamp is the physical counter minus a virtual offset. If any of the following are true, the virtual offset is zero, otherwise the virtual offset is the value of <a href="AArch64-cntvoff_el2.html">CNTVOFF_EL2</a>:</p>
+<ul>
+<li>The sampled operation executed at EL2 and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H == 1.
+</li><li>The sampled operation executed at EL0 and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H,TGE} == {1,1}.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>If the Profiling Buffer owning Exception level is EL1, the virtual offset is always <a href="AArch64-cntvoff_el2.html">CNTVOFF_EL2</a>.</p></div></td></tr><tr><td class="bitfield">0b01</td><td><p>If the Profiling Buffer owning Exception level is EL1, then the timestamp value is selected by <a href="AArch64-pmscr_el1.html">PMSCR_EL1</a>.PCT.</p>
+<p>Otherwise, physical timestamp. The collected timestamp is the physical counter.</p></td></tr><tr><td class="bitfield">0b11</td><td><p>If the Profiling Buffer owning Exception level is EL1 and <a href="AArch64-pmscr_el1.html">PMSCR_EL1</a>.PCT == <span class="binarynumber">0b00</span>, then guest virtual timestamp. The collected timestamp is the physical counter minus the value of <a href="AArch64-cntvoff_el2.html">CNTVOFF_EL2</a>.</p>
+<p>Otherwise, guest physical timestamp. The collected timestamp is the physical counter minus a physical offset. If any of the following are true, the physical offset is zero, otherwise the physical offset is the value of <a href="AArch64-cntpoff_el2.html">CNTPOFF_EL2</a>:</p>
+<ul>
+<li><a href="AArch64-scr_el3.html">SCR_EL3</a>.ECVEn == 0.
+</li><li><a href="AArch64-cnthctl_el2.html">CNTHCTL_EL2</a>.ECV == 0.
+</li></ul></td><td>When FEAT_ECV is implemented</td></tr></table><p>All other values are reserved.</p>
+<p>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is <span class="binarynumber">0b01</span>, other than for a direct read of the register.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5">TS, bit [5]</h4><div class="field">
+      <p>Timestamp Enable.</p>
+    <table class="valuetable"><tr><th>TS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Timestamp sampling disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Timestamp sampling enabled.</p>
+        </td></tr></table><p>This bit is ignored by the PE when any of the following are true:</p>
+<ul>
+<li>
+<p>The Profiling Buffer owning Exception level is EL1.</p>
+
+</li><li>
+<p>In Secure state, and either <span class="xref">FEAT_SEL2</span> is not implemented or Secure EL2 is disabled.</p>
+
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4">PA, bit [4]</h4><div class="field">
+      <p>Physical Address Sample Enable.</p>
+    <table class="valuetable"><tr><th>PA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Physical addresses are not collected.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Physical addresses are collected.</p>
+        </td></tr></table><p>If the Profiling Buffer owning Exception level is EL1, and EL2 is enabled in the current Security state, this bit is combined with <a href="AArch64-pmscr_el1.html">PMSCR_EL1</a>.PA to determine which address is collected.</p>
+<p>If EL2 is not implemented or EL2 is disabled in the current Security state, the PE ignores the value of this bit and behaves as if this bit is set to 1, other than for a direct read of the register.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3">CX, bit [3]</h4><div class="field">
+      <p><a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a> Sample Enable.</p>
+    <table class="valuetable"><tr><th>CX</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a> is not collected.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a> is collected.</p>
+        </td></tr></table>
+      <p>If EL2 is not implemented or EL2 is disabled in the current Security state, the PE ignores the value of this bit.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2">Bit [2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">E2SPE, bit [1]</h4><div class="field">
+      <p>EL2 Statistical Profiling Enable.</p>
+    <table class="valuetable"><tr><th>E2SPE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Sampling disabled at EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Sampling enabled at EL2.</p>
+        </td></tr></table><p>This bit is <span class="arm-defined-word">RES0</span> if <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.E2PB != <span class="binarynumber">0b00</span>.</p>
+<p>If EL2 is disabled in the current Security state, this bit is ignored by the PE.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">E0HSPE, bit [0]</h4><div class="field">
+      <p>EL0 Statistical Profiling Enable.</p>
+    <table class="valuetable"><tr><th>E0HSPE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Sampling disabled at EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Sampling enabled at EL0.</p>
+        </td></tr></table><p>If <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.E2PB != <span class="binarynumber">0b00</span>, this bit is <span class="arm-defined-word">RES0</span>.</p>
+<p>If EL2 is implemented and enabled in the current Security state, this bit is ignored by the PE when <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing PMSCR_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, PMSCR_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1001</td><td>0b1001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMSCR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMSCR_EL2;
+                </p><h4 class="assembler">MSR PMSCR_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1001</td><td>0b1001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMSCR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMSCR_EL2 = X[t, 64];
+                </p><h4 class="assembler">MRS &lt;Xt&gt;, PMSCR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        X[t, 64] = NVMem[0x828];
+    else
+        X[t, 64] = PMSCR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        X[t, 64] = PMSCR_EL2;
+    else
+        X[t, 64] = PMSCR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMSCR_EL1;
+                </p><h4 class="assembler">MSR PMSCR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        NVMem[0x828] = X[t, 64];
+    else
+        PMSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        PMSCR_EL2 = X[t, 64];
+    else
+        PMSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMSCR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

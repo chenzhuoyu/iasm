@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64MMFR2_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64MMFR2_EL1, AArch64 Memory Model Feature Register 2</h1><p>The ID_AA64MMFR2_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the implemented memory model and memory management support in AArch64 state.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2>
+        <div class="note"><span class="note-header">Note</span><p>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <span class="arm-defined-word">RES0</span> from EL1, EL2, and EL3.</p></div>
+      <h2>Attributes</h2>
+        <p>ID_AA64MMFR2_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_60">E0PD</a></td><td class="lr" colspan="4"><a href="#fieldset_0-59_56">EVT</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">BBM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">TTL</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">FWB</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">IDS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">AT</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">ST</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">NV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">CCIDX</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">VARange</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">IESB</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">LSM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">UAO</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">CnP</a></td></tr></tbody></table><h4 id="fieldset_0-63_60">E0PD, bits [63:60]</h4><div class="field">
+      <p>Indicates support for the E0PD mechanism. Defined values are:</p>
+    <table class="valuetable"><tr><th>E0PD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>E0PDx mechanism is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>E0PDx mechanism is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_E0PD</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>In Armv8.4, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.5, the only permitted value is <span class="binarynumber">0b0001</span>.</p>
+<p>If <span class="xref">FEAT_E0PD</span> is implemented, <span class="xref">FEAT_CSV3</span> must be implemented.</p></div><h4 id="fieldset_0-59_56">EVT, bits [59:56]</h4><div class="field">
+      <p>Enhanced Virtualization Traps. If EL2 is implemented, indicates support for the <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{TTLBOS, TTLBIS, TOCU, TICAB, TID4} traps. Defined values are:</p>
+    <table class="valuetable"><tr><th>EVT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.{TTLBOS, TTLBIS, TOCU, TICAB, TID4} traps are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.{TOCU, TICAB, TID4} traps are supported. <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{TTLBOS, TTLBIS} traps are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.{TTLBOS, TTLBIS, TOCU, TICAB, TID4} traps are supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_EVT</span> implements the functionality identified by the values <span class="binarynumber">0b0001</span> and <span class="binarynumber">0b0010</span>.</p>
+<p>If EL2 is not implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<p>In Armv8.2, the permitted values are <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, and <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.5, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> when EL2 is not implemented.
+</li><li><span class="binarynumber">0b0010</span> when EL2 is implemented.
+</li></ul></div><h4 id="fieldset_0-55_52">BBM, bits [55:52]</h4><div class="field">
+      <p>Allows identification of the requirements of the hardware to have break-before-make sequences when changing block size for a translation.</p>
+    <table class="valuetable"><tr><th>BBM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Level 0 support for changing block size is supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Level 1 support for changing block size is supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Level 2 support for changing block size is supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_BBM</span> implements the functionality identified by the values <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, and <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.4, the permitted values are <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, and <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-51_48">TTL, bits [51:48]</h4><div class="field">
+      <p>Indicates support for TTL field in address operations. Defined values are:</p>
+    <table class="valuetable"><tr><th>TTL</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>TLB maintenance instructions by address have bits[47:44] as <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>TLB maintenance instructions by address have bits[47:44] holding the TTL field.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_TTL</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>This field affects <a href="AArch64-tlbi-ipas2e1.html">TLBI IPAS2E1</a>, <a href="AArch64-tlbi-ipas2e1is.html">TLBI IPAS2E1IS</a>, <a href="AArch64-tlbi-ipas2e1os.html">TLBI IPAS2E1OS</a>, <a href="AArch64-tlbi-ipas2le1.html">TLBI IPAS2LE1</a>, <a href="AArch64-tlbi-ipas2le1is.html">TLBI IPAS2LE1IS</a>, <a href="AArch64-tlbi-ipas2le1os.html">TLBI IPAS2LE1OS</a>, <a href="AArch64-tlbi-vaae1.html">TLBI VAAE1</a>, <a href="AArch64-tlbi-vaae1is.html">TLBI VAAE1IS</a>, <a href="AArch64-tlbi-vaae1os.html">TLBI VAAE1OS</a>, <a href="AArch64-tlbi-vaale1.html">TLBI VAALE1</a>, <a href="AArch64-tlbi-vaale1is.html">TLBI VAALE1IS</a>, <a href="AArch64-tlbi-vaale1os.html">TLBI VAALE1OS</a>, <a href="AArch64-tlbi-vae1.html">TLBI VAE1</a>, <a href="AArch64-tlbi-vae1is.html">TLBI VAE1IS</a>, <a href="AArch64-tlbi-vae1os.html">TLBI VAE1OS</a>, <a href="AArch64-tlbi-vae2.html">TLBI VAE2</a>, <a href="AArch64-tlbi-vae2is.html">TLBI VAE2IS</a>, <a href="AArch64-tlbi-vae2os.html">TLBI VAE2OS</a>, <a href="AArch64-tlbi-vae3.html">TLBI VAE3</a>, <a href="AArch64-tlbi-vae3is.html">TLBI VAE3IS</a>, <a href="AArch64-tlbi-vae3os.html">TLBI VAE3OS</a>,<a href="AArch64-tlbi-vale1.html">TLBI VALE1</a>, <a href="AArch64-tlbi-vale1is.html">TLBI VALE1IS</a>, <a href="AArch64-tlbi-vale1os.html">TLBI VALE1OS</a>, <a href="AArch64-tlbi-vale2.html">TLBI VALE2</a>, <a href="AArch64-tlbi-vale2is.html">TLBI VALE2IS</a>, <a href="AArch64-tlbi-vale2os.html">TLBI VALE2OS</a>, <a href="AArch64-tlbi-vale3.html">TLBI VALE3</a>, <a href="AArch64-tlbi-vale3is.html">TLBI VALE3IS</a>, <a href="AArch64-tlbi-vale3os.html">TLBI VALE3OS</a>.</p>
+<p>From Armv8.4, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-47_44">Bits [47:44]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-43_40">FWB, bits [43:40]</h4><div class="field">
+      <p>Indicates support for <a href="AArch64-hcr_el2.html">HCR_EL2</a>.FWB. Defined values are:</p>
+    <table class="valuetable"><tr><th>FWB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.FWB bit is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.FWB is supported.</p>
+        </td></tr></table><p>All other values reserved.</p>
+<p><span class="xref">FEAT_S2FWB</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.4, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-39_36">IDS, bits [39:36]</h4><div class="field">
+      <p>Indicates the value of ESR_ELx.EC that reports an exception generated by a read access to the feature ID space. Defined values are:</p>
+    <table class="valuetable"><tr><th>IDS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>An exception which is generated by a read access to the feature ID space, other than a trap caused by <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TIDx, <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.UCT, or <a href="AArch64-sctlr_el2.html">SCTLR_EL2</a>.UCT, is reported by ESR_ELx.EC == <span class="hexnumber">0x0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>All exceptions generated by an AArch64 read access to the feature ID space are reported by ESR_ELx.EC == <span class="hexnumber">0x18</span>.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The Feature ID space is defined as the System register space in AArch64 with op0==3, op1=={0, 1, 3}, CRn==0, CRm=={0-7}, op2=={0-7}.</p>
+<p><span class="xref">FEAT_IDST</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.4, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-35_32">AT, bits [35:32]</h4><div class="field">
+      <p>Identifies support for unaligned single-copy atomicity and atomic functions. Defined values are:</p>
+    <table class="valuetable"><tr><th>AT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Unaligned single-copy atomicity and atomic functions are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Unaligned single-copy atomicity and atomic functions with a 16-byte address range aligned to 16-bytes are supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_LSE2</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>In Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.4, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-31_28">ST, bits [31:28]</h4><div class="field">
+      <p>Identifies support for small translation tables. Defined values are:</p>
+    <table class="valuetable"><tr><th>ST</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The maximum value of the TCR_ELx.{T0SZ,T1SZ} and VTCR_EL2.T0SZ fields is 39.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The maximum value of the TCR_ELx.{T0SZ,T1SZ} and VTCR_EL2.T0SZ fields is 48 for 4KB and 16KB granules, and 47 for 64KB granules.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_TTST</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>If <span class="xref">FEAT_SEL2</span> is implemented, the only permitted value is <span class="binarynumber">0b0001</span>.</p>
+<p>In an implementation which does not support <span class="xref">FEAT_SEL2</span>, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-27_24">NV, bits [27:24]</h4><div class="field">
+      <p>Nested Virtualization. If EL2 is implemented, indicates support for the use of nested virtualization. Defined values are:</p>
+    <table class="valuetable"><tr><th>NV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Nested virtualization is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{AT, NV1, NV} bits are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The <a href="AArch64-vncr_el2.html">VNCR_EL2</a> register and the <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{NV2, AT, NV1, NV} bits are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If EL2 is not implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<p><span class="xref">FEAT_NV</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_NV2</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>In Armv8.3, if EL2 is implemented, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.4, if EL2 is implemented, the permitted values are <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, and <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-23_20">CCIDX, bits [23:20]</h4><div class="field">
+      <p>Support for the use of revised <a href="AArch64-ccsidr_el1.html">CCSIDR_EL1</a> register format. Defined values are:</p>
+    <table class="valuetable"><tr><th>CCIDX</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>32-bit format implemented for all levels of the CCSIDR_EL1.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>64-bit format implemented for all levels of the CCSIDR_EL1.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_CCIDX</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.3, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-19_16">VARange, bits [19:16]</h4><div class="field">
+      <p>Indicates support for a larger virtual address. Defined values are:</p>
+    <table class="valuetable"><tr><th>VARange</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>VMSAv8-64 supports 48-bit VAs.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>VMSAv8-64 supports 52-bit VAs when using the 64KB translation granule. The size for other translation granules is not defined by this field.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>VMSAv9-128 supports 56-bit VAs.</p>
+        </td><td>When FEAT_D128 is implemented</td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_LVA</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-15_12">IESB, bits [15:12]</h4><div class="field">
+      <p>Indicates support for the IESB bit in the SCTLR_ELx registers. Defined values are:</p>
+    <table class="valuetable"><tr><th>IESB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>IESB bit in the <span class="xref">SCTLR_ELx</span> registers is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>IESB bit in the <span class="xref">SCTLR_ELx</span> registers is supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_IESB</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-11_8">LSM, bits [11:8]</h4><div class="field">
+      <p>Indicates support for LSMAOE and nTLSMD bits in <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a> and <a href="AArch64-sctlr_el2.html">SCTLR_EL2</a>. Defined values are:</p>
+    <table class="valuetable"><tr><th>LSM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>LSMAOE and nTLSMD bits not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>LSMAOE and nTLSMD bits supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_LSMAOC</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-7_4">UAO, bits [7:4]</h4><div class="field">
+      <p>User Access Override. Defined values are:</p>
+    <table class="valuetable"><tr><th>UAO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>UAO not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>UAO supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_UAO</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-3_0">CnP, bits [3:0]</h4><div class="field">
+      <p>Indicates support for Common not Private translations. Defined values are:</p>
+    <table class="valuetable"><tr><th>CnP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Common not Private translations not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Common not Private translations supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_TTCNP</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><div class="access_mechanisms"><h2>Accessing ID_AA64MMFR2_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64MMFR2_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0111</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_AA64MMFR2_EL1) || boolean IMPLEMENTATION_DEFINED "ID_AA64MMFR2_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64MMFR2_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64MMFR2_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64MMFR2_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

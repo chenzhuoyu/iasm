@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERRACR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERRACR, Access Configuration Register</h1><p>The ERRACR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls visibility of error records.</p>
+      <h2>Configuration</h2><p>This register is present only when (Root state is implemented or Secure state is implemented) and an implementation implements ERRACR. Otherwise, direct accesses to ERRACR are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>ERRACR is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RAO</a></td><td class="lr" colspan="25"><a href="#fieldset_0-30_6">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-5_4-1">RLRA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-3_2-1">SRA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">NSRA</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">IMPLEMENTATION DEFINED, bits [63:32]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> observation controls. Additional <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> access control bits.</p>
+    </div><h4 id="fieldset_0-31_31">Bit [31]</h4><div class="field">
+      <p>Reserved, RAO.</p>
+    <p>Indicates ERRACR is present.</p>
+<p>This field reads-as-one.</p></div><h4 id="fieldset_0-30_6">Bits [30:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_4-1">RLRA, bits [5:4]<span class="condition"><br/>When FEAT_RME is implemented and the error record group allows configuration of Realm register accesses:
+                        </span></h4><div class="field">
+      <p>Realm Restricted Access. Controls Realm access to error records and interrupt configuration registers in the error record group.</p>
+    <table class="valuetable"><tr><th>RLRA</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Realm access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <a href="ext-errirqsr.html">ERRIRQSR</a> registers are RAZ/WI to Realm accesses.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Realm read access is enabled. Realm writes are ignored.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Realm read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <a href="ext-errirqsr.html">ERRIRQSR</a>, if implemented) in the error record group. The effect on any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<p>When Realm access to error records is disabled, a Realm read of <a href="ext-errgsr.html">ERRGSR</a> will return the error record status for the error records that cannot be accessed.</p>
+<p>When Realm access is fully or partially disabled, the effect on Realm accesses to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>Realm access to error records is enabled from reset.</p></div><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, 
+      this field resets
+       to <span class="binarynumber">3</span>.
+</li></ul></div><h4 id="fieldset_0-5_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-3_2-1">SRA, bits [3:2]<span class="condition"><br/>When Secure state is implemented, FEAT_RME is implemented and the error record group allows configuration of Secure register accesses:
+                        </span></h4><div class="field">
+      <p>Secure Restricted Access. Controls Secure access to error records and interrupt configuration registers in the error record group.</p>
+    <table class="valuetable"><tr><th>SRA</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Secure access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <a href="ext-errirqsr.html">ERRIRQSR</a> registers are RAZ/WI to Secure accesses.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Secure read access is enabled. Secure writes are ignored.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Secure read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <a href="ext-errirqsr.html">ERRIRQSR</a>, if implemented) in the error record group. The effect on any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<p>When Secure access to error records is disabled, a Secure read of <a href="ext-errgsr.html">ERRGSR</a> will return the error record status for the error records that cannot be accessed.</p>
+<p>When Secure access is fully or partially disabled, the effect on Secure accesses to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>Secure access to error records is enabled from reset.</p></div><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, 
+      this field resets
+       to <span class="binarynumber">3</span>.
+</li></ul></div><h4 id="fieldset_0-3_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-1_0">NSRA, bits [1:0]</h4><div class="field">
+      <p>Non-secure Restricted Access. Controls Non-secure access to error records and interrupt configuration registers in the error record group.</p>
+    <table class="valuetable"><tr><th>NSRA</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-secure access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <a href="ext-errirqsr.html">ERRIRQSR</a> registers are RAZ/WI to Non-secure accesses.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Non-secure read access is enabled. Non-secure writes are ignored.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Non-secure read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <a href="ext-errirqsr.html">ERRIRQSR</a>, if implemented) in the error record group. The effect on any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<p>When Non-secure access to error records is disabled, a Non-secure read of <a href="ext-errgsr.html">ERRGSR</a> will return the error record status for the error records that cannot be accessed.</p>
+<p>When Non-secure access is fully or partially disabled, the effect on Non-secure accesses to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>Non-secure access to error records is enabled from reset.</p></div><p>If <span class="xref">FEAT_RME</span> is implemented and ERRACR.{RLRA, SRA} are not implemented, then ERRACR.NSRA applies to all Security states other than Root.</p><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, 
+      this field resets
+       to <span class="binarynumber">3</span>.
+</li></ul></div><h2>Accessing ERRACR</h2><h4>ERRACR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0xE40</span></td><td>ERRACR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When (FEAT_RME is implemented and an access is not Root) or an access is Non-secure, accesses to this register are <span class="access_level">RAZ/WI</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

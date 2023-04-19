@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERXGSR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERXGSR_EL1, Selected Error Record Group Status Register</h1><p>The ERXGSR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Shows the status for the records in a group of error records.</p>
+
+      
+        <p>Accesses <a href="ext-errgsr.html">ERRGSR</a> for the group of error records &lt;n&gt; selected by <a href="AArch64-errselr_el1.html">ERRSELR_EL1</a>.SEL[15:6].</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_RASv2 is implemented. Otherwise, direct accesses to ERXGSR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>ERXGSR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S63</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S62</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S61</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S60</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S59</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S58</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S57</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S56</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S55</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S54</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S53</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S52</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S51</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S50</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S49</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S48</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S47</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S46</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S45</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S44</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S43</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S42</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S41</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S40</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S39</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S38</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S37</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S36</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S35</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S34</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S33</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S32</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S31</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S30</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S29</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S28</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S27</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S26</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S25</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S24</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S23</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S22</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S21</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S20</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S19</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S18</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S17</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S16</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_0-1">S0</a></td></tr></tbody></table><h4 id="fieldset_0-63_0-1">S&lt;q&gt;, bit [q], for q = 63 to 0<span class="condition"><br/>When error record &lt;m&gt; is implemented and error record &lt;m&gt; supports this type of reporting:
+                        </span></h4><div class="field">
+      <p>The status for error record &lt;m&gt;, where m = q + (UInt(<a href="AArch64-errselr_el1.html">ERRSELR_EL1</a>.SEL[15:6])×64). A read-only copy of <a href="ext-errnstatus.html">ERR&lt;m&gt;STATUS</a>.V.</p>
+    <table class="valuetable"><tr><th>S&lt;q&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No error.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>One or more errors.</p>
+        </td></tr></table></div><h4 id="fieldset_0-63_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ERXGSR_EL1</h2>
+        <p>If <a href="AArch64-erridr_el1.html">ERRIDR_EL1</a>.NUM is <span class="hexnumber">0x0000</span> or <a href="AArch64-errselr_el1.html">ERRSELR_EL1</a>.SEL[15:6] is greater than or equal to <a href="AArch64-erridr_el1.html">ERRIDR_EL1</a>.NUM, then one of the following occurs:</p>
+
+      
+        <ul>
+<li>An <span class="arm-defined-word">UNKNOWN</span> group of error records are selected.
+</li><li>ERXGSR_EL1 is RAZ.
+</li><li>Direct reads of ERXGSR_EL1 are NOPs.
+</li><li>Direct reads of ERXGSR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.
+</li></ul>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ERXGSR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0101</td><td>0b0011</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TERR == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HFGRTR2_EL2.nERXGSR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ERXGSR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ERXGSR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ERXGSR_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

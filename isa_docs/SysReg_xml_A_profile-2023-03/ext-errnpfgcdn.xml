@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ERR&lt;n&gt;PFGCDN</reg_short_name>
+        
+        <reg_long_name>Error Record &lt;n&gt; Pseudo-fault Generation Countdown Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when error record &lt;n&gt; is implemented, the node implements the Common Fault Injection Model Extension (ERR&lt;n&gt;FR.INJ != 0b00) and error record &lt;n&gt; is the first error record owned by a node</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>65534</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>RAS</reg_component>
+    <reg_offset><hexnumber>0x810</hexnumber> + (64 * n)</reg_offset>
+    <reg_instance>ERR&lt;n&gt;PFGCDN</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Generates one of the errors enabled in the corresponding <register_link state="ext" id="ext-errnpfgctl.xml">ERR&lt;n&gt;PFGCTL</register_link> register.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para><register_link state="ext" id="ext-errnfr.xml">ERR&lt;n&gt;FR</register_link> describes the features implemented by the node.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ERR&lt;n&gt;PFGCDN is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>ERR&lt;n&gt;PFGCDN</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CDN</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Countdown value.</para>
+<para>This field is copied to Error Generation Counter when either:</para>
+<list type="unordered">
+<listitem><content>Software writes 1 to <register_link state="ext" id="ext-errnpfgctl.xml">ERR&lt;n&gt;PFGCTL</register_link>.CDNEN.</content>
+</listitem><listitem><content>The Error Generation Counter decrements to zero and <register_link state="ext" id="ext-errnpfgctl.xml">ERR&lt;n&gt;PFGCTL</register_link>.R is 1.</content>
+</listitem></list>
+<para>While <register_link state="ext" id="ext-errnpfgctl.xml">ERR&lt;n&gt;PFGCTL</register_link>.CDNEN is 1 and the Error Generation Counter is nonzero, the counter decrements by 1 for each cycle at an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> clock rate. When the counter reaches zero, one of the errors enabled in the <register_link state="ext" id="ext-errnpfgctl.xml">ERR&lt;n&gt;PFGCTL</register_link> register is generated.</para></field_description>
+    <field_description order="after">
+      <note>
+        <para>The current Error Generation Counter value is not visible to software.</para>
+      </note>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="65534"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

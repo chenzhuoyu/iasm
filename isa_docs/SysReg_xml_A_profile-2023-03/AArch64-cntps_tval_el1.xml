@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CNTPS_TVAL_EL1</reg_short_name>
+        
+        <reg_long_name>Counter-timer Physical Secure Timer TimerValue register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds the timer value for the secure physical timer, usually accessible at EL3 but configurably accessible at EL1 in Secure state.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Generic Timer registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CNTPS_TVAL_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TimerValue</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>The TimerValue view of the secure physical timer.</para>
+<para>On a read of this register:</para>
+<list type="unordered">
+<listitem><content>If <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.ENABLE is 0, the value returned is <arm-defined-word>UNKNOWN</arm-defined-word>.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.ENABLE is 1, the value returned is (<register_link state="AArch64" id="AArch64-cntps_cval_el1.xml">CNTPS_CVAL_EL1</register_link> - <register_link state="AArch64" id="AArch64-cntpct_el0.xml">CNTPCT_EL0</register_link>).</content>
+</listitem></list>
+<para>On a write of this register, <register_link state="AArch64" id="AArch64-cntps_cval_el1.xml">CNTPS_CVAL_EL1</register_link> is set to (<register_link state="AArch64" id="AArch64-cntpct_el0.xml">CNTPCT_EL0</register_link> + TimerValue), where TimerValue is treated as a signed 32-bit integer.</para>
+<para>When <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.ENABLE is 1, the timer condition is met when (<register_link state="AArch64" id="AArch64-cntpct_el0.xml">CNTPCT_EL0</register_link> - <register_link state="AArch64" id="AArch64-cntps_cval_el1.xml">CNTPS_CVAL_EL1</register_link>) is greater than or equal to zero. This means that TimerValue acts like a 32-bit downcounter timer. When the timer condition is met:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.ISTATUS is set to 1.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.IMASK is 0, an interrupt is generated.</content>
+</listitem></list>
+<para>When <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>.ENABLE is 0, the timer condition is not met, but <register_link state="AArch64" id="AArch64-cntpct_el0.xml">CNTPCT_EL0</register_link> continues to count, so the TimerValue view appears to continue to count down.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS CNTPS_TVAL_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, CNTPS_TVAL_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b111"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if HaveEL(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        if SCR_EL3.EEL2 == '1' then
+            UNDEFINED;
+        elsif SCR_EL3.ST == '0' then
+            AArch64.SystemAccessTrap(EL3, 0x18);
+        elsif IsFeatureImplemented(FEAT_ECV) &amp;&amp; EL2Enabled() &amp;&amp; SCR_EL3.ECVEn == '1' &amp;&amp; CNTHCTL_EL2.ECV == '1' then
+            if CNTPS_CTL_EL1.ENABLE == '0' then
+                X[t, 64] = bits(64) UNKNOWN;
+            else
+                X[t, 64] = CNTPS_CVAL_EL1 - (PhysicalCountInt() - CNTPOFF_EL2);
+        else
+            if CNTPS_CTL_EL1.ENABLE == '0' then
+                X[t, 64] = bits(64) UNKNOWN;
+            else
+                X[t, 64] = CNTPS_CVAL_EL1 - PhysicalCountInt();
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if CNTPS_CTL_EL1.ENABLE == '0' then
+        X[t, 64] = bits(64) UNKNOWN;
+    else
+        X[t, 64] = CNTPS_CVAL_EL1 - PhysicalCountInt();
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister CNTPS_TVAL_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR CNTPS_TVAL_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b111"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if HaveEL(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        if SCR_EL3.EEL2 == '1' then
+            UNDEFINED;
+        elsif SCR_EL3.ST == '0' then
+            AArch64.SystemAccessTrap(EL3, 0x18);
+        elsif IsFeatureImplemented(FEAT_ECV) &amp;&amp; EL2Enabled() &amp;&amp; SCR_EL3.ECVEn == '1' &amp;&amp; CNTHCTL_EL2.ECV == '1' then
+            CNTPS_CVAL_EL1 = (SignExtend(X[t, 64]&lt;31:0&gt;, 64) + PhysicalCountInt()) - CNTPOFF_EL2;
+        else
+            CNTPS_CVAL_EL1 = SignExtend(X[t, 64]&lt;31:0&gt;, 64) + PhysicalCountInt();
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    CNTPS_CVAL_EL1 = SignExtend(X[t, 64]&lt;31:0&gt;, 64) + PhysicalCountInt();
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

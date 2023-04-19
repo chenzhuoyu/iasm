@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TLBI RPAOS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TLBI RPAOS, TLB Range Invalidate GPT Information by PA, Outer Shareable</h1><p>The TLBI RPAOS characteristics are:</p><h2>Purpose</h2>
+        <p>Invalidates cached copies of GPT entries from TLBs. Details:</p>
+
+      
+        <ul>
+<li>
+<p>The invalidation applies to TLB entries containing GPT information that relates to a physical address.</p>
+
+</li><li>
+<p>The invalidation affects all TLBs in the Outer Shareable domain.</p>
+
+</li><li>
+<p>Invalidates TLB entries containing GPT information from all levels of the GPT walk that relates to the supplied physical address.</p>
+
+</li><li>
+<p>Invalidations are range-based, invalidating TLB entries starting from the address in BaseADDR, within the range as specified by SIZE.</p>
+
+</li></ul>
+
+      
+        <p>The full set of TLB maintenance instructions that invalidate cached GPT entries is: <a href="AArch64-tlbi-paall.html">TLBI PAALL</a>, <a href="AArch64-tlbi-paallos.html">TLBI PAALLOS</a>, <a href="AArch64-tlbi-rpalos.html">TLBI RPALOS</a>, and <a href="AArch64-tlbi-rpaos.html">TLBI RPAOS</a>.</p>
+
+      
+        <p>These instructions have the same ordering, observability, and completion behavior as all other TLBI instructions.</p>
+      <h2>Configuration</h2><p>This instruction is present only when FEAT_RME is implemented. Otherwise, direct accesses to TLBI RPAOS are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>TLBI RPAOS is a 64-bit System instruction.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-63_48">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">SIZE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_0-39_0">Address</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-39_0">Address</a></td></tr></tbody></table><h4 id="fieldset_0-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_44">SIZE, bits [47:44]</h4><div class="field"><p>Size of the range for invalidation.</p>
+<p>If SIZE is a reserved value, no TLB entries are required to be invalidated.</p><table class="valuetable"><tr><th>SIZE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>4KB.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>16KB.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>64KB.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>2MB.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>32MB.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>512MB.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>1GB.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>16GB.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>64GB.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>512GB.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If SIZE gives a range smaller than the configured physical granule size in <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS, then the Effective value of SIZE is taken to be the size configured by <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS.</p>
+<p>If <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS is configured to a reserved value, no TLB entries are required to be invalidated.</p>
+<p>If <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS is configured to different values at the broadcasting PE and receiving PE, no TLB entries are required to be invalidated at the receiving PE.</p></div><h4 id="fieldset_0-43_40">Bits [43:40]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-39_0">Address, bits [39:0]</h4><div class="field"><p>The starting address for the range of the maintenance instruction.</p>
+<p>This field is decoded with reference to the value of <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS to give BaseADDR as follows:</p>
+<table class="valuetable"><thead><tr><th>GPCCR_EL3.PGS</th><th>BaseADDR</th></tr></thead><tbody><tr><td><span class="binarynumber">0b00</span> (4KB)</td><td>BaseADDR[51:12] = Xt[39:0]</td></tr><tr><td><span class="binarynumber">0b10</span> (16KB)</td><td>BaseADDR[51:14] = Xt[39:2]</td></tr><tr><td><span class="binarynumber">0b01</span> (64KB)</td><td>BaseADDR[51:16] = Xt[39:4]</td></tr></tbody></table><p>Other bits of BaseADDR are treated as zero, to give the Effective value of BaseADDR.</p>
+<p>If the Effective value of BaseADDR is not aligned to the size of the Effective value of SIZE, no TLB entries are required to be invalidated.</p>
+<p>If the Effective value of BaseADDR targets an address above the implemented PA range that <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>.PARange indicates, no TLB entries are required to be invalidated.</p></div><div class="access_mechanisms"><h2>Executing TLBI RPAOS</h2><p>Accesses to this instruction use the following encodings in the System instruction encoding space:</p><h4 class="assembler">TLBI RPAOS{, &lt;Xt&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b110</td><td>0b1000</td><td>0b0100</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    AArch64.TLBI_RPA(TLBILevel_Any, X[t, 64], Shareability_OSH);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

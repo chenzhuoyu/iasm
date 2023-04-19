@@ -1,0 +1,441 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MPAMF_MSMON_IDR</reg_short_name>
+        
+        <reg_long_name>MPAM Resource Monitoring Identification Register</reg_long_name>
+
+        <power_domain_text>The power domain of MPAMF_MSMON_IDR is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented and MPAMF_IDR.HAS_MSMON == 1</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0080</hexnumber></reg_offset>
+    <reg_instance>MPAMF_MSMON_IDR_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0080</hexnumber></reg_offset>
+    <reg_instance>MPAMF_MSMON_IDR_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0080</hexnumber></reg_offset>
+    <reg_instance>MPAMF_MSMON_IDR_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0080</hexnumber></reg_offset>
+    <reg_instance>MPAMF_MSMON_IDR_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates which MPAM monitoring features are present on this MSC.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MPAMF_MSMON_IDR_s indicates Secure monitoring features.
+MPAMF_MSMON_IDR_ns indicates Non-secure monitoring features.
+MPAMF_MSMON_IDR_rt indicates Root monitoring features.
+MPAMF_MSMON_IDR_rl indicates Realm monitoring features.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, fields that mention RIS must reflect the properties of the resource instance currently selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS. Fields that do not mention RIS are constant across all resource instances.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MPAMF_MSMON_IDR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HAS_LOCAL_CAPT_EVNT</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Has local capture event generator. Indicates whether this MSC has the MPAM local capture event generator and the <register_link state="ext" id="ext-msmon_capt_evnt.xml">MSMON_CAPT_EVNT</register_link> register.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Does not support MPAM local capture event generator or <register_link state="ext" id="ext-msmon_capt_evnt.xml">MSMON_CAPT_EVNT</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Supports the MPAM local capture event generator and the <register_link state="ext" id="ext-msmon_capt_evnt.xml">MSMON_CAPT_EVNT</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NO_HW_OFLW_INTR</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Does not have hardwired MPAM monitor overflow interrupt.</para>
+    </field_description>
+    <field_description order="after"><para>If this field is 0, the MSC supports generating a hardwired interrupt for monitor overflow events.</para>
+<para>If this field is 0 and the HAS_OFLW_MSI field in this register is 1, the MSC supports generating both hardwired interrupts and MSI writes to signal interrupts.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Supports generating a hardwired interrupt to signal MPAM monitor overflow.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>No support for a hardwired interrupt to signal MPAM monitor overflow.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_MPAMv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HAS_OFLW_MSI</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Has support for MSI writes to signal MPAM monitor overflow interrupts. These registers are implemented: <register_link state="ext" id="ext-msmon_oflow_msi_addr_l.xml">MSMON_OFLOW_MSI_ADDR_L</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_addr_h.xml">MSMON_OFLOW_MSI_ADDR_H</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_attr.xml">MSMON_OFLOW_MSI_ATTR</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_data.xml">MSMON_OFLOW_MSI_DATA</register_link> and <register_link state="ext" id="ext-msmon_oflow_msi_mpam.xml">MSMON_OFLOW_MSI_MPAM</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If <register_link state="ext" id="ext-mpamf_msmon_idr.xml">MPAMF_MSMON_IDR</register_link>.NO_HW_OFLW_INTR is 1 and this bit is 0, this MSC does not support monitor overflow interrupts.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_oflow_msi_addr_l.xml">MSMON_OFLOW_MSI_ADDR_L</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_addr_h.xml">MSMON_OFLOW_MSI_ADDR_H</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_attr.xml">MSMON_OFLOW_MSI_ATTR</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_data.xml">MSMON_OFLOW_MSI_DATA</register_link> and <register_link state="ext" id="ext-msmon_oflow_msi_mpam.xml">MSMON_OFLOW_MSI_MPAM</register_link> registers are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_oflow_msi_addr_l.xml">MSMON_OFLOW_MSI_ADDR_L</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_addr_h.xml">MSMON_OFLOW_MSI_ADDR_H</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_attr.xml">MSMON_OFLOW_MSI_ATTR</register_link>, <register_link state="ext" id="ext-msmon_oflow_msi_data.xml">MSMON_OFLOW_MSI_DATA</register_link> and <register_link state="ext" id="ext-msmon_oflow_msi_attr.xml">MSMON_OFLOW_MSI_ATTR</register_link> are implemented and can be used to generate writes to signal MPAM monitor overflow interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_MPAMv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HAS_OFLOW_SR</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Has MPAM monitor overflow status register <register_link state="ext" id="ext-msmon_oflow_sr.xml">MSMON_OFLOW_SR</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Does not have <register_link state="ext" id="ext-msmon_oflow_sr.xml">MSMON_OFLOW_SR</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Supports <register_link state="ext" id="ext-msmon_oflow_sr.xml">MSMON_OFLOW_SR</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_MPAMv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>27:18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MSMON_MBWU</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before"><para>Memory bandwidth usage monitoring. Indicates whether MPAM monitoring for Memory Bandwidth Usage by PARTID and PMG is implemented and whether the following bandwidth usage registers are accessible:</para>
+<list type="unordered">
+<listitem><content><register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>, <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>, <register_link state="ext" id="ext-msmon_cfg_mbwu_flt.xml">MSMON_CFG_MBWU_FLT</register_link>, <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.</content>
+</listitem><listitem><content>The optional <register_link state="ext" id="ext-msmon_mbwu_capture.xml">MSMON_MBWU_CAPTURE</register_link>.</content>
+</listitem><listitem><content>If MPAM v0.1 or MPAM v1.1 is implemented, the optional <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> and the optional <register_link state="ext" id="ext-msmon_mbwu_l_capture.xml">MSMON_MBWU_L_CAPTURE</register_link>.</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that memory bandwidth usage monitoring is implemented for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS as described in <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Does not have monitoring for memory bandwidth usage and does not use the bandwidth usage registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Has monitoring of memory bandwidth usage and uses the bandwidth usage registers.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MSMON_CSU</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before"><para>Cache storage usage monitoring. Indicates whether MPAM monitoring of cache storage usage by PARTID and PMG is implemented and the following registers are accessible:</para>
+<list type="unordered">
+<listitem><content><register_link state="ext" id="ext-mpamf_csumon_idr.xml">MPAMF_CSUMON_IDR</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_ctl.xml">MSMON_CFG_CSU_CTL</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_flt.xml">MSMON_CFG_CSU_FLT</register_link>, <register_link state="ext" id="ext-msmon_csu.xml">MSMON_CSU</register_link>.</content>
+</listitem><listitem><content>The optional <register_link state="ext" id="ext-msmon_csu_capture.xml">MSMON_CSU_CAPTURE</register_link>.</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that cache storage usage monitoring is implemented for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS as described in <register_link state="ext" id="ext-mpamf_csumon_idr.xml">MPAMF_CSUMON_IDR</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Does not have monitoring for cache storage usage or the <register_link state="ext" id="ext-mpamf_csumon_idr.xml">MPAMF_CSUMON_IDR</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_ctl.xml">MSMON_CFG_CSU_CTL</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_flt.xml">MSMON_CFG_CSU_FLT</register_link>, <register_link state="ext" id="ext-msmon_csu.xml">MSMON_CSU</register_link> or <register_link state="ext" id="ext-msmon_csu_capture.xml">MSMON_CSU_CAPTURE</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Has monitoring of cache storage usage and the <register_link state="ext" id="ext-mpamf_csumon_idr.xml">MPAMF_CSUMON_IDR</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_ctl.xml">MSMON_CFG_CSU_CTL</register_link>, <register_link state="ext" id="ext-msmon_cfg_csu_flt.xml">MSMON_CFG_CSU_FLT</register_link>, <register_link state="ext" id="ext-msmon_csu.xml">MSMON_CSU</register_link> and optional <register_link state="ext" id="ext-msmon_csu_capture.xml">MSMON_CSU_CAPTURE</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30-1" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_18" msb="27" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames. In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_MSMON_IDR is read-only.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_MSMON_IDR must be readable from the Non-secure, Secure, Root, and Realm MPAM feature pages.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_MSMON_IDR is permitted to have the same contents when read from the Secure, Non-secure, Root, and Realm MPAM feature pages unless the register contents are different for the different versions:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MPAMF_MSMON_IDR_s is permitted to have either the same or different contents to MPAMF_MSMON_IDR_ns, MPAMF_MSMON_IDR_rt, or MPAMF_MSMON_IDR_rl.</content>
+</listitem><listitem><content>MPAMF_MSMON_IDR_ns is permitted to have either the same or different contents to MPAMF_MSMON_IDR_rt or MPAMF_MSMON_IDR_rl.</content>
+</listitem><listitem><content>MPAMF_MSMON_IDR_rt is permitted to have either the same or different contents to MPAMF_MSMON_IDR_rl.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>There must be separate registers in the Secure (MPAMF_MSMON_IDR_s), Non-secure (MPAMF_MSMON_IDR_ns), Root (MPAMF_MSMON_IDR_rt), and Realm (MPAMF_MSMON_IDR_rl) MPAM feature pages.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, MPAMF_MSMON_IDR shows the configuration of memory system monitoring for the  resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS. Fields that mention RIS in their field descriptions have values that track the implemented properties of the resource instance. Fields that do not mention RIS are constant across all resource instances.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Access to MPAMF_MSMON_IDR is not affected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.RIS.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDESR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDESR, External Debug Event Status Register</h1><p>The EDESR characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates the status of internally pending Halting debug events.</p>
+      <h2>Configuration</h2><p>EDESR is in the Core power domain.
+    </p><h2>Attributes</h2>
+        <p>EDESR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="28"><a href="#fieldset_0-31_4">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">EC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">SS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">RC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">OSUC</a></td></tr></tbody></table><h4 id="fieldset_0-31_4">Bits [31:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">EC, bit [3]<span class="condition"><br/>When FEAT_Debugv8p8 is implemented:
+                        </span></h4><div class="field">
+      <p>Exception Catch debug event pending.</p>
+    <table class="valuetable"><tr><th>EC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug event is not pending.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug event is pending.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">W1C</span>.</p></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">SS, bit [2]<span class="condition"><br/>When FEAT_DoPD is implemented:
+                        </span></h4><div class="field">
+      <p>Halting step debug event pending. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>SS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Reading this means that a Halting step debug event is not pending. Writing this means no action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reading this means that a Halting step debug event is pending. Writing this clears the pending Halting step debug event.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Halting step debug event pending. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>SS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Reading this means that a Halting step debug event is not pending. Writing this means no action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reading this means that a Halting step debug event is pending. Writing this clears the pending Halting step debug event.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to the value in <a href="ext-edecr.html">EDECR</a>.SS.</li></ul></div><h4 id="fieldset_0-1_1">RC, bit [1]</h4><div class="field">
+      <p>Reset Catch debug event pending. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>RC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Reading this means that a Reset Catch debug event is not pending. Writing this means no action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reading this means that a Reset Catch debug event is pending. Writing this clears the pending Reset Catch debug event.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When FEAT_DoPD is implemented,
+            this field resets to
+            the value in <a href="ext-ctidevctl.html">CTIDEVCTL</a>.RCE.</li>
+          
+            <li>When FEAT_DoPD is not implemented,
+            this field resets to
+            the value in <a href="ext-edecr.html">EDECR</a>.RCE.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-0_0">OSUC, bit [0]</h4><div class="field">
+      <p>OS Unlock Catch debug event pending. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>OSUC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Reading this means that an OS Unlock Catch debug event is not pending. Writing this means no action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reading this means that an OS Unlock Catch debug event is pending. Writing this clears the pending OS Unlock Catch debug event.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h2>Accessing EDESR</h2>
+        <p>If a request to clear a pending Halting debug event is received at or about the time when halting becomes allowed, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether the event is taken.</p>
+
+      
+        <p>If Core power is removed while a Halting debug event is pending, it is lost. However, it might become pending again when the Core is powered back on and Cold reset.</p>
+      <h4>EDESR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x020</span></td><td>EDESR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered(), !DoubleLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

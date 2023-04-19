@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GITS_TRANSLATER</reg_short_name>
+        
+        <reg_long_name>ITS Translation Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC ITS translation</reg_component>
+    <reg_offset><hexnumber>0x0040</hexnumber></reg_offset>
+    <reg_instance>GITS_TRANSLATER</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Written by a requesting Device to signal an interrupt for translation by the ITS.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC ITS registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is at the same offset as <register_link state="ext" id="ext-gicd_setspi_nsr.xml">GICD_SETSPI_NSR</register_link> in the Distributor, and is at the same offset as <register_link state="ext" id="ext-gicr_setlpir.xml">GICR_SETLPIR</register_link> in the Redistributor.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GITS_TRANSLATER is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EventID</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>An identifier corresponding to the interrupt to be translated.</para>
+<note><para>The size of the EventID is DeviceID specific, and set when the DeviceID is mapped to an ITT (using <xref browsertext="MAPD" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="BABFAFBE"/>).</para></note><para>The number of EventID bits implemented is reported by <register_link state="ext" id="ext-gits_typer.xml">GITS_TYPER</register_link>.ID_bits. If a write specifies nonzero identifiers bits outside this range behavior is a <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> choice between:</para>
+<list type="unordered">
+<listitem><content>Nonzero identifier bits outside the supported range are ignored.</content>
+</listitem><listitem><content>The write is ignored.</content>
+</listitem></list></field_description>
+  </field>
+  <text_after_fields>
+    <para>The DeviceID presented to an ITS is used to index a device table. The device table maps the DeviceID to an interrupt translation table for that device.</para>
+  </text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>16-bit access to bits [15:0] of this register must be supported. When this register is written by a 16-bit transaction, bits [31:16] are written as zero.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Implementations must ensure that:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>A unique DeviceID is provided for each requesting device, and the DeviceID is presented to the ITS when a write to this register occurs in a manner that cannot be spoofed by any agent capable of performing writes.</content>
+</listitem><listitem><content>The DeviceID presented corresponds to the DeviceID field in the ITS commands.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes to this register are ignored if any of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content><register_link state="ext" id="ext-gits_ctlr.xml">GITS_CTLR</register_link>.Enabled == 0.</content>
+</listitem><listitem><content>The presented DeviceID is not mapped to an Interrupt Translation Table.</content>
+</listitem><listitem><content>The DeviceID is larger than the supported size.</content>
+</listitem><listitem><content>The DeviceID is mapped to an Interrupt Translation Table, but the EventID is outside the range specified by <xref browsertext="MAPD" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="BABFAFBE"/>.</content>
+</listitem><listitem><content>The EventID is mapped to an Interrupt Translation Table and the EventID is within the range specified by <xref browsertext="MAPD" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="BABFAFBE"/>, but the EventID is unmapped.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Translation requests that result from writes to this register are subject to certain ordering rules. For more information, see <xref browsertext="'Ordering of translations with the output to ITS commands' in ARM&#174; Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="CHDHFGCG"/>.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

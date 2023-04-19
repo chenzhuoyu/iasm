@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HFGWTR2_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HFGWTR2_EL2, Hypervisor Fine-Grained Write Trap Register 2</h1><p>The HFGWTR2_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides controls for traps of <span class="instruction">MSR</span> and <span class="instruction">MCR</span> writes of System registers.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_FGT2 is implemented. Otherwise, direct accesses to HFGWTR2_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>HFGWTR2_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_3">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="29"><a href="#fieldset_0-63_3">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">nRCWSMASK_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">nPFAR_EL1</a></td></tr></tbody></table><h4 id="fieldset_0-63_3">Bits [63:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">nRCWSMASK_EL1, bit [2]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> or <span class="instruction">MSRR</span> writes of RCWSMASK_EL1 at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nRCWSMASK_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> or <span class="instruction">MSRR</span> writes of <a href="AArch64-rcwsmask_el1.html">RCWSMASK_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span> for 64-bit access and <span class="hexnumber">0x14</span> for 128-bit access, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> or <span class="instruction">MSRR</span> writes of <a href="AArch64-rcwsmask_el1.html">RCWSMASK_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">Bit [1]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0-1">nPFAR_EL1, bit [0]<span class="condition"><br/>When FEAT_PFAR is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pfar_el1.html">PFAR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPFAR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pfar_el1.html">PFAR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pfar_el1.html">PFAR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing HFGWTR2_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, HFGWTR2_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0011</td><td>0b0001</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x2C8];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = HFGWTR2_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = HFGWTR2_EL2;
+                </p><h4 class="assembler">MSR HFGWTR2_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0011</td><td>0b0001</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x2C8] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        HFGWTR2_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    HFGWTR2_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

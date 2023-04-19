@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MSMON_CAPT_EVNT</reg_short_name>
+        
+        <reg_long_name>MPAM Capture Event Generation Register</reg_long_name>
+
+        <power_domain_text>The power domain of MSMON_CAPT_EVNT is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MSMON == 1 and MPAMF_MSMON_IDR.HAS_LOCAL_CAPT_EVNT == 1</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0808</hexnumber></reg_offset>
+    <reg_instance>MSMON_CAPT_EVNT_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>WO/RAZ</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0808</hexnumber></reg_offset>
+    <reg_instance>MSMON_CAPT_EVNT_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>WO/RAZ</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0808</hexnumber></reg_offset>
+    <reg_instance>MSMON_CAPT_EVNT_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>WO/RAZ</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0808</hexnumber></reg_offset>
+    <reg_instance>MSMON_CAPT_EVNT_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>WO/RAZ</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Generates a local capture event when written with bit[0] as 1.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MSMON_CAPT_EVNT_s generates local capture events for Secure monitor instances only or for Secure and Non-secure monitor instances.
+MSMON_CAPT_EVNT_ns generates local capture events for Non-secure monitor instances only.
+MSMON_CAPT_EVNT_rt generates local capture events for Root monitor instances only or for Root, Secure, Realm, and Non-secure monitor instances.
+MSMON_CAPT_EVNT_rl generates local capture events for Realm monitor instances or for for Realm monitor instances or Realm and Non-secure monitor instances.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MSMON_CAPT_EVNT is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>31:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ALL</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>In the Secure instance of this register:</para>
+<list type="unordered">
+<listitem><content>If ALL is written as 1 and NOW is also written as 1, signal a capture event to Secure and Non-secure monitor instances in this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem><listitem><content>If ALL is written as 0 and NOW is written as 1, signal a capture event to Secure monitor instances in this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem></list>
+<para>In the Non-secure instance of this register, this field is RAZ/WI.</para>
+<para>In the Root instance of this register:</para>
+<list type="unordered">
+<listitem><content>If ALL is written as 1 and NOW is also written as 1, signal a capture event to Root, Realm, Secure, and Non-secure monitor instances in this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem><listitem><content>If ALL is written as 0 and NOW is written as 1, signal a capture event to Root monitor instances within this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem></list>
+<para>In the Realm instance of this register:</para>
+<list type="unordered">
+<listitem><content>If ALL is written as 1 and NOW is also written as 1, signal a capture event to Realm and Non-secure monitor instances in this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem><listitem><content>If ALL is written as 0 and NOW is written as 1, signal a capture event to Realm monitor instances within this MSC that are configured with CAPT_EVNT = 7.</content>
+</listitem></list>
+<para>This bit always reads as zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Send capture event only to monitor instances in the same MPAM feature page as this register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Send capture event to monitor instances in certain MPAM feature pages as described in the ALL field of this register.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NOW</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>When written as 1, this bit causes an event to those monitor instances described in the ALL field that have CAPT_EVNT set to the value of 7.</para>
+<para>When this bit is written as 0, no event is signaled.</para>
+<para>This bit always reads as zero.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_2" msb="31" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames. In a system that supports Secure and Non-secure memory maps, there must be both Secure and Non-secure MPAM feature pages.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MSMON_CAPT_EVNT_s must only be accessible from the Secure MPAM feature page. MSMON_CAPT_EVNT_ns must only be accessible from the Non-secure MPAM feature page.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MSMON_CAPT_EVNT_s and MSMON_CAPT_EVNT_ns must be separate registers. The Secure instance (MSMON_CAPT_EVNT_s) can generate local capture events for Secure monitor instances only or for Secure and Non-secure monitor instances, and the Non-secure instance (MSMON_CAPT_EVNT_ns) can generate local capture events for Non-secure monitor instances only.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

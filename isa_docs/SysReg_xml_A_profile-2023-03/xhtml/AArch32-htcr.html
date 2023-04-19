@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HTCR, Hyp Translation Control Register</h1><p>The HTCR characteristics are:</p><h2>Purpose</h2>
+        <p>The control register for stage 1 of the EL2 translation regime.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>This stage of translation always uses the Long-descriptor translation table format.</p></div>
+      <h2>Configuration</h2><p>AArch32 System register HTCR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-tcr_el2.html">TCR_EL2[31:0]</a>.</p><p>This register is present only when EL2 is capable of using AArch32. Otherwise, direct accesses to HTCR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>HTCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28-1">HWU62</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">HWU61</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">HWU60</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25-1">HWU59</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24-1">HPD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23">RES1</a></td><td class="lr" colspan="9"><a href="#fieldset_0-22_14">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12">SH0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">ORGN0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">IRGN0</a></td><td class="lr" colspan="5"><a href="#fieldset_0-7_3">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-2_0">T0SZ</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">Bit [31]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-30_30">IMPLEMENTATION DEFINED, bit [30]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29">Bit [29]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-28_28-1">HWU62, bit [28]<span class="condition"><br/>When FEAT_HPDS2 is implemented:
+                        </span></h4><div class="field">
+      <p>Hardware Use. Indicates <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> hardware use of bit[62] of the stage 1 translation table Block or Page entry.</p>
+    <table class="valuetable"><tr><th>HWU62</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Bit[62] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Bit[62] of each stage 1 translation table Block or Page entry can be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose if the value of HTCR.HPD is 1.</p>
+        </td></tr></table>
+      <p>The Effective value of this field is 0 if the value of HTCR.HPD is 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-28_28-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_27-1">HWU61, bit [27]<span class="condition"><br/>When FEAT_HPDS2 is implemented:
+                        </span></h4><div class="field">
+      <p>Hardware Use. Indicates <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> hardware use of bit[61] of the stage 1 translation table Block or Page entry.</p>
+    <table class="valuetable"><tr><th>HWU61</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Bit[61] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Bit[61] of each stage 1 translation table Block or Page entry can be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose if the value of HTCR.HPD is 1.</p>
+        </td></tr></table>
+      <p>The Effective value of this field is 0 if the value of HTCR.HPD is 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">HWU60, bit [26]<span class="condition"><br/>When FEAT_HPDS2 is implemented:
+                        </span></h4><div class="field">
+      <p>Hardware Use. Indicates <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> hardware use of bit[60] of the stage 1 translation table Block or Page entry.</p>
+    <table class="valuetable"><tr><th>HWU60</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Bit[60] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Bit[60] of each stage 1 translation table Block or Page entry can be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose if the value of HTCR.HPD is 1.</p>
+        </td></tr></table>
+      <p>The Effective value of this field is 0 if the value of HTCR.HPD is 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_25-1">HWU59, bit [25]<span class="condition"><br/>When FEAT_HPDS2 is implemented:
+                        </span></h4><div class="field">
+      <p>Hardware Use. Indicates <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> hardware use of bit[59] of the stage 1 translation table Block or Page entry.</p>
+    <table class="valuetable"><tr><th>HWU59</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Bit[59] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Bit[59] of each stage 1 translation table Block or Page entry can be used by hardware for an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose if the value of HTCR.HPD is 1.</p>
+        </td></tr></table>
+      <p>The Effective value of this field is 0 if the value of HTCR.HPD is 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-25_25-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-24_24-1">HPD, bit [24]<span class="condition"><br/>When FEAT_AA32HPD is implemented:
+                        </span></h4><div class="field">
+      <p>Hierarchical Permission Disables. This affects the hierarchical control bits, APTable, XNTable, and PXNTable, in the PL2 translation regime.</p>
+    <table class="valuetable"><tr><th>HPD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Hierarchical permissions are enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Hierarchical permissions are disabled.</p>
+        </td></tr></table>
+      <p>When disabled, the permissions are treated as if the bits are zero.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23">Bit [23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-22_14">Bits [22:14]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_12">SH0, bits [13:12]</h4><div class="field">
+      <p>Shareability attribute for memory associated with translation table walks using <a href="AArch32-httbr.html">HTTBR</a>.</p>
+    <table class="valuetable"><tr><th>SH0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr></table>
+      <p>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_10">ORGN0, bits [11:10]</h4><div class="field">
+      <p>Outer cacheability attribute for memory associated with translation table walks using <a href="AArch32-httbr.html">HTTBR</a>.</p>
+    <table class="valuetable"><tr><th>ORGN0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_8">IRGN0, bits [9:8]</h4><div class="field">
+      <p>Inner cacheability attribute for memory associated with translation table walks using <a href="AArch32-httbr.html">HTTBR</a>.</p>
+    <table class="valuetable"><tr><th>IRGN0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_3">Bits [7:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_0">T0SZ, bits [2:0]</h4><div class="field">
+      <p>The size offset of the memory region addressed by <a href="AArch32-httbr.html">HTTBR</a>. The region size is 2<sup>(32-T0SZ)</sup> bytes.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing HTCR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0010</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    R[t] = HTCR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        R[t] = HTCR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0010</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    HTCR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        HTCR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

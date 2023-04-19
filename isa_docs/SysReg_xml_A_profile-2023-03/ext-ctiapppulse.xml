@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CTIAPPPULSE</reg_short_name>
+        
+        <reg_long_name>CTI Application Pulse register</reg_long_name>
+
+        <power_domain_text>CTIAPPPULSE is in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>CTI</reg_component>
+    <reg_offset><hexnumber>0x01C</hexnumber></reg_offset>
+    <reg_instance>CTIAPPPULSE</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Causes event pulses to be generated on ECT channels.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Cross-Trigger Interface registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CTIAPPPULSE is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>APPPULSE&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Generate event pulse on ECT channel &lt;x&gt;.</para>
+<para>Bits [31:N] are RAZ/WI. N is the number of ECT channels implemented as defined by the <register_link state="ext" id="ext-ctidevid.xml">CTIDEVID</register_link>.NUMCHAN field.</para>
+<para>Writing to this bit has the following effect:</para></field_description>
+    <field_description order="after">
+      <note>
+        <list type="unordered">
+          <listitem>
+            <content>The CTIAPPPULSE operation does not affect the state of the application trigger. If the channel is active, either because of an earlier event or from the application trigger, then the value written to CTIAPPPULSE might have no effect.</content>
+          </listitem>
+          <listitem>
+            <content>Multiple pulse events that occur close together might be merged into a single pulse event.</content>
+          </listitem>
+        </list>
+      </note>
+    </field_description>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="x">
+      <field_array_index>
+        <field_array_start>31</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No effect.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Channel &lt;x&gt; event pulse generated.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="APPPULSE31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-31_0" label="APPPULSE0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>It is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> whether a write to CTIAPPPULSE generates an event on a channel if CTICONTROL.GLBEN is 0.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>EDVIDSR</reg_short_name>
+        
+        <reg_long_name>External Debug Virtual Context Sample Register</reg_long_name>
+
+        <power_domain_text>EDVIDSR is in the Core power domain</power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_PCSRv8 is implemented and FEAT_PCSRv8p2 is not implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0x0A8</hexnumber></reg_offset>
+    <reg_instance>EDVIDSR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus() and !OSLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Contains sampled values captured on reading <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link>[31:0].</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If <xref browsertext="FEAT_VHE" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.VHE"/> is implemented, the format of this register differs depending on the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Implemented only if the <arm-defined-word>OPTIONAL</arm-defined-word> PC Sample-based Profiling Extension is implemented in the external debug registers space.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When the PC Sample-based Profiling Extension is implemented in the external debug registers space, if EL2 is not implemented and EL3 is not implemented, it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether EDVIDSR is implemented.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <note><para><xref browsertext="FEAT_PCSRv8p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.PCSample"/> implements the PC Sample-based Profiling Extension in the Performance Monitors registers space.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>EDVIDSR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When FEAT_VHE is not implemented or EDSCR.SC2 == 0</fields_condition>
+  <fields_instance>FEAT_VHE is not implemented or EDSCR.SC2 == 0</fields_instance>
+  <text_before_fields>
+    <para>This format applies in all Armv8.0 implementations.</para>
+  </text_before_fields>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before"><para>Non-secure state sample. Indicates the Security state associated with the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample.</para>
+<para>If EL3 is not implemented, this bit indicates the Effective value of <xref browsertext="SCR" filename="appx_registers_index.fm" linkend="CEGCEECB"/>.NS.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample is from Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample is from Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>E2</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Exception level 2 status sample. Indicates whether the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample was associated with EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample is not from EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample is from EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>E3</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Exception level 3 status sample. Indicates whether the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample was associated with EL3 using AArch64.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample is not from EL3 using AArch64.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample is from EL3 using AArch64.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented and AArch64 is supported</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HV</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>EDPCSRhi (<register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link>[63:32]) valid. Indicates whether bits [63:32] of the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample might be nonzero:</para>
+    </field_description>
+    <field_description order="after">
+      <para>An EDVIDSR.HV value of 1 does not mean that the value of EDPCSRhi is nonzero. An EDVIDSR.HV value of 0 is a hint that EDPCSRhi (<register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link>[63:32]) does not need to be read.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bits[63:32] of the most recent EDPCSR sample are zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bits[63:32] of the most recent EDPCSR sample might be nonzero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-27_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>27:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>VMID[15:8]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Extension to VMID[7:0]. For more information, see VMID[7:0].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_VMID16 is implemented and EL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>VMID</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before"><para>VMID sample. The VMID associated with the most recent EDPCSRlo (<register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link>[31:0]) sample. When the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample was generated:</para>
+<list type="unordered">
+<listitem><content>This field is <arm-defined-word>RES0</arm-defined-word> if any of the following apply:<list type="unordered">
+<listitem><content>The PE is executing in Secure state.</content>
+</listitem><listitem><content>The PE is executing at EL2.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>Otherwise:<list type="unordered">
+<listitem><content>If EL2 is using AArch64 and either <xref browsertext="FEAT_VMID16" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.VMID16"/> is not implemented or <register_link state="AArch64" id="AArch64-vtcr_el2.xml">VTCR_EL2</register_link>.VS is 1, this field is set to <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.VMID.</content>
+</listitem><listitem><content>If EL2 is using AArch64, <xref browsertext="FEAT_VMID16" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.VMID16"/> is implemented, and <register_link state="AArch64" id="AArch64-vtcr_el2.xml">VTCR_EL2</register_link>.VS is 0, PMVIDSR.VMID[7:0] is set to <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.VMID[7:0] and PMVIDSR.VMID[15:8] is <arm-defined-word>RES0</arm-defined-word>.</content>
+</listitem><listitem><content>If EL2 is using AArch32, this field is set to <register_link state="AArch32" id="AArch32-vttbr.xml">VTTBR</register_link>.VMID.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented) and EDSCR.SC2 == 1</fields_condition>
+  <fields_instance>FEAT_VHE or FEAT_Debugv8p2 is implemented, and EDSCR.SC2 == 1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CONTEXTIDR_EL2</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Context ID. The value of <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link> that is associated with the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample. When the most recent <register_link state="ext" id="ext-edpcsr.xml">EDPCSR</register_link> sample is generated:</para>
+<list type="unordered">
+<listitem><content>If the PE is not executing at EL3, EL2 is using AArch64, and EL2 is enabled in the current Security state, then this field is set to the Context ID sampled from <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>.</content>
+</listitem><listitem><content>Otherwise, this field is set to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When FEAT_VHE is not implemented or EDSCR.SC2 == 0</fields_condition>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30-1" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_16" msb="27" lsb="16"/>
+  <fieldat id="fieldset_0-15_8-1" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0-1" msb="7" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented) and EDSCR.SC2 == 1</fields_condition>
+  <fieldat id="fieldset_1-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> extensions to external debug might make the value of this register <arm-defined-word>UNKNOWN</arm-defined-word>, see <xref browsertext="'Permitted behavior that might make the PC Sample-based profiling registers UNKNOWN'" filename="H_the_sample_based_profiling__.fm" linkend="BABCBGEF"/>.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

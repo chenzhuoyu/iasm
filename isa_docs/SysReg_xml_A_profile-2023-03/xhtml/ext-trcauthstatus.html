@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCAUTHSTATUS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCAUTHSTATUS, Authentication Status Register</h1><p>The TRCAUTHSTATUS characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the state of the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> authentication interface for debug.</p>
+
+      
+        <p>For additional information, see the CoreSight Architecture Specification.</p>
+      <h2>Configuration</h2><p>External register TRCAUTHSTATUS bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcauthstatus.html">TRCAUTHSTATUS[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented. Otherwise, direct accesses to TRCAUTHSTATUS are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCAUTHSTATUS is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-27_26">RTNID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-25_24">RTID</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">RLNID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12">RLID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">HNID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">HID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6">SNID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-5_4">SID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-3_2">NSNID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">NSID</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">Bits [31:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_26">RTNID, bits [27:26]</h4><div class="field"><p>Root non-invasive debug.</p>
+<p>This field has the same value as DBGAUTHSTATUS_EL1.RTNID.</p></div><h4 id="fieldset_0-25_24">RTID, bits [25:24]</h4><div class="field">
+      <p>Root invasive debug.</p>
+    <table class="valuetable"><tr><th>RTID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Not implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-23_16">Bits [23:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_14">RLNID, bits [15:14]</h4><div class="field"><p>Realm non-invasive debug.</p>
+<p>This field has the same value as DBGAUTHSTATUS_EL1.RLNID.</p></div><h4 id="fieldset_0-13_12">RLID, bits [13:12]</h4><div class="field">
+      <p>Realm invasive debug.</p>
+    <table class="valuetable"><tr><th>RLID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Not implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-11_10">HNID, bits [11:10]</h4><div class="field">
+      <p>Hyp Non-invasive Debug. Indicates whether a separate enable control for EL2 non-invasive debug features is implemented and enabled.</p>
+    <table class="valuetable"><tr><th>HNID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Separate Hyp non-invasive debug enable not implemented, or EL2 non-invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-9_8">HID, bits [9:8]</h4><div class="field">
+      <p>Hyp Invasive Debug. Indicates whether a separate enable control for EL2 invasive debug features is implemented and enabled.</p>
+    <table class="valuetable"><tr><th>HID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Separate Hyp invasive debug enable not implemented, or EL2 invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-7_6">SNID, bits [7:6]</h4><div class="field">
+      <p>Secure Non-invasive Debug. Indicates whether Secure non-invasive debug features are implemented and enabled.</p>
+    <table class="valuetable"><tr><th>SNID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Secure non-invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>When EL3 is implemented, this field reads as <span class="binarynumber">0b10</span> or <span class="binarynumber">0b11</span> depending whether Secure non-invasive debug is enabled.</p>
+<p>When EL3 is not implemented and the PE is Non-secure, this field reads as <span class="binarynumber">0b00</span>.</p>
+<p>When EL3 is not implemented and the PE is Secure, this field reads as <span class="binarynumber">0b10</span> or <span class="binarynumber">0b11</span> depending whether Secure non-invasive debug is enabled.</p></div><h4 id="fieldset_0-5_4">SID, bits [5:4]</h4><div class="field">
+      <p>Secure Invasive Debug. Indicates whether Secure invasive debug features are implemented and enabled.</p>
+    <table class="valuetable"><tr><th>SID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Secure invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-3_2">NSNID, bits [3:2]</h4><div class="field">
+      <p>Non-secure Non-invasive Debug. Indicates whether Non-secure non-invasive debug features are implemented and enabled.</p>
+    <table class="valuetable"><tr><th>NSNID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-secure non-invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>When EL3 is implemented, this field reads as <span class="binarynumber">0b11</span>.</p>
+<p>When EL3 is not implemented and the PE is Non-secure, this field reads as <span class="binarynumber">0b11</span>.</p>
+<p>When EL3 is not implemented and the PE is Secure, this field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-1_0">NSID, bits [1:0]</h4><div class="field">
+      <p>Non-secure Invasive Debug. Indicates whether Non-secure invasive debug features are implemented and enabled.</p>
+    <table class="valuetable"><tr><th>NSID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-secure invasive debug features not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Implemented and disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Implemented and enabled.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h2>Accessing TRCAUTHSTATUS</h2>
+        <p>For implementations that support multiple access mechanisms, different access mechanisms can return different values for reads of TRCAUTHSTATUS if the authentication signals have changed and that change has not yet been synchronized by a Context synchronization event. This scenario can happen if, for example, the external debugger view is implemented separately from the system instruction view to allow for separate power domains, and so observes changes on the signals differently.</p>
+
+      
+        <p>External debugger accesses to this register are unaffected by the OS Lock.</p>
+      <h4>TRCAUTHSTATUS can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0xFB8</span></td><td>TRCAUTHSTATUS</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

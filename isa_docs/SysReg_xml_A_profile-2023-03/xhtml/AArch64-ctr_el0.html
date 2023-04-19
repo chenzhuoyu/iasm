@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CTR_EL0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CTR_EL0, Cache Type Register</h1><p>The CTR_EL0 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the architecture of the caches.</p>
+      <h2>Configuration</h2><p>AArch64 System register CTR_EL0 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-ctr.html">CTR[31:0]</a>.</p><h2>Attributes</h2>
+        <p>CTR_EL0 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="26"><a href="#fieldset_0-63_38">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_0-37_32-1">TminLine</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">DIC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">IDC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">CWG</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">ERG</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">DminLine</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">L1Ip</a></td><td class="lr" colspan="10"><a href="#fieldset_0-13_4">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">IminLine</a></td></tr></tbody></table><h4 id="fieldset_0-63_38">Bits [63:38]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-37_32-1">TminLine, bits [37:32]<span class="condition"><br/>When FEAT_MTE2 is implemented:
+                        </span></h4><div class="field"><p>Tag minimum Line. Log<sub>2</sub> of the number of words covered by Allocation Tags in the smallest cache line of all caches which can contain Allocation tags that are controlled by the PE.</p>
+<div class="note"><span class="note-header">Note</span><ul><li>For an implementation with cache lines containing 64 bytes of data and 4 Allocation Tags, this will be log<sub>2</sub>(64/4) = 4.</li><li>For an implementation with Allocations Tags in separate cache lines of 128 Allocation Tags per line, this will be log<sub>2</sub>(128*16/4) = 9.</li></ul></div></div><h4 id="fieldset_0-37_32-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">Bit [31]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-30_30">Bit [30]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_29">DIC, bit [29]</h4><div class="field">
+      <p>Instruction cache invalidation requirements for data to instruction coherence.</p>
+    <table class="valuetable"><tr><th>DIC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instruction cache invalidation to the Point of Unification is required for data to instruction coherence.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instruction cache invalidation to the Point of Unification is not required for data to instruction coherence.</p>
+        </td></tr></table></div><h4 id="fieldset_0-28_28">IDC, bit [28]</h4><div class="field">
+      <p>Data cache clean requirements for instruction to data coherence. The meaning of this bit is:</p>
+    <table class="valuetable"><tr><th>IDC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Data cache clean to the Point of Unification is required for instruction to data coherence, unless CLIDR_EL1.LoC == <span class="binarynumber">0b000</span> or (CLIDR_EL1.LoUIS == <span class="binarynumber">0b000</span> &amp;&amp; CLIDR_EL1.LoUU == <span class="binarynumber">0b000</span>).</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Data cache clean to the Point of Unification is not required for instruction to data coherence.</p>
+        </td></tr></table></div><h4 id="fieldset_0-27_24">CWG, bits [27:24]</h4><div class="field"><p>Cache writeback granule. Log<sub>2</sub> of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified.</p>
+<p>A value of <span class="binarynumber">0b0000</span> indicates that this register does not provide Cache writeback granule information and either:</p>
+<ul>
+<li>The architectural maximum of 512 words (2KB) must be assumed.
+</li><li>The Cache writeback granule can be determined from maximum cache line size encoded in the Cache Size ID Registers.
+</li></ul>
+<p>Values greater than <span class="binarynumber">0b1001</span> are reserved.</p>
+<p>Arm recommends that an implementation that does not support cache write-back implements this field as <span class="binarynumber">0b0001</span>. This applies, for example, to an implementation that supports only write-through caches.</p></div><h4 id="fieldset_0-23_20">ERG, bits [23:20]</h4><div class="field"><p>Exclusives reservation granule, and, if FEAT_TME is implemented, transactional reservation granule. Log<sub>2</sub> of the number of words of the maximum size of the reservation granule for the Load-Exclusive and Store-Exclusive instructions, and, if FEAT_TME is implemented, for detecting transactional conflicts.</p>
+<p>A value of <span class="binarynumber">0b0000</span> indicates that this register does not provide granule information and the architectural maximum of 512 words (2KB) must be assumed.</p>
+<p>Value <span class="binarynumber">0b0001</span> and values greater than <span class="binarynumber">0b1001</span> are reserved.</p></div><h4 id="fieldset_0-19_16">DminLine, bits [19:16]</h4><div class="field">
+      <p>Log<sub>2</sub> of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE.</p>
+    </div><h4 id="fieldset_0-15_14">L1Ip, bits [15:14]</h4><div class="field">
+      <p>Level 1 instruction cache policy. Indicates the indexing and tagging policy for the L1 instruction cache. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>L1Ip</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>VMID aware Physical Index, Physical tag (VPIPT).</p>
+        </td><td>When FEAT_VPIPT is implemented</td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>ASID-tagged Virtual Index, Virtual Tag (AIVIVT).</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Virtual Index, Physical Tag (VIPT).</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Physical Index, Physical Tag (PIPT).</p>
+        </td></tr></table><p>From Armv8, the value <span class="binarynumber">0b01</span> is reserved.</p>
+<p>The value <span class="binarynumber">0b00</span> is permitted only in an implementation that includes <span class="xref">FEAT_VPIPT</span>.</p></div><h4 id="fieldset_0-13_4">Bits [13:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_0">IminLine, bits [3:0]</h4><div class="field">
+      <p>Log<sub>2</sub> of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE.</p>
+    </div><div class="access_mechanisms"><h2>Accessing CTR_EL0</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, CTR_EL0</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b011</td><td>0b0000</td><td>0b0000</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SCTLR_EL1.UCT == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HCR_EL2.TID2 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.CTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCTLR_EL2.UCT == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID2 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.CTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = CTR_EL0;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICC_EOIR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICC_EOIR, CPU Interface End Of Interrupt Register</h1><p>The GICC_EOIR characteristics are:</p><h2>Purpose</h2>
+        <p>A write to this register performs priority drop for the specified interrupt and, if the appropriate <a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeS or <a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeNS field == 0, also deactivates the interrupt.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3_LEGACY is implemented. Otherwise, direct accesses to GICC_EOIR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>If <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==0:</p>
+
+      
+        <ul>
+<li>This register is Common.
+</li><li><a href="ext-gicc_aeoir.html">GICC_AEOIR</a> is an alias of the Non-secure view of this register.
+</li></ul>
+
+      
+        <p>For Secure writes when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==0, or for Secure and Non-secure writes when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==1, the register provides functionality for Group 0 interrupts.</p>
+
+      
+        <p>For Non-secure writes when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==1, the register provides functionality for Group 1 interrupts.</p>
+      <h2>Attributes</h2>
+        <p>GICC_EOIR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">RES0</a></td><td class="lr" colspan="24"><a href="#fieldset_0-23_0">INTID</a></td></tr></tbody></table><h4 id="fieldset_0-31_24">Bits [31:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_0">INTID, bits [23:0]</h4><div class="field"><p>The INTID of the signaled interrupt.</p>
+<div class="note"><span class="note-header">Note</span><p>INTIDs 1020-1023 are reserved and convey additional information such as spurious interrupts.</p></div><p>When affinity routing is not enabled:</p>
+<ul>
+<li>Bits [23:13] are <span class="arm-defined-word">RES0</span>.
+</li><li>For SGIs, bits [12:10] identify the CPU interface corresponding to the source PE. For all other interrupts these bits are <span class="arm-defined-word">RES0</span>.
+</li></ul></div><div class="text_after_fields"><p>For every read of a valid INTID from <a href="ext-gicc_iar.html">GICC_IAR</a>, the connected PE must perform a matching write to GICC_EOIR. The value written to GICC_EOIR must be the INTID from <a href="ext-gicc_iar.html">GICC_IAR</a>. Reads of INTIDs 1020-1023 do not require matching writes.</p>
+<div class="note"><span class="note-header">Note</span><p>Arm recommends that software preserves the entire register value read from <a href="ext-gicc_iar.html">GICC_IAR</a>, and writes that value back to GICC_EOIR on completion of interrupt processing.</p></div><p>For nested interrupts, the order of writes to this register must be the reverse of the order of interrupt acknowledgement. Behavior is <span class="arm-defined-word">UNPREDICTABLE</span> if:</p>
+<ul>
+<li>This ordering constraint is not maintained.
+</li><li>The value written to this register does not match an active interrupt, or the ID of a spurious interrupt.
+</li><li>The value written to this register does not match the last valid interrupt value read from <a href="ext-gicc_iar.html">GICC_IAR</a>.
+</li></ul>
+<p>For general information about the effect of writes to end of interrupt registers, and about the possible separation of the priority drop and interrupt deactivate operations, see <span class="xref">'Interrupt lifecycle' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+<p>If <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==0:</p>
+<ul>
+<li><a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeS controls the behavior of Secure accesses to GICC_EOIR and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>.
+</li><li><a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeNS controls the behavior of Non-secure accesses to GICC_EOIR and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>.
+</li></ul></div><h2>Accessing GICC_EOIR</h2>
+        <p>The following writes must be ignored:</p>
+
+      
+        <ul>
+<li>Writes of INTIDs 1020-1023.
+</li><li>Secure writes corresponding to Group 1 interrupts. In systems that support system error generation, an implementation might generate a system error.  In this case, GIC behavior is predictable, and the highest Secure active priority (in the Secure copy of <a href="ext-gicc_aprn.html">GICC_APR&lt;n&gt;</a>) will be reset if the highest active priority is Secure.  System behavior is <span class="arm-defined-word">UNPREDICTABLE</span>.
+</li><li>Non-secure writes corresponding to Group 0 interrupts when <a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeS == 1.  In systems that support system error generation, an implementation might generate a system error. In this case, GIC behavior is predictable, and the highest Non-secure active priority (in the Non-secure copy of <a href="ext-gicc_aprn.html">GICC_APR&lt;n&gt;</a>) will be reset if the highest active priority is Non-secure. System behavior is <span class="arm-defined-word">UNPREDICTABLE</span>.
+</li></ul>
+
+      
+        <p>This register is used only when System register access is not enabled. When System register access is enabled:</p>
+
+      
+        <ul>
+<li>For AArch32 implementations, <a href="AArch32-icc_eoir0.html">ICC_EOIR0</a> and <a href="AArch32-icc_eoir1.html">ICC_EOIR1</a> provide equivalent functionality.
+</li><li>For AArch64 implementations, <a href="AArch64-icc_eoir0_el1.html">ICC_EOIR0_EL1</a> and <a href="AArch64-icc_eoir1_el1.html">ICC_EOIR1_EL1</a> provide equivalent functionality.
+</li></ul>
+
+      
+        <p>When affinity routing is enabled for a Security state, it is a programming error to use memory-mapped registers to access the GIC.</p>
+      <h4>GICC_EOIR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC CPU interface</td><td><span class="hexnumber">0x0010</span></td><td>GICC_EOIR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 0, accesses to this register are <span class="access_level">WO</span>.
+          </li><li>When an access is Secure, accesses to this register are <span class="access_level">WO</span>.
+          </li><li>When an access is Non-secure, accesses to this register are <span class="access_level">WO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

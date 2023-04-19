@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MPAMSM_EL1</reg_short_name>
+        
+        <reg_long_name>MPAM Streaming Mode Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_MPAM is implemented and FEAT_SME is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds information to generate MPAM labels for memory requests that are:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>Issued due to the execution of SME load and store instructions.</content>
+</listitem><listitem><content>Issued when the PE is in Streaming SVE mode due to the execution of SVE and SIMD&amp;FP load and store instructions and SVE prefetch instructions.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If an implementation uses a shared SMCU, then the MPAM labels in this register have precedence over the labels in <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link>, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>, <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>, and <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If an implementation includes an SMCU that is not shared with other PEs, then it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the MPAM labels in this register have precedence over the labels in <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link>, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>, <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>, and <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The MPAM labels in this register are only used if <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>.MPAMEN is 1. </para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For memory requests issued from EL0, the MPAM PARTID in this register is virtual and mapped into a physical PARTID when all of the following are true:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state, and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} is not {1, 1}.</content>
+</listitem><listitem><content>The MPAM virtualization option is implemented and <register_link state="AArch64" id="AArch64-mpamhcr_el2.xml">MPAMHCR_EL2</register_link>.EL0_VPMEN is 1.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For memory requests issued from EL1, the MPAM PARTID in this register is virtual and mapped into a physical PARTID when all of the following are true:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The MPAM virtualization option is implemented and <register_link state="AArch64" id="AArch64-mpamhcr_el2.xml">MPAMHCR_EL2</register_link>.EL1_VPMEN is 1.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MPAMSM_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>63:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG_D</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>47:40</rel_range>
+    <field_description order="before">
+      <para>Performance monitoring group property for PARTID_D.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-39_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>39:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID_D</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before">
+      <para>Partition ID for requests issued due to the execution at any Exception level of SME load and store instructions and, when the PE is in Streaming SVE mode, SVE and SIMD&amp;FP load and store instructions and SVE prefetch instructions.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_48" msb="63" lsb="48"/>
+  <fieldat id="fieldset_0-47_40" msb="47" lsb="40"/>
+  <fieldat id="fieldset_0-39_32" msb="39" lsb="32"/>
+  <fieldat id="fieldset_0-31_16" msb="31" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>None of the fields in this register are permitted to be cached in a TLB.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS MPAMSM_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, MPAMSM_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0101"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; MPAM2_EL2.EnMPAMSM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = MPAMSM_EL1;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MPAMSM_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MPAMSM_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister MPAMSM_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR MPAMSM_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0101"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; MPAM2_EL2.EnMPAMSM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        MPAMSM_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MPAMSM_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MPAMSM_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

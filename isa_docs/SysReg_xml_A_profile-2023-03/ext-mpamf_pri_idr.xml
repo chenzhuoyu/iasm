@@ -1,0 +1,399 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MPAMF_PRI_IDR</reg_short_name>
+        
+        <reg_long_name>MPAM Priority Partitioning Identification Register</reg_long_name>
+
+        <power_domain_text>The power domain of MPAMF_PRI_IDR is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented and MPAMF_IDR.HAS_PRI_PART == 1</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0048</hexnumber></reg_offset>
+    <reg_instance>MPAMF_PRI_IDR_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0048</hexnumber></reg_offset>
+    <reg_instance>MPAMF_PRI_IDR_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0048</hexnumber></reg_offset>
+    <reg_instance>MPAMF_PRI_IDR_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0048</hexnumber></reg_offset>
+    <reg_instance>MPAMF_PRI_IDR_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates which MPAM priority partitioning features are present on this MSC. </para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MPAMF_PRI_IDR_s indicates priority partitioning features accessed from the Secure MPAM feature page. 
+MPAMF_PRI_IDR_ns indicates priority partitioning features accessed from the Non-secure MPAM feature page.
+MPAMF_PRI_IDR_rt indicates priority partitioning features accessed from the Root MPAM feature page.
+MPAMF_PRI_IDR_rl indicates priority partitioning features accessed from the Realm MPAM feature page.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>When MPAMF_IDR.HAS_RIS is 1, some fields in this register give information for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS. The description of every field that is affected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS has that information within the field description.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MPAMF_PRI_IDR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>31:26</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-25_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DSPRI_WD</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>25:20</rel_range>
+    <field_description order="before"><para>Number of implemented bits in the downstream priority field (DSPRI) of <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.</para>
+<para>If HAS_DSPRI == 1, this field must contain a value from 1 to 16, inclusive.</para>
+<para>If HAS_DSPRI == 0, this field must be 0.</para></field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates the number of downstream priority bits for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>19:18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DSPRI_0_IS_LOW</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>Indicates whether 0 in <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.DSPRI is the lowest or the highest downstream priority.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that 0 is the lowest downstream priority for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>In the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.DSPRI field, a value of 0 means the highest priority.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>In the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.DSPRI field, a value of 0 means the lowest priority.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HAS_DSPRI</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Indicates that the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register implements the DSPRI field.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that downstream priority is implemented for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This MSC supports priority partitioning, but does not implement a downstream priority (DSPRI) field in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This MSC supports downstream priority partitioning and implements the downstream priority (DSPRI) field in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>15:10</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-9_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTPRI_WD</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>9:4</rel_range>
+    <field_description order="before"><para>Number of implemented bits in the internal priority field (INTPRI) in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+<para>If HAS_INTPRI == 1, this field must contain a value from 1 to 16, inclusive.</para>
+<para>If HAS_INTPRI == 0, this field must be 0.</para></field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates the number of internal priority bits for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTPRI_0_IS_LOW</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Indicates whether 0 in <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.INTPRI is the lowest or the highest internal priority.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that 0 is the lowest internal priority for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>In the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.INTPRI field, a value of 0 means the highest priority.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>In the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link>.INTPRI field, a value of 0 means the lowest priority.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HAS_INTPRI</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates that this MSC implements the INTPRI field in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If RIS is implemented, this field indicates that internal priority is implemented for the resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This MSC supports priority partitioning, but does not implement the internal priority (INTPRI) field in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This MSC supports internal priority partitioning and implements the internal priority (INTPRI) field in the <register_link state="ext" id="ext-mpamcfg_pri.xml">MPAMCFG_PRI</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_26" msb="31" lsb="26"/>
+  <fieldat id="fieldset_0-25_20" msb="25" lsb="20"/>
+  <fieldat id="fieldset_0-19_18" msb="19" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_10" msb="15" lsb="10"/>
+  <fieldat id="fieldset_0-9_4" msb="9" lsb="4"/>
+  <fieldat id="fieldset_0-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames. In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_PRI_IDR is read-only.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_PRI_IDR must be readable from the Non-secure, Secure, Root, and Realm MPAM feature pages.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMF_PRI_IDR is permitted to have the same contents when read from the Secure, Non-secure, Root, and Realm MPAM feature pages unless the register contents are different for the different versions:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MPAMF_PRI_IDR_s is permitted to have either the same or different contents to MPAMF_PRI_IDR_ns, MPAMF_PRI_IDR_rt, or MPAMF_PRI_IDR_rl.</content>
+</listitem><listitem><content>MPAMF_PRI_IDR_ns is permitted to have either the same or different contents to MPAMF_PRI_IDR_rt or MPAMF_PRI_IDR_rl.</content>
+</listitem><listitem><content>MPAMF_PRI_IDR_rt is permitted to have either the same or different contents to MPAMF_PRI_IDR_rl.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>There must be separate registers in the Secure (MPAMF_PRI_IDR_s), Non-secure (MPAMF_PRI_IDR_ns), Root (MPAMF_PRI_IDR_rt), and Realm (MPAMF_PRI_IDR_rl) MPAM feature pages.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, MPAMF_PRI_IDR shows the configuration of priority partitioning for the  resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS. Fields that mention RIS in their field descriptions have values that track the implemented properties of the resource instance. Fields that do not mention RIS are constant across all resource instances.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

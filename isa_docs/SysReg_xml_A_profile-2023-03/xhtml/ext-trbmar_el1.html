@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRBMAR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRBMAR_EL1, Trace Buffer Memory Attribute Register</h1><p>The TRBMAR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls Trace Buffer Unit accesses to memory.</p>
+      <h2>Configuration</h2><p>External register TRBMAR_EL1 bits [63:0] are architecturally mapped to AArch64 System register <a href="AArch64-trbmar_el1.html">TRBMAR_EL1[63:0]</a>.</p><p>TRBMAR_EL1 is in the Core power domain.
+    </p><p>This register is present only when FEAT_TRBE_EXT is implemented. Otherwise, direct accesses to TRBMAR_EL1 are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRBMAR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_12">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-63_12">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10-1">PAS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">SH</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0-1">Attr</a></td></tr></tbody></table><h4 id="fieldset_0-63_12">Bits [63:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_10-1">PAS, bits [11:10]<span class="condition"><br/>When FEAT_TRBE_EXT is implemented:
+                        </span></h4><div class="field">
+      <p>Physical address specifier. Defines the PAS attribute for memory addressed by the buffer in External mode.</p>
+    <table class="valuetable"><tr><th>PAS</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Secure.</p>
+        </td><td>When Secure state is implemented</td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Non-secure.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Root.</p>
+        </td><td>When FEAT_RME is implemented</td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Realm.</p>
+        </td><td>When FEAT_RME is implemented</td></tr></table><p>All other values are reserved.</p>
+<p>If the Trace Buffer Unit is using external mode and either TRBMAR_EL1.PAS is set to a reserved value, or the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> authentication interface prohibits invasive debug of the Security state corresponding to the physical address space selected by TRBMAR_EL1.PAS, then when the Trace Buffer Unit receives trace data from the trace unit, it does not write the trace data to memory and generates a trace buffer management event. That is, if any of the following apply:</p>
+<ul>
+<li><span class="function">ExternalInvasiveDebugEnabled</span>() == FALSE.
+</li><li>Secure state is implemented, <span class="function">ExternalSecureInvasiveDebugEnabled</span>() == FALSE, and TRBMAR_EL1.PAS is <span class="binarynumber">0b00</span>.
+</li><li><span class="xref">FEAT_RME</span> is implemented, <span class="function">ExternalRootInvasiveDebugEnabled</span>() == FALSE, and TRBMAR_EL1.PAS is <span class="binarynumber">0b10</span>.
+</li><li><span class="xref">FEAT_RME</span> is implemented, <span class="function">ExternalRealmInvasiveDebugEnabled</span>() == FALSE, and TRBMAR_EL1.PAS is <span class="binarynumber">0b11</span>.
+</li></ul>
+<p>This field is ignored by the PE when <span class="function">SelfHostedTraceEnabled</span>() == TRUE.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_8">SH, bits [9:8]</h4><div class="field">
+      <p>Trace buffer shareability domain. Defines the shareability domain for Normal memory used by the trace buffer.</p>
+    <table class="valuetable"><tr><th>SH</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field is ignored when TRBMAR_EL1.Attr specifies any of the following memory types:</p>
+<ul>
+<li>Any Device memory type.
+</li><li>Normal memory, Inner Non-cacheable, Outer Non-cacheable.
+</li></ul>
+<p>All Device and Normal Inner Non-cacheable Outer Non-cacheable memory regions are always treated as Outer Shareable.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_0-1">Attr, bits [7:0]<span class="condition"><br/>When TRBMAR_EL1.Attr == 0bxxxx0000:
+                        </span></h4><div class="field">
+      <p>Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer.</p>
+    <table class="valuetable"><tr><th>Attr</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p>Device-nGnRnE memory.</p>
+        </td></tr><tr><td class="bitfield">0x40</td><td>
+          <p>Normal memory, Inner Non-cacheable, Outer Non-cacheable with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr><tr><td class="bitfield">0xA0</td><td>
+          <p>Normal memory, Inner Write-through Cacheable, Outer Write-through Cacheable, Non-transient, Read-Allocate with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr><tr><td class="bitfield">0xF0</td><td>
+          <p>Tagged Normal memory, Outer Write-Back Non-transient, Read-allocate Write-allocate.</p>
+        </td><td>When FEAT_MTE2 is implemented</td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_0-2"><span class="condition"><br/>When TRBMAR_EL1.Attr == 0b0000xxxx and TRBMAR_EL1.Attr != 0b00000000:
+                        </span></h4><div class="field">
+      <p>Trace buffer memory attributes. Defines the Device memory attributes for memory addressed by the trace buffer.</p>
+    <table class="valuetable"><tr><th>Attr</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0x04</td><td>
+          <p>Device-nGnRE memory.</p>
+        </td></tr><tr><td class="bitfield">0x08</td><td>
+          <p>Device-nGRE memory.</p>
+        </td></tr><tr><td class="bitfield">0x0C</td><td>
+          <p>Device-GRE memory.</p>
+        </td></tr><tr><td class="bitfield">0x01</td><td>
+          <p>Device-nGnRnE memory with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr><tr><td class="bitfield">0x05</td><td>
+          <p>Device-nGnRE memory with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr><tr><td class="bitfield">0x09</td><td>
+          <p>Device-nGRE memory with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr><tr><td class="bitfield">0x0D</td><td>
+          <p>Device-GRE memory with the XS attribute set to 0.</p>
+        </td><td>When FEAT_XS is implemented</td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_0-3"><span class="condition"><br/>When TRBMAR_EL1.Attr != 0bxxxx0000 and TRBMAR_EL1.Attr != 0b0000xxxx:
+                        </span></h4><div class="field">
+      <p>Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the Outer and Inner cacheability attributes, for memory addressed by the trace buffer.</p>
+    <table class="valuetable"><tr><th>Attr</th><th>Meaning</th></tr><tr><td class="bitfield">0b0001xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b0010xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b0011xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b0100xxxx</td><td>
+          <p>Normal memory, Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b0101xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b0110xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b0111xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1000xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Non-transient, No allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1001xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Non-transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1010xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Non-transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1011xxxx</td><td>
+          <p>Normal memory, Outer Write-Through Non-transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1100xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Non-transient, No allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1101xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Non-transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1110xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Non-transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0b1111xxxx</td><td>
+          <p>Normal memory, Outer Write-Back Non-transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0001</td><td>
+          <p>Normal memory, Inner Write-Through Transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0010</td><td>
+          <p>Normal memory, Inner Write-Through Transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0011</td><td>
+          <p>Normal memory, Inner Write-Through Transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0100</td><td>
+          <p>Normal memory, Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0101</td><td>
+          <p>Normal memory, Inner Write-Back Transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0110</td><td>
+          <p>Normal memory, Inner Write-Back Transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx0111</td><td>
+          <p>Normal memory, Inner Write-Back Transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1000</td><td>
+          <p>Normal memory, Inner Write-Through Non-transient, No allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1001</td><td>
+          <p>Normal memory, Inner Write-Through Non-transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1010</td><td>
+          <p>Normal memory, Inner Write-Through Non-transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1011</td><td>
+          <p>Normal memory, Inner Write-Through Non-transient, Read-allocate Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1100</td><td>
+          <p>Normal memory, Inner Write-Back Non-transient, No allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1101</td><td>
+          <p>Normal memory, Inner Write-Back Non-transient, Write-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1110</td><td>
+          <p>Normal memory, Inner Write-Back Non-transient, Read-allocate.</p>
+        </td></tr><tr><td class="bitfield">0bxxxx1111</td><td>
+          <p>Normal memory, Inner Write-Back Non-transient, Read-allocate Write-allocate.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_0-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing TRBMAR_EL1</h2>
+        <p>The PE might ignore a write to TRBMAR_EL1 if any of the following apply:</p>
+
+      
+        <ul>
+<li><a href="ext-trblimitr_el1.html">TRBLIMITR_EL1</a>.E == <span class="binarynumber">0b1</span> and the Trace Buffer Unit is using Self-hosted mode.
+</li><li><a href="ext-trblimitr_el1.html">TRBLIMITR_EL1</a>.XE == <span class="binarynumber">0b1</span> and the Trace Buffer Unit is using External mode.
+</li></ul>
+      <h4>TRBMAR_EL1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>TRBE</td><td><span class="hexnumber">0x028</span></td><td>TRBMAR_EL1</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalTraceBufferAccess(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ERRSELR_EL1</reg_short_name>
+        
+        <reg_long_name>Error Record Select Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_RAS is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-errselr.xml">ERRSELR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Selects an error record to be accessed through the Error Record System registers.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If <register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link> indicates that zero error records are implemented, then it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether ERRSELR_EL1 is <arm-defined-word>UNDEFINED</arm-defined-word> or <arm-defined-word>RES0</arm-defined-word>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ERRSELR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>ERRSELR_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>63:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SEL</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Selects the error record accessed through the ERX registers.</para>
+    </field_description>
+    <field_description order="after"><para>For example, if ERRSELR_EL1.SEL is <hexnumber>0x0004</hexnumber>, then direct reads and writes of <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link> access ERR4STATUS.</para>
+<para>If ERRSELR_EL1.SEL is greater than or equal to <register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM, then all of the following apply:</para>
+<list type="unordered">
+<listitem><content>The value read back from ERRSELR_EL1.SEL is <arm-defined-word>UNKNOWN</arm-defined-word>.</content>
+</listitem><listitem><content>One of the following occurs:<list type="unordered">
+<listitem><content>An <arm-defined-word>UNKNOWN</arm-defined-word> error record is selected.</content>
+</listitem><listitem><content>The ERX*_EL1 registers are RAZ/WI.</content>
+</listitem><listitem><content>ERX*_EL1 register reads and writes are NOPs.</content>
+</listitem><listitem><content>ERX*_EL1 register reads and writes are <arm-defined-word>UNDEFINED</arm-defined-word>.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_16" msb="63" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ERRSELR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ERRSELR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0101"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TERR == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.ERRSELR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ERRSELR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ERRSELR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ERRSELR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister ERRSELR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR ERRSELR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0101"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TWERR == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TERR == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.ERRSELR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TWERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        ERRSELR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TERR == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TWERR == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TWERR == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        ERRSELR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    ERRSELR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

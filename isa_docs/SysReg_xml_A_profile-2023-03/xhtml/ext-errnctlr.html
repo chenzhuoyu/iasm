@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERR&lt;n&gt;CTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERR&lt;n&gt;CTLR, Error Record &lt;n&gt; Control Register, n = 0 - 65534</h1><p>The ERR&lt;n&gt;CTLR characteristics are:</p><h2>Purpose</h2>
+        <p>The error control register contains enable bits for the node that writes to this record:</p>
+
+      
+        <ul>
+<li>Enabling error detection and correction.
+</li><li>Enabling the critical error, error recovery, and fault handling interrupts.
+</li><li>Enabling in-band error response for uncorrected errors.
+</li></ul>
+
+      
+        <p>For each bit, if the node does not support the feature, then the bit is <span class="arm-defined-word">RES0</span>. The definition of each record is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+      <h2>Configuration</h2><p>This register is present only when error record &lt;n&gt; is implemented and error record &lt;n&gt; is the first error record owned by a node. Otherwise, direct accesses to ERR&lt;n&gt;CTLR are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-errnfr.html">ERR&lt;n&gt;FR</a> contains additional information about the node.</p>
+      <h2>Attributes</h2>
+        <p>ERR&lt;n&gt;CTLR is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-31_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">WDFI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">Bit[14]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">CI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">CED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">WDUI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">Bit[10]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">WCFI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">Bit[8]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">WUE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">WFI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">WUI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">Bit[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">Bit[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">Bit[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">ED</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">IMPLEMENTATION DEFINED, bits [63:32]</h4><div class="field">
+      <p>Reserved for <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> controls. Must permit SBZP write policy for software.</p>
+    </div><h4 id="fieldset_0-31_16">Bits [31:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15-1">WDFI, bit [15]<span class="condition"><br/>When RAS System Architecture v2 is implemented and ERR&lt;n&gt;FR.DFI == 0b11:
+                        </span></h4><div class="field"><p>Fault handling interrupt for Deferred errors on writes enable, with ERR&lt;n&gt;CTLR.WFI.</p>
+<p>When enabled by ERR&lt;n&gt;CTLR.{WDFI, <span class="instruction">WFI</span>}:</p>
+<ul>
+<li>The fault handling interrupt is generated for errors recorded as Deferred error on writes.
+</li><li>If the corresponding fault handling interrupt control for corrected error events, ERR&lt;n&gt;CTLR.WCFI, is not implemented, then the fault handling interrupt is generated for corrected error events on writes.
+</li></ul><table class="valuetable"><tr><th>WDFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When ERR&lt;n&gt;CTLR.WFI == 0, Fault handling interrupt not generated for Deferred errors on writes.</p>
+<p>When ERR&lt;n&gt;CTLR.WFI == 1, Fault handling interrupt generated for Deferred errors on writes.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When ERR&lt;n&gt;CTLR.WFI == 0, Fault handling interrupt generated for Deferred errors on writes.</p>
+<p>When ERR&lt;n&gt;CTLR.WFI == 1, Fault handling interrupt not generated for Deferred errors on writes.</p></td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">Bit[14]<span class="condition"><br/>When RAS System Architecture v2 is implemented and ERR&lt;n&gt;FR.DFI == 0b10:
+                        </span></h4><h5>DFI, bit 
+                        [14]</h5><div class="field"><p>Fault handling interrupt for Deferred errors enable, with ERR&lt;n&gt;CTLR.FI.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.DFI == <span class="binarynumber">0b10</span>, this control applies to errors on both reads and writes.</p>
+<p>When enabled by ERR&lt;n&gt;CTLR.{DFI, FI}:</p>
+<ul>
+<li>The fault handling interrupt is generated for all errors recorded as Deferred error.
+</li><li>If the fault handling interrupt control for corrected error events, ERR&lt;n&gt;CTLR.CFI, is not implemented, then the fault handling interrupt is generated for all corrected error events.
+</li></ul><table class="valuetable"><tr><th>DFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When ERR&lt;n&gt;CTLR.FI == 0, Fault handling interrupt not generated for Deferred errors.</p>
+<p>When ERR&lt;n&gt;CTLR.FI == 1, Fault handling interrupt generated for Deferred errors.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When ERR&lt;n&gt;CTLR.FI == 0, Fault handling interrupt generated for Deferred errors.</p>
+<p>When ERR&lt;n&gt;CTLR.FI == 1, Fault handling interrupt not generated for Deferred errors.</p></td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>When RAS System Architecture v2 is implemented and ERR&lt;n&gt;FR.DFI == 0b11:
+                        </span></h4><h5>RDFI, bit 
+                        [14]</h5><div class="field"><p>Fault handling interrupt for Deferred errors on reads enable, with ERR&lt;n&gt;CTLR.RFI.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.DFI == <span class="binarynumber">0b11</span>, this field is named RDFI.</p>
+<p>When enabled by ERR&lt;n&gt;CTLR.{RDFI, RFI}:</p>
+<ul>
+<li>The fault handling interrupt is generated for errors recorded as Deferred error on reads.
+</li><li>If the corresponding fault handling interrupt control for corrected error events, ERR&lt;n&gt;CTLR.RCFI, is not implemented, then the fault handling interrupt is generated for corrected error events on reads.
+</li></ul><table class="valuetable"><tr><th>RDFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When ERR&lt;n&gt;CTLR.RFI == 0, Fault handling interrupt not generated for Deferred errors on reads.</p>
+<p>When ERR&lt;n&gt;CTLR.RFI == 1, Fault handling interrupt generated for Deferred errors on reads.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When ERR&lt;n&gt;CTLR.RFI == 0, Fault handling interrupt generated for Deferred errors on reads.</p>
+<p>When ERR&lt;n&gt;CTLR.RFI == 1, Fault handling interrupt not generated for Deferred errors on reads.</p></td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-14_14-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">CI, bit [13]<span class="condition"><br/>When ERR&lt;n&gt;FR.CI == 0b10:
+                        </span></h4><div class="field">
+      <p>Critical error interrupt enable. When enabled, the critical error interrupt is generated for a critical error condition.</p>
+    <table class="valuetable"><tr><th>CI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Critical error interrupt not generated for critical errors. Critical errors are treated as Uncontained errors.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Critical error interrupt generated for critical errors.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">CED, bit [12]<span class="condition"><br/>When RAS System Architecture v2 is implemented, ERR&lt;n&gt;FR.CEC != 0b000 and ERR&lt;n&gt;FR.CED == 1:
+                        </span></h4><div class="field">
+      <p>Disable generation of corrected error events from error counters.</p>
+    <table class="valuetable"><tr><th>CED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Corrected error events are generated by the error counter or counters.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Corrected error events are generated when a Corrected error is recorded.</p>
+        </td></tr></table>
+      <p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">WDUI, bit [11]<span class="condition"><br/>When ERR&lt;n&gt;FR.DUI == 0b11:
+                        </span></h4><div class="field"><p>Error recovery interrupt for Deferred errors on writes enable.</p>
+<p>When enabled, the error recovery interrupt is generated for errors recorded as Deferred error on writes.</p><table class="valuetable"><tr><th>WDUI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt not generated for Deferred errors on writes.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt generated for Deferred errors on writes.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">Bit[10]<span class="condition"><br/>When ERR&lt;n&gt;FR.DUI == 0b10:
+                        </span></h4><h5>DUI, bit 
+                        [10]</h5><div class="field"><p>Error recovery interrupt for Deferred errors enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.DUI == <span class="binarynumber">0b10</span>, this control applies to errors arising from both reads and writes.</p>
+<p>When enabled, the error recovery interrupt is generated for all errors recorded as Deferred error.</p><table class="valuetable"><tr><th>DUI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt not generated for Deferred errors.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt generated for Deferred errors.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>When ERR&lt;n&gt;FR.DUI == 0b11:
+                        </span></h4><h5>RDUI, bit 
+                        [10]</h5><div class="field"><p>Error recovery interrupt for Deferred errors on reads enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.DUI == <span class="binarynumber">0b11</span>, this field is named RDUI.</p>
+<p>When enabled, the error recovery interrupt is generated for errors recorded as Deferred error on reads.</p><table class="valuetable"><tr><th>RDUI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt not generated for Deferred errors on reads.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt generated for Deferred errors on reads.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">WCFI, bit [9]<span class="condition"><br/>When ERR&lt;n&gt;FR.CFI == 0b11:
+                        </span></h4><div class="field"><p>Fault handling interrupt for corrected error events on writes enable.</p>
+<p>When enabled, the fault handling interrupt is generated for corrected error events on writes.</p><table class="valuetable"><tr><th>WCFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt not generated for corrected error events on writes.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt generated for corrected error events on writes.</p>
+        </td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">Bit[8]<span class="condition"><br/>When ERR&lt;n&gt;FR.CFI == 0b10:
+                        </span></h4><h5>CFI, bit 
+                        [8]</h5><div class="field"><p>Fault handling interrupt for corrected error events enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.CFI == <span class="binarynumber">0b10</span>, this control applies to errors on both reads and writes.</p>
+<p>When enabled, the fault handling interrupt is generated for all corrected error events.</p><table class="valuetable"><tr><th>CFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt not generated for corrected error events.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt generated for corrected error events.</p>
+        </td></tr></table><p>If the node implements a corrected error counter or counters, and either ERR&lt;n&gt;CTLR.CED is not implemented or ERR&lt;n&gt;CTLR.CED is 0, then a corrected error event is defined as follows:</p>
+<ul>
+<li>
+<p>A corrected error event occurs when a counter overflows and sets a counter overflow flag to 1.</p>
+
+</li><li>
+<p>It is <span class="arm-defined-word">UNPREDICTABLE</span> whether a corrected error event occurs when a software write sets a counter overflow flag to 1.</p>
+
+</li><li>
+<p>It is <span class="arm-defined-word">UNPREDICTABLE</span> whether a corrected error event occurs when a counter overflows and the overflow flag was previously set to 1.</p>
+
+</li></ul>
+<p>Otherwise, a corrected error event occurs when the error record records an error as a Corrected error.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>When ERR&lt;n&gt;FR.CFI == 0b11:
+                        </span></h4><h5>RCFI, bit 
+                        [8]</h5><div class="field"><p>Fault handling interrupt for corrected error events on reads enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.CFI == <span class="binarynumber">0b11</span>, this field is named RCFI.</p>
+<p>When enabled, the fault handling interrupt is generated for corrected error events on reads.</p><table class="valuetable"><tr><th>RCFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt not generated for corrected error events on reads.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt generated for corrected error events on reads.</p>
+        </td></tr></table><p>If the node implements a corrected error counter or counters, and either ERR&lt;n&gt;CTLR.CED is not implemented or ERR&lt;n&gt;CTLR.CED is 0, then a corrected error event is defined as follows:</p>
+<ul>
+<li>
+<p>A corrected error event occurs when a counter overflows and sets a counter overflow flag to 1.</p>
+
+</li><li>
+<p>It is <span class="arm-defined-word">UNPREDICTABLE</span> whether a corrected error event occurs when a software write sets a counter overflow flag to 1.</p>
+
+</li><li>
+<p>It is <span class="arm-defined-word">UNPREDICTABLE</span> whether a corrected error event occurs when a counter overflows and the overflow flag was previously set to 1.</p>
+
+</li></ul>
+<p>Otherwise, a corrected error event occurs when the error record records an error as a Corrected error.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7-1">WUE, bit [7]<span class="condition"><br/>When ERR&lt;n&gt;FR.UE == 0b11:
+                        </span></h4><div class="field"><p>In-band error response on writes enable.</p>
+<p>When enabled, responses to writes that detect an error that is not corrected and is not deferred are signaled with an in-band error response (External Abort).</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether an uncorrected error that is deferred and recorded as Deferred error, but is not deferred to the Requester, will signal an in-band error response to the Requester.</p><table class="valuetable"><tr><th>WUE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>In-band error response for uncorrected errors on writes disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>In-band error response for uncorrected errors on writes enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">WFI, bit [6]<span class="condition"><br/>When ERR&lt;n&gt;FR.FI == 0b11:
+                        </span></h4><div class="field"><p>Fault handling interrupt on writes enable.</p>
+<p>When enabled:</p>
+<ul>
+<li>The fault handling interrupt is generated for errors recorded as Uncorrected error on writes.
+</li><li>If the corresponding fault handling interrupt control for Deferred errors, ERR&lt;n&gt;CTLR.WDFI, is not implemented, then the fault handling interrupt is generated for errors recorded as Deferred error on writes.
+</li><li>If the corresponding fault handling interrupt controls for Deferred errors and corrected error events, ERR&lt;n&gt;CTLR.{WDFI, WCFI}, are not implemented, then the fault handling interrupt is generated for corrected error events on writes.
+</li></ul><table class="valuetable"><tr><th>WFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt on writes disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt on writes enabled.</p>
+        </td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">WUI, bit [5]<span class="condition"><br/>When ERR&lt;n&gt;FR.UI == 0b11:
+                        </span></h4><div class="field"><p>Uncorrected error recovery interrupt on writes enable.</p>
+<p>When enabled, the error recovery interrupt is generated for errors recorded as Uncorrected error on writes.</p><table class="valuetable"><tr><th>WUI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt on writes disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt on writes enabled.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">Bit[4]<span class="condition"><br/>When ERR&lt;n&gt;FR.UE == 0b10:
+                        </span></h4><h5>UE, bit 
+                        [4]</h5><div class="field"><p>In-band error response enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UE == <span class="binarynumber">0b10</span>, this control applies to errors arising from both reads and writes.</p>
+<p>When enabled, responses to transactions that detect an error that is not corrected and is not deferred are signaled with an in-band error response (External Abort).</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether an uncorrected error that is deferred and recorded as Deferred error, but is not deferred to the Requester, will signal an in-band error response to the Requester.</p><table class="valuetable"><tr><th>UE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>In-band error response for uncorrected errors disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>In-band error response for uncorrected errors enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>When ERR&lt;n&gt;FR.UE == 0b11:
+                        </span></h4><h5>RUE, bit 
+                        [4]</h5><div class="field"><p>In-band error response on reads enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UE == <span class="binarynumber">0b11</span>, this field is named RUE.</p>
+<p>When enabled, responses to reads that detect an error that is not corrected and is not deferred are signaled with an in-band error response (External Abort).</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether an uncorrected error that is deferred and recorded as Deferred error, but is not deferred to the Requester, will signal an in-band error response to the Requester.</p><table class="valuetable"><tr><th>RUE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>In-band error response for uncorrected errors on reads disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>In-band error response for uncorrected errors on reads enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">Bit[3]<span class="condition"><br/>When ERR&lt;n&gt;FR.FI == 0b10:
+                        </span></h4><h5>FI, bit 
+                        [3]</h5><div class="field"><p>Fault handling interrupt enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FI == <span class="binarynumber">0b10</span>, this control applies to errors on both reads and writes.</p>
+<p>When enabled:</p>
+<ul>
+<li>The fault handling interrupt is generated for all errors recorded as Uncorrected error.
+</li><li>If the fault handling interrupt control for Deferred errors, ERR&lt;n&gt;CTLR.DFI, is not implemented, then the fault handling interrupt is generated for all errors recorded as Deferred error.
+</li><li>If the fault handling interrupt controls for Deferred errors and corrected error events, ERR&lt;n&gt;CTLR.{DFI, CFI}, are not implemented, then the fault handling interrupt is generated for all corrected error events.
+</li></ul><table class="valuetable"><tr><th>FI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt enabled.</p>
+        </td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>When ERR&lt;n&gt;FR.FI == 0b11:
+                        </span></h4><h5>RFI, bit 
+                        [3]</h5><div class="field"><p>Fault handling interrupt on reads enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FI == <span class="binarynumber">0b11</span>, this field is named RFI.</p>
+<p>When enabled:</p>
+<ul>
+<li>The fault handling interrupt is generated for errors recorded as Uncorrected error on reads.
+</li><li>If the corresponding fault handling interrupt control for Deferred errors, ERR&lt;n&gt;CTLR.RDFI, is not implemented, then the fault handling interrupt is generated for errors recorded as Deferred error on reads.
+</li><li>If the corresponding fault handling interrupt controls for Deferred errors and corrected error events, ERR&lt;n&gt;CTLR.{RDFI, RCFI}, are not implemented, then the fault handling interrupt is generated for corrected error events on reads.
+</li></ul><table class="valuetable"><tr><th>RFI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Fault handling interrupt on reads disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Fault handling interrupt on reads enabled.</p>
+        </td></tr></table><p>See ERR&lt;n&gt;CTLR.CFI for more information on corrected error events.</p>
+<p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">Bit[2]<span class="condition"><br/>When ERR&lt;n&gt;FR.UI == 0b10:
+                        </span></h4><h5>UI, bit 
+                        [2]</h5><div class="field"><p>Uncorrected error recovery interrupt enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UI == <span class="binarynumber">0b10</span>, this control applies to errors arising from both reads and writes.</p>
+<p>When enabled, the error recovery interrupt is generated for all errors recorded as Uncorrected error.</p><table class="valuetable"><tr><th>UI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt enabled.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>When ERR&lt;n&gt;FR.UI == 0b11:
+                        </span></h4><h5>RUI, bit 
+                        [2]</h5><div class="field"><p>Uncorrected error recovery interrupt on reads enable.</p>
+<p>When <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UI == <span class="binarynumber">0b11</span>, this field is named RUI.</p>
+<p>When enabled, the error recovery interrupt is generated for errors recorded as Uncorrected error on reads.</p><table class="valuetable"><tr><th>RUI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error recovery interrupt on reads disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error recovery interrupt on reads enabled.</p>
+        </td></tr></table>
+      <p>The interrupt is generated even if the error syndrome is discarded because the error record already records a higher priority error.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">IMPLEMENTATION DEFINED, bit [1]</h4><div class="field">
+      <p>Reserved for <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> controls. Must permit SBZP write policy for software.</p>
+    </div><h4 id="fieldset_0-0_0-1">ED, bit [0]<span class="condition"><br/>When ERR&lt;n&gt;FR.ED == 0b10:
+                        </span></h4><div class="field">
+      <p>Error reporting and logging enable. When disabled, the node behaves as if error detection and correction are disabled, and no errors are recorded or signaled by the node. Arm recommends that, when disabled, correct error detection and correction codes are written for writes, unless disabled by an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> control for error injection.</p>
+    <table class="valuetable"><tr><th>ED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Error reporting disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error reporting enabled.</p>
+        </td></tr></table><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the node fully disables error detection and correction when reporting is disabled. That is, even with error reporting disabled, the node might continue to silently correct errors. Uncorrected errors might result in corrupt data being silently propagated by the node.</p>
+<div class="note"><span class="note-header">Note</span><p>If this node requires initialization after Cold reset to prevent signaling false errors, then Arm recommends this field is set to 0 on Cold reset, meaning errors are not reported from Cold reset. This allows boot software to initialize a node without signaling errors. Software can enable error reporting after the node is initialized. Otherwise, the Cold reset value is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. If the Cold reset value is 1, the reset values of other controls in this register are also <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and should not be <span class="arm-defined-word">UNKNOWN</span>.</p></div><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, when RAS System Architecture v2 is implemented and ERR&lt;n&gt;FR.SRV == 1, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li><li>On a Cold reset:<ul>
+            <li>When RAS System Architecture v2 is implemented and ERR&lt;n&gt;FR.SRV == 1,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing ERR&lt;n&gt;CTLR</h2><h4>ERR&lt;n&gt;CTLR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0x008</span> + (64 * n)</td><td>ERR&lt;n&gt;CTLR</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

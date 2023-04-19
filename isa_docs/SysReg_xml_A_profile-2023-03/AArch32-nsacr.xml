@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>NSACR</reg_short_name>
+        
+        <reg_long_name>Non-Secure Access Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+            <reg_reset_limited_to_el>EL3</reg_reset_limited_to_el>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>When EL3 is implemented and can use AArch32, defines the Non-secure access permissions to Trace, Advanced SIMD and floating-point functionality. Also includes <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> bits that can define Non-secure access permissions for <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> functionality.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Security registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <note><para>In AArch64 state, the NSACR controls are replaced by controls in <register_link state="AArch64" id="AArch64-cptr_el3.xml">CPTR_EL3</register_link>.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>NSACR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields><para>If EL3 is implemented and is using AArch64 then:</para>
+<list type="unordered">
+<listitem><content>Any read of the NSACR from Non-secure EL2 or Non-secure EL1 returns a value of <hexnumber>0x00000C00</hexnumber>.</content>
+</listitem><listitem><content>Any read or write to NSACR from Secure EL1 is trapped as an exception to EL3.</content>
+</listitem></list>
+<para>If EL3 is not implemented, then any read of the NSACR from EL2 or EL1 returns a value of <hexnumber>0x00000C00</hexnumber>.</para></text_before_fields>
+  <field id="fieldset_0-31_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>31:21</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSTRCDIS</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Disables Non-secure System register accesses to all implemented trace registers.</para>
+    </field_description>
+    <field_description order="after"><para>The implementation of this field must correspond to the implementation of the <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.TRCDIS field:</para>
+<list type="unordered">
+<listitem><content>If <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.TRCDIS is RAZ/WI, this field is RAZ/WI.</content>
+</listitem><listitem><content>If <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.TRCDIS is RW, this field is RW.</content>
+</listitem></list>
+<note><list type="unordered"><listitem><content>The ETMv4 architecture and ETE do not permit EL0 to access the trace registers. If the trace unit implements FEAT_ETMv4 or FEAT_ETE, EL0 accesses to the trace registers are <arm-defined-word>UNDEFINED</arm-defined-word>.</content></listitem><listitem><content>The Arm architecture does not provide Non-secure access controls on trace register accesses through the optional memory-mapped external debug interface.</content></listitem></list></note><para>System register accesses to the trace registers can have side-effects. When a System register access is trapped, any side-effects that are normally associated with the access do not occur before the exception is taken.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>This control has no effect on:</para>
+<list type="unordered">
+<listitem><content>System register access to implemented trace registers.</content>
+</listitem><listitem><content>The behavior of <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.TRCDIS and <register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TTA.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Non-secure System register accesses to all implemented trace registers are disabled, meaning:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.TRCDIS behaves as RAO/WI in Non-secure state, regardless of its actual value.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TTA behaves as RAO/WI, regardless of its actual value.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSASEDIS</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before">
+      <para>Disables Non-secure access to the Advanced SIMD functionality.</para>
+    </field_description>
+    <field_description order="after"><para>The implementation of this field must correspond to the implementation of the <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS field:</para>
+<list type="unordered">
+<listitem><content>If <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS is <arm-defined-word>RES0</arm-defined-word>, this field is <arm-defined-word>RES0</arm-defined-word>. If the implementation does not include Advanced SIMD and floating-point functionality, this field is <arm-defined-word>RES0</arm-defined-word>.</content>
+</listitem><listitem><content>If <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS is RAZ/WI, this field is RAZ/WI.</content>
+</listitem><listitem><content>If <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS is RW, this field is RW.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>This control has no effect on:</para>
+<list type="unordered">
+<listitem><content>Non-secure access to Advanced SIMD functionality.</content>
+</listitem><listitem><content>The behavior of <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS and <register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TASE.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Non-secure access to the Advanced SIMD functionality is disabled, meaning:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.ASEDIS behaves as RAO/WI in Non-secure state, regardless of its actual value.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TASE behaves as RAO/WI, regardless of its actual value.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-14_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>14:12</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>cp11</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before"><para>The value of this field is ignored. If this field is programmed with a different value to the cp10 field then this field is <arm-defined-word>UNKNOWN</arm-defined-word> on a direct read of the NSACR.</para>
+<para>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>cp10</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Enable Non-secure access to the Advanced SIMD and floating-point features. Possible values of the fields are:</para>
+    </field_description>
+    <field_description order="after"><para>If Non-secure access to the Advanced SIMD and floating-point functionality is enabled, the <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link> must be checked to determine the level of access that is permitted.</para>
+<para>The Advanced SIMD and floating-point features controlled by these fields are:</para>
+<list type="unordered">
+<listitem><content>Execution of any floating-point or Advanced SIMD instruction.</content>
+</listitem><listitem><content>Any access to the Advanced SIMD and floating-point registers D0-D31 and their views as S0-S31 and Q0-Q15.</content>
+</listitem><listitem><content>Any access to the <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>, <register_link state="AArch32" id="AArch32-fpsid.xml">FPSID</register_link>, <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link>, <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link>, <register_link state="AArch32" id="AArch32-mvfr2.xml">MVFR2</register_link>, or <register_link state="AArch32" id="AArch32-fpexc.xml">FPEXC</register_link> System registers.</content>
+</listitem></list>
+<para>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Advanced SIMD and floating-point features can be accessed only from Secure state. Any attempt to access this functionality from Non-secure state is <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+<para>When the PE is in Non-secure state:</para>
+<list type="unordered">
+<listitem><content>The <register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.{cp11, cp10} fields ignore writes and read as <binarynumber>0b00</binarynumber>, access denied.</content>
+</listitem><listitem><content>The <register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.{TCP11, TCP10} fields behave as RAO/WI, regardless of their actual values.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Advanced SIMD and floating-point features can be accessed from both Security states.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>9</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>9:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_21" msb="31" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_0-15_15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_12" msb="14" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_0" msb="9" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC NSACR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2&gt; == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif !HaveEL(EL3) || (!ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '1') then
+        R[t] = Zeros(20):'1100':Zeros(8);
+    else
+        R[t] = NSACR;
+elsif PSTATE.EL == EL2 then
+    if !HaveEL(EL3) || (!ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '1') then
+        R[t] = Zeros(20):'1100':Zeros(8);
+    else
+        R[t] = NSACR;
+elsif PSTATE.EL == EL3 then
+    R[t] = NSACR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR NSACR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2&gt; == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        NSACR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

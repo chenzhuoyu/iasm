@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>DBGDTRTXint</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">DBGDTRTXint, Debug Data Transfer Register, Transmit</h1><p>The DBGDTRTXint characteristics are:</p><h2>Purpose</h2><p>Transfers data from the PE to an external debugger. For example, it is used by a debug target to transfer data to the debugger. See <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a> for additional architectural mappings. It is a component of the Debug Communication Channel.</p><h2>Configuration</h2><p>AArch32 System register DBGDTRTXint bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0[31:0]</a>.</p><p>AArch32 System register DBGDTRTXint bits [31:0] are architecturally mapped to External register <a href="ext-dbgdtrtx_el0.html">DBGDTRTX_EL0[31:0]</a>.</p><p>This register is present only when AArch32 is supported. Otherwise, direct accesses to DBGDTRTXint are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2><p>DBGDTRTXint is a 32-bit register.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-31_0"><del>Return </del>DTRTX</a></td></tr></tbody></table><h4 id="fieldset_0-31_0"><ins>DTRTX, bits</ins><del>Bits</del> [31:0]</h4><div class="field"><p>Return DTRTX.</p><p>Writes to this register:</p><ul><li><p>If TXfull is set to 1, set DTRTX to <span class="arm-defined-word">UNKNOWN</span>.</p></li><li><p>If TXfull is set to 0, update the value in DTRTX.</p></li></ul><p>After the write, TXfull is set to 1.</p><p>For the full behavior of the Debug Communications Channel, see <span class="xref">'The Debug Communication Channel and Instruction Transfer Register'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing DBGDTRTXint</h2><p>Data can be loaded from memory into this register using <span class="xref">'LDC (immediate)'</span> and <span class="xref">'LDC (literal)'</span>.</p><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MCR{&lt;c>}{&lt;q>} &lt;coproc>, {#}&lt;opc1>, &lt;Rt>, &lt;CRn>, &lt;CRm>{, {#}&lt;opc2>}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1110</td><td>0b000</td><td>0b0000</td><td>0b0101</td><td>0b000</td></tr></table><p class="pseudocode">
+if Halted() then
+    DBGDTRTXint = R[t];
+elsif PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; MDSCR_EL1.TDCC == '1' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x05);
+    elsif ELUsingAArch32(EL1) &amp;&amp; DBGDSCRext.UDCCdis == '1' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TDCC == '1' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; (HCR_EL2.TGE == '1' || MDCR_EL2.&lt;TDE,TDA> != '00') then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; (HCR.TGE == '1' || HDCR.&lt;TDE,TDA> != '00') then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGDTRTXint = R[t];
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TDCC == '1' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA> != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA> != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGDTRTXint = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGDTRTXint = R[t];
+elsif PSTATE.EL == EL3 then
+    if PSTATE.M != M32_Monitor &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    else
+        DBGDTRTXint = R[t];
+                </p><h4 class="assembler">LDC{&lt;c>}{&lt;q>} &lt;coproc>, &lt;CRd>, &lt;addressing_mode></h4><table class="access_instructions"><tr><th>coproc</th><th>CRd</th></tr><tr><td>0b1110</td><td>0b0101</td></tr></table><p class="pseudocode">
+if Halted() then
+    DBGDTRTXint = MemA[address, 4];
+elsif PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; MDSCR_EL1.TDCC == '1' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x06);
+    elsif ELUsingAArch32(EL1) &amp;&amp; DBGDSCRext.UDCCdis == '1' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TDCC == '1' then
+        AArch32.TakeHypTrapException(0x06);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; (HCR_EL2.TGE == '1' || MDCR_EL2.&lt;TDE,TDA> != '00') then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; (HCR.TGE == '1' || HDCR.&lt;TDE,TDA> != '00') then
+        AArch32.TakeHypTrapException(0x06);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    else
+        DBGDTRTXint = MemA[address, 4];
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TDCC == '1' then
+        AArch32.TakeHypTrapException(0x06);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA> != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x06);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA> != '00' then
+        AArch32.TakeHypTrapException(0x06);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    else
+        DBGDTRTXint = MemA[address, 4];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDCC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x06);
+    else
+        DBGDTRTXint = MemA[address, 4];
+elsif PSTATE.EL == EL3 then
+    if PSTATE.M != M32_Monitor &amp;&amp; SDCR.TDCC == '1' then
+        AArch32.TakeMonitorTrapException();
+    else
+        DBGDTRTXint = MemA[address, 4];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>02</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

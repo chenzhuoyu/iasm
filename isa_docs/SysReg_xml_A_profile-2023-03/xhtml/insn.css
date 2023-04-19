@@ -1,0 +1,435 @@
+/* Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. */
+
+p, table.valuetable, ul, dl {
+  margin-left: 2em;
+}
+
+div.note {
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  padding: 0% 0%;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: 2em;
+  margin-right: 30%;
+}
+div.note span.note-header {
+  margin-top: 0.5em;
+  font-weight: bold;
+  display: block;
+}
+div.partial_fieldset {
+  margin-left: 2em;
+  padding: 0% 2%;
+  margin-top: 2em;
+}
+div.field {
+  margin-left: 2em;
+}
+.partial_fieldset div.text_after_fields {
+   margin-left: -2em;
+   margin-top: 2em;
+}
+ul {
+  padding-left: 5%;
+}
+dl.field_values dt { font-weight: bold; }
+dl.field_values dd { position: relative; top: -1.25em; }
+h1 { font: bold 24px sans-serif; text-align: center; }
+h2 { font: bold 20px sans-serif; }
+h3 { font: bold 18px sans-serif; }
+h4 { font: bold 15px sans-serif; }
+h5 { font: bold 13px sans-serif; }
+
+h4.assembler {
+    font: normal x-large monospace;
+    margin-left: 2em;
+    margin-top: 2em;
+}
+
+p td { text-align:center; }
+body {
+	color: #000;
+	background-color: #F6F6F5;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+code { font-size: medium; }
+span.binarynumber, span.hexnumber, span.function { font-family: courier, monospace }
+span.signal { font-weight: bold }
+span.arm-defined-word { text-transform: lowercase; font-variant: small-caps; }
+span.instruction { text-transform: uppercase; font-family: courier, monospace; }
+
+td {vertical-align: baseline;}
+col.enctype-l {width: 15em;}
+col.asyn-l {width: 8em;}
+
+table.info, table.register_access {
+  margin-left: 4em;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  width: 70%
+}
+
+.condition {
+    font: bold 14px sans-serif;
+}
+
+.access_level {
+    font-weight: bold;
+}
+
+.offset_access_list {
+
+    margin-bottom: 3em;
+}
+
+table.register_access th {
+  vertical-align: top;
+}
+table.info *, table.register_access * {
+  text-align: center;
+  padding: 0.2em;
+}
+
+table.info td, table.info th, table.register_access td, table.register_access th {
+  border: 1px solid #000;
+  width: 5%;
+}
+
+
+table.register_access .condition {
+    width:67%
+}
+
+table.register_access .access {
+    width:33%
+}
+
+table.regdiagram {
+  border-collapse: collapse;
+  width: 95%;
+  align: left;
+}
+
+table.regdiagram a {
+  text-decoration: none;
+}
+
+table.access_instructions {
+  margin-left: 4em;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  width: 70%
+}
+
+table.access_instructions td, table.access_instructions th {
+  text-align: center;
+  padding: 0.2em;
+  border: 1px solid #000;
+}
+
+.access_instructions th {
+  background-color: #d0d0d0;
+}
+.access_instructions td {
+  background-color: #f0f0f0;
+}
+
+table.accessibility {
+  margin-left: 2em;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  width: 80%
+}
+
+table.accessibility + table {
+  margin-top: 2em;
+}
+
+table.accessibility td, table.accessibility th {
+  text-align: center;
+  padding: 0.2em;
+  border: 1px solid #000;
+}
+
+/* By default, the 'Control' columns in the Accessibility are darker
+   than the others to help differentiate the control fields from the
+   Exception levels. */
+.accessibility th {
+  background-color: #d0d0d0;
+}
+th.accessibility_control {
+  background-color: #c0c0c0;
+}
+.accessibility td {
+  background-color: #f0f0f0;
+}
+td.accessibility_control {
+  background-color: #e0e0e0;
+}
+
+*[class="regdiagram"] * {
+  text-align: center;
+  font-size: small;
+  font-family: lucida-sans, sans-serif;
+}
+*[class="regdiagram"] td {
+  vertical-align: middle;
+  padding: 0px;
+}
+*[class="regdiagram"] tbody td[class="r"] {
+  border-right: 1px solid #000;
+}
+*[class="regdiagram"] tbody td[class="l"] {
+  border-left: 1px solid #000;
+}
+*[class="regdiagram"] tbody td[class="lr"] {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+*[class="regdiagram"] tr[class="firstrow"] td {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.blank_row
+{
+    height: 10px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+
+*[class="regdiagram"] tbody tr {
+  padding: 0px;
+}
+*[class="regdiagram"] thead td {
+  width: 3%;
+  font-size: smaller;
+}
+*[class="regdiagram"] tfoot td {
+  width: 3%;
+  font-size: smaller;
+}
+
+th[class="boxright"] {
+  border-right: 1px solid #000;
+}
+
+td span[class="regnote"] {
+  font-size: smaller;
+  color: #dd0000;
+}
+
+col.enctype-l {width: 10em;}
+.enctype-l {font-weight: bold;}
+
+[class="asm-code"] {margin-left:4em;
+                    font-family: courier, monospace;
+                    font-size: medium;}
+[class="desc-alg"] {font-family: courier, monospace;
+                    font-size: medium;}
+
+/* styling for tabulated symbol explanations */
+table[class="valuetable"]
+{
+  border-collapse: collapse;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-right: 30%;
+}
+
+
+table[class="valuetable"] td, table[class="valuetable"] th, table[class="valuetable"] thead td
+{
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: medium;
+}
+
+table[class="valuetable"] th, table[class="valuetable"] thead td { border-bottom: 1px solid #000; }
+
+table[class="valuetable"] td[class="desc"] {
+  border-left: 1px solid #000; text-align: left;
+  font-family: courier, monospace;
+}
+table[class="valuetable"] td[class="bitfield"] {
+  text-align: center;
+  font-family: courier, monospace;
+}
+table.valuetable p {
+  margin: 0% 0%;
+  padding: 0% 0%;
+}
+
+
+/* styling for (non-filling) )pseudocode text */
+
+p.pseudocode {
+  white-space: pre-wrap;
+  margin-left: 4em;
+  margin-right: 2em;
+  padding-left: 1em;
+  font-family: courier, monospace;
+  font-size: medium;
+  background-color: #F0F0E0;
+}
+
+span.pseudocode {
+  white-space: pre-wrap;
+  font-family: courier, monospace;
+  font-size: medium;
+  background-color: #F0F0E0;
+}
+
+td.pseudocode {
+  text-align: center;
+  white-space: pre-wrap;
+  font-family: courier, monospace;
+  font-size: medium;
+}
+
+h3[class="pseudocode"] { margin-left: 1em; }
+h4[class="pseudocode"] { margin-left: 2em; }
+
+div[id="encoding"] { margin-top: 1em; }
+
+col[class="dt1"] { width: 15em; }
+col[class="dt2"] { width: 85%; }
+
+/* styles for the encoding index, much tidying desirable */
+
+table.maintable {
+  border-collapse: collapse;
+  width: 95%;
+  vertical-align: center;
+}
+
+table[class="maintable"] * {
+  text-align: center;
+  font-size: small;
+  font-family: lucida-sans, sans-serif;
+}
+
+tr[class="header1"] th { text-align: center;}
+
+tr[class="header2"] th {
+  font-weight: medium;
+  text-align: center;
+  width: 2.5%;
+  font-size: smaller;
+}
+
+table[class="maintable"] tbody td {
+  vertical-align: middle;
+  padding: 0px;
+  border: 1px solid #000;
+}
+
+table[class="maintable"] td[class="iclassname"] {
+  width: 60%;
+  padding-left: 1em;
+  text-align: left;
+  font-size: small;
+}
+
+div.instructiontable { margin-left: 2em; padding-top: 2em; }
+div[class="instructiontable"] table[class="regdiagram"] { margin-left: 2em; }
+
+table.instructiontable {
+  border-collapse: collapse;
+}
+
+table[class="instructiontable"] th {
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: center;
+}
+
+table[class="instructiontable"] th[class="bitfields"] {
+  font-size: small;
+}
+
+table[class="instructiontable"] td {
+  padding-left: 1em;
+  padding-right: 1em;
+  border: 1px solid #000;
+}
+
+table[class="instructiontable"] td[class="bitfields"] {
+  text-align: center;
+  font-family: monospace, courier;
+  font-size: medium;
+  white-space: nowrap;
+}
+
+table[class="instructiontable"] td[class="iformname"], td[class="enctags"] {
+  text-align: left;
+}
+
+/* used when decode fields in instruction table are themselves
+   tabulated by bit */
+
+table[class="instructiontable"] tbody
+  td[class="bits"],td[class="bits_lr"],td[class="bits_r"],td[class="bits_l"] {
+  margin-left: 1px;
+  margin-right: 1px;
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 3%;
+  font-size: small;
+  text-align: center;
+}
+
+td[class="bits_r"] {
+  border-right: 1px solid #000;
+}
+td[class="bits_l"] {
+  border-left: 1px solid #000;
+}
+td[class="bits_lr"] {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+*[class="instructiontable"] td[class="iformname"],td[class="enctags"] {
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: left;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+/* styles for top and bottom bar, and version string */
+
+.topbar {margin: 0em 1.5em; font-size: smaller; font-style: bold; text-align: center;}
+
+p[class="versions"],p[class="copyconf"] {
+  text-align: right;
+  font-size: small;
+}
+
+/* for htmldiff output */
+
+ins { background-color: #80FF80; text-decoration: none;}
+del { background-color: #FF8080; }
+*[class="brokenlink"] { color: dark-grey; }
+*[class="goodlink"] { background-color: #FFD8D8; }
+
+div[class="htmldiff_header"] {
+  margin-left: 10%; margin-right: 10%; width: 80%;
+  margin-top: 0.5em; margin-bottom: 0.5em;
+  background-color: yellow;
+}
+div[class="htmldiff_header"] table {
+  font: bold medium monospace;
+  text-align: center; width: 100%;
+}
+
+body[htmldiffstatus="gone"] { background-color: #DD8080; }
+body[htmldiffstatus="new"] { background-color: #80DD80; }
+a[title="Reordering ignored"] { background-color: #C0C0DD; }
+
+hr[class="bottom_line"] { margin-top: 50px; }

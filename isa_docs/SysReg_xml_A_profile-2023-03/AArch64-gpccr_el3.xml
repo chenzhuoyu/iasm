@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GPCCR_EL3</reg_short_name>
+        
+        <reg_long_name>Granule Protection Check Control Register (EL3)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_RME is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The control register for Granule Protection Checks.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+            <reg_group>Root Security state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GPCCR_EL3 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>63:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>L0GPTSZ</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before"><para>Level 0 GPT entry size.</para>
+<para>This field advertises the number of least-significant address bits protected by each entry in the level 0 GPT.</para></field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>30-bits. Each entry covers 1GB of address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>34-bits. Each entry covers 16GB of address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>36-bits. Each entry covers 64GB of address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1001</field_value>
+        <field_value_description>
+          <para>39-bits. Each entry covers 512GB of address space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TBGPCD</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trace Buffer Granule Protection Check Disabled. Controls whether the Trace Buffer Unit accepts or rejects trace when Granule Protection Checks are disabled.</para>
+    </field_description>
+    <field_description order="after"><para>When the Trace Buffer Unit rejects trace, the trace might remain buffered by the trace unit until the Trace Buffer Unit is able to accept trace. When the Trace Buffer Unit accepts trace, the Trace Buffer Unit writes the trace to memory.</para>
+<note><para>Setting GPCCR_EL3.{TBGPCD, GPC} to {1, 0} means that the Trace Buffer Unit might write to memory without any Granule Protection Checks. The addresses that the Trace Buffer Unit writes to can be programmed by an external agent. The physical address spaces the Trace Buffer Unit can address are restricted by an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> debug authentication interface.</para><para>Setting GPCCR_EL3.{TBGPCD, GPC} to {1, 1} means that GPCCR_EL3.{TBGPCD, GPC} will become {1, 0} on a Warm reset.</para></note><para>This field is ignored by the PE and treated as one when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>GPCCR_EL3.GPC == 1.</content>
+</listitem><listitem><content><function>ExternalRootInvasiveDebugEnabled</function><value>()</value> == TRUE.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The Trace Buffer Unit rejects trace when GPCCR_EL3.GPC is 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The Trace Buffer Unit accepts trace when GPCCR_EL3.GPC is 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRBE_EXT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GPCP</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before"><para>Granule Protection Check Priority.</para>
+<para>This control governs behavior of granule protection checks on fetches of stage 2 Table descriptors.</para></field_description>
+    <field_description order="after">
+      <para>This bit is permitted to be cached in a TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>GPC faults are all reported with a priority that is consistent with the GPC being performed on any access to physical address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>A GPC fault for the fetch of a Table descriptor for a stage 2 translation table walk might not be generated or reported.</para>
+<para>All other GPC faults are reported with a priority consistent with the GPC being performed on all accesses to physical address spaces.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GPC</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Granule Protection Check Enable.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If any stage of translation is enabled, this bit is permitted to be cached in a TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Granule protection checks are disabled. Accesses are not prevented by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All accesses to physical address spaces are subject to granule protection checks, except for fetches of GPT information and accesses governed by the GPCCR_EL3.GPCP control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PGS</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Physical Granule size.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The value of this field is permitted to be cached in a TLB.</para>
+<para>Granule sizes not supported for stage 1 and not supported for stage 2, as defined in <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>, are reserved. For example, if <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>.TGran16 == <binarynumber>0b0000</binarynumber> and <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>.TGran16_2 == <binarynumber>0b0001</binarynumber>, then the PGS encoding <binarynumber>0b10</binarynumber> is reserved.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>4KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>64KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>16KB.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-13_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>13:12</rel_range>
+    <field_description order="before">
+      <para>GPT fetch Shareability attribute</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>Fetches of GPT information are made with the Shareability attribute that is configured in this field.</para>
+<para>If both ORGN and IRGN are configured with Non-cacheable attributes, it is invalid to configure this field to any value other than <binarynumber>0b10</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ORGN</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>GPT fetch Outer cacheability attribute.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Fetches of GPT information are made with the Outer cacheability attributes configured in this field.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRGN</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>GPT fetch Inner cacheability attribute.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Fetches of GPT information are made with the Inner cacheability attributes configured in this field.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>7:3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PPS</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before"><para>Protected Physical Address Size.</para>
+<para>The size of the memory region protected by <register_link state="AArch64" id="AArch64-gptbr_el3.xml">GPTBR_EL3</register_link>, in terms of the number of least-significant address bits.</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>Configuration of this field to a value exceeding the implemented physical address size is invalid.</para>
+<para>The value of this field is permitted to be cached in a TLB.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>32 bits, 4GB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>36 bits, 64GB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>40 bits, 1TB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>42 bits, 4TB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>44 bits, 16TB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>48 bits, 256TB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>52 bits, 4PB protected address space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_24" msb="63" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_12" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_3" msb="7" lsb="3"/>
+  <fieldat id="fieldset_0-2_0" msb="2" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS GPCCR_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, GPCCR_EL3</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = GPCCR_EL3;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister GPCCR_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR GPCCR_EL3, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    GPCCR_EL3 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

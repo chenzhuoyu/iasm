@@ -1,0 +1,657 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TTBCR2</reg_short_name>
+        
+        <reg_long_name>Translation Table Base Control Register 2</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32 and FEAT_AA32HPD is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-tcr_el1.xml">TCR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>32</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:32">
+      <range>
+        <msb>63</msb>
+        <lsb>32</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The second control register for stage 1 of the PL1&amp;0 translation regime.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <xref browsertext="FEAT_AA32HPD" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.AA32HPD"/> is not implemented then this register is not implemented and its encoding is <arm-defined-word>UNDEFINED</arm-defined-word>. Otherwise:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>When the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.{EAE, T2E} is not {1, 1} the contents of TTBCR2 are treated as zero for all purposes other than reading or writing the register.</content>
+</listitem><listitem><content>When the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.{EAE, T2E} is {1, 1} TTBCR2 is used with <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TTBCR2 is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>31:19</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU162</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[62] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD1 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[62] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[62] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD1 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU161</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[61] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD1 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[61] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[61] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD1 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU160</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[60] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD1 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[60] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[60] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD1 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU159</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[59] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD1 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[59] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>, bit[59] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD1 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU062</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[62] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD0 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[62] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[62] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD0 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU061</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[61] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD0 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[61] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[61] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD0 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-12_12-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU060</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[60] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD0 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[60] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[60] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD0 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-12_12-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU059</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[59] of the stage 1 translation table Block or Page entry for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The Effective value of this field is 0 if the value of TTBCR2.HPD0 is 0 or the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[59] of each stage 1 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, bit[59] of each stage 1 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose if the value of TTBCR2.HPD0 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HPD1</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Hierarchical Permission Disables. This affects the hierarchical control bits, APTable, XNTable, and PXNTable, in the translation tables pointed to by <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after"><para>When disabled, the permissions are treated as if the bits are 0.</para>
+<para>The Effective value of this field is 0 if the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Hierarchical permissions are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Hierarchical permissions are disabled if <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E == 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HPD0</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Hierarchical Permission Disables. This affects the hierarchical control bits, APTable, XNTable, and PXNTable, in the translation tables pointed to by <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after"><para>When disabled, the permissions are treated is as if the bits are 0.</para>
+<para>The Effective value of this field is 0 if the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E is 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Hierarchical permissions are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Hierarchical permissions are disabled if <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.T2E ==1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>8:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_19" msb="31" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15-1" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14-1" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13-1" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12-1" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11-1" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_0" msb="8" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC TTBCR2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR2_NS;
+    else
+        R[t] = TTBCR2;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR2_NS;
+    else
+        R[t] = TTBCR2;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        R[t] = TTBCR2_S;
+    else
+        R[t] = TTBCR2_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR TTBCR2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR2_NS = R[t];
+    else
+        TTBCR2 = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR2_NS = R[t];
+    else
+        TTBCR2 = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if SCR.NS == '0' then
+            TTBCR2_S = R[t];
+        else
+            TTBCR2_NS = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

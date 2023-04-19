@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICR_TYPER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICR_TYPER, Redistributor Type Register</h1><p>The GICR_TYPER characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the configuration of this Redistributor.</p>
+      <h2>Configuration</h2>
+        <p>A copy of this register is provided for each Redistributor.</p>
+      <h2>Attributes</h2>
+        <p>GICR_TYPER is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">Affinity_Value</a></td></tr><tr class="firstrow"><td class="lr" colspan="5"><a href="#fieldset_0-31_27-1">PPInum</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">VSGI</a></td><td class="lr" colspan="2"><a href="#fieldset_0-25_24">CommonLPIAff</a></td><td class="lr" colspan="16"><a href="#fieldset_0-23_8">Processor_Number</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">RVPEID</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">MPAM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">DPGS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">Last</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">DirectLPI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">Dirty</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">VLPIS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">PLPIS</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Affinity_Value, bits [63:32]</h4><div class="field"><p>The identity of the PE associated with this Redistributor.</p>
+<p>Bits [63:56] provide Aff3, the Affinity level 3 value for the Redistributor.</p>
+<p>Bits [55:48] provide Aff2, the Affinity level 2 value for the Redistributor.</p>
+<p>Bits [47:40] provide Aff1, the Affinity level 1 value for the Redistributor.</p>
+<p>Bits [39:32] provide Aff0, the Affinity level 0 value for the Redistributor.</p></div><h4 id="fieldset_0-31_27-1">PPInum, bits [31:27]<span class="condition"><br/>When FEAT_GICv3p1 is implemented:
+                        </span></h4><div class="field">
+      <p>The value derived from this field specifies the maximum PPI INTID that a GIC implementation can support. An implementation might not implement all PPIs up to this maximum.</p>
+    <table class="valuetable"><tr><th>PPInum</th><th>Meaning</th></tr><tr><td class="bitfield">0b00000</td><td>
+          <p>Maximum PPI INTID is 31.</p>
+        </td></tr><tr><td class="bitfield">0b00001</td><td>
+          <p>Maximum PPI INTID is 1087.</p>
+        </td></tr><tr><td class="bitfield">0b00010</td><td>
+          <p>Maximum PPI INTID is 1119.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-31_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">VSGI, bit [26]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates whether vSGIs are supported.</p>
+    <table class="valuetable"><tr><th>VSGI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Direct injection of SGIs not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Direct injection of SGIs supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_24">CommonLPIAff, bits [25:24]</h4><div class="field">
+      <p>Indicates the scope of the CommonLPIAff group.</p>
+    <table class="valuetable"><tr><th>CommonLPIAff</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>All Redistributors are members of the same CommonLPIAff group.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>All Redistributors with the same Aff3 value are members of the same CommonLPIAff group.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>All Redistributors with the same Aff3.Aff2 value are members of the same CommonLPIAff group.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>All Redistributors with the same Aff3.Aff2.Aff1 value are members of the same CommonLPIAff group.</p>
+        </td></tr></table>
+      <p>Redistributors in the same CommonLPIAff group must use the same copy of the LPI Configuration table, and if GICv4.1 is implemented the same copy of the vPE Configuration table.</p>
+    </div><h4 id="fieldset_0-23_8">Processor_Number, bits [23:8]</h4><div class="field"><p>A unique identifier for the PE. When <a href="ext-gits_typer.html">GITS_TYPER</a>.PTA == 0, an ITS uses this field to identify the interrupt target.</p>
+<p>When affinity routing is disabled for a Security state, this field indicates which <a href="ext-gicd_itargetsrn.html">GICD_ITARGETSR&lt;n&gt;</a> corresponds to this Redistributor.</p></div><h4 id="fieldset_0-7_7-1">RVPEID, bit [7]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates how the resident vPE is specified.</p>
+    <table class="valuetable"><tr><th>RVPEID</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a> records the address of the vPE's Virtual Pending Table.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a> records vPEID.</p>
+        </td></tr></table></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">MPAM, bit [6]<span class="condition"><br/>When FEAT_GICv3p1 is implemented:
+                        </span></h4><div class="field">
+      <p>MPAM</p>
+    <table class="valuetable"><tr><th>MPAM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>MPAM not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>MPAM supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5">DPGS, bit [5]</h4><div class="field">
+      <p>Sets support for <a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG* bits.</p>
+    <table class="valuetable"><tr><th>DPGS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG* bits are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG* bits are supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-4_4">Last, bit [4]</h4><div class="field">
+      <p>Indicates whether this Redistributor is the highest-numbered Redistributor in a series of contiguous Redistributor pages.</p>
+    <table class="valuetable"><tr><th>Last</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This Redistributor is not the highest-numbered Redistributor in a series of contiguous Redistributor pages.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This Redistributor is the highest-numbered Redistributor in a series of contiguous Redistributor pages.</p>
+        </td></tr></table></div><h4 id="fieldset_0-3_3">DirectLPI, bit [3]</h4><div class="field">
+      <p>Indicates whether this Redistributor supports direct injection of LPIs.</p>
+    <table class="valuetable"><tr><th>DirectLPI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This Redistributor does not support direct injection of LPIs. The <a href="ext-gicr_setlpir.html">GICR_SETLPIR</a>, <a href="ext-gicr_clrlpir.html">GICR_CLRLPIR</a>, <a href="ext-gicr_invlpir.html">GICR_INVLPIR</a>, <a href="ext-gicr_invallr.html">GICR_INVALLR</a>, and <a href="ext-gicr_syncr.html">GICR_SYNCR</a> registers are either not implemented, or have an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> purpose.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This Redistributor supports direct injection of LPIs. The <a href="ext-gicr_setlpir.html">GICR_SETLPIR</a>, <a href="ext-gicr_clrlpir.html">GICR_CLRLPIR</a>, <a href="ext-gicr_invlpir.html">GICR_INVLPIR</a>, <a href="ext-gicr_invallr.html">GICR_INVALLR</a>, and <a href="ext-gicr_syncr.html">GICR_SYNCR</a> registers are implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-2_2">Dirty, bit [2]</h4><div class="field">
+      <p>Controls the functionality of <a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a>.Dirty.</p>
+    <table class="valuetable"><tr><th>Dirty</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a>.Dirty is <span class="arm-defined-word">UNKNOWN</span> when <a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a>.Valid == 1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a>.Dirty indicates when the Virtual Pending Table has been parsed when <a href="ext-gicr_vpendbaser.html">GICR_VPENDBASER</a>.Valid is written from 0 to 1.</p>
+        </td></tr></table><p>When GICR_TYPER.VLPIS == 0, this field is <span class="arm-defined-word">RES0</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>In GICv4p1 implementations this field is <span class="arm-defined-word">RES1</span>.</p></div></div><h4 id="fieldset_0-1_1">VLPIS, bit [1]</h4><div class="field">
+      <p>Indicates whether the GIC implementation supports virtual LPIs and the direct injection of virtual LPIs.</p>
+    <table class="valuetable"><tr><th>VLPIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The implementation does not support virtual LPIs or the direct injection of virtual LPIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports virtual LPIs and the direct injection of virtual LPIs.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>In GICv3 implementations this field is <span class="arm-defined-word">RES0</span>.</p>
+      </div>
+    </div><h4 id="fieldset_0-0_0">PLPIS, bit [0]</h4><div class="field">
+      <p>Indicates whether the GIC implementation supports physical LPIs.</p>
+    <table class="valuetable"><tr><th>PLPIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The implementation does not support physical LPIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports physical LPIs.</p>
+        </td></tr></table></div><h2>Accessing GICR_TYPER</h2><h4>GICR_TYPER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Redistributor</td><td>RD_base</td><td><span class="hexnumber">0x0008</span></td><td>GICR_TYPER</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

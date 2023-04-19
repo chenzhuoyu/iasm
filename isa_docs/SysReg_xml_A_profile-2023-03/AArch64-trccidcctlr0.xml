@@ -1,0 +1,507 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCCIDCCTLR0</reg_short_name>
+        
+        <reg_long_name>Context Identifier Comparator Control Register 0</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_ETE is implemented, FEAT_TRC_SR is implemented, UInt(TRCIDR4.NUMCIDC) &gt; 0x0 and UInt(TRCIDR2.CIDSIZE) &gt; 0</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-trccidcctlr0.xml">TRCCIDCCTLR0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Contains Context identifier mask values for the <register_link state="AArch64" id="AArch64-trccidcvrn.xml">TRCCIDCVR&lt;n&gt;</register_link> registers, for n = 0 to 3.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace unit registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCCIDCCTLR0 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>TRCCIDCCTLR0</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>COMP3[&lt;m&gt;]</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>TRCCIDCVR3 mask control. Specifies the mask value that the trace unit applies to TRCCIDCVR3. Each bit in this field corresponds to a byte in TRCCIDCVR3.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="AArch64" id="AArch64-trcidr2.xml">TRCIDR2</register_link>.CIDSIZE.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m+24">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The trace unit includes TRCCIDCVR3[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The trace unit ignores TRCCIDCVR3[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When UInt(TRCIDR4.NUMCIDC) &gt; 3</fields_condition>
+  </field>
+  <field id="fieldset_0-31_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>COMP2[&lt;m&gt;]</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>TRCCIDCVR2 mask control. Specifies the mask value that the trace unit applies to TRCCIDCVR2. Each bit in this field corresponds to a byte in TRCCIDCVR2.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="AArch64" id="AArch64-trcidr2.xml">TRCIDR2</register_link>.CIDSIZE.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m+16">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The trace unit includes TRCCIDCVR2[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The trace unit ignores TRCCIDCVR2[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When UInt(TRCIDR4.NUMCIDC) &gt; 2</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>COMP1[&lt;m&gt;]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>TRCCIDCVR1 mask control. Specifies the mask value that the trace unit applies to TRCCIDCVR1. Each bit in this field corresponds to a byte in TRCCIDCVR1.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="AArch64" id="AArch64-trcidr2.xml">TRCIDR2</register_link>.CIDSIZE.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m+8">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The trace unit includes TRCCIDCVR1[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The trace unit ignores TRCCIDCVR1[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When UInt(TRCIDR4.NUMCIDC) &gt; 1</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>COMP0[&lt;m&gt;]</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>TRCCIDCVR0 mask control. Specifies the mask value that the trace unit applies to TRCCIDCVR0. Each bit in this field corresponds to a byte in TRCCIDCVR0.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="AArch64" id="AArch64-trcidr2.xml">TRCIDR2</register_link>.CIDSIZE.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The trace unit includes TRCCIDCVR0[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The trace unit ignores TRCCIDCVR0[(m×8+7):(m×8)] when it performs the Context identifier comparison.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When UInt(TRCIDR4.NUMCIDC) &gt; 0</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[7]" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[6]" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[5]" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[4]" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[3]" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[2]" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[1]" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_24-1" label="COMP3[0]" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[7]" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[6]" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[5]" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[4]" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[3]" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[2]" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[1]" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-23_16-1" label="COMP2[0]" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[7]" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[6]" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[5]" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[4]" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[3]" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[2]" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[1]" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-15_8-1" label="COMP1[0]" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[7]" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[6]" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[5]" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[4]" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[3]" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[2]" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[1]" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-7_0-1" label="COMP0[0]" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If software uses the <register_link state="AArch64" id="AArch64-trccidcvrn.xml">TRCCIDCVR&lt;n&gt;</register_link> registers, for n = 0 to 3, then it must program this register.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If software sets a mask bit to 1 then it must program the relevant byte in <register_link state="AArch64" id="AArch64-trccidcvrn.xml">TRCCIDCVR&lt;n&gt;</register_link> to <hexnumber>0x00</hexnumber>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If any bit is 1 and the relevant byte in <register_link state="AArch64" id="AArch64-trccidcvrn.xml">TRCCIDCVR&lt;n&gt;</register_link> is not <hexnumber>0x00</hexnumber>, the behavior of the Context Identifier Comparator is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>. In this scenario the comparator might match unexpectedly or might not match.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> if the trace unit is not in the Idle state.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS TRCCIDCCTLR0" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, TRCCIDCCTLR0</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b001"/>
+                
+                <enc n="CRn" v="0b0011"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPACR_EL1.TTA == '1' then
+        AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.TRC == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCCIDCCTLR0;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCCIDCCTLR0;
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.TTA == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCCIDCCTLR0;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister TRCCIDCCTLR0" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR TRCCIDCCTLR0, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b001"/>
+                
+                <enc n="CRn" v="0b0011"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPACR_EL1.TTA == '1' then
+        AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.TRC == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRCCIDCCTLR0 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRCCIDCCTLR0 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.TTA == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRCCIDCCTLR0 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

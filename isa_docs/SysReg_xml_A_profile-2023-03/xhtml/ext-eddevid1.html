@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDDEVID1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDDEVID1, External Debug Device ID Register 1</h1><p>The EDDEVID1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides extra information for external debuggers about features of the debug implementation.</p>
+      <h2>Configuration</h2><p>When FEAT_DoPD is implemented, EDDEVID1 is in the Core power domain. Otherwise, EDDEVID1 is in the Debug power domain.
+    </p><h2>Attributes</h2>
+        <p>EDDEVID1 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="24"><a href="#fieldset_0-31_8">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">HSR</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">PCSROffset</a></td></tr></tbody></table><h4 id="fieldset_0-31_8">Bits [31:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_4">HSR, bits [7:4]</h4><div class="field">
+      <p>Indicates support for the External Debug Halt Status Register, <a href="ext-edhsr.html">EDHSR</a>. Defined values are:</p>
+    <table class="valuetable"><tr><th>HSR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><a href="ext-edhsr.html">EDHSR</a> not implemented, and the PE follows behaviors consistent with all of the <a href="ext-edhsr.html">EDHSR</a> fields having a zero value.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><a href="ext-edhsr.html">EDHSR</a> implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As <span class="binarynumber">0b0001</span>, but extends <a href="ext-edhsr.html">EDHSR</a> to include the VNCR, CM, and WnR fields.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_EDHSR implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_Debugv8p9</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>When <span class="xref">FEAT_Debugv8p2</span> is not implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<p>From Armv8.9, the values <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span> are not permitted.</p></div><h4 id="fieldset_0-3_0">PCSROffset, bits [3:0]</h4><div class="field">
+      <p>Indicates the offset applied to PC samples returned by reads of <a href="ext-edpcsr.html">EDPCSR</a>. Permitted values of this field in Armv8 are:</p>
+    <table class="valuetable"><tr><th>PCSROffset</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><a href="ext-edpcsr.html">EDPCSR</a> not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p><a href="ext-edpcsr.html">EDPCSR</a> implemented, and samples have no offset applied and do not sample the instruction set state in AArch32 state.</p>
+        </td></tr></table><p>When <span class="xref">FEAT_PCSRv8p2</span> is implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<div class="note"><span class="note-header">Note</span><p><span class="xref">FEAT_PCSRv8p2</span> implements the PC Sample-based Profiling Extension in the Performance Monitors register space, as indicated by the value of PMU.PMDEVID.PCSample.</p></div></div><h2>Accessing EDDEVID1</h2><h4>EDDEVID1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0xFC4</span></td><td>EDDEVID1</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When FEAT_DoPD is not implemented or IsCorePowered(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

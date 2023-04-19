@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SPMEVCNTR&lt;n&gt;_EL0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SPMEVCNTR&lt;n&gt;_EL0, System Performance Monitors Event Count Register, n = 0 - 63</h1><p>The SPMEVCNTR&lt;n&gt;_EL0 characteristics are:</p><h2>Purpose</h2>
+        <p>Event counter &lt;n&gt; in System PMU &lt;s&gt;, where n is 0 to 63.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_SPMU is implemented. Otherwise, direct accesses to SPMEVCNTR&lt;n&gt;_EL0 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>SPMEVCNTR&lt;n&gt;_EL0 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">CNTR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">CNTR</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">CNTR, bits [63:0]</h4><div class="field">
+      <p>Event counter n.</p>
+    
+      <p>The number of implemented bits for SPMEVCNTR&lt;n&gt;_EL0 is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. Unimplemented bits are <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a System PMU reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing SPMEVCNTR&lt;n&gt;_EL0</h2>
+        <p>To access SPMEVCNTR&lt;n&gt;_EL0 for System PMU &lt;s&gt;, set <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.SYSPMUSEL to s and <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.BANK to n[5:4].</p>
+
+      
+        <p>SPMEVCNTR&lt;n&gt;_EL0 reads-as-zero and ignores writes if any of the following are true:</p>
+
+      
+        <ul>
+<li>Event counter &lt;n&gt; is not implemented by System PMU &lt;s&gt;.
+</li><li>System PMU &lt;s&gt; is not implemented.
+</li></ul>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SPMEVCNTR&lt;m&gt;_EL0
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b011</td><td>0b1110</td><td>0b000:m[3]</td><td>m[2:0]</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;0&gt;:op2&lt;2:0&gt;);
+
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        UNDEFINED;
+    elsif MDSCR_EL1.EnSPM == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SPMACCESSR_EL1&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGRTR2_EL2.nSPMEVCNTRn_EL0 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGRTR2_EL2.nSPMEVCNTRn_EL0 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m];
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m];
+                </p><h4 class="assembler">MSR SPMEVCNTR&lt;m&gt;_EL0, &lt;Xt&gt;
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b011</td><td>0b1110</td><td>0b000:m[3]</td><td>m[2:0]</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;0&gt;:op2&lt;2:0&gt;);
+
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        UNDEFINED;
+    elsif MDSCR_EL1.EnSPM == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SPMACCESSR_EL1&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGWTR2_EL2.nSPMEVCNTRn_EL0 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m] = X[t, 64];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGWTR2_EL2.nSPMEVCNTRn_EL0 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m] = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m] = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    SPMEVCNTR_EL0[UInt(SPMSELR_EL0.SYSPMUSEL), (UInt(SPMSELR_EL0.BANK) * 16) + m] = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

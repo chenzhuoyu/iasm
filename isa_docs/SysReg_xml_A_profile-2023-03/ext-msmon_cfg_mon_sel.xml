@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MSMON_CFG_MON_SEL</reg_short_name>
+        
+        <reg_long_name>MPAM Monitor Instance Selection Register</reg_long_name>
+
+        <power_domain_text>The power domain of MSMON_CFG_MON_SEL is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented and (MPAMF_IDR.HAS_MSMON == 1, or (MPAMF_IDR.HAS_IMPL_IDR == 1 and MPAMF_IDR.EXT == 0) or (MPAMF_IDR.HAS_IMPL_IDR == 1, MPAMF_IDR.EXT == 1 and MPAMF_IDR.NO_IMPL_MSMON == 0))</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0800</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MON_SEL_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0800</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MON_SEL_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0800</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MON_SEL_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0800</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MON_SEL_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Selects a monitor instance to access through the MSMON configuration and counter registers.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MSMON_CFG_MON_SEL_s selects a Secure monitor instance to access via the Secure MPAM feature page.
+MSMON_CFG_MON_SEL_ns selects a Non-secure monitor instance to access via the Non-secure MPAM feature page.
+MSMON_CFG_MON_SEL_rt selects a Root monitor instance to access via the Root MPAM feature page.
+MSMON_CFG_MON_SEL_rl selects a Realm monitor instance to access via the Realm MPAM feature page.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <note><para>Different performance monitoring features within an MSC could have different numbers of monitor instances. See the NUM_MON field in the corresponding ID register. This means that a monitor out-of-bounds error might be signaled when an MSMON_CFG register is accessed because the value in MSMON_CFG_MON_SEL.MON_SEL is too large for the particular monitoring feature.</para></note>
+      </purpose_text>
+      <purpose_text>
+        <para>To configure a monitor, set MON_SEL in this register to the index of the monitor instance to configure, then write to the MSMON_CFG_x register to set the configuration of the monitor. At a later time, read the monitor register (for example, MSMON_MBWU) to get the value of the monitor.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MSMON_CFG_MON_SEL is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RIS</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Resource Instance Selector. RIS selects one resource to configure through MSMON_CFG registers.</para>
+    </field_description>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented), MPAMF_IDR.EXT == 1 and MPAMF_IDR.HAS_RIS == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-27_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MON_SEL</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before"><para>Selects the monitor instance to configure or read.</para>
+<para>Reads and writes to other MSMON registers are indexed by MON_SEL and by the NS bit used to access MSMON_CFG_MON_SEL to access the configuration for a single monitor.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24-1" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MSMON_CFG_MON_SEL_s must only be accessible from the Secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MON_SEL_ns must only be accessible from the Non-secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MON_SEL_rt must only be accessible from the Root MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MON_SEL_rl must only be accessible from the Realm MPAM feature page.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MSMON_CFG_MON_SEL_s, MSMON_CFG_MON_SEL_ns, MSMON_CFG_MON_SEL_rt, and MSMON_CFG_MON_SEL_rl must be separate registers:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The Secure instance (MSMON_CFG_MON_SEL_s) accesses the monitor instance selector used for Secure PARTIDs.</content>
+</listitem><listitem><content>The Non-secure instance (MSMON_CFG_MON_SEL_ns) accesses the monitor instance selector used for Non-secure PARTIDs.</content>
+</listitem><listitem><content>The Root instance (MSMON_CFG_MON_SEL_rt) accesses the monitor instance selector used for Root PARTIDs.</content>
+</listitem><listitem><content>The Realm instance (MSMON_CFG_MON_SEL_rl) accesses the monitor instance selector used for Realm PARTIDs.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

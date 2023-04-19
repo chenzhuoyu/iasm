@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MPAMCFG_CMAX</reg_short_name>
+        
+        <reg_long_name>MPAM Cache Maximum Capacity Partition Configuration Register</reg_long_name>
+
+        <power_domain_text>The power domain of MPAMCFG_CMAX is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented, MPAMF_IDR.HAS_CCAP_PART == 1 and MPAMF_CCAP_IDR.NO_CMAX == 0</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0108</hexnumber></reg_offset>
+    <reg_instance>MPAMCFG_CMAX_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0108</hexnumber></reg_offset>
+    <reg_instance>MPAMCFG_CMAX_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0108</hexnumber></reg_offset>
+    <reg_instance>MPAMCFG_CMAX_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0108</hexnumber></reg_offset>
+    <reg_instance>MPAMCFG_CMAX_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The MPAMCFG_CMAX is a 32-bit read/write register that controls the maximum fraction of the cache capacity that the PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link> is permitted to allocate.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MPAMCFG_CMAX_s controls the cache maximum capacity for the Secure PARTID selected by the Secure instance of <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.
+MPAMCFG_CMAX_ns controls the cache maximum capacity for the Non-secure PARTID selected by the Non-secure instance of <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.
+MPAMCFG_CMAX_rt controls the cache maximum capacity for the Root PARTID selected by the Root instance of <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.
+MPAMCFG_CMAX_rl controls the cache maximum capacity for the Realm PARTID selected by the Realm instance of <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, the control settings accessed are those of the resource instance currently selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS and the PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.PARTID_SEL.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MPAMCFG_CMAX is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SOFTLIM</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Soft limiting of CMAX. Soft limiting allows some allocations by a PARTID when its cache use is above the CMAX maximum cache capacity.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>When CMAX cache capacity is exceeded, the partition is not allowed to increase its cache capacity usage. It is only permitted to replace a line that was previously occupied by a line allocated by that PARTID.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When CMAX cache capacity is exceeded, the partition is permitted to allocate capacity beyond CMAX, but only from invalid lines or lines belonging to disabled PARTIDs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_CCAP_IDR.HAS_CMAX_SOFTLIM == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>30:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CMAX</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Maximum cache capacity usage in fixed-point fraction format by the partition selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>. The fraction represents the portion of the total cache capacity that the PARTID is permitted to allocate.</para>
+    </field_description>
+    <field_description order="after"><para>The implemented width of the fixed-point fraction is given in <register_link state="ext" id="ext-mpamf_ccap_idr.xml">MPAMF_CCAP_IDR</register_link>.CMAX_WD. Unimplemented bits within the field are RAZ/WI. The implemented bits of the CMAX field are always the most significant bits of the field.</para>
+<para>The fixed-point fraction CMAX is less than 1. The implied binary point is between bits 15 and 16. In an implementation with w implemented bits, the largest fraction of the cache that can be represented is 1- (0.5)<sup>w</sup>.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_16" msb="30" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MPAMCFG_CMAX_s must only be accessible from the Secure MPAM feature page.</content>
+</listitem><listitem><content>MPAMCFG_CMAX_ns must only be accessible from the Non-secure MPAM feature page.</content>
+</listitem><listitem><content>MPAMCFG_CMAX_rt must only be accessible from the Root MPAM feature page.</content>
+</listitem><listitem><content>MPAMCFG_CMAX_rl must only be accessible from the Realm MPAM feature page.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MPAMCFG_CMAX_s, MPAMCFG_CMAX_ns, MPAMCFG_CMAX_rt, and MPAMCFG_CMAX_rl must be separate registers:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The Secure instance (MPAMCFG_CMAX_s) accesses the cache capacity partitioning used for Secure PARTIDs.</content>
+</listitem><listitem><content>The Non-secure instance (MPAMCFG_CMAX_ns) accesses the cache capacity partitioning used for Non-secure PARTIDs.</content>
+</listitem><listitem><content>The Root instance (MPAMCFG_CMAX_rt) accesses the cache capacity partitioning used for Root PARTIDs.</content>
+</listitem><listitem><content>The Realm instance (MPAMCFG_CMAX_rl) accesses the cache capacity partitioning used for Realm PARTIDs.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is implemented, loads and stores to MPAMCFG_CMAX access the cache maximum capacity partitioning configuration settings for the cache resource instance selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.RIS and the PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.PARTID_SEL.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is not implemented, loads and stores to MPAMCFG_CMAX access the cache maximum capacity partitioning configuration settings for the PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.PARTID_SEL.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When PARTID narrowing is implemented, loads and stores to MPAMCFG_CMAX access the cache maximum capacity partitioning configuration settings for the internal PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.PARTID_SEL, and <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.INTERNAL must be 1.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When PARTID narrowing is not implemented, loads and stores to MPAMCFG_CMAX access the cache maximum capacity partitioning configuration settings for the request PARTID selected by <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.PARTID_SEL, and <register_link state="ext" id="ext-mpamcfg_part_sel.xml">MPAMCFG_PART_SEL</register_link>.INTERNAL must be 0.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

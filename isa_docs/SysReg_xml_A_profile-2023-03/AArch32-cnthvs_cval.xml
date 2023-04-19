@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CNTHVS_CVAL</reg_short_name>
+        
+        <reg_long_name>Counter-timer Secure Virtual Timer CompareValue Register (EL2)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported and FEAT_SEL2 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-cnthvs_cval_el2.xml">CNTHVS_CVAL_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides AArch32 access to the compare value for the Secure EL2 virtual timer.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Generic Timer registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CNTHVS_CVAL is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CompareValue</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before"><para>Holds the EL2 virtual timer CompareValue.</para>
+<para>When <register_link state="AArch32" id="AArch32-cnthvs_ctl.xml">CNTHVS_CTL</register_link>.ENABLE is 1, the timer condition is met when (<register_link state="AArch32" id="AArch32-cntvct.xml">CNTVCT</register_link> - CompareValue) is greater than or equal to zero. This means that CompareValue acts like a 64-bit upcounter timer. When the timer condition is met:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-cnthvs_ctl.xml">CNTHVS_CTL</register_link>.ISTATUS is set to 1.</content>
+</listitem><listitem><content>If <register_link state="AArch32" id="AArch32-cnthvs_ctl.xml">CNTHVS_CTL</register_link>.IMASK is 0, an interrupt is generated.</content>
+</listitem></list>
+<para>When <register_link state="AArch32" id="AArch32-cnthvs_ctl.xml">CNTHVS_CTL</register_link>.ENABLE is 0, the timer condition is not met, but <register_link state="AArch32" id="AArch32-cntvct.xml">CNTVCT</register_link> continues to count.</para>
+<para>If the Generic counter is implemented at a size less than 64 bits, then this field is permitted to be implemented at the same width as the counter, and the upper bits are <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>The value of this field is treated as zero-extended in all counter calculations.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is accessed using the encoding for <register_link state="AArch32" id="AArch32-cntv_cval.xml">CNTV_CVAL</register_link>.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRRC CNTV_CVAL" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="CRm" v="0b1110"/>
+                
+                <enc n="opc1" v="0b0011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CNTKCTL_EL1.EL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x04);
+    elsif ELUsingAArch32(EL1) &amp;&amp; CNTKCTL.PL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CNTHCTL_EL2.EL0VTEN == '0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '0' &amp;&amp; IsFeatureImplemented(FEAT_SEL2) then
+        (R[t2], R[t]) = (CNTHVS_CVAL_EL2&lt;63:32&gt;, CNTHVS_CVAL_EL2&lt;31:0&gt;);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '1' then
+        (R[t2], R[t]) = (CNTHV_CVAL_EL2&lt;63:32&gt;, CNTHV_CVAL_EL2&lt;31:0&gt;);
+    else
+        (R[t2], R[t]) = (CNTV_CVAL&lt;63:32&gt;, CNTV_CVAL&lt;31:0&gt;);
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    else
+        (R[t2], R[t]) = (CNTV_CVAL&lt;63:32&gt;, CNTV_CVAL&lt;31:0&gt;);
+elsif PSTATE.EL == EL2 then
+    (R[t2], R[t]) = (CNTV_CVAL&lt;63:32&gt;, CNTV_CVAL&lt;31:0&gt;);
+elsif PSTATE.EL == EL3 then
+    (R[t2], R[t]) = (CNTV_CVAL&lt;63:32&gt;, CNTV_CVAL&lt;31:0&gt;);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCRR CNTV_CVAL" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCRR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="CRm" v="0b1110"/>
+                
+                <enc n="opc1" v="0b0011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCRR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CNTKCTL_EL1.EL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x04);
+    elsif ELUsingAArch32(EL1) &amp;&amp; CNTKCTL.PL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CNTHCTL_EL2.EL0VTEN == '0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '0' &amp;&amp; IsFeatureImplemented(FEAT_SEL2) then
+        CNTHVS_CVAL_EL2 = R[t2]:R[t];
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '1' then
+        CNTHV_CVAL_EL2 = R[t2]:R[t];
+    else
+        CNTV_CVAL = R[t2]:R[t];
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    else
+        CNTV_CVAL = R[t2]:R[t];
+elsif PSTATE.EL == EL2 then
+    CNTV_CVAL = R[t2]:R[t];
+elsif PSTATE.EL == EL3 then
+    CNTV_CVAL = R[t2]:R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

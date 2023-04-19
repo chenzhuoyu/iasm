@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CNTTIDR</reg_short_name>
+        
+        <reg_long_name>Counter-timer Timer ID Register</reg_long_name>
+
+        <power_domain_text>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether CNTTIDR is implemented in the Core power domain or in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Timer</reg_component>
+    <reg_frame>CNTCTLBase</reg_frame>
+    <reg_offset><hexnumber>0x008</hexnumber></reg_offset>
+    <reg_instance>CNTTIDR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates the implemented timers in the memory map, and their features. For each value of N from 0 to 7 it indicates whether:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>Frame CNTBaseN is a view of an implemented timer.</content>
+</listitem><listitem><content>Frame CNTBaseN has a second view, CNTEL0BaseN.</content>
+</listitem><listitem><content>Frame CNTBaseN has a virtual timer capability.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Generic Timer registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>For more information, see <xref browsertext="'Power and reset domains for the system level implementation of the Generic Timer'" filename="I_system_level_implementation_of_the_generic__.fm" linkend="CEGHAIAF"/>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CNTTIDR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Frame&lt;n&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>A 4-bit field indicating the features of frame CNTBase&lt;n&gt;.</para>
+<para>Bit[3] of the field is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>Bit[2], the FEL0 subfield, indicates whether frame CNTBase&lt;n&gt; has a second view, CNTEL0Base&lt;n&gt;. The possible values of this bit are:</para>
+<table><tgroup cols="2"><thead><row><entry>Bit[2]</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry>Frame&lt;n&gt; does not have a second view. The <register_link state="ext" id="ext-cntel0acr.xml">CNTEL0ACR</register_link> register in the first view of the frame is<arm-defined-word>RES0</arm-defined-word></entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry>Frame&lt;n&gt; has a second view, CNTEL0Base&lt;n&gt;.</entry></row></tbody></tgroup></table>
+<para>If bit[0] is 0, bit[2] is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>Bit[1], the FVI subfield, indicates whether both:</para>
+<list type="unordered">
+<listitem><content>Frame CNTBase&lt;n&gt; implements the virtual timer registers <register_link state="ext" id="ext-cntv_cval.xml">CNTV_CVAL</register_link>, <register_link state="ext" id="ext-cntv_tval.xml">CNTV_TVAL</register_link>, and <register_link state="ext" id="ext-cntv_ctl.xml">CNTV_CTL</register_link>.</content>
+</listitem><listitem><content>This CNTCTLBase frame implements the virtual timer offset register <register_link state="ext" id="ext-cntvoffn.xml">CNTVOFF&lt;n&gt;</register_link>.</content>
+</listitem></list>
+<para>The possible values of bit[1] are:</para>
+<table><tgroup cols="2"><thead><row><entry>Bit[1]</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry>Frame&lt;n&gt; does not have virtual capability. The virtual time and offset registers are<arm-defined-word>RES0</arm-defined-word>.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry>Frame&lt;n&gt; has virtual capability. The virtual time and offset registers are implemented</entry></row></tbody></tgroup></table>
+<para>If bit[0] is 0, bit[1] is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>Bit[0], the FI subfield, indicates whether frame CNTBase&lt;n&gt; is implemented. The possible values of this bit are:</para>
+<table><tgroup cols="2"><thead><row><entry>Bit[0]</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry>Frame&lt;n&gt; is not implemented. All registers associated with the frame are<arm-defined-word>RES0</arm-defined-word>.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry>Frame&lt;n&gt; is implemented</entry></row></tbody></tgroup></table></field_description>
+    <field_array_indexes index_variable="n" element_size="4" range_specifier="4n+3:4n">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="Frame7" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="Frame6" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="Frame5" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="Frame4" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="Frame3" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="Frame2" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="Frame1" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="Frame0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>In a system that recognizes two Security states this register is accessible by both Secure and Non-secure accesses.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

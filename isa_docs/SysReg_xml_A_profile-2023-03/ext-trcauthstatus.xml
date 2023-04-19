@@ -1,0 +1,437 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCAUTHSTATUS</reg_short_name>
+        
+        <reg_long_name>Authentication Status Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0xFB8</hexnumber></reg_offset>
+    <reg_instance>TRCAUTHSTATUS</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trcauthstatus.xml">TRCAUTHSTATUS</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the state of the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> authentication interface for debug.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For additional information, see the CoreSight Architecture Specification.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Management registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCAUTHSTATUS is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRCAUTHSTATUS</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RTNID</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>27:26</rel_range>
+    <field_description order="before"><para>Root non-invasive debug.</para>
+<para>This field has the same value as DBGAUTHSTATUS_EL1.RTNID.</para></field_description>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RTID</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Root invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RLNID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before"><para>Realm non-invasive debug.</para>
+<para>This field has the same value as DBGAUTHSTATUS_EL1.RLNID.</para></field_description>
+  </field>
+  <field id="fieldset_0-13_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RLID</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>13:12</rel_range>
+    <field_description order="before">
+      <para>Realm invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HNID</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Hyp Non-invasive Debug. Indicates whether a separate enable control for EL2 non-invasive debug features is implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Separate Hyp non-invasive debug enable not implemented, or EL2 non-invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HID</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Hyp Invasive Debug. Indicates whether a separate enable control for EL2 invasive debug features is implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Separate Hyp invasive debug enable not implemented, or EL2 invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SNID</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>7:6</rel_range>
+    <field_description order="before">
+      <para>Secure Non-invasive Debug. Indicates whether Secure non-invasive debug features are implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When EL3 is implemented, this field reads as <binarynumber>0b10</binarynumber> or <binarynumber>0b11</binarynumber> depending whether Secure non-invasive debug is enabled.</para>
+<para>When EL3 is not implemented and the PE is Non-secure, this field reads as <binarynumber>0b00</binarynumber>.</para>
+<para>When EL3 is not implemented and the PE is Secure, this field reads as <binarynumber>0b10</binarynumber> or <binarynumber>0b11</binarynumber> depending whether Secure non-invasive debug is enabled.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Secure non-invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-5_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SID</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>5:4</rel_range>
+    <field_description order="before">
+      <para>Secure Invasive Debug. Indicates whether Secure invasive debug features are implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Secure invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSNID</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Non-secure Non-invasive Debug. Indicates whether Non-secure non-invasive debug features are implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When EL3 is implemented, this field reads as <binarynumber>0b11</binarynumber>.</para>
+<para>When EL3 is not implemented and the PE is Non-secure, this field reads as <binarynumber>0b11</binarynumber>.</para>
+<para>When EL3 is not implemented and the PE is Secure, this field reads as <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-secure non-invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSID</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Non-secure Invasive Debug. Indicates whether Non-secure invasive debug features are implemented and enabled.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-secure invasive debug features not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Implemented and disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Implemented and enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_26" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_12" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_6" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-5_4" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>For implementations that support multiple access mechanisms, different access mechanisms can return different values for reads of TRCAUTHSTATUS if the authentication signals have changed and that change has not yet been synchronized by a Context synchronization event. This scenario can happen if, for example, the external debugger view is implemented separately from the system instruction view to allow for separate power domains, and so observes changes on the signals differently.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>External debugger accesses to this register are unaffected by the OS Lock.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

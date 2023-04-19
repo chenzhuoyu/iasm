@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICM_TYPER</reg_short_name>
+        
+        <reg_long_name>Distributor MSI Type Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>MSI_base</reg_frame>
+    <reg_offset><hexnumber>0x0004</hexnumber></reg_offset>
+    <reg_instance>GICM_TYPER</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about what features the GIC implementation supports.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is available in all configurations of the GIC. When <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS==0, this register is Common.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICM_TYPER is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Valid</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Reports whether GICM_TYPER content is valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>GICM_TYPER reports no information on the capabilities of the GICM frame, all other fields are <arm-defined-word>RES0</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>GICM_TYPER reports information on capabilities of GICM frame.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CLR</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Reports whether MSI clear registers are supported.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>MSI clear registers not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>MSI clear registers implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SR</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Reports whether Secure aliases of MSI registers are supported.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure aliases of MSI registers not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Secure aliases of MSI registers implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-28_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTID</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>28:16</rel_range>
+    <field_description order="before">
+      <para>INTID of the first SPI assigned to this GICM frame.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>15:11</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-10_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NumSPIs</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>10:0</rel_range>
+    <field_description order="before">
+      <para>Number of SPIs assigned to this GICM frame.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_16" msb="28" lsb="16"/>
+  <fieldat id="fieldset_0-15_11" msb="15" lsb="11"/>
+  <fieldat id="fieldset_0-10_0" msb="10" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

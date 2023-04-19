@@ -1,0 +1,2219 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>HFGWTR_EL2</reg_short_name>
+        
+        <reg_long_name>Hypervisor Fine-Grained Write Trap Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_FGT is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+            <reg_reset_limited_to_el>EL2</reg_reset_limited_to_el>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides controls for traps of <instruction>MSR</instruction> and <instruction>MCR</instruction> writes of System registers.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>A group mapping that does not have a known primary</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>HFGWTR_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>HFGWTR_EL2</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_63-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nAMAIR2_EL1</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair2_el1.xml">AMAIR2_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair2_el1.xml">AMAIR2_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair2_el1.xml">AMAIR2_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-62_62-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nMAIR2_EL1</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair2_el1.xml">MAIR2_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair2_el1.xml">MAIR2_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair2_el1.xml">MAIR2_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-62_62-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-61_61-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nS2POR_EL1</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-s2por_el1.xml">S2POR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-s2por_el1.xml">S2POR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-s2por_el1.xml">S2POR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S2POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-61_61-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nPOR_EL1</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el1.xml">POR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el1.xml">POR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el1.xml">POR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nPOR_EL0</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link> at EL1 and EL0 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-58_58-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nPIR_EL1</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>58</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pir_el1.xml">PIR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pir_el1.xml">PIR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pir_el1.xml">PIR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1PIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-58_58-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>58</field_msb>
+    <field_lsb>58</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-57_57-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nPIRE0_EL1</field_name>
+    <field_msb>57</field_msb>
+    <field_lsb>57</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pire0_el1.xml">PIRE0_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pire0_el1.xml">PIRE0_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-pire0_el1.xml">PIRE0_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1PIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-57_57-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>57</field_msb>
+    <field_lsb>57</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-56_56-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nRCWMASK_EL1</field_name>
+    <field_msb>56</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of RCWMASK_EL1 at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of RCWMASK_EL1 at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of RCWMASK_EL1 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-56_56-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>56</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-55_55-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nTPIDR2_EL0</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr2_el0.xml">TPIDR2_EL0</register_link> at EL1 and EL0 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr2_el0.xml">TPIDR2_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr2_el0.xml">TPIDR2_EL0</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-55_55-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-54_54-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nSMPRI_EL1</field_name>
+    <field_msb>54</field_msb>
+    <field_lsb>54</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-smpri_el1.xml">SMPRI_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-smpri_el1.xml">SMPRI_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-smpri_el1.xml">SMPRI_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-54_54-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>54</field_msb>
+    <field_lsb>54</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-53_53-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nGCS_EL1</field_name>
+    <field_msb>53</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-gcscr_el1.xml">GCSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-gcspr_el1.xml">GCSPR_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GCS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-53_53-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>53</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-52_52-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nGCS_EL0</field_name>
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-gcscre0_el1.xml">GCSCRE0_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-gcspr_el0.xml">GCSPR_EL0</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GCS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-52_52-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-51_51" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>51</field_lsb>
+    <rel_range>51</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-50_50-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nACCDATA_EL1</field_name>
+    <field_msb>50</field_msb>
+    <field_lsb>50</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LS64_ACCDATA is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-50_50-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>50</field_msb>
+    <field_lsb>50</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-49_49-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXADDR_EL1</field_name>
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxaddr_el1.xml">ERXADDR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxaddr_el1.xml">ERXADDR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxaddr_el1.xml">ERXADDR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-49_49-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXPFGCDN_EL1</field_name>
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgcdn_el1.xml">ERXPFGCDN_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgcdn_el1.xml">ERXPFGCDN_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgcdn_el1.xml">ERXPFGCDN_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RASv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-47_47-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXPFGCTL_EL1</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgctl_el1.xml">ERXPFGCTL_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgctl_el1.xml">ERXPFGCTL_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxpfgctl_el1.xml">ERXPFGCTL_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RASv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-47_47-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-46_46" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>46</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-45_45-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXMISCn_EL1</field_name>
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-erxmisc0_el1.xml">ERXMISC0_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erxmisc1_el1.xml">ERXMISC1_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erxmisc2_el1.xml">ERXMISC2_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erxmisc3_el1.xml">ERXMISC3_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the specified System registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-45_45-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-44_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXSTATUS_EL1</field_name>
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-44_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-43_43-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERXCTLR_EL1</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxctlr_el1.xml">ERXCTLR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxctlr_el1.xml">ERXCTLR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-erxctlr_el1.xml">ERXCTLR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-43_43-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-42_42" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>42</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-41_41-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ERRSELR_EL1</field_name>
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-41_41-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-40_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>40</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-39_39-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ICC_IGRPENn_EL1</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of ICC_IGRPEN&lt;n&gt;_EL1 at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of ICC_IGRPEN&lt;n&gt;_EL1 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of ICC_IGRPEN&lt;n&gt;_EL1 at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GICv3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-39_39-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-38_38" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VBAR_EL1</field_name>
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>38</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-vbar_el1.xml">VBAR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-vbar_el1.xml">VBAR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-vbar_el1.xml">VBAR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-37_37" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TTBR1_EL1</field_name>
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>37</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr1_el1.xml">TTBR1_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr1_el1.xml">TTBR1_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr1_el1.xml">TTBR1_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-36_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TTBR0_EL1</field_name>
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>36</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr0_el1.xml">TTBR0_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr0_el1.xml">TTBR0_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-ttbr0_el1.xml">TTBR0_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-35_35" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TPIDR_EL0</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>35</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el0.xml">TPIDR_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MCR</instruction> writes of <register_link state="AArch32" id="AArch32-tpidrurw.xml">TPIDRURW</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el0.xml">TPIDR_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MCR</instruction> writes of <register_link state="AArch32" id="AArch32-tpidrurw.xml">TPIDRURW</register_link> at EL0 using AArch32 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, EL1 is using AArch64, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then, unless the write generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el0.xml">TPIDR_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content><instruction>MCR</instruction> writes of <register_link state="AArch32" id="AArch32-tpidrurw.xml">TPIDRURW</register_link> at EL0 using AArch32 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x03</hexnumber>.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-34_34" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TPIDRRO_EL0</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>34</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidrro_el0.xml">TPIDRRO_EL0</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidrro_el0.xml">TPIDRRO_EL0</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidrro_el0.xml">TPIDRRO_EL0</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-33_33" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TPIDR_EL1</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>33</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el1.xml">TPIDR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el1.xml">TPIDR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-tpidr_el1.xml">TPIDR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-32_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TCR_EL1</field_name>
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>32</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of any of the following registers at EL1 using AArch64 to EL2.</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-tcr_el1.xml">TCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-tcr2_el1.xml">TCR2_EL1</register_link>, if <xref browsertext="FEAT_TCR2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TCR2"/> is implemented.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the specified registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of the specified registers at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SCXTNUM_EL0</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el0.xml">SCXTNUM_EL0</register_link> at EL1 and EL0 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el0.xml">SCXTNUM_EL0</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el0.xml">SCXTNUM_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_CSV2_2 is implemented or FEAT_CSV2_1p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SCXTNUM_EL1</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el1.xml">SCXTNUM_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el1.xml">SCXTNUM_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-scxtnum_el1.xml">SCXTNUM_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_CSV2_2 is implemented or FEAT_CSV2_1p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SCTLR_EL1</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of any of the following registers at EL1 using AArch64 to EL2.</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link>, if <xref browsertext="FEAT_SCTLR2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_SCTLR2"/> is implemented.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the specified registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of the specified registers at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PAR_EL1</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-par_el1.xml">PAR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-par_el1.xml">PAR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> or <instruction>MSRR</instruction> writes of <register_link state="AArch64" id="AArch64-par_el1.xml">PAR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-26_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>26:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MAIR_EL1</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair_el1.xml">MAIR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair_el1.xml">MAIR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-mair_el1.xml">MAIR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LORSA_EL1</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorsa_el1.xml">LORSA_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorsa_el1.xml">LORSA_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorsa_el1.xml">LORSA_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LOR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LORN_EL1</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorn_el1.xml">LORN_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorn_el1.xml">LORN_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorn_el1.xml">LORN_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LOR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-20_20-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LOREA_EL1</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorea_el1.xml">LOREA_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorea_el1.xml">LOREA_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorea_el1.xml">LOREA_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LOR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LORC_EL1</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorc_el1.xml">LORC_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorc_el1.xml">LORC_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-lorc_el1.xml">LORC_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LOR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FAR_EL1</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-far_el1.xml">FAR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-far_el1.xml">FAR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-far_el1.xml">FAR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ESR_EL1</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-esr_el1.xml">ESR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-esr_el1.xml">ESR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-esr_el1.xml">ESR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CSSELR_EL1</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-csselr_el1.xml">CSSELR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-csselr_el1.xml">CSSELR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-csselr_el1.xml">CSSELR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CPACR_EL1</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-cpacr_el1.xml">CPACR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-cpacr_el1.xml">CPACR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-cpacr_el1.xml">CPACR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CONTEXTIDR_EL1</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-contextidr_el1.xml">CONTEXTIDR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-contextidr_el1.xml">CONTEXTIDR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-contextidr_el1.xml">CONTEXTIDR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>10:9</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-8_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APIBKey</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-apibkeyhi_el1.xml">APIBKeyHi_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-apibkeylo_el1.xml">APIBKeyLo_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-8_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_7-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APIAKey</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-apiakeyhi_el1.xml">APIAKeyHi_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-apiakeylo_el1.xml">APIAKeyLo_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-7_7-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APGAKey</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-apgakeyhi_el1.xml">APGAKeyHi_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-apgakeylo_el1.xml">APGAKeyLo_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APDBKey</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-apdbkeyhi_el1.xml">APDBKeyHi_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-apdbkeylo_el1.xml">APDBKeyLo_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-4_4-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APDAKey</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MSR</instruction> writes of multiple System registers. Enables a trap on <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-apdakeyhi_el1.xml">APDAKeyHi_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-apdakeylo_el1.xml">APDAKeyLo_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of the System registers listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes at EL1 using AArch64 of any of the System registers listed above are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-4_4-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AMAIR_EL1</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair_el1.xml">AMAIR_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair_el1.xml">AMAIR_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-amair_el1.xml">AMAIR_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AFSR1_EL1</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr1_el1.xml">AFSR1_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr1_el1.xml">AFSR1_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr1_el1.xml">AFSR1_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AFSR0_EL1</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr0_el1.xml">AFSR0_EL1</register_link> at EL1 using AArch64 to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr0_el1.xml">AFSR0_EL1</register_link> are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL2 is implemented and enabled in the current Security state, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then <instruction>MSR</instruction> writes of <register_link state="AArch64" id="AArch64-afsr0_el1.xml">AFSR0_EL1</register_link> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>, unless the write generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63-1" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62-1" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_61-1" msb="61" lsb="61"/>
+  <fieldat id="fieldset_0-60_60-1" msb="60" lsb="60"/>
+  <fieldat id="fieldset_0-59_59-1" msb="59" lsb="59"/>
+  <fieldat id="fieldset_0-58_58-1" msb="58" lsb="58"/>
+  <fieldat id="fieldset_0-57_57-1" msb="57" lsb="57"/>
+  <fieldat id="fieldset_0-56_56-1" msb="56" lsb="56"/>
+  <fieldat id="fieldset_0-55_55-1" msb="55" lsb="55"/>
+  <fieldat id="fieldset_0-54_54-1" msb="54" lsb="54"/>
+  <fieldat id="fieldset_0-53_53-1" msb="53" lsb="53"/>
+  <fieldat id="fieldset_0-52_52-1" msb="52" lsb="52"/>
+  <fieldat id="fieldset_0-51_51" msb="51" lsb="51"/>
+  <fieldat id="fieldset_0-50_50-1" msb="50" lsb="50"/>
+  <fieldat id="fieldset_0-49_49-1" msb="49" lsb="49"/>
+  <fieldat id="fieldset_0-48_48-1" msb="48" lsb="48"/>
+  <fieldat id="fieldset_0-47_47-1" msb="47" lsb="47"/>
+  <fieldat id="fieldset_0-46_46" msb="46" lsb="46"/>
+  <fieldat id="fieldset_0-45_45-1" msb="45" lsb="45"/>
+  <fieldat id="fieldset_0-44_44-1" msb="44" lsb="44"/>
+  <fieldat id="fieldset_0-43_43-1" msb="43" lsb="43"/>
+  <fieldat id="fieldset_0-42_42" msb="42" lsb="42"/>
+  <fieldat id="fieldset_0-41_41-1" msb="41" lsb="41"/>
+  <fieldat id="fieldset_0-40_40" msb="40" lsb="40"/>
+  <fieldat id="fieldset_0-39_39-1" msb="39" lsb="39"/>
+  <fieldat id="fieldset_0-38_38" msb="38" lsb="38"/>
+  <fieldat id="fieldset_0-37_37" msb="37" lsb="37"/>
+  <fieldat id="fieldset_0-36_36" msb="36" lsb="36"/>
+  <fieldat id="fieldset_0-35_35" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-34_34" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-33_33" msb="33" lsb="33"/>
+  <fieldat id="fieldset_0-32_32" msb="32" lsb="32"/>
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30-1" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_25" msb="26" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_22-1" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20-1" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_9" msb="10" lsb="9"/>
+  <fieldat id="fieldset_0-8_8-1" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7-1" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5-1" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4-1" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS HFGWTR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, HFGWTR_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x1C0];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = HFGWTR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = HFGWTR_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister HFGWTR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR HFGWTR_EL2, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x1C0] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        HFGWTR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    HFGWTR_EL2 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

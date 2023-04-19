@@ -1,0 +1,750 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICD_CTLR</reg_short_name>
+        
+        <reg_long_name>Distributor Control Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>Dist_base</reg_frame>
+    <reg_offset><hexnumber>0x0000</hexnumber></reg_offset>
+    <reg_instance>GICD_CTLR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Enables interrupts and affinity routing.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The format of this register depends on the Security state of the access and the number of Security states supported, which is specified by GICD_CTLR.DS.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICD_CTLR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When access is Secure, in a system that supports two Security states</fields_condition>
+  <fields_instance>access is Secure, in a system that supports two Security states</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RWP</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Register Write Pending. Read only. Indicates whether a register write is in progress or not:</para>
+    </field_description>
+    <field_description order="after"><para>This field tracks writes to:</para>
+<list type="unordered">
+<listitem><content>GICD_CTLR[2:0], the Group Enables, for transitions from 1 to 0 only.</content>
+</listitem><listitem><content>GICD_CTLR[7:4], the ARE bits, E1NWF bit and DS bit.</content>
+</listitem><listitem><content>GICD_ICENABLER&lt;n&gt;.</content>
+</listitem></list>
+<para>Updates to other register fields are not tracked by this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No register write in progress. The effects of previous register writes to the affected register fields are visible to all logical components of the GIC architecture, including the CPU interfaces.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Register write in progress. The effects of previous register writes to the affected register fields are not guaranteed to be visible to all logical components of the GIC architecture, including the CPU interfaces, as the effects of the changes are still being propagated.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>30:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E1NWF</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>Enable 1 of N Wakeup Functionality.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this bit is programmable, or RAZ/WI.</para>
+<para>If it is implemented, then it has the following behavior:</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>A PE that is asleep cannot be picked for 1 of N interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A PE that is asleep can be picked for 1 of N interrupts as determined by <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> controls.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DS</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>Disable Security.</para>
+    </field_description>
+    <field_description order="after"><para>If DS is written from 0 to 1 when GICD_CTLR.ARE_S == 1, then GICD_CTLR.ARE for the single Security state is RAO/WI.</para>
+<para>If the Distributor only supports a single Security state, this bit is RAO/WI.</para>
+<para>If the Distributor supports two Security states, it <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this bit is programmable or implemented as RAZ/WI.</para>
+<para>When this field is set to 1, all accesses to GICD_CTLR access the single Security state view, and all bits are accessible.</para>
+<para>When set to 1, this field can only be cleared by a hardware reset.</para>
+<para>Writing this bit from 0 to 1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word> if any of the following is true:</para>
+<list type="unordered">
+<listitem><content><register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.EnableGrp0==1.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.EnableGrp1S==1.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.EnableGrp1NS==1.</content>
+</listitem><listitem><content>One or more INTID is in the Active or Active and Pending state.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure accesses are not permitted to access and modify registers that control Group 0 interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure accesses are permitted to access and modify registers that control Group 0 interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARE_NS</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Affinity Routing Enable, Non-secure state.</para>
+    </field_description>
+    <field_description order="after"><para>When affinity routing is enabled for the Secure state, this field is RAO/WI.</para>
+<para>Changing the ARE_NS settings from 0 to 1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word> except when GICD_CTLR.EnableGrp1 Non-secure == 0.</para>
+<para>Changing the ARE_NS settings from 1 to 0 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<para>If GICv2 backwards compatibility for Non-secure state is not implemented, this field is RAO/WI.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Affinity routing disabled for Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affinity routing enabled for Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARE_S</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Affinity Routing Enable, Secure state.</para>
+    </field_description>
+    <field_description order="after"><para>Changing the ARE_S setting from 0 to 1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word> except when all of the following apply:</para>
+<list type="unordered">
+<listitem><content>GICD_CTLR.EnableGrp0==0.</content>
+</listitem><listitem><content>GICD_CTLR.EnableGrp1S==0.</content>
+</listitem><listitem><content>GICD_CTLR.EnableGrp1NS==0.</content>
+</listitem></list>
+<para>Changing the ARE_S settings from 1 to 0 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<para>If GICv2 backwards compatibility for Secure state is not implemented, this field is RAO/WI.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Affinity routing disabled for Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affinity routing enabled for Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1S</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>Enable Secure Group 1 interrupts.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If GICD_CTLR.ARE_S == 0, this field is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure Group 1 interrupts are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Secure Group 1 interrupts are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1NS</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Enable Non-secure Group 1 interrupts.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>This field also controls whether LPIs are forwarded to the PE.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure Group 1 interrupts are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure Group 1 interrupts are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp0</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable Group 0 interrupts.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Group 0 interrupts are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Group 0 interrupts are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When access is Non-secure, in a system that supports two Security states</fields_condition>
+  <fields_instance>access is Non-secure, in a system that supports two Security states</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RWP</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>This bit is a read-only alias of the Secure GICD_CTLR.RWP bit.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-30_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>30:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARE_NS</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before"><para>This bit is a read/write alias of the Secure GICD_CTLR.ARE_NS bit.</para>
+<para>If GICv2 backwards compatibility for Non-secure state is not implemented, this field is RAO/WI.</para></field_description>
+  </field>
+  <field id="fieldset_1-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1A</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>If ARE_NS == 1, then this bit is a read/write alias of the Secure GICD_CTLR.EnableGrp1NS bit.</para>
+<para>If ARE_NS == 0, then this bit is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+  </field>
+  <field id="fieldset_1-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>If ARE_NS == 0, then this bit is a read/write alias of the Secure GICD_CTLR.EnableGrp1NS bit.</para>
+<para>If ARE_NS == 1, then this bit is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_2" length="32">
+  <fields_condition>When in a system that supports only a single Security state</fields_condition>
+  <fields_instance>in a system that supports only a single Security state</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_2-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RWP</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Register Write Pending. Read only. Indicates whether a register write is in progress or not:</para>
+    </field_description>
+    <field_description order="after"><para>This field tracks updates to:</para>
+<list type="unordered">
+<listitem><content>GICD_CTLR[2:0], the Group Enables, for transitions from 1 to 0 only.</content>
+</listitem><listitem><content>GICD_CTLR[7:4], the ARE bits, E1NWF bit and DS bit.</content>
+</listitem><listitem><content>GICD_ICENABLER&lt;n&gt;, the bits that allow disabling of SPIs.</content>
+</listitem></list>
+<para>Updates to other register fields are not tracked by this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No register write in progress. The effects of previous register writes to the affected register fields are visible to all logical components of the GIC architecture, including the CPU interfaces.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Register write in progress. The effects of previous register writes to the affected register fields are not guaranteed to be visible to all logical components of the GIC architecture, including the CPU interfaces, as the effects of the changes are still being propagated.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-30_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>30:9</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-8_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>nASSGIreq</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Controls whether SGIs have an active state.</para>
+<para>This bit is <arm-defined-word>RES0</arm-defined-word> if <register_link state="ext" id="ext-gicd_typer2.xml">GICD_TYPER2</register_link>.GICD_TYPER2.nASSGIcap is 0.</para>
+<para>This bit is WI when any of GICD_CTLR.{EnableGrp0,EnableGrp1} is 1.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>SGIs have an active state and must be deactivated.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>SGIs do not have an active state and do not require deactivation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_2-8_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_2-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E1NWF</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>Enable 1 of N Wakeup Functionality.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this bit is programmable, or RAZ/WI.</para>
+<para>If it is implemented, then it has the following behavior:</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>A PE that is asleep cannot be picked for 1 of N interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A PE that is asleep can be picked for 1 of N interrupts as determined by <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> controls.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DS</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>Disable Security. This field is RAO/WI.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARE</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Affinity Routing Enable.</para>
+    </field_description>
+    <field_description order="after"><para>Changing the ARE settings from 0 to 1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word> except when all of the following apply:</para>
+<list type="unordered">
+<listitem><content>GICD_CTLR.EnableGrp1==0.</content>
+</listitem><listitem><content>GICD_CTLR.EnableGrp0==0.</content>
+</listitem></list>
+<para>Changing ARE from 1 to 0 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<para>If GICv2 backwards compatibility is not implemented, this field is RAO/WI.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Affinity routing disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affinity routing enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Enable Group 1 interrupts.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Group 1 interrupts disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Group 1 interrupts enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp0</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable Group 0 interrupts.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Group 0 interrupts are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Group 0 interrupts are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When access is Secure, in a system that supports two Security states</fields_condition>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_8" msb="30" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When access is Non-secure, in a system that supports two Security states</fields_condition>
+  <fieldat id="fieldset_1-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_1-30_5" msb="30" lsb="5"/>
+  <fieldat id="fieldset_1-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_1-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_1-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_1-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When in a system that supports only a single Security state</fields_condition>
+  <fieldat id="fieldset_2-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_2-30_9" msb="30" lsb="9"/>
+  <fieldat id="fieldset_2-8_8-1" msb="8" lsb="8"/>
+  <fieldat id="fieldset_2-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_2-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_2-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_2-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_2-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_2-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_2-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If an interrupt is pending within a CPU interface when the corresponding GICD_CTLR.EnableGrpX bit is written from 1 to 0 the interrupt must be retrieved from the CPU interface.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <note><para>This might have no effect on the forwarded interrupt if it has already been activated.
+When a write changes the value of ARE for a Security state or the value of the DS bit, the format used for interpreting the remaining bits provided in the write data is the format that applied before the write takes effect.</para></note>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,563 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMCCFILTR</reg_short_name>
+        
+        <reg_long_name>Performance Monitors Cycle Count Filter Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported and FEAT_PMUv3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-pmccfiltr_el0.xml">PMCCFILTR_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="pmu.pmccfiltr_el0.xml">PMU.PMCCFILTR_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+    <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Determines the modes in which the Cycle Counter, <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>, increments.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMCCFILTR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>P</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Privileged filtering. Controls counting cycles in EL1.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If Secure and Non-secure states are implemented, then counting cycles in Non-secure EL1 is further controlled by PMCCFILTR.NSK.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of cycles.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Cycles in EL1 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>U</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>User filtering. Controls counting cycles in EL0.</para>
+<para>If Secure and Non-secure states are implemented, then counting in Non-secure EL0 is further controlled by the PMCCFILTR.NSU field.</para>
+<para>If <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, then counting in Realm EL0 is further controlled by the PMCCFILTR.RLU bit.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of cycles.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Cycles in EL0 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSK</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure EL1 filtering. Controls counting cycles in Non-secure EL1. If PMCCFILTR.NSK is not equal to PMCCFILTR.P, then cycles in Non-secure EL1 are not counted. Otherwise, PMCCFILTR.NSK has no effect on filtering of cycles in Non-secure EL1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When PMCCFILTR.P == 0, this field has no effect on filtering of cycles.</para>
+<para>When PMCCFILTR.P == 1, cycles in Non-secure EL1 are not counted.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>When PMCCFILTR.P == 0, cycles in Non-secure EL1 are not counted.</para>
+<para>When PMCCFILTR.P == 1, this field has no effect on filtering of cycles.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSU</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure EL0 filtering. Controls counting cycles in Non-secure EL0. If PMCCFILTR.NSU is not equal to PMCCFILTR.U, then cycles in Non-secure EL0 are not counted. Otherwise, PMCCFILTR.NSU has no effect on filtering of cycles in Non-secure EL0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When PMCCFILTR.U == 0, this field has no effect on filtering of cycles.</para>
+<para>When PMCCFILTR.U == 1, cycles in Non-secure EL0 are not counted.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>When PMCCFILTR.U == 0, cycles in Non-secure EL0 are not counted.</para>
+<para>When PMCCFILTR.U == 1, this field has no effect on filtering of cycles.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSH</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>EL2 filtering. Controls counting cycles in EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Cycles in EL2 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of cycles.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-26_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>26:22</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RLU</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Realm EL0  (unprivileged) filtering bit. Controls counting in Realm EL0.</para>
+<para>If the value of this bit is equal to the value of the PMCCFILTR.U bit, cycles in Realm EL0 are counted.</para>
+<para>Otherwise, cycles in Realm EL0 are not counted.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>20:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27-1" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_22" msb="26" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_0" msb="20" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>PMCCFILTR can also be accessed by using <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link> with <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL set to <binarynumber>0b11111</binarynumber>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMCCFILTR reads-as-zero and ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.UEN == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.C == 0.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMCCFILTR ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.{UEN,CR} == {1,1}.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PMCCFILTR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b1111"/>
+                
+                <enc n="opc2" v="0b111"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCCFILTR;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCCFILTR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCCFILTR;
+elsif PSTATE.EL == EL3 then
+    R[t] = PMCCFILTR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PMCCFILTR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b1111"/>
+                
+                <enc n="opc2" v="0b111"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCCFILTR = R[t];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCCFILTR = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCCFILTR = R[t];
+elsif PSTATE.EL == EL3 then
+    PMCCFILTR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

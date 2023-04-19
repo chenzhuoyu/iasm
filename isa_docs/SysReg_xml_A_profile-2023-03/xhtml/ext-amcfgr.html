@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AMCFGR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">AMCFGR, Activity Monitors Configuration Register</h1><p>The AMCFGR characteristics are:</p><h2>Purpose</h2>
+        <p>Global configuration register for the activity monitors.</p>
+
+      
+        <p>Provides information on supported features, the number of counter groups implemented, the total number of activity monitor event counters implemented, and the size of the counters. AMCFGR is applicable to both the architected and the auxiliary counter groups.</p>
+      <h2>Configuration</h2><p>External register AMCFGR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-amcfgr_el0.html">AMCFGR_EL0[31:0]</a>.</p><p>External register AMCFGR bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-amcfgr.html">AMCFGR[31:0]</a>.</p><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether AMCFGR is implemented in the Core power domain or in the Debug power domain.
+    </p><p>This register is present only when FEAT_AMUv1 is implemented. Otherwise, direct accesses to AMCFGR are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>AMCFGR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">NCG</a></td><td class="lr" colspan="3"><a href="#fieldset_0-27_25">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">HDBG</a></td><td class="lr" colspan="10"><a href="#fieldset_0-23_14">RAZ</a></td><td class="lr" colspan="6"><a href="#fieldset_0-13_8">SIZE</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">N</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">NCG, bits [31:28]</h4><div class="field"><p>Defines the number of counter groups.</p>
+<p>The number of implemented counter groups is [AMCFGR.NCG + 1].</p>
+<p>If the number of implemented auxiliary activity monitor event counters is zero, this field has a value of <span class="binarynumber">0b0000</span>. Otherwise, this field has a value of <span class="binarynumber">0b0001</span>.</p>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-27_25">Bits [27:25]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-24_24">HDBG, bit [24]</h4><div class="field"><p>Halt-on-debug supported.</p>
+<p>This feature must be supported, and so this bit is <span class="binarynumber">0b1</span>.</p><table class="valuetable"><tr><th>HDBG</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-amcr.html">AMCR</a>.HDBG is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-amcr.html">AMCR</a>.HDBG is read/write.</p>
+        </td></tr></table>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-23_14">Bits [23:14]</h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-13_8">SIZE, bits [13:8]</h4><div class="field"><p>Defines the size of activity monitor event counters.</p>
+<p>The size of the activity monitor event counters implemented by the Activity Monitors Extension is [AMCFGR.SIZE + 1].</p>
+<p>The counters are 64-bit.</p>
+<div class="note"><span class="note-header">Note</span><p>Software also uses this field to determine the spacing of counters in the memory-map. The counters are at doubleword-aligned addresses.</p></div>
+      <p>Reads as <span class="binarynumber">0b111111</span>.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-7_0">N, bits [7:0]</h4><div class="field"><p>Defines the number of activity monitor event counters.</p>
+<p>The total number of counters implemented in all groups by the Activity Monitors Extension is [AMCFGR.N + 1].</p>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing AMCFGR</h2><h4>AMCFGR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>AMU</td><td><span class="hexnumber">0xE00</span></td><td>AMCFGR</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

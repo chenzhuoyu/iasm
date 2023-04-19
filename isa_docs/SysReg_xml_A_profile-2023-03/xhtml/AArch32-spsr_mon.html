@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SPSR_mon</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SPSR_mon, Saved Program Status Register (Monitor mode)</h1><p>The SPSR_mon characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the saved process state when an exception is taken to Monitor mode.</p>
+      <h2>Configuration</h2><p>This register is present only when AArch32 is supported. Otherwise, direct accesses to SPSR_mon are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>SPSR_mon is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">N</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">Z</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">V</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27">Q</a></td><td class="lr" colspan="2"><a href="#fieldset_0-26_25">IT[1:0]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">J</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">SSBS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">PAN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">DIT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">IL</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">GE</a></td><td class="lr" colspan="6"><a href="#fieldset_0-15_10">IT[7:2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">E</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">I</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">F</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">T</a></td><td class="lr" colspan="5"><a href="#fieldset_0-4_0">M[4:0]</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">N, bit [31]</h4><div class="field">
+      <p>Negative Condition flag. Set to the value of PSTATE.N on taking an exception to Monitor mode, and  copied to PSTATE.N on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30">Z, bit [30]</h4><div class="field">
+      <p>Zero Condition flag. Set to the value of PSTATE.Z on taking an exception to Monitor mode, and  copied to PSTATE.Z on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29">C, bit [29]</h4><div class="field">
+      <p>Carry Condition flag. Set to the value of PSTATE.C on taking an exception to Monitor mode, and  copied to PSTATE.C on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-28_28">V, bit [28]</h4><div class="field">
+      <p>Overflow Condition flag. Set to the value of PSTATE.V on taking an exception to Monitor mode, and  copied to PSTATE.V on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27">Q, bit [27]</h4><div class="field">
+      <p>Overflow or saturation flag. Set to the value of PSTATE.Q on taking an exception to Monitor mode, and  copied to PSTATE.Q on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_25">IT, bits [15:10, 26:25]</h4><div class="field">
+      <p>If-Then. Set to the value of PSTATE.IT on taking an exception to Monitor mode, and  copied to PSTATE.IT on executing an exception return operation in Monitor mode.</p>
+    <p>SPSR_mon.IT must contain a value that is valid for the instruction being returned to.</p>
+<p>The IT field is split as follows:</p>
+<ul>
+<li>IT[1:0] is SPSR_mon[26:25].
+</li><li>IT[7:2] is SPSR_mon[15:10].
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24">J, bit [24]</h4><div class="field"><p><span class="arm-defined-word">RES0</span>.</p>
+<p>In previous versions of the architecture, the {J, T} bits determined the AArch32 Instruction set state.</p>
+<p>Armv8 does not support either Jazelle state or T32EE state, and the T bit determines the Instruction set state.</p></div><h4 id="fieldset_0-23_23-1">SSBS, bit [23]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field">
+      <p>Speculative Store Bypass. Set to the value of PSTATE.SSBS on taking an exception to Monitor mode, and  copied to PSTATE.SSBS on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">PAN, bit [22]<span class="condition"><br/>When FEAT_PAN is implemented:
+                        </span></h4><div class="field">
+      <p>Privileged Access Never. Set to the value of PSTATE.PAN on taking an exception to Monitor mode, and  copied to PSTATE.PAN on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">DIT, bit [21]<span class="condition"><br/>When FEAT_DIT is implemented:
+                        </span></h4><div class="field">
+      <p>Data Independent Timing. Set to the value of PSTATE.DIT on taking an exception to Monitor mode, and  copied to PSTATE.DIT on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">IL, bit [20]</h4><div class="field">
+      <p>Illegal Execution state. Set to the value of PSTATE.IL on taking an exception to Monitor mode, and  copied to PSTATE.IL on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_16">GE, bits [19:16]</h4><div class="field">
+      <p>Greater than or Equal flags. Set to the value of PSTATE.GE on taking an exception to Monitor mode, and  copied to PSTATE.GE on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">E, bit [9]</h4><div class="field">
+      <p>Endianness. Set to the value of PSTATE.E on taking an exception to Monitor mode, and  copied to PSTATE.E on executing an exception return operation in Monitor mode.</p>
+    
+      <p>If the implementation does not support big-endian operation, SPSR_mon.E is <span class="arm-defined-word">RES0</span>. If the implementation does not support little-endian operation, SPSR_mon.E is <span class="arm-defined-word">RES1</span>. On executing an exception return operation in Monitor mode, if the implementation does not support big-endian operation at the Exception level being returned to, SPSR_mon.E is <span class="arm-defined-word">RES0</span>, and if the implementation does not support little-endian operation at the Exception level being returned to, SPSR_mon.E is <span class="arm-defined-word">RES1</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8">A, bit [8]</h4><div class="field">
+      <p>SError interrupt mask. Set to the value of PSTATE.A on taking an exception to Monitor mode, and  copied to PSTATE.A on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7">I, bit [7]</h4><div class="field">
+      <p>IRQ interrupt mask. Set to the value of PSTATE.I on taking an exception to Monitor mode, and  copied to PSTATE.I on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6">F, bit [6]</h4><div class="field">
+      <p>FIQ interrupt mask. Set to the value of PSTATE.F on taking an exception to Monitor mode, and  copied to PSTATE.F on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5">T, bit [5]</h4><div class="field">
+      <p>T32 Instruction set state. Set to the value of PSTATE.T on taking an exception to Monitor mode, and  copied to PSTATE.T on executing an exception return operation in Monitor mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_0">M[4:0], bits [4:0]</h4><div class="field">
+      <p>Mode. Set to the value of PSTATE.M[4:0] on taking an exception to Monitor mode, and  copied to PSTATE.M[4:0] on executing an exception return operation in Monitor mode.</p>
+    <table class="valuetable"><tr><th>M[4:0]</th><th>Meaning</th></tr><tr><td class="bitfield">0b10000</td><td>
+          <p>User.</p>
+        </td></tr><tr><td class="bitfield">0b10001</td><td>
+          <p>FIQ.</p>
+        </td></tr><tr><td class="bitfield">0b10010</td><td>
+          <p>IRQ.</p>
+        </td></tr><tr><td class="bitfield">0b10011</td><td>
+          <p>Supervisor.</p>
+        </td></tr><tr><td class="bitfield">0b10110</td><td>
+          <p>Monitor.</p>
+        </td></tr><tr><td class="bitfield">0b10111</td><td>
+          <p>Abort.</p>
+        </td></tr><tr><td class="bitfield">0b11010</td><td>
+          <p>Hyp.</p>
+        </td></tr><tr><td class="bitfield">0b11011</td><td>
+          <p>Undefined.</p>
+        </td></tr><tr><td class="bitfield">0b11111</td><td>
+          <p>System.</p>
+        </td></tr></table>
+      <p>Other values are reserved. If SPSR_mon.M[4:0] has a Reserved value, or a value for an unimplemented Exception level, executing an exception return operation in Monitor mode is an illegal return event, as described in <span class="xref">'Illegal return events from AArch32 state'</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing SPSR_mon</h2>
+        <p>SPSR_mon is only accessible in EL3 modes other than Monitor mode.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS{&lt;c&gt;}{&lt;q&gt;} &lt;Rd&gt;, SPSR_mon</h4><table class="access_instructions"><tr><th>R</th><th>M</th><th>M1</th></tr><tr><td>0b1</td><td>0b1</td><td>0b1100</td></tr></table><h4 class="assembler">MSR{&lt;c&gt;}{&lt;q&gt;} SPSR_mon, &lt;Rn&gt;</h4><table class="access_instructions"><tr><th>R</th><th>M</th><th>M1</th></tr><tr><td>0b1</td><td>0b1</td><td>0b1100</td></tr></table></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

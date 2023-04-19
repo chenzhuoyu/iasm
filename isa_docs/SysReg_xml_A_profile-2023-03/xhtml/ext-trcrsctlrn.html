@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCRSCTLR&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCRSCTLR&lt;n&gt;, Resource Selection Control Register &lt;n&gt;, n = 2 - 31</h1><p>The TRCRSCTLR&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Controls the selection of the resources in the trace unit.</p>
+      <h2>Configuration</h2><p>External register TRCRSCTLR&lt;n&gt; bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcrsctlrn.html">TRCRSCTLR&lt;n&gt;[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and (UInt(TRCIDR4.NUMRSPAIR) + 1) * 2 &gt; n. Otherwise, direct accesses to TRCRSCTLR&lt;n&gt; are <span class="arm-defined-word">RES0</span>.</p>
+        <p>Resource selector 0 always returns FALSE.</p>
+
+      
+        <p>Resource selector 1 always returns TRUE.</p>
+
+      
+        <p>Resource selectors are implemented in pairs. Each odd numbered resource selector is part of a pair with the even numbered resource selector that is numbered as one less than it. For example, resource selectors 2 and 3 form a pair.</p>
+      <h2>Attributes</h2>
+        <p>TRCRSCTLR&lt;n&gt; is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="10"><a href="#fieldset_0-31_22">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">PAIRINV</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">INV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">GROUP</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">SELECT</a></td></tr></tbody></table><h4 id="fieldset_0-31_22">Bits [31:22]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">PAIRINV, bit [21]<span class="condition"><br/>When n MOD 2 == 0:
+                        </span></h4><div class="field">
+      <p>Controls whether the combined result from a resource selector pair is inverted.</p>
+    <table class="valuetable"><tr><th>PAIRINV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not invert the combined output of the 2 resource selectors.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Invert the combined output of the 2 resource selectors.</p>
+        </td></tr></table><p>If:</p>
+<ul>
+<li>A is the register TRCRSCTLR&lt;n&gt;.
+</li><li>B is the register TRCRSCTLR&lt;n+1&gt;.
+</li></ul>
+<p>Then the combined output of the 2 resource selectors A and B depends on the value of (A.PAIRINV, A.INV, B.INV) as follows:</p>
+<ul>
+<li><span class="binarynumber">0b000</span> -&gt; A and B.
+</li><li><span class="binarynumber">0b001</span> -&gt; Reserved.
+</li><li><span class="binarynumber">0b010</span> -&gt; not(A) and B.
+</li><li><span class="binarynumber">0b011</span> -&gt; not(A) and not(B).
+</li><li><span class="binarynumber">0b100</span> -&gt; not(A) or not(B).
+</li><li><span class="binarynumber">0b101</span> -&gt; not(A) or B.
+</li><li><span class="binarynumber">0b110</span> -&gt; Reserved.
+</li><li><span class="binarynumber">0b111</span> -&gt; A or B.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">INV, bit [20]</h4><div class="field">
+      <p>Controls whether the resource, that TRCRSCTLR&lt;n&gt;.GROUP and TRCRSCTLR&lt;n&gt;.SELECT selects, is inverted.</p>
+    <table class="valuetable"><tr><th>INV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not invert the output of this selector.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Invert the output of this selector.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_16">GROUP, bits [19:16]</h4><div class="field">
+      <p>Selects a group of resources.</p>
+    <table class="valuetable"><tr><th>GROUP</th><th>Meaning</th><th>SELECT</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>External Input Selectors.</p>
+        </td><td><a href="#fieldset_0-15_0_0">SELECT encoding for External Input Selectors</a></td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>PE Comparator Inputs.</p>
+        </td><td><a href="#fieldset_0-15_0_1">SELECT encoding for PE Comparator Inputs</a></td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Counters and Sequencer.</p>
+        </td><td><a href="#fieldset_0-15_0_2">SELECT encoding for Counters and Sequencer</a></td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Single-shot Comparator Controls.</p>
+        </td><td><a href="#fieldset_0-15_0_3">SELECT encoding for Single-shot Comparator Controls</a></td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Single Address Comparators.</p>
+        </td><td><a href="#fieldset_0-15_0_4">SELECT encoding for Single Address Comparators</a></td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Address Range Comparators.</p>
+        </td><td><a href="#fieldset_0-15_0_5">SELECT encoding for Address Range Comparators</a></td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Context Identifier Comparators.</p>
+        </td><td><a href="#fieldset_0-15_0_6">SELECT encoding for Context Identifier Comparators</a></td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Virtual Context Identifier Comparators.</p>
+        </td><td><a href="#fieldset_0-15_0_7">SELECT encoding for Virtual Context Identifier Comparators</a></td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_0">SELECT, bits [15:0]</h4><div class="field">
+      <p>Resource Specific Controls. Contains the controls specific to the resource group selected by GROUP, described in the following sections.</p>
+    <div class="partial_fieldset"><h3 id="fieldset_0-15_0_0">SELECT encoding for External Input Selectors</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-15_0_0-15_4">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_0-3_0">EXTIN[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_0-3_0">EXTIN[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_0-3_0">EXTIN[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_0-3_0">EXTIN[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_0-15_4">Bits [15:4]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_0-3_0">EXTIN[&lt;m&gt;], bit [m], for m = 3 to 0</h4><div class="field">
+            <p>Selects one or more External Inputs.</p>
+          <table class="valuetable"><tr><th>EXTIN[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore EXTIN &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select EXTIN &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr5.html">TRCIDR5</a>.NUMEXTINSEL.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_1">SELECT encoding for PE Comparator Inputs</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_1-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_1-7_0">PECOMP[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_1-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_1-7_0">PECOMP[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field">
+            <p>Selects one or more PE Comparator Inputs.</p>
+          <table class="valuetable"><tr><th>PECOMP[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore PE Comparator Input &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select PE Comparator Input &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMPC.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_2">SELECT encoding for Counters and Sequencer</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_2-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-7_4">SEQUENCER[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-7_4">SEQUENCER[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-7_4">SEQUENCER[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-7_4">SEQUENCER[0]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-3_0">COUNTERS[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-3_0">COUNTERS[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-3_0">COUNTERS[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_2-3_0">COUNTERS[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_2-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_2-7_4">SEQUENCER[&lt;m&gt;], bit [m+4], for m = 3 to 0</h4><div class="field">
+            <p>Sequencer states.</p>
+          <table class="valuetable"><tr><th>SEQUENCER[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Sequencer state &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Sequencer state &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr5.html">TRCIDR5</a>.NUMSEQSTATE.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_0_2-3_0">COUNTERS[&lt;m&gt;], bit [m], for m = 3 to 0</h4><div class="field">
+            <p>Counters resources at zero.</p>
+          <table class="valuetable"><tr><th>COUNTERS[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Counter &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Counter &lt;m&gt; is zero.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr5.html">TRCIDR5</a>.NUMCNTR.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_3">SELECT encoding for Single-shot Comparator Controls</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_3-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_3-7_0">SINGLE_SHOT[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_3-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_3-7_0">SINGLE_SHOT[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field">
+            <p>Selects one or more Single-shot Comparator Controls.</p>
+          <table class="valuetable"><tr><th>SINGLE_SHOT[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Single-shot Comparator Control &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Single-shot Comparator Control &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMSSCC.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_4">SELECT encoding for Single Address Comparators</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[15]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[14]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[13]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[12]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[11]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[10]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[9]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[8]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_4-15_0">SAC[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_4-15_0">SAC[&lt;m&gt;], bit [m], for m = 15 to 0</h4><div class="field">
+            <p>Selects one or more Single Address Comparators.</p>
+          <table class="valuetable"><tr><th>SAC[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Single Address Comparator &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Single Address Comparator &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= 2 × <a href="ext-trcidr4.html">TRCIDR4</a>.NUMACPAIRS.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_5">SELECT encoding for Address Range Comparators</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_5-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_5-7_0">ARC[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_5-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_5-7_0">ARC[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field">
+            <p>Selects one or more Address Range Comparators.</p>
+          <table class="valuetable"><tr><th>ARC[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Address Range Comparator &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Address Range Comparator &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMACPAIRS.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_6">SELECT encoding for Context Identifier Comparators</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_6-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_6-7_0">CID[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_6-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_6-7_0">CID[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field">
+            <p>Selects one or more Context Identifier Comparators.</p>
+          <table class="valuetable"><tr><th>CID[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Context Identifier Comparator &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Context Identifier Comparator &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMCIDC.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-15_0_7">SELECT encoding for Virtual Context Identifier Comparators</h3><table class="regdiagram"><thead><tr><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-15_0_7-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0_7-7_0">VMID[0]</a></td></tr></tbody></table><h4 id="fieldset_0-15_0_7-15_8">Bits [15:8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-15_0_7-7_0">VMID[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field">
+            <p>Selects one or more Virtual Context Identifier Comparators.</p>
+          <table class="valuetable"><tr><th>VMID[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Ignore Virtual Context Identifier Comparator &lt;m&gt;.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Select Virtual Context Identifier Comparator &lt;m&gt;.</p>
+              </td></tr></table>
+            <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMVMIDC.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div></div></div><h2>Accessing TRCRSCTLR&lt;n&gt;</h2>
+        <p>Must be programmed if any of the following are true:</p>
+
+      
+        <ul>
+<li><a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.RLDEVENT.TYPE == 0 and <a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.RLDEVENT.SEL == n.
+</li><li><a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.RLDEVENT.TYPE == 1 and <a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.RLDEVENT.SEL == n/2.
+</li><li><a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.CNTEVENT.TYPE == 0 and <a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.CNTEVENT.SEL == n.
+</li><li><a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.CNTEVENT.TYPE == 1 and <a href="ext-trccntctlrn.html">TRCCNTCTLR&lt;a&gt;</a>.CNTEVENT.SEL == n/2.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT0.TYPE == 0 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT0.SEL == n.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT0.TYPE == 1 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT0.SEL == n/2.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT1.TYPE == 0 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT1.SEL == n.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT1.TYPE == 1 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT1.SEL == n/2.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT2.TYPE == 0 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT2.SEL == n.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT2.TYPE == 1 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT2.SEL == n/2.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT3.TYPE == 0 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT3.SEL == n.
+</li><li><a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT3.TYPE == 1 and <a href="ext-trceventctl0r.html">TRCEVENTCTL0R</a>.EVENT3.SEL == n/2.
+</li><li><a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.B.TYPE == 0 and <a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.B.SEL = n.
+</li><li><a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.B.TYPE == 1 and <a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.B.SEL = n/2.
+</li><li><a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.F.TYPE == 0 and <a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.F.SEL = n.
+</li><li><a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.F.TYPE == 1 and <a href="ext-trcseqevrn.html">TRCSEQEVR&lt;a&gt;</a>.F.SEL = n/2.
+</li><li><a href="ext-trcseqrstevr.html">TRCSEQRSTEVR</a>.RST.TYPE == 0 and <a href="ext-trcseqrstevr.html">TRCSEQRSTEVR</a>.RST.SEL == n.
+</li><li><a href="ext-trcseqrstevr.html">TRCSEQRSTEVR</a>.RST.TYPE == 1 and <a href="ext-trcseqrstevr.html">TRCSEQRSTEVR</a>.RST.SEL == n/2.
+</li><li><a href="ext-trctsctlr.html">TRCTSCTLR</a>.EVENT.TYPE == 0 and <a href="ext-trctsctlr.html">TRCTSCTLR</a>.EVENT.SEL == n.
+</li><li><a href="ext-trctsctlr.html">TRCTSCTLR</a>.EVENT.TYPE == 1 and <a href="ext-trctsctlr.html">TRCTSCTLR</a>.EVENT.SEL == n/2.
+</li><li><a href="ext-trcvictlr.html">TRCVICTLR</a>.EVENT.TYPE == 0 and <a href="ext-trcvictlr.html">TRCVICTLR</a>.EVENT.SEL == n.
+</li><li><a href="ext-trcvictlr.html">TRCVICTLR</a>.EVENT.TYPE == 1 and <a href="ext-trcvictlr.html">TRCVICTLR</a>.EVENT.SEL == n/2.
+</li></ul>
+
+      
+        <p>Writes are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> if the trace unit is not in the Idle state.</p>
+      <h4>TRCRSCTLR&lt;n&gt; can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x200</span> + (4 * n)</td><td>TRCRSCTLR&lt;n&gt;</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

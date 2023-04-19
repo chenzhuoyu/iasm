@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HSCTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HSCTLR, Hyp System Control Register</h1><p>The HSCTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Provides top level control of the system operation in Hyp mode.</p>
+      <h2>Configuration</h2><p>AArch32 System register HSCTLR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-sctlr_el2.html">SCTLR_EL2[31:0]</a>.</p><p>This register is present only when EL2 is capable of using AArch32. Otherwise, direct accesses to HSCTLR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>HSCTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31-1">DSSBS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">TE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-29_28">RES1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-27_26">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">EE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-23_22">RES1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-21_20">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">WXN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">RES1</a></td><td class="lr" colspan="3"><a href="#fieldset_0-15_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12">I</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">RES1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-10_9">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">SED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">ITD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">CP15BEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">LSMAOE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">nTLSMD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">M</a></td></tr></tbody></table><h4 id="fieldset_0-31_31-1">DSSBS, bit [31]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field">
+      <p>Default PSTATE.SSBS value on Exception Entry. The defined values are:</p>
+    <table class="valuetable"><tr><th>DSSBS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>PSTATE.SSBS is set to 0 on an exception to Hyp mode.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>PSTATE.SSBS is set to 1 on an exception to Hyp mode.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-31_31-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30">TE, bit [30]</h4><div class="field">
+      <p>T32 Exception Enable. This bit controls whether exceptions to EL2 are taken to A32 or T32 state:</p>
+    <table class="valuetable"><tr><th>TE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exceptions, including reset, taken to A32 state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exceptions, including reset, taken to T32 state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-29_28">Bits [29:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-27_26">Bits [27:26]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_25">EE, bit [25]</h4><div class="field">
+      <p>The value of the PSTATE.E bit on entry to Hyp mode, the endianness of stage 1 translation table walks in the EL2 translation regime, and the endianness of stage 2 translation table walks in the PL1&amp;0 translation regime.</p>
+    <table class="valuetable"><tr><th>EE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Little-endian. PSTATE.E is cleared to 0 on entry to Hyp mode. Stage 1 translation table walks in the EL2 translation regime, and stage 2 translation table walks in the PL1&amp;0 translation regime are little-endian.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Big-endian. PSTATE.E is set to 1 on entry to Hyp mode. Stage 1 translation table walks in the EL2 translation regime, and stage 2 translation table walks in the PL1&amp;0 translation regime are big-endian.</p>
+        </td></tr></table><p>If an implementation does not provide Big-endian support at Exception levels higher than EL0, this bit is <span class="arm-defined-word">RES0</span>.</p>
+<p>If an implementation does not provide Little-endian support at Exception levels higher than EL0, this bit is <span class="arm-defined-word">RES1</span>.</p><p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-24_24">Bit [24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_22">Bits [23:22]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-21_20">Bits [21:20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19">WXN, bit [19]</h4><div class="field">
+      <p>Write permission implies XN (Execute-never). For the EL2 translation regime, this bit can force all memory regions that are writable to be treated as XN.</p>
+    <table class="valuetable"><tr><th>WXN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control has no effect on memory access permissions.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Any region that is writable in the EL2 translation regime is forced to XN for accesses from software executing at EL2.</p>
+        </td></tr></table><p>This bit applies only when HSCTLR.M bit is set.</p>
+<p>This bit is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-18_18">Bit [18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-17_17">Bit [17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16">Bit [16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-15_13">Bits [15:13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12">I, bit [12]</h4><div class="field">
+      <p>Instruction access Cacheability control, for accesses at EL2:</p>
+    <table class="valuetable"><tr><th>I</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>All instruction access to Normal memory from EL2 are Non-cacheable for all levels of instruction and unified cache.</p>
+<p>If the value of HSCTLR.M is 0, instruction accesses from stage 1 of the EL2 translation regime are to Normal, Outer Shareable, Inner Non-cacheable, Outer Non-cacheable memory.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>All instruction access to Normal memory from EL2 can be cached at all levels of instruction and unified cache.</p>
+<p>If the value of HSCTLR.M is 0, instruction accesses from stage 1 of the EL2 translation regime are to Normal, Outer Shareable, Inner Write-Through, Outer Write-Through memory.</p></td></tr></table>
+      <p>This bit has no effect on the PL1&amp;0 translation regime.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-11_11">Bit [11]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-10_9">Bits [10:9]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8">SED, bit [8]</h4><div class="field">
+      <p>SETEND instruction disable. Disables SETEND instructions at EL2.</p>
+    <table class="valuetable"><tr><th>SED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>SETEND instruction execution is enabled at EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>SETEND instructions are <span class="arm-defined-word">UNDEFINED</span> at EL2.</p>
+        </td></tr></table>
+      <p>If the implementation does not support mixed-endian operation at EL2, this bit is <span class="arm-defined-word">RES1</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7">ITD, bit [7]</h4><div class="field">
+      <p>IT Disable. Disables some uses of IT instructions at EL2.</p>
+    <table class="valuetable"><tr><th>ITD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>All IT instruction functionality is enabled at EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>Any attempt at EL2 to execute any of the following is <span class="arm-defined-word">UNDEFINED</span>:</p>
+<ul>
+<li>All encodings of the IT instruction with hw1[3:0]!=1000.
+</li><li>All encodings of the subsequent instruction with the following values for hw1:<ul>
+<li>11xxxxxxxxxxxxxx: All 32-bit instructions, and the 16-bit instructions B, UDF, SVC, LDM, and STM.
+</li><li>1011xxxxxxxxxxxx: All instructions in <span class="xref">'Miscellaneous 16-bit instructions'</span>.
+</li><li>10100xxxxxxxxxxx: ADD Rd, PC, #imm
+</li><li>01001xxxxxxxxxxx: LDR Rd, [PC, #imm]
+</li><li>0100x1xxx1111xxx: ADD Rdn, PC; CMP Rn, PC; MOV Rd, PC; BX PC; BLX PC.
+</li><li>010001xx1xxxx111: ADD PC, Rm; CMP PC, Rm; MOV PC, Rm. This pattern also covers unpredictable cases with BLX Rn.
+</li></ul>
+
+</li></ul>
+<p>These instructions are always <span class="arm-defined-word">UNDEFINED</span>, regardless of whether they would pass or fail the condition code check that applies to them as a result of being in an IT block.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the IT instruction is treated as:</p>
+<ul>
+<li>A 16-bit instruction, that can only be followed by another 16-bit instruction.
+</li><li>The first half of a 32-bit instruction.
+</li></ul>
+<p>This means that, for the situations that are <span class="arm-defined-word">UNDEFINED</span>, either the second 16-bit instruction or the 32-bit instruction is <span class="arm-defined-word">UNDEFINED</span>.</p>
+<p>An implementation might vary dynamically as to whether IT is treated as a 16-bit instruction or the first half of a 32-bit instruction.</p></td></tr></table><p>If an instruction in an active IT block that would be disabled by this field sets this field to 1 then behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>. For more information, see <span class="xref">'Changes to an ITD control by an instruction in an IT block'</span>.</p>
+<p>ITD is optional, but if it is implemented in the HSCTLR then it must also be implemented in the <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>, <a href="AArch64-sctlr_el2.html">SCTLR_EL2</a>, and <a href="AArch32-sctlr.html">SCTLR</a>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>When an implementation does not implement ITD, access to this field is <span class="access_level">RAZ/WI</span>.</p></div><h4 id="fieldset_0-6_6">Bit [6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5">CP15BEN, bit [5]</h4><div class="field">
+      <p>System instruction memory barrier enable. Enables accesses to the DMB, DSB, and ISB System instructions in the (coproc==<span class="binarynumber">0b1111</span>) encoding space from EL2:</p>
+    <table class="valuetable"><tr><th>CP15BEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL2 execution of the <a href="AArch32-cp15dmb.html">CP15DMB</a>, <a href="AArch32-cp15dsb.html">CP15DSB</a>, and <a href="AArch32-cp15isb.html">CP15ISB</a> instructions is <span class="arm-defined-word">UNDEFINED</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL2 execution of the <a href="AArch32-cp15dmb.html">CP15DMB</a>, <a href="AArch32-cp15dsb.html">CP15DSB</a>, and <a href="AArch32-cp15isb.html">CP15ISB</a> instructions is enabled.</p>
+        </td></tr></table>
+      <p>CP15BEN is optional, but if it is implemented in the HSCTLR then it must also be implemented in the <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>, <a href="AArch64-sctlr_el2.html">SCTLR_EL2</a>, and <a href="AArch32-sctlr.html">SCTLR</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>When an implementation does not implement CP15BEN, access to this field is <span class="access_level">RAO/WI</span>.</p></div><h4 id="fieldset_0-4_4-1">LSMAOE, bit [4]<span class="condition"><br/>When FEAT_LSMAOC is implemented:
+                        </span></h4><div class="field">
+      <p>Load Multiple and Store Multiple Atomicity and Ordering Enable.</p>
+    <table class="valuetable"><tr><th>LSMAOE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>For all memory accesses at EL2, A32 and T32 Load Multiple and Store Multiple can have an interrupt taken during the sequence memory accesses, and the memory accesses are not required to be ordered.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The ordering and interrupt behavior of A32 and T32 Load Multiple and Store Multiple at EL2 is as defined for Armv8.0.</p>
+        </td></tr></table>
+      <p>This bit is permitted to be cached in a TLB.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">nTLSMD, bit [3]<span class="condition"><br/>When FEAT_LSMAOC is implemented:
+                        </span></h4><div class="field">
+      <p>No Trap Load Multiple and Store Multiple to Device-nGRE/Device-nGnRE/Device-nGnRnE memory.</p>
+    <table class="valuetable"><tr><th>nTLSMD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>All memory accesses by A32 and T32 Load Multiple and Store Multiple at EL2 that are marked at stage 1 as Device-nGRE/Device-nGnRE/Device-nGnRnE memory are trapped and generate a stage 1 Alignment fault.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All memory accesses by A32 and T32 Load Multiple and Store Multiple at EL2 that are marked at stage 1 as Device-nGRE/Device-nGnRE/Device-nGnRnE memory are not trapped.</p>
+        </td></tr></table>
+      <p>This bit is permitted to be cached in a TLB.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-2_2">C, bit [2]</h4><div class="field">
+      <p>Cacheability control, for data accesses at EL2:</p>
+    <table class="valuetable"><tr><th>C</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>All data access to Normal memory from EL2, and all accesses to the EL2 translation tables, are Non-cacheable for all levels of data and unified cache.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All data access to Normal memory from EL2, and all accesses to the EL2 translation tables, can be cached at all levels of data and unified cache.</p>
+        </td></tr></table>
+      <p>This bit has no effect on the PL1&amp;0 translation regime.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1">A, bit [1]</h4><div class="field">
+      <p>Alignment check enable. This is the enable bit for Alignment fault checking at EL2:</p>
+    <table class="valuetable"><tr><th>A</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Alignment fault checking disabled when executing at EL2.</p>
+<p>Instructions that load or store one or more registers, other than load/store exclusive and load-acquire/store-release, do not check that the address being accessed is aligned to the size of the data element or data elements being accessed.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Alignment fault checking enabled when executing at EL2.</p>
+<p>All instructions that load or store one or more registers have an alignment check that the address being accessed is aligned to the size of the data element or data elements being accessed. If this check fails it causes an Alignment fault, which is taken as a Data Abort exception.</p></td></tr></table>
+      <p>Load/store exclusive and load-acquire/store-release instructions have an alignment check regardless of the value of the A bit.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">M, bit [0]</h4><div class="field">
+      <p>MMU enable for EL2 stage 1 address translation. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>M</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>EL2 stage 1 address translation disabled.</p>
+<p>See the HSCTLR.I field for the behavior of instruction accesses to Normal memory.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL2 stage 1 address translation enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL2, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing HSCTLR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0001</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    R[t] = HSCTLR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        R[t] = HSCTLR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0001</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    HSCTLR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        HSCTLR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

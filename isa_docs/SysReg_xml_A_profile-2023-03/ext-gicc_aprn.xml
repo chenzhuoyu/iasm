@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICC_APR&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>CPU Interface Active Priorities Registers</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3_LEGACY is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>3</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC CPU interface</reg_component>
+    <reg_offset><hexnumber>0x00D0</hexnumber> + (4 * n)</reg_offset>
+    <reg_instance>GICC_APR&lt;n&gt;</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Non-secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about interrupt active priorities.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC physical CPU interface registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The contents of these registers are <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> with the one architectural requirement that the value <hexnumber>0x00000000</hexnumber> is consistent with no interrupts being active.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS == 0, these registers are Banked, and Non-secure accesses do not affect Secure operation. The Secure copies of these registers hold active priorities for Group 0 interrupts, and the Non-secure copies provide a Non-secure view of the active priorities for Group 1 interrupts.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>GICC_APR1 is implemented only in implementations that support 6 or more bits of priority. GICC_APR2 and GICC_APR3 are implemented only in implementations that support 7 bits of priority.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS==1, these registers hold the active priorities for Group 0 interrupts, and the active priorities for Group 1 interrupts are held by the <register_link state="ext" id="ext-gicc_nsaprn.xml">GICC_NSAPR&lt;n&gt;</register_link> registers.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICC_APR&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="3"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>These registers are used only when System register access is not enabled. When System register access is enabled the following registers provide equivalent functionality:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>In AArch64:<list type="unordered">
+<listitem><content>For Group 0, <register_link state="AArch64" id="AArch64-icc_ap0rn_el1.xml">ICC_AP0R&lt;n&gt;_EL1</register_link>.</content>
+</listitem><listitem><content>For Group 1, <register_link state="AArch64" id="AArch64-icc_ap1rn_el1.xml">ICC_AP1R&lt;n&gt;_EL1</register_link>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>In AArch32:<list type="unordered">
+<listitem><content>For Group 0, <register_link state="AArch32" id="AArch32-icc_ap0rn.xml">ICC_AP0R&lt;n&gt;</register_link>.</content>
+</listitem><listitem><content>For Group 1, <register_link state="AArch32" id="AArch32-icc_ap1rn.xml">ICC_AP1R&lt;n&gt;</register_link>.</content>
+</listitem></list>
+</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

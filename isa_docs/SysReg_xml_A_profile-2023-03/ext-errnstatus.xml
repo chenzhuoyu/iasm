@@ -1,0 +1,2659 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ERR&lt;n&gt;STATUS</reg_short_name>
+        
+        <reg_long_name>Error Record &lt;n&gt; Primary Status Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when error record n is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>65534</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>RAS</reg_component>
+    <reg_offset><hexnumber>0x010</hexnumber> + (64 * n)</reg_offset>
+    <reg_instance>ERR&lt;n&gt;STATUS</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When ERR&lt;n&gt;STATUS.V != 0, ERR&lt;n&gt;STATUS.V is not being cleared to 0b0 in the same write and RAS System Architecture v1p1 is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When ERR&lt;n&gt;STATUS.UE != 0, ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write and RAS System Architecture v1p1 is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When ERR&lt;n&gt;STATUS.OF != 0, ERR&lt;n&gt;STATUS.OF is not being cleared to 0b0 in the same write and RAS System Architecture v1p1 is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When ERR&lt;n&gt;STATUS.CE != 0b00, ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write and RAS System Architecture v1p1 is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When ERR&lt;n&gt;STATUS.DE != 0, ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write and RAS System Architecture v1p1 is implemented</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>When RAS System Architecture v2 is implemented, error record &lt;n&gt; might be one of the following:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>A continuation record containing more information about the error recorded in error record &lt;n-1&gt;. In this case, ERR&lt;n&gt;STATUS contains a subset of the values of a normal error record status register.</content>
+</listitem><listitem><content>A proxy for a different RAS agent. In this case, ERR&lt;n&gt;STATUS reports the status of the RAS agent.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Otherwise, ERR&lt;n&gt;STATUS contains status information for error record &lt;n&gt;, including:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>Whether any error has been detected (valid).</content>
+</listitem><listitem><content>Whether any detected error was not corrected, and returned to a Requester.</content>
+</listitem><listitem><content>Whether any detected error was not corrected and deferred.</content>
+</listitem><listitem><content>Whether an error record has been discarded because additional errors have been detected before the first error was handled by software (overflow).</content>
+</listitem><listitem><content>Whether any error has been reported.</content>
+</listitem><listitem><content>Whether the other error record registers contain valid information.</content>
+</listitem><listitem><content>Whether the error was reported because poison data was detected or because a corrupt value was detected by an error detection code.</content>
+</listitem><listitem><content>A primary error code.</content>
+</listitem><listitem><content>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> extended error code.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Within this register:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>ERR&lt;n&gt;STATUS.{AV, V, MV} are valid bits that define whether error record &lt;n&gt; registers are valid.</content>
+</listitem><listitem><content>ERR&lt;n&gt;STATUS.{UE, OF, CE, DE, UET} encode the types of error or errors recorded.</content>
+</listitem><listitem><content>ERR&lt;n&gt;STATUS.{CI, ER, PN, IERR, SERR} are syndrome fields.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para><register_link id="ext-errnfr.xml" state="ext">ERRFRPFGF[FirstRecordOfNode(n)]</register_link> describes the features implemented by the node that owns error record &lt;n&gt;. FirstRecordOfNode(n) is the index of the first error record owned by the same node as error record &lt;n&gt;. If the node owns a single record then FirstRecordOfNode(n) = n.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>For <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> fields in ERR&lt;n&gt;STATUS, writing zero returns the error record to an initial quiescent state.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>In particular, if any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> syndrome fields might generate a Fault Handling or Error Recovery Interrupt request, writing zero is sufficient to deactivate the Interrupt request.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Fields that are read-only, nonzero, and ignore writes are compliant with this requirement.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <note><para>Arm recommends that any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> syndrome field that can generate a Fault Handling, Error Recovery, Critical, or <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>, interrupt request is disabled at Cold reset and is enabled by software writing an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> nonzero value to an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> field in <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ERR&lt;n&gt;STATUS is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When RAS System Architecture v2 is implemented, ERRFR[FirstRecordOfNode(n)].ED == 0b00 and ERRFR[FirstRecordOfNode(n)].ERT == 0b01</fields_condition>
+  <fields_instance>continuation record, RAS System Architecture v2 is implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AV</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Address Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> contains an additional address associated with the highest priority error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record n includes an address associated with an error</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Status Register Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS valid. Additional syndrome has been recorded.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-28_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>28:27</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MV</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Miscellaneous Registers Valid.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>If the ERR&lt;n&gt;MISC&lt;m&gt; registers can contain additional information for a previously recorded error, then the contents must be self-describing to software or a user. For example, certain fields might relate only to Corrected errors, and other fields only to the most recent error that was not discarded.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;MISC&lt;m&gt; not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The contents of the ERR&lt;n&gt;MISC&lt;m&gt; registers contain additional information for an error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record &lt;n&gt; includes additional information for an error</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-25_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ">
+    <field_msb>25</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>25:23</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-22_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>22:20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IERR</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> additional error code. Used with any primary error code ERR&lt;n&gt;STATUS.SERR value. Further <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> information can be placed in the ERR&lt;n&gt;MISC&lt;m&gt; registers.</para>
+    </field_description>
+    <field_description order="after"><para>The implemented set of valid values that this field can take is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If any value not in this set is written to this register, then the value read back from this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<note><para>This means that one or more bits of this field might be implemented as fixed read-as-zero or read-as-one values.</para></note></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERRPFGF[FirstRecordOfNode(n)].SYN == 0 or the node that owns error record n does not implement the Common Fault Injection Model Extension</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When RAS System Architecture v2 is implemented, ERRFR[FirstRecordOfNode(n)].ED == 0b11 and ERRFR[FirstRecordOfNode(n)].ERT == 0b01</fields_condition>
+  <fields_instance>proxy for a RAS agent, RAS System Architecture v2 is implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-63_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>63:31</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>RAS agent error status.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>RAS agent error status is not asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>RAS agent error status is asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ERI</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>RAS agent Error Recovery Interrupt.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>RAS agent error recovery interrupt is not asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>RAS agent error recovery interrupt is asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-28_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>28:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FHI</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>RAS agent Fault Handling Interrupt.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>RAS agent fault handling interrupt is not asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>RAS agent fault handling interrupt is asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CRI</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>RAS agent criticial error interrupt.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>RAS agent criticial error interrupt is not asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>RAS agent criticial error interrupt is asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-18_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>18:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_2" length="64">
+  <fields_condition>When RAS System Architecture v1p1 is implemented</fields_condition>
+  <fields_instance>normal record, RAS System Architecture v1.1 is implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_2-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AV</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Address Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> contains an address associated with the highest priority error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record n includes an address associated with an error</fields_condition>
+  </field>
+  <field id="fieldset_2-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_2-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Status Register Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS valid. At least one error has been recorded.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UE</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Uncorrected Error.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No errors have been detected, or all detected errors have been either corrected or deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>At least one detected error was not corrected and not deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ER</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Error Reported.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>An in-band error response signaled by the component might be masked and not generate any exception.</para>
+      </note>
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether an uncorrected error that is deferred and recorded as a Deferred error, but is not deferred to the Requester, can signal an in-band error response to the Requester, causing this field to be set to 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No in-band error response (External Abort) signaled to the Requester making the access or other transaction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>An in-band error response was signaled by the component to the Requester making the access or other transaction. This can be because any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.UE field, or applicable one of the <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE} fields, is implemented and was 1 when an error was detected and not corrected.</content>
+</listitem><listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE, UE} fields are not implemented and the component always reports errors.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When in-band error responses can be returned for a Deferred error</fields_condition>
+  </field>
+  <field id="fieldset_2-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ER</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Error Reported.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>An in-band error response signaled by the component might be masked and not generate any exception.</para>
+      </note>
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether an uncorrected error that is deferred and recorded as a Deferred error, but is not deferred to the Requester, can signal an in-band error response to the Requester, causing this field to be set to 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No in-band error response (External Abort) signaled to the Requester making the access or other transaction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>An in-band error response was signaled by the component to the Requester making the access or other transaction. This can be because any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.UE field, or applicable one of the <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE} fields, is implemented and was 1 when an error was detected and not corrected.</content>
+</listitem><listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE, UE} fields are not implemented and the component always reports errors.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When in-band error responses are never be returned for a Deferred error</fields_condition>
+  </field>
+  <field id="fieldset_2-28_28-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_2-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OF</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Overflow.</para>
+<para>Indicates that multiple errors have been detected. This field is set to 1 when one of the following occurs:</para>
+<list type="unordered">
+<listitem><content>A Corrected error counter is implemented, an error is counted, and the counter overflows.</content>
+</listitem><listitem><content>ERR&lt;n&gt;STATUS.V was previously 1, a Corrected error counter is not implemented, and a Corrected error is recorded.</content>
+</listitem><listitem><content>ERR&lt;n&gt;STATUS.V was previously 1, and a type of error other than a Corrected error is recorded.</content>
+</listitem></list>
+<para>Otherwise, this field is unchanged when an error is recorded.</para>
+<para>If a Corrected error counter is implemented, then:</para>
+<list type="unordered">
+<listitem><content>A direct write that modifies the counter overflow flag indirectly might set this field to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem><listitem><content>A direct write to this field that clears this field to zero might indirectly set the counter overflow flag to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Since this field was last cleared to zero, no error syndrome has been discarded and, if a Corrected error counter is implemented, it has not overflowed.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Since this field was last cleared to zero, at least one error syndrome has been discarded or, if a Corrected error counter is implemented, it might have overflowed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MV</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Miscellaneous Registers Valid.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>If the ERR&lt;n&gt;MISC&lt;m&gt; registers can contain additional information for a previously recorded error, then the contents must be self-describing to software or a user. For example, certain fields might relate only to Corrected errors, and other fields only to the most recent error that was not discarded.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;MISC&lt;m&gt; not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The contents of the ERR&lt;n&gt;MISC&lt;m&gt; registers contain additional information for an error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record &lt;n&gt; includes additional information for an error</fields_condition>
+  </field>
+  <field id="fieldset_2-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_2-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CE</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Corrected Error.</para>
+    </field_description>
+    <field_description order="after"><para>The mechanism by which a component or node detects whether a Corrected error is transient or persistent is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If no such mechanism is implemented, then the node sets this field to <binarynumber>0b10</binarynumber> when a corrected error is recorded.</para>
+<para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write ones to this field to clear this field to zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>No errors were corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>At least one transient error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>At least one error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>At least one persistent error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-23_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DE</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>23</rel_range>
+    <field_description order="before">
+      <para>Deferred Error.</para>
+    </field_description>
+    <field_description order="after"><para>Support for deferring errors is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No errors were deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>At least one error was not corrected and deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PN</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>Poison.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Uncorrected error or Deferred error recorded because a corrupt value was detected, for example, by an error detection code (EDC), or Corrected error recorded.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Uncorrected error or Deferred error recorded because a poison value was detected.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-21_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UET</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>21:20</rel_range>
+    <field_description order="before">
+      <para>Uncorrected Error Type. Describes the state of the component after detecting or consuming an Uncorrected error.</para>
+    </field_description>
+    <field_description order="after"><para>UER can mean either Signaled or Recoverable error, and UEO can mean either Latent or Restartable error.</para>
+<para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write ones to this field to clear this field to zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Uncontainable error (UC).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Unrecoverable error (UEU).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Latent or Restartable error (UEO).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Signaled or Recoverable error (UER).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CI</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Critical Error. Indicates whether a critical error condition has been recorded.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No critical error condition.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Critical error condition.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RV</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reset Valid. When ERR&lt;n&gt;STATUS.V is 1, indicating the error record is valid, this field indicates whether the error was recorded before or after the most recent Error Recovery reset.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is set to 0 when an error is recorded.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If the error record is valid then it was recorded after the last Error Recovery reset.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If the error record is valid then it was recorded before the last Error Recovery reset.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Error recovery">
+        <field_reset_number>1</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When RAS System Architecture v2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_2-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_2-17_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>17:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IERR</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> error code. Used with any primary error code ERR&lt;n&gt;STATUS.SERR value. Further <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> information can be placed in the ERR&lt;n&gt;MISC&lt;m&gt; registers.</para>
+    </field_description>
+    <field_description order="after"><para>The implemented set of valid values that this field can take is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If any value not in this set is written to this register, then the value read back from this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<note><para>This means that one or more bits of this field might be implemented as fixed read-as-zero or read-as-one values.</para></note></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>the node that owns error record n does not implement the Common Fault Injection Model Extension</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERRPFGF[FirstRecordOfNode(n)].SYN == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_2-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SERR</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Architecturally-defined primary error code. The primary error code might be used by a fault handling agent to triage an error without requiring device-specific code. For example, to count and threshold corrected errors in software, or generate a short log entry.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The implemented set of valid values that this field can take is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If any value not in this set is written to this register, then the value read back from this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<note><para>This means that one or more bits of this field might be implemented as fixed read-as-zero or read-as-one values.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para>No error.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> error.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x02</field_value>
+        <field_value_description>
+          <para>Data value from (non-associative) internal memory. For example, ECC from on-chip SRAM or buffer.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x03</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> pin. For example, <signal>nSEI</signal> pin.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x04</field_value>
+        <field_value_description>
+          <para>Assertion failure. For example, consistency failure.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x05</field_value>
+        <field_value_description>
+          <para>Error detected on internal data path. For example, parity on ALU result.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x06</field_value>
+        <field_value_description>
+          <para>Data value from associative memory. For example, ECC error on cache data.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x07</field_value>
+        <field_value_description>
+          <para>Address/control value from associative memory. For example, ECC error on cache tag.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x08</field_value>
+        <field_value_description>
+          <para>Data value from a TLB. For example, ECC error on TLB data.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x09</field_value>
+        <field_value_description>
+          <para>Address/control value from a TLB. For example, ECC error on TLB tag.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0A</field_value>
+        <field_value_description>
+          <para>Data value from producer. For example, parity error on write data bus.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0B</field_value>
+        <field_value_description>
+          <para>Address/control value from producer. For example, parity error on address bus.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0C</field_value>
+        <field_value_description>
+          <para>Data value from (non-associative) external memory. For example, ECC error in SDRAM.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0D</field_value>
+        <field_value_description>
+          <para>Illegal address (software fault). For example, access to unpopulated memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0E</field_value>
+        <field_value_description>
+          <para>Illegal access (software fault). For example, byte write to word register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0F</field_value>
+        <field_value_description>
+          <para>Illegal state (software fault). For example, device not ready.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x10</field_value>
+        <field_value_description>
+          <para>Internal data register. For example, parity on a SIMD&amp;FP register. For a PE, all general-purpose, stack pointer, SIMD&amp;FP, SVE, and SME registers are data registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x11</field_value>
+        <field_value_description>
+          <para>Internal control register. For example, parity on a System register. For a PE, all registers other than general-purpose, stack pointer, SIMD&amp;FP, SVE, and SME registers are control registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x12</field_value>
+        <field_value_description>
+          <para>Error response from Completer of access. For example, error response from cache write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x13</field_value>
+        <field_value_description>
+          <para>External timeout. For example, timeout on interaction with another component.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x14</field_value>
+        <field_value_description>
+          <para>Internal timeout. For example, timeout on interface within the component.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x15</field_value>
+        <field_value_description>
+          <para>Deferred error from Completer not supported at Requester. For example, poisoned data received from the Completer of an access by a Requester that cannot defer the error further.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x16</field_value>
+        <field_value_description>
+          <para>Deferred error from Requester not supported at Completer. For example, poisoned data received from the Requester of an access by a Completer that cannot defer the error further.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x17</field_value>
+        <field_value_description>
+          <para>Deferred error from Completer passed through. For example, poisoned data received from the Completer of an access and returned to the Requester.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x18</field_value>
+        <field_value_description>
+          <para>Deferred error from Requester passed through. For example, poisoned data received from the Requester of an access and deferred to the Completer.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x19</field_value>
+        <field_value_description>
+          <para>Error recorded by PCIe error logs. Indicates that the component has recorded an error in a PCIe error log. This might be the PCIe device status register, AER, DVSEC, or other mechanisms defined by PCIe.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x1A</field_value>
+        <field_value_description>
+          <para>Other internal error. For example, parity error on internal state of the component that is not covered by another primary error code.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>the node that owns error record n does not implement the Common Fault Injection Model Extension</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERRPFGF[FirstRecordOfNode(n)].SYN == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_3" length="64">
+  <fields_condition/>
+  <fields_instance>normal record, RAS System Architecture v1.0 is implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_3-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_3-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AV</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Address Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-errnaddr.xml">ERR&lt;n&gt;ADDR</register_link> contains an address associated with the highest priority error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record n includes an address associated with an error</fields_condition>
+  </field>
+  <field id="fieldset_3-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_3-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Status Register Valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;STATUS valid. At least one error has been recorded.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UE</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Uncorrected Error.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No errors have been detected, or all detected errors have been either corrected or deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>At least one detected error was not corrected and not deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF == 1</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ER</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Error Reported.</para>
+    </field_description>
+    <field_description order="after"><para>If this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero, when any of:</para>
+<list type="unordered">
+<listitem><content>Clearing ERR&lt;n&gt;STATUS.V to 0.</content>
+</listitem><listitem><content>Clearing both ERR&lt;n&gt;STATUS.{DE, UE} to 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No in-band error response (External Abort) signaled to the Requester making the access or other transaction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>An in-band error response was signaled by the component to the Requester making the access or other transaction. This can be because any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.UE field, or applicable one of the <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE} fields, is implemented and was 1 when an error was detected and not corrected.</content>
+</listitem><listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE, UE} fields are not implemented and the component always reports errors.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When in-band error responses can be returned for a Deferred error</fields_condition>
+  </field>
+  <field id="fieldset_3-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ER</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Error Reported.</para>
+    </field_description>
+    <field_description order="after"><para>If this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero, when any of:</para>
+<list type="unordered">
+<listitem><content>Clearing ERR&lt;n&gt;STATUS.V to 0.</content>
+</listitem><listitem><content>Clearing ERR&lt;n&gt;STATUS.UE to 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No in-band error response (External Abort) signaled to the Requester making the access or other transaction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>An in-band error response was signaled by the component to the Requester making the access or other transaction. This can be because any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.UE field, or applicable one of the <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE} fields, is implemented and was 1 when an error was detected and not corrected.</content>
+</listitem><listitem><content>The <register_link id="ext-errnctlr.xml" state="ext">ERRCTLR[FirstRecordOfNode(n)]</register_link>.{WUE, RUE, UE} fields are not implemented and the component always reports errors.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When in-band error responses are never be returned for a Deferred error</fields_condition>
+  </field>
+  <field id="fieldset_3-28_28-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_3-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OF</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Overflow.</para>
+<para>Indicates that multiple errors have been detected. This field is set to 1 when one of the following occurs:</para>
+<list type="unordered">
+<listitem><content>An Uncorrected error is detected and ERR&lt;n&gt;STATUS.UE == 1.</content>
+</listitem><listitem><content>A Deferred error is detected, ERR&lt;n&gt;STATUS.UE == 0 and ERR&lt;n&gt;STATUS.DE == 1.</content>
+</listitem><listitem><content>A Corrected error is detected, no Corrected error counter is implemented, ERR&lt;n&gt;STATUS.UE == 0, ERR&lt;n&gt;STATUS.DE == 0, and ERR&lt;n&gt;STATUS.CE != <binarynumber>0b00</binarynumber>. ERR&lt;n&gt;STATUS.CE might be updated for the new Corrected error.</content>
+</listitem><listitem><content>A Corrected error counter is implemented, ERR&lt;n&gt;STATUS.UE == 0, ERR&lt;n&gt;STATUS.DE == 0, and the counter overflows.</content>
+</listitem></list>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field is set to 1 when one of the following occurs:</para>
+<list type="unordered">
+<listitem><content>A Deferred error is detected and ERR&lt;n&gt;STATUS.UE == 1.</content>
+</listitem><listitem><content>A Corrected error is detected, no Corrected error counter is implemented, and ERR&lt;n&gt;STATUS.{UE, DE} != {0, 0}.</content>
+</listitem><listitem><content>A Corrected error counter is implemented, ERR&lt;n&gt;STATUS.{UE, DE} != {0, 0}, and the counter overflows.</content>
+</listitem></list>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field is cleared to 0 when one of the following occurs:</para>
+<list type="unordered">
+<listitem><content>An Uncorrected error is detected and ERR&lt;n&gt;STATUS.UE == 0.</content>
+</listitem><listitem><content>A Deferred error is detected, ERR&lt;n&gt;STATUS.UE == 0, and ERR&lt;n&gt;STATUS.DE == 0.</content>
+</listitem><listitem><content>A Corrected error is detected, ERR&lt;n&gt;STATUS.UE == 0, ERR&lt;n&gt;STATUS.DE == 0, and ERR&lt;n&gt;STATUS.CE == <binarynumber>0b00</binarynumber>.</content>
+</listitem></list>
+<para>The <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> clearing of this field might also depend on the value of the other error status fields.</para>
+<para>If a Corrected error counter is implemented, then:</para>
+<list type="unordered">
+<listitem><content>A direct write that modifies the counter overflow flag indirectly might set this field to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem><listitem><content>A direct write to this field that clears this field to 0 might indirectly set the counter overflow flag to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>If ERR&lt;n&gt;STATUS.UE == 1, then no error syndrome for an Uncorrected error has been discarded.</para>
+<para>If ERR&lt;n&gt;STATUS.UE == 0 and ERR&lt;n&gt;STATUS.DE == 1, then no error syndrome for a Deferred error has been discarded.</para>
+<para>If ERR&lt;n&gt;STATUS.UE == 0, ERR&lt;n&gt;STATUS.DE == 0, and a Corrected error counter is implemented, then the counter has not overflowed.</para>
+<para>If ERR&lt;n&gt;STATUS.UE == 0, ERR&lt;n&gt;STATUS.DE == 0, ERR&lt;n&gt;STATUS.CE != <binarynumber>0b00</binarynumber>, and no Corrected error counter is implemented, then no error syndrome for a Corrected error has been discarded.</para>
+<note><para>This field might have been set to 1 when an error syndrome was discarded and later cleared to 0 when a higher priority syndrome was recorded.</para></note></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>At least one error syndrome has been discarded or, if a Corrected error counter is implemented, it might have overflowed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MV</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Miscellaneous Registers Valid.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>If the ERR&lt;n&gt;MISC&lt;m&gt; registers can contain additional information for a previously recorded error, then the contents must be self-describing to software or a user. For example, certain fields might relate only to Corrected errors, and other fields only to the most recent error that was not discarded.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERR&lt;n&gt;MISC&lt;m&gt; not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The contents of the ERR&lt;n&gt;MISC&lt;m&gt; registers contain additional information for an error recorded by this record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="RAS System Architecture v2 is implemented and ERRFR[FirstRecordOfNode(n)].SRV == 1">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When error record &lt;n&gt; includes additional information for an error</fields_condition>
+  </field>
+  <field id="fieldset_3-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_3-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CE</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Corrected Error.</para>
+    </field_description>
+    <field_description order="after"><para>The mechanism by which a component or node detects whether a Corrected error is transient or persistent is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If no such mechanism is implemented, then the node sets this field to <binarynumber>0b10</binarynumber> when a corrected error is recorded.</para>
+<para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write ones to this field to clear this field to zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>No errors were corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>At least one transient error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>At least one error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>At least one persistent error was corrected.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF == 1</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-23_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DE</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>23</rel_range>
+    <field_description order="before">
+      <para>Deferred Error.</para>
+    </field_description>
+    <field_description order="after"><para>Support for deferring errors is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When clearing ERR&lt;n&gt;STATUS.V to 0, if this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No errors were deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>At least one error was not corrected and deferred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When ERR&lt;n&gt;STATUS.V == 0</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF == 1</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.OF is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PN</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>Poison.</para>
+    </field_description>
+    <field_description order="after"><para>If this field is nonzero, then Arm recommends that software write 1 to this field to clear this field to zero, when any of:</para>
+<list type="unordered">
+<listitem><content>Clearing ERR&lt;n&gt;STATUS.V to 0.</content>
+</listitem><listitem><content>Clearing both ERR&lt;n&gt;STATUS.{DE, UE} to 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Uncorrected error or Deferred error recorded because a corrupt value was detected, for example, by an error detection code (EDC), or Corrected error recorded.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Uncorrected error or Deferred error recorded because a poison value was detected.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-21_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UET</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>21:20</rel_range>
+    <field_description order="before">
+      <para>Uncorrected Error Type. Describes the state of the component after detecting or consuming an Uncorrected error.</para>
+    </field_description>
+    <field_description order="after"><para>UER can mean either Signaled or Recoverable error, and UEO can mean either Latent or Restartable error.</para>
+<para>If this field is nonzero, then Arm recommends that software write ones to this field to clear this field to zero, when any of:</para>
+<list type="unordered">
+<listitem><content>Clearing ERR&lt;n&gt;STATUS.V to 0.</content>
+</listitem><listitem><content>Clearing ERR&lt;n&gt;STATUS.UE to 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Uncontainable error (UC).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Unrecoverable error (UEU).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Latent or Restartable error (UEO).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Uncorrected error, Signaled or Recoverable error (UER).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>W1C</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_3-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IERR</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> error code. Used with any primary error code ERR&lt;n&gt;STATUS.SERR value. Further <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> information can be placed in the ERR&lt;n&gt;MISC&lt;m&gt; registers.</para>
+    </field_description>
+    <field_description order="after"><para>The implemented set of valid values that this field can take is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If any value not in this set is written to this register, then the value read back from this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<note><para>This means that one or more bits of this field might be implemented as fixed read-as-zero or read-as-one values.</para></note></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>the node that owns error record n does not implement the Common Fault Injection Model Extension</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERRPFGF[FirstRecordOfNode(n)].SYN == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.[DE,UE] == 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_3-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SERR</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Architecturally-defined primary error code. The primary error code might be used by a fault handling agent to triage an error without requiring device-specific code. For example, to count and threshold corrected errors in software, or generate a short log entry.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The implemented set of valid values that this field can take is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If any value not in this set is written to this register, then the value read back from this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<note><para>This means that one or more bits of this field might be implemented as fixed read-as-zero or read-as-one values.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para>No error.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> error.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x02</field_value>
+        <field_value_description>
+          <para>Data value from (non-associative) internal memory. For example, ECC from on-chip SRAM or buffer.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x03</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> pin. For example, <signal>nSEI</signal> pin.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x04</field_value>
+        <field_value_description>
+          <para>Assertion failure. For example, consistency failure.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x05</field_value>
+        <field_value_description>
+          <para>Error detected on internal data path. For example, parity on ALU result.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x06</field_value>
+        <field_value_description>
+          <para>Data value from associative memory. For example, ECC error on cache data.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x07</field_value>
+        <field_value_description>
+          <para>Address/control value from associative memory. For example, ECC error on cache tag.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x08</field_value>
+        <field_value_description>
+          <para>Data value from a TLB. For example, ECC error on TLB data.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x09</field_value>
+        <field_value_description>
+          <para>Address/control value from a TLB. For example, ECC error on TLB tag.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0A</field_value>
+        <field_value_description>
+          <para>Data value from producer. For example, parity error on write data bus.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0B</field_value>
+        <field_value_description>
+          <para>Address/control value from producer. For example, parity error on address bus.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0C</field_value>
+        <field_value_description>
+          <para>Data value from (non-associative) external memory. For example, ECC error in SDRAM.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0D</field_value>
+        <field_value_description>
+          <para>Illegal address (software fault). For example, access to unpopulated memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0E</field_value>
+        <field_value_description>
+          <para>Illegal access (software fault). For example, byte write to word register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0F</field_value>
+        <field_value_description>
+          <para>Illegal state (software fault). For example, device not ready.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x10</field_value>
+        <field_value_description>
+          <para>Internal data register. For example, parity on a SIMD&amp;FP register. For a PE, all general-purpose, stack pointer, SIMD&amp;FP, SVE, and SME registers are data registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x11</field_value>
+        <field_value_description>
+          <para>Internal control register. For example, parity on a System register. For a PE, all registers other than general-purpose, stack pointer, SIMD&amp;FP, SVE, and SME registers are control registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x12</field_value>
+        <field_value_description>
+          <para>Error response from Completer of access. For example, error response from cache write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x13</field_value>
+        <field_value_description>
+          <para>External timeout. For example, timeout on interaction with another component.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x14</field_value>
+        <field_value_description>
+          <para>Internal timeout. For example, timeout on interface within the component.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x15</field_value>
+        <field_value_description>
+          <para>Deferred error from Completer not supported at Requester. For example, poisoned data received from the Completer of an access by a Requester that cannot defer the error further.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x16</field_value>
+        <field_value_description>
+          <para>Deferred error from Requester not supported at Completer. For example, poisoned data received from the Requester of an access by a Completer that cannot defer the error further.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x17</field_value>
+        <field_value_description>
+          <para>Deferred error from Completer passed through. For example, poisoned data received from the Completer of an access and returned to the Requester.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x18</field_value>
+        <field_value_description>
+          <para>Deferred error from Requester passed through. For example, poisoned data received from the Requester of an access and deferred to the Completer.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x19</field_value>
+        <field_value_description>
+          <para>Error recorded by PCIe error logs. Indicates that the component has recorded an error in a PCIe error log. This might be the PCIe device status register, AER, DVSEC, or other mechanisms defined by PCIe.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x1A</field_value>
+        <field_value_description>
+          <para>Other internal error. For example, parity error on internal state of the component that is not covered by another primary error code.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>the node that owns error record n does not implement the Common Fault Injection Model Extension</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERRPFGF[FirstRecordOfNode(n)].SYN == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.V == 0</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE != 0b00</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.CE is not being cleared to 0b00 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE == 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.DE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level operand="AND">
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE != 0</field_access_sublevel>
+          <field_access_sublevel>ERR&lt;n&gt;STATUS.UE is not being cleared to 0b0 in the same write</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When RAS System Architecture v2 is implemented, ERRFR[FirstRecordOfNode(n)].ED == 0b00 and ERRFR[FirstRecordOfNode(n)].ERT == 0b01</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_27" msb="28" lsb="27"/>
+  <fieldat id="fieldset_0-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_23" msb="25" lsb="23"/>
+  <fieldat id="fieldset_0-22_20" msb="22" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_0-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When RAS System Architecture v2 is implemented, ERRFR[FirstRecordOfNode(n)].ED == 0b11 and ERRFR[FirstRecordOfNode(n)].ERT == 0b01</fields_condition>
+  <fieldat id="fieldset_1-63_31" msb="63" lsb="31"/>
+  <fieldat id="fieldset_1-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_1-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_1-28_25" msb="28" lsb="25"/>
+  <fieldat id="fieldset_1-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_1-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_1-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_1-18_0" msb="18" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When RAS System Architecture v1p1 is implemented</fields_condition>
+  <fieldat id="fieldset_2-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_2-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_2-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_2-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_2-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_2-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_2-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_2-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_2-23_23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_2-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_2-21_20" msb="21" lsb="20"/>
+  <fieldat id="fieldset_2-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_2-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_2-17_16" msb="17" lsb="16"/>
+  <fieldat id="fieldset_2-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_2-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition/>
+  <fieldat id="fieldset_3-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_3-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_3-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_3-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_3-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_3-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_3-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_3-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_3-23_23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_3-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_3-21_20" msb="21" lsb="20"/>
+  <fieldat id="fieldset_3-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_3-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_3-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="65534"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>ERR&lt;n&gt;STATUS.{AV, V, UE, ER, OF, MV, CE, DE, PN, UET, CI} are write-one-to-clear (W1C) fields, meaning writes of zero are ignored, and a write of one or all-ones to the field clears the field to zero. ERR&lt;n&gt;STATUS.{IERR, SERR} are read/write (RW) fields, although the set of implemented valid values is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. See also <register_link state="ext" id="ext-errnpfgf.xml">ERR&lt;n&gt;PFGF</register_link>.SYN.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>After reading ERR&lt;n&gt;STATUS, software must clear the valid fields in the register to allow new errors to be recorded. However, between reading the register and clearing the valid fields, a new error might have overwritten the register. To prevent this error being lost by software, the register prevents updates to fields that might have been updated by a new error.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RAS System Architecture v1.0 is implemented:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Writes to ERR&lt;n&gt;STATUS.{UE, DE, CE} are ignored if ERR&lt;n&gt;STATUS.OF is 1 and is not being cleared to 0.</content>
+</listitem><listitem><content>Writes to ERR&lt;n&gt;STATUS.V are ignored if any of ERR&lt;n&gt;STATUS.{UE, DE, CE} are nonzero and are not being cleared to zero.</content>
+</listitem><listitem><content>Writes to ERR&lt;n&gt;STATUS.{AV, MV} and the ERR&lt;n&gt;STATUS.{ER, PN, UET, IERR, SERR} syndrome fields are ignored if the highest priority nonzero error status field is not being cleared to zero. The error status fields in priority order from highest to lowest, are ERR&lt;n&gt;STATUS.UE, ERR&lt;n&gt;STATUS.DE, and ERR&lt;n&gt;STATUS.CE.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RAS System Architecture v1.1 is implemented, a write to the register is ignored if all of:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Any of ERR&lt;n&gt;STATUS.{V, UE, OF, CE, DE} are nonzero before the write.</content>
+</listitem><listitem><content>The write does not clear the nonzero ERR&lt;n&gt;STATUS.{V, UE, OF, CE, DE} fields to zero by writing ones to the applicable field or fields.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Some of the fields in ERR&lt;n&gt;STATUS are also defined as <arm-defined-word>UNKNOWN</arm-defined-word> where certain combinations of ERR&lt;n&gt;STATUS.{V, DE, UE} are zero. The rules for writes to ERR&lt;n&gt;STATUS allow a node to implement such a field as a fixed read-only value.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>For example, when RAS System Architecture v1.1 is implemented, a write to ERR&lt;n&gt;STATUS when ERR&lt;n&gt;STATUS.V is 1 results in either ERR&lt;n&gt;STATUS.V field being cleared to zero, or ERR&lt;n&gt;STATUS.V not changing. Since all fields in ERR&lt;n&gt;STATUS, other than ERR&lt;n&gt;STATUS.{AV, V, MV}, usually read as <arm-defined-word>UNKNOWN</arm-defined-word> values when ERR&lt;n&gt;STATUS.V is zero, this means those fields can be implemented as read-only if applicable.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>To ensure correct and portable operation, when software is clearing the valid fields in the register to allow new errors to be recorded, Arm recommends that software performs the following sequence of operations in order:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Read ERR&lt;n&gt;STATUS and determine which fields need to be cleared to zero.</content>
+</listitem><listitem><content>In a single write to ERR&lt;n&gt;STATUS:<list type="unordered">
+<listitem><content>Write ones to all the W1C fields that are nonzero in the read value.</content>
+</listitem><listitem><content>Write zero to all the W1C fields that are zero in the read value.</content>
+</listitem><listitem><content>Write zero to all the RW fields.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>Read back ERR&lt;n&gt;STATUS after the write to confirm no new fault has been recorded.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Otherwise, these fields might not have the correct value when a new fault is recorded.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

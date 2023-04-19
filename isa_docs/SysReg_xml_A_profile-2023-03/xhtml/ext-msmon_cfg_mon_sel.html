@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MSMON_CFG_MON_SEL</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MSMON_CFG_MON_SEL, MPAM Monitor Instance Selection Register</h1><p>The MSMON_CFG_MON_SEL characteristics are:</p><h2>Purpose</h2>
+        <p>Selects a monitor instance to access through the MSMON configuration and counter registers.</p>
+
+      
+        <p>MSMON_CFG_MON_SEL_s selects a Secure monitor instance to access via the Secure MPAM feature page.
+MSMON_CFG_MON_SEL_ns selects a Non-secure monitor instance to access via the Non-secure MPAM feature page.
+MSMON_CFG_MON_SEL_rt selects a Root monitor instance to access via the Root MPAM feature page.
+MSMON_CFG_MON_SEL_rl selects a Realm monitor instance to access via the Realm MPAM feature page.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>Different performance monitoring features within an MSC could have different numbers of monitor instances. See the NUM_MON field in the corresponding ID register. This means that a monitor out-of-bounds error might be signaled when an MSMON_CFG register is accessed because the value in MSMON_CFG_MON_SEL.MON_SEL is too large for the particular monitoring feature.</p></div>
+      
+        <p>To configure a monitor, set MON_SEL in this register to the index of the monitor instance to configure, then write to the MSMON_CFG_x register to set the configuration of the monitor. At a later time, read the monitor register (for example, MSMON_MBWU) to get the value of the monitor.</p>
+      <h2>Configuration</h2><p>The power domain of MSMON_CFG_MON_SEL is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented and (MPAMF_IDR.HAS_MSMON == 1, or (MPAMF_IDR.HAS_IMPL_IDR == 1 and MPAMF_IDR.EXT == 0) or (MPAMF_IDR.HAS_IMPL_IDR == 1, MPAMF_IDR.EXT == 1 and MPAMF_IDR.NO_IMPL_MSMON == 0)). Otherwise, direct accesses to MSMON_CFG_MON_SEL are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MSMON_CFG_MON_SEL is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24-1">RIS</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">MON_SEL</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">Bits [31:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_24-1">RIS, bits [27:24]<span class="condition"><br/>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented), MPAMF_IDR.EXT == 1 and MPAMF_IDR.HAS_RIS == 1:
+                        </span></h4><div class="field">
+      <p>Resource Instance Selector. RIS selects one resource to configure through MSMON_CFG registers.</p>
+    </div><h4 id="fieldset_0-27_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_16">Bits [23:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">MON_SEL, bits [15:0]</h4><div class="field"><p>Selects the monitor instance to configure or read.</p>
+<p>Reads and writes to other MSMON registers are indexed by MON_SEL and by the NS bit used to access MSMON_CFG_MON_SEL to access the configuration for a single monitor.</p></div><h2>Accessing MSMON_CFG_MON_SEL</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MSMON_CFG_MON_SEL_s must only be accessible from the Secure MPAM feature page.
+</li><li>MSMON_CFG_MON_SEL_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MSMON_CFG_MON_SEL_rt must only be accessible from the Root MPAM feature page.
+</li><li>MSMON_CFG_MON_SEL_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MSMON_CFG_MON_SEL_s, MSMON_CFG_MON_SEL_ns, MSMON_CFG_MON_SEL_rt, and MSMON_CFG_MON_SEL_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MSMON_CFG_MON_SEL_s) accesses the monitor instance selector used for Secure PARTIDs.
+</li><li>The Non-secure instance (MSMON_CFG_MON_SEL_ns) accesses the monitor instance selector used for Non-secure PARTIDs.
+</li><li>The Root instance (MSMON_CFG_MON_SEL_rt) accesses the monitor instance selector used for Root PARTIDs.
+</li><li>The Realm instance (MSMON_CFG_MON_SEL_rl) accesses the monitor instance selector used for Realm PARTIDs.
+</li></ul>
+      <h4>MSMON_CFG_MON_SEL can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0800</span></td><td>MSMON_CFG_MON_SEL_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0800</span></td><td>MSMON_CFG_MON_SEL_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0800</span></td><td>MSMON_CFG_MON_SEL_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0800</span></td><td>MSMON_CFG_MON_SEL_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

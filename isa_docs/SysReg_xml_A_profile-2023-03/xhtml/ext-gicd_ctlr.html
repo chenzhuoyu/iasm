@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICD_CTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICD_CTLR, Distributor Control Register</h1><p>The GICD_CTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Enables interrupts and affinity routing.</p>
+      <h2>Configuration</h2>
+        <p>The format of this register depends on the Security state of the access and the number of Security states supported, which is specified by GICD_CTLR.DS.</p>
+      <h2>Attributes</h2>
+        <p>GICD_CTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When access is Secure, in a system that supports two Security states:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RWP</a></td><td class="lr" colspan="23"><a href="#fieldset_0-30_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">E1NWF</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">DS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">ARE_NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">ARE_S</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">EnableGrp1S</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">EnableGrp1NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">EnableGrp0</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">RWP, bit [31]</h4><div class="field">
+      <p>Register Write Pending. Read only. Indicates whether a register write is in progress or not:</p>
+    <table class="valuetable"><tr><th>RWP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No register write in progress. The effects of previous register writes to the affected register fields are visible to all logical components of the GIC architecture, including the CPU interfaces.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Register write in progress. The effects of previous register writes to the affected register fields are not guaranteed to be visible to all logical components of the GIC architecture, including the CPU interfaces, as the effects of the changes are still being propagated.</p>
+        </td></tr></table><p>This field tracks writes to:</p>
+<ul>
+<li>GICD_CTLR[2:0], the Group Enables, for transitions from 1 to 0 only.
+</li><li>GICD_CTLR[7:4], the ARE bits, E1NWF bit and DS bit.
+</li><li>GICD_ICENABLER&lt;n&gt;.
+</li></ul>
+<p>Updates to other register fields are not tracked by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_8">Bits [30:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7">E1NWF, bit [7]</h4><div class="field"><p>Enable 1 of N Wakeup Functionality.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit is programmable, or RAZ/WI.</p>
+<p>If it is implemented, then it has the following behavior:</p><table class="valuetable"><tr><th>E1NWF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>A PE that is asleep cannot be picked for 1 of N interrupts.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A PE that is asleep can be picked for 1 of N interrupts as determined by <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> controls.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6">DS, bit [6]</h4><div class="field">
+      <p>Disable Security.</p>
+    <table class="valuetable"><tr><th>DS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure accesses are not permitted to access and modify registers that control Group 0 interrupts.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure accesses are permitted to access and modify registers that control Group 0 interrupts.</p>
+        </td></tr></table><p>If DS is written from 0 to 1 when GICD_CTLR.ARE_S == 1, then GICD_CTLR.ARE for the single Security state is RAO/WI.</p>
+<p>If the Distributor only supports a single Security state, this bit is RAO/WI.</p>
+<p>If the Distributor supports two Security states, it <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit is programmable or implemented as RAZ/WI.</p>
+<p>When this field is set to 1, all accesses to GICD_CTLR access the single Security state view, and all bits are accessible.</p>
+<p>When set to 1, this field can only be cleared by a hardware reset.</p>
+<p>Writing this bit from 0 to 1 is <span class="arm-defined-word">UNPREDICTABLE</span> if any of the following is true:</p>
+<ul>
+<li><a href="ext-gicd_ctlr.html">GICD_CTLR</a>.EnableGrp0==1.
+</li><li><a href="ext-gicd_ctlr.html">GICD_CTLR</a>.EnableGrp1S==1.
+</li><li><a href="ext-gicd_ctlr.html">GICD_CTLR</a>.EnableGrp1NS==1.
+</li><li>One or more INTID is in the Active or Active and Pending state.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5">ARE_NS, bit [5]</h4><div class="field">
+      <p>Affinity Routing Enable, Non-secure state.</p>
+    <table class="valuetable"><tr><th>ARE_NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Affinity routing disabled for Non-secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affinity routing enabled for Non-secure state.</p>
+        </td></tr></table><p>When affinity routing is enabled for the Secure state, this field is RAO/WI.</p>
+<p>Changing the ARE_NS settings from 0 to 1 is <span class="arm-defined-word">UNPREDICTABLE</span> except when GICD_CTLR.EnableGrp1 Non-secure == 0.</p>
+<p>Changing the ARE_NS settings from 1 to 0 is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+<p>If GICv2 backwards compatibility for Non-secure state is not implemented, this field is RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_4">ARE_S, bit [4]</h4><div class="field">
+      <p>Affinity Routing Enable, Secure state.</p>
+    <table class="valuetable"><tr><th>ARE_S</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Affinity routing disabled for Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affinity routing enabled for Secure state.</p>
+        </td></tr></table><p>Changing the ARE_S setting from 0 to 1 is <span class="arm-defined-word">UNPREDICTABLE</span> except when all of the following apply:</p>
+<ul>
+<li>GICD_CTLR.EnableGrp0==0.
+</li><li>GICD_CTLR.EnableGrp1S==0.
+</li><li>GICD_CTLR.EnableGrp1NS==0.
+</li></ul>
+<p>Changing the ARE_S settings from 1 to 0 is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+<p>If GICv2 backwards compatibility for Secure state is not implemented, this field is RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-3_3">Bit [3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2">EnableGrp1S, bit [2]</h4><div class="field">
+      <p>Enable Secure Group 1 interrupts.</p>
+    <table class="valuetable"><tr><th>EnableGrp1S</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Secure Group 1 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Secure Group 1 interrupts are enabled.</p>
+        </td></tr></table>
+      <p>If GICD_CTLR.ARE_S == 0, this field is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1">EnableGrp1NS, bit [1]</h4><div class="field">
+      <p>Enable Non-secure Group 1 interrupts.</p>
+    <table class="valuetable"><tr><th>EnableGrp1NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure Group 1 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure Group 1 interrupts are enabled.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>This field also controls whether LPIs are forwarded to the PE.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">EnableGrp0, bit [0]</h4><div class="field">
+      <p>Enable Group 0 interrupts.</p>
+    <table class="valuetable"><tr><th>EnableGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupts are enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When access is Non-secure, in a system that supports two Security states:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">RWP</a></td><td class="lr" colspan="26"><a href="#fieldset_1-30_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-4_4">ARE_NS</a></td><td class="lr" colspan="2"><a href="#fieldset_1-3_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-1_1">EnableGrp1A</a></td><td class="lr" colspan="1"><a href="#fieldset_1-0_0">EnableGrp1</a></td></tr></tbody></table><h4 id="fieldset_1-31_31">RWP, bit [31]</h4><div class="field">
+      <p>This bit is a read-only alias of the Secure GICD_CTLR.RWP bit.</p>
+    </div><h4 id="fieldset_1-30_5">Bits [30:5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-4_4">ARE_NS, bit [4]</h4><div class="field"><p>This bit is a read/write alias of the Secure GICD_CTLR.ARE_NS bit.</p>
+<p>If GICv2 backwards compatibility for Non-secure state is not implemented, this field is RAO/WI.</p></div><h4 id="fieldset_1-3_2">Bits [3:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-1_1">EnableGrp1A, bit [1]</h4><div class="field"><p>If ARE_NS == 1, then this bit is a read/write alias of the Secure GICD_CTLR.EnableGrp1NS bit.</p>
+<p>If ARE_NS == 0, then this bit is <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-0_0">EnableGrp1, bit [0]</h4><div class="field"><p>If ARE_NS == 0, then this bit is a read/write alias of the Secure GICD_CTLR.EnableGrp1NS bit.</p>
+<p>If ARE_NS == 1, then this bit is <span class="arm-defined-word">RES0</span>.</p></div><h3>When in a system that supports only a single Security state:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_2-31_31">RWP</a></td><td class="lr" colspan="22"><a href="#fieldset_2-30_9">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-8_8-1">nASSGIreq</a></td><td class="lr" colspan="1"><a href="#fieldset_2-7_7">E1NWF</a></td><td class="lr" colspan="1"><a href="#fieldset_2-6_6">DS</a></td><td class="lr" colspan="1"><a href="#fieldset_2-5_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-4_4">ARE</a></td><td class="lr" colspan="2"><a href="#fieldset_2-3_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-1_1">EnableGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_2-0_0">EnableGrp0</a></td></tr></tbody></table><h4 id="fieldset_2-31_31">RWP, bit [31]</h4><div class="field">
+      <p>Register Write Pending. Read only. Indicates whether a register write is in progress or not:</p>
+    <table class="valuetable"><tr><th>RWP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No register write in progress. The effects of previous register writes to the affected register fields are visible to all logical components of the GIC architecture, including the CPU interfaces.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Register write in progress. The effects of previous register writes to the affected register fields are not guaranteed to be visible to all logical components of the GIC architecture, including the CPU interfaces, as the effects of the changes are still being propagated.</p>
+        </td></tr></table><p>This field tracks updates to:</p>
+<ul>
+<li>GICD_CTLR[2:0], the Group Enables, for transitions from 1 to 0 only.
+</li><li>GICD_CTLR[7:4], the ARE bits, E1NWF bit and DS bit.
+</li><li>GICD_ICENABLER&lt;n&gt;, the bits that allow disabling of SPIs.
+</li></ul>
+<p>Updates to other register fields are not tracked by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-30_9">Bits [30:9]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-8_8-1">nASSGIreq, bit [8]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field"><p>Controls whether SGIs have an active state.</p>
+<p>This bit is <span class="arm-defined-word">RES0</span> if <a href="ext-gicd_typer2.html">GICD_TYPER2</a>.GICD_TYPER2.nASSGIcap is 0.</p>
+<p>This bit is WI when any of GICD_CTLR.{EnableGrp0,EnableGrp1} is 1.</p><table class="valuetable"><tr><th>nASSGIreq</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>SGIs have an active state and must be deactivated.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>SGIs do not have an active state and do not require deactivation.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-7_7">E1NWF, bit [7]</h4><div class="field"><p>Enable 1 of N Wakeup Functionality.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit is programmable, or RAZ/WI.</p>
+<p>If it is implemented, then it has the following behavior:</p><table class="valuetable"><tr><th>E1NWF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>A PE that is asleep cannot be picked for 1 of N interrupts.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A PE that is asleep can be picked for 1 of N interrupts as determined by <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> controls.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-6_6">DS, bit [6]</h4><div class="field">
+      <p>Disable Security. This field is RAO/WI.</p>
+    </div><h4 id="fieldset_2-5_5">Bit [5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-4_4">ARE, bit [4]</h4><div class="field">
+      <p>Affinity Routing Enable.</p>
+    <table class="valuetable"><tr><th>ARE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Affinity routing disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affinity routing enabled.</p>
+        </td></tr></table><p>Changing the ARE settings from 0 to 1 is <span class="arm-defined-word">UNPREDICTABLE</span> except when all of the following apply:</p>
+<ul>
+<li>GICD_CTLR.EnableGrp1==0.
+</li><li>GICD_CTLR.EnableGrp0==0.
+</li></ul>
+<p>Changing ARE from 1 to 0 is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+<p>If GICv2 backwards compatibility is not implemented, this field is RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-3_2">Bits [3:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-1_1">EnableGrp1, bit [1]</h4><div class="field">
+      <p>Enable Group 1 interrupts.</p>
+    <table class="valuetable"><tr><th>EnableGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 1 interrupts disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 1 interrupts enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-0_0">EnableGrp0, bit [0]</h4><div class="field">
+      <p>Enable Group 0 interrupts.</p>
+    <table class="valuetable"><tr><th>EnableGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupts are enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h2>Accessing GICD_CTLR</h2>
+        <p>If an interrupt is pending within a CPU interface when the corresponding GICD_CTLR.EnableGrpX bit is written from 1 to 0 the interrupt must be retrieved from the CPU interface.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>This might have no effect on the forwarded interrupt if it has already been activated.
+When a write changes the value of ARE for a Security state or the value of the DS bit, the format used for interpreting the remaining bits provided in the write data is the format that applied before the write takes effect.</p></div>
+      <h4>GICD_CTLR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Distributor</td><td>Dist_base</td><td><span class="hexnumber">0x0000</span></td><td>GICD_CTLR</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

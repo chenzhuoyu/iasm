@@ -1,0 +1,468 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCIDR2</reg_short_name>
+        
+        <reg_long_name>ID Register 2</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0x1E8</hexnumber></reg_offset>
+    <reg_instance>TRCIDR2</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When OSLockStatus() or !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trcidr2.xml">TRCIDR2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Returns the tracing capabilities of the trace unit.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace unit registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCIDR2 is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRCIDR2</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WFXMODE</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Indicates whether <instruction>WFI</instruction>, <instruction>WFIT</instruction>, <instruction>WFE</instruction>, and <instruction>WFET</instruction> instructions are classified as P0 instructions:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>WFI</instruction>, <instruction>WFIT</instruction>, <instruction>WFE</instruction>, and <instruction>WFET</instruction> instructions are not classified as P0 instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>WFI</instruction>, <instruction>WFIT</instruction>, <instruction>WFE</instruction>, and <instruction>WFET</instruction> instructions are classified as P0 instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-30_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VMIDOPT</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>30:29</rel_range>
+    <field_description order="before">
+      <para>Indicates the options for Virtual context identifier selection.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If TRCIDR2.VMIDSIZE == <binarynumber>0b00000</binarynumber> then this field is <binarynumber>0b00</binarynumber>.</para>
+<para>If TRCIDR2.VMIDSIZE != <binarynumber>0b00000</binarynumber> then this field is <binarynumber>0b10</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Virtual context identifier selection not supported. <register_link state="ext" id="ext-trcconfigr.xml">TRCCONFIGR</register_link>.VMIDOPT is <arm-defined-word>RES0</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Virtual context identifier selection supported. <register_link state="ext" id="ext-trcconfigr.xml">TRCCONFIGR</register_link>.VMIDOPT is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Virtual context identifier selection not supported. <register_link state="ext" id="ext-trcconfigr.xml">TRCCONFIGR</register_link>.VMIDOPT is <arm-defined-word>RES1</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-28_25-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>CCSIZE</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Indicates the size of the cycle counter.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The cycle counter is 12 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The cycle counter is 13 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>The cycle counter is 14 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>The cycle counter is 15 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>The cycle counter is 16 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>The cycle counter is 17 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>The cycle counter is 18 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description>
+          <para>The cycle counter is 19 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1000</field_value>
+        <field_value_description>
+          <para>The cycle counter is 20 bits in length.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When TRCIDR0.TRCCCI == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-28_25-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-24_20-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DVSIZE</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Indicates the data value size in bytes. Data tracing is not implemented in ETE and this field is reserved for other trace architectures. Allocated in other trace architectures.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00000</field_value>
+        <field_value_description>
+          <para>Data value tracing not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>Data value tracing has a maximum of 32-bit data values.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01000</field_value>
+        <field_value_description>
+          <para>Data value tracing has a maximum of 64-bit data values.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When TRCIDR0.TRCDATA != 0b00</fields_condition>
+  </field>
+  <field id="fieldset_0-24_20-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-19_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DASIZE</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Indicates the data address size in bytes. Data tracing is not implemented in ETE and this field is reserved for other trace architectures. Allocated in other trace architectures.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00000</field_value>
+        <field_value_description>
+          <para>Data address tracing not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>Data address tracing has a maximum of 32-bit data addresses.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01000</field_value>
+        <field_value_description>
+          <para>Data address tracing has a maximum of 64-bit data addresses.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When TRCIDR0.TRCDATA != 0b00</fields_condition>
+  </field>
+  <field id="fieldset_0-19_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VMIDSIZE</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>14:10</rel_range>
+    <field_description order="before">
+      <para>Indicates the trace unit Virtual context identifier size.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If the PE does not implement EL2 then this field is <binarynumber>0b00000</binarynumber>.</para>
+<para>If the PE implements EL2 then this field is <binarynumber>0b00100</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00000</field_value>
+        <field_value_description>
+          <para>Virtual context identifier tracing is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00001</field_value>
+        <field_value_description>
+          <para>8-bit Virtual context identifier size.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00010</field_value>
+        <field_value_description>
+          <para>16-bit Virtual context identifier size.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>32-bit Virtual context identifier size.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-9_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CIDSIZE</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>9:5</rel_range>
+    <field_description order="before">
+      <para>Indicates the Context identifier size.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b00100</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00000</field_value>
+        <field_value_description>
+          <para>Context identifier tracing is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>32-bit Context identifier size.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IASIZE</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Virtual instruction address size.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field reads as <binarynumber>0b01000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>Maximum of 32-bit instruction address size.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01000</field_value>
+        <field_value_description>
+          <para>Maximum of 64-bit instruction address size.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_29" msb="30" lsb="29"/>
+  <fieldat id="fieldset_0-28_25-1" msb="28" lsb="25"/>
+  <fieldat id="fieldset_0-24_20-1" msb="24" lsb="20"/>
+  <fieldat id="fieldset_0-19_15-1" msb="19" lsb="15"/>
+  <fieldat id="fieldset_0-14_10" msb="14" lsb="10"/>
+  <fieldat id="fieldset_0-9_5" msb="9" lsb="5"/>
+  <fieldat id="fieldset_0-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

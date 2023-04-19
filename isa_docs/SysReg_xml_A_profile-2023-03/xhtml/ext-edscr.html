@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDSCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDSCR, External Debug Status and Control Register</h1><p>The EDSCR characteristics are:</p><h2>Purpose</h2>
+        <p>Main control register for the debug implementation.</p>
+      <h2>Configuration</h2><p>External register EDSCR bits [30:29] are architecturally mapped to AArch64 System register <a href="AArch64-mdccsr_el0.html">MDCCSR_EL0[30:29]</a>.</p><p>EDSCR is in the Core power domain.
+    </p><h2>Attributes</h2>
+        <p>EDSCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31-1">TFO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">RXfull</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">TXfull</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">ITO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27">RXO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26">TXU</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">PipeAdv</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">ITE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-23_22-1">INTdis</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21">TDA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">MA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">SC2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">SDD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">NSE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14">HDE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-13_10">RW</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">EL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">ERR</a></td><td class="lr" colspan="6"><a href="#fieldset_0-5_0">STATUS</a></td></tr></tbody></table><h4 id="fieldset_0-31_31-1">TFO, bit [31]<span class="condition"><br/>When FEAT_TRF is implemented:
+                        </span></h4><div class="field">
+      <p>Trace Filter Override. Overrides the Trace Filter controls allowing the external debugger to trace any visible Exception level.</p>
+    <table class="valuetable"><tr><th>TFO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Trace Filter controls are not affected.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>Trace Filter controls in <a href="AArch64-trfcr_el1.html">TRFCR_EL1</a> and <a href="AArch64-trfcr_el2.html">TRFCR_EL2</a> are ignored.</p>
+<p>Trace Filter controls <a href="AArch32-trfcr.html">TRFCR</a> and <a href="AArch32-htrfcr.html">HTRFCR</a> are ignored.</p></td></tr></table><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul>
+<p>This bit is ignored by the PE when any of the following is true:</p>
+<ul>
+<li>ExternalSecureNoninvasiveDebugEnabled() is FALSE and the Effective value of <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.STE is 1.
+</li><li>FEAT_RME is implemented, ExternalRealmNoninvasiveDebugEnabled() is FALSE, and the Effective value of <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.RLTE is 1.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-31_31-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30">RXfull, bit [30]</h4><div class="field">
+      <p>DTRRX full.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-29_29">TXfull, bit [29]</h4><div class="field">
+      <p>DTRTX full.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-28_28">ITO, bit [28]</h4><div class="field">
+      <p>ITR overrun. Set to 0 on entry to Debug state.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-27_27">RXO, bit [27]</h4><div class="field">
+      <p>DTRRX overrun.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-26_26">TXU, bit [26]</h4><div class="field">
+      <p>DTRTX underrun.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-25_25">PipeAdv, bit [25]</h4><div class="field">
+      <p>Pipeline Advance. Indicates that software execution is progressing.</p>
+    <table class="valuetable"><tr><th>PipeAdv</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No progress has been made by the PE since the last time this field was cleared to zero by writing 1 to <a href="ext-edrcr.html">EDRCR</a>.CSPA.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Progress has been made by the PE since the last time this field was cleared to zero by writing 1 to <a href="ext-edrcr.html">EDRCR</a>.CSPA.</p>
+        </td></tr></table><p>The architecture does not define precisely when this field is set to 1. It requires only that this happen periodically in Non-debug state to indicate that software execution is progressing. For example, a PE might set this field to 1 each time the PE retires one or more instructions, or at periodic intervals during the progression of an instruction.</p>
+<p>When <span class="xref">FEAT_MOPS</span> is implemented, <span class="instruction">CPY</span>, <span class="instruction">CPYF</span>, <span class="instruction">SET</span>, and <span class="instruction">SETG</span> are examples of instructions that periodically make forward progress.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-24_24">ITE, bit [24]</h4><div class="field">
+      <p>ITR empty.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-23_22-1">INTdis, bits [23:22]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Interrupt disable. Disables taking interrupts in Non-debug state.</p>
+    <table class="valuetable"><tr><th>INTdis</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>This bit has no effect on the masking of interrupts.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td><p>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</p>
+<p>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</p>
+<p>If ExternalRootInvasiveDebugEnabled() is TRUE, then all interrupts taken to Root state are masked.</p>
+<p>If ExternalRealmInvasiveDebugEnabled() is TRUE, then all interrupts taken to Realm state are masked.</p></td></tr></table><div class="note"><span class="note-header">Note</span><p>All interrupts includes virtual and SError interrupts.</p></div><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this field can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul>
+<p>The Effective value of this field is <span class="binarynumber">0b00</span> when ExternalInvasiveDebugEnabled() is FALSE.</p>
+<p>When FEAT_RME is implemented, bit[23] of this register is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-23_22-2"><span class="condition"><br/>When FEAT_Debugv8p4 is implemented:
+                        </span></h4><div class="field">
+      <p>Interrupt disable. Disables taking interrupts in Non-debug state.</p>
+    <table class="valuetable"><tr><th>INTdis</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Masking of interrupts is controlled by PSTATE and interrupt routing controls.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td><p>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</p>
+<p>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</p></td></tr></table><div class="note"><span class="note-header">Note</span><p>All interrupts includes virtual and SError interrupts.</p></div><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this field can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul>
+<p>The Effective value of this field is <span class="binarynumber">0b00</span> when ExternalInvasiveDebugEnabled() is FALSE.</p>
+<p>When FEAT_Debugv8p4 is implemented, bit[23] of this register is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-23_22-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Interrupt disable. Disables taking interrupts in Non-debug state.</p>
+    <table class="valuetable"><tr><th>INTdis</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Masking of interrupts is controlled by PSTATE and interrupt routing controls.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure EL1 are masked.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td><p>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</p>
+<p>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure EL1 are masked.</p></td></tr><tr><td class="bitfield">0b11</td><td><p>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</p>
+<p>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</p></td></tr></table><div class="note"><span class="note-header">Note</span><p>All interrupts includes virtual and SError interrupts.</p></div><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this field can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul>
+<p>The Effective value of this field is <span class="binarynumber">0b00</span> when ExternalInvasiveDebugEnabled() is FALSE.</p>
+<p>Support for the values <span class="binarynumber">0b01</span> and <span class="binarynumber">0b10</span> is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. If these values are not supported, they are reserved. If programmed with a reserved value, the PE behaves as if INTdis has been programmed with a defined value, other than for a direct read of EDSCR, and the value returned by a read of EDSCR.INTdis is <span class="arm-defined-word">UNKNOWN</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-21_21">TDA, bit [21]</h4><div class="field"><p>Traps accesses to the following debug System registers:</p>
+<ul>
+<li>
+<p>AArch64: <a href="AArch64-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgbvrn_el1.html">DBGBVR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgwcrn_el1.html">DBGWCR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgwvrn_el1.html">DBGWVR&lt;n&gt;_EL1</a>.</p>
+
+</li><li>
+<p>AArch32: <a href="AArch32-dbgbcrn.html">DBGBCR&lt;n&gt;</a>, <a href="AArch32-dbgbvrn.html">DBGBVR&lt;n&gt;</a>, <a href="AArch32-dbgbxvrn.html">DBGBXVR&lt;n&gt;</a>, <a href="AArch32-dbgwcrn.html">DBGWCR&lt;n&gt;</a>, <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>.</p>
+
+</li></ul><table class="valuetable"><tr><th>TDA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses to debug System registers do not generate a Software Access Debug event.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses to debug System registers generate a Software Access Debug event, if <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 0 and if halting is allowed.</p>
+        </td></tr></table><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-20_20">MA, bit [20]</h4><div class="field"><p>Memory access mode. Controls the use of memory-access mode for accessing ITR and the DCC. This bit is ignored if in Non-debug state and set to zero on entry to Debug state.</p>
+<p>Possible values of this field are:</p><table class="valuetable"><tr><th>MA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Normal access mode.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Memory access mode.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-19_19-1">SC2, bit [19]<span class="condition"><br/>When FEAT_PCSRv8 is implemented, (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented) and FEAT_PCSRv8p2 is not implemented:
+                        </span></h4><div class="field">
+      <p>Sample <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a>. Controls whether the PC Sample-based Profiling Extension samples <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a> or <a href="AArch64-vttbr_el2.html">VTTBR_EL2</a>.VMID.</p>
+    <table class="valuetable"><tr><th>SC2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Sample <a href="AArch64-vttbr_el2.html">VTTBR_EL2</a>.VMID.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Sample <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a>.</p>
+        </td></tr></table><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">NS, bit [18]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Non-secure status. Together with the NSE field, gives the current Security state:</p>
+<table class="valuetable"><thead><tr><th>NSE</th><th>NS</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>When Secure state is implemented, Secure. Otherwise reserved.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>Non-secure.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b0</span></td><td>Root.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b1</span></td><td>Realm.</td></tr></tbody></table><p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Non-secure status. In Debug state, gives the current Security state:</p>
+    <table class="valuetable"><tr><th>NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure state.</p>
+        </td></tr></table><p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-17_17">Bit [17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">SDD, bit [16]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>EL3 debug disabled.</p>
+<p>On entry to Debug state:</p>
+<ul>
+<li>If entering from EL3, SDD is set to 0.
+</li><li>Otherwise, SDD is set to the inverse of <span class="function">ExternalRootInvasiveDebugEnabled</span>().
+</li></ul>
+<p>In Debug state, the value of SDD does not change, even if <span class="function">ExternalRootInvasiveDebugEnabled</span>() changes.</p>
+<p>In Non-debug state, SDD returns the inverse of <span class="function">ExternalRootInvasiveDebugEnabled</span>().</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Secure debug disabled.</p>
+<p>On entry to Debug state:</p>
+<ul>
+<li>If entering in Secure state, SDD is set to 0.
+</li><li>If entering in Non-secure state, SDD is set to the inverse of <span class="function">ExternalSecureInvasiveDebugEnabled</span>().
+</li></ul>
+<p>In Debug state, the value of the SDD bit does not change, even if <span class="function">ExternalSecureInvasiveDebugEnabled</span>() changes.</p>
+<p>In Non-debug state:</p>
+<ul>
+<li>SDD returns the inverse of <span class="function">ExternalSecureInvasiveDebugEnabled</span>(). If the authentication signals that control <span class="function">ExternalSecureInvasiveDebugEnabled</span>() change, a context synchronization event is required to guarantee their effect.
+</li><li>This bit is unaffected by the Security state of the PE.
+</li></ul>
+<p>If EL3 is not implemented and the implementation is Non-secure, this bit is <span class="arm-defined-word">RES1</span>.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-15_15-1">NSE, bit [15]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with the NS field, this field gives the current Security state.</p>
+<p>For a description of the values derived by evaluating NS and NSE together, see EDSCR.NS.</p>
+      <p>In Non-debug state, this bit is <span class="arm-defined-word">UNKNOWN</span>.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14">HDE, bit [14]</h4><div class="field">
+      <p>Halting debug enable.</p>
+    <table class="valuetable"><tr><th>HDE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Halting disabled for Breakpoint, Watchpoint and Halt Instruction debug events.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Halting enabled for Breakpoint, Watchpoint and Halt Instruction debug events.</p>
+        </td></tr></table><p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-13_10">RW, bits [13:10]</h4><div class="field">
+      <p>Exception level Execution state status. In Debug state, each bit gives the current Execution state of each Exception level.</p>
+    <table class="valuetable"><tr><th>RW</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b1111</td><td><p>Any of the following:</p>
+<ul>
+<li>
+<p>The PE is in Non-debug state.</p>
+
+</li><li>
+<p>The PE is at EL0 using AArch64.</p>
+
+</li><li>
+<p>The PE is not at EL0, and EL1, EL2, and EL3 are using AArch64.</p>
+
+</li></ul></td></tr><tr><td class="bitfield">0b1110</td><td>
+          <p>The PE is in Debug state at EL0. EL0 is using AArch32. EL1, EL2, and EL3 are using AArch64.</p>
+        </td><td>When AArch32 is supported</td></tr><tr><td class="bitfield">0b110x</td><td>
+          <p>The PE is in Debug state. EL0 and EL1 are using AArch32. EL2 is enabled in the current Security state and is using AArch64. If implemented, EL3 is using AArch64.</p>
+        </td><td>When AArch32 is supported and EL2 is implemented</td></tr><tr><td class="bitfield">0b10xx</td><td>
+          <p>The PE is in Debug state. EL0 and EL1 are using AArch32. EL2 is not implemented, disabled in the current Security state, or using AArch32. EL3 is using AArch64.</p>
+        </td><td>When AArch32 is supported and EL3 is implemented</td></tr><tr><td class="bitfield">0b0xxx</td><td>
+          <p>The PE is in Debug state. All Exception levels are using AArch32.</p>
+        </td><td>When AArch32 is supported</td></tr></table><p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">RAO/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-9_8">EL, bits [9:8]</h4><div class="field">
+      <p>Exception level. In Debug state, gives the current Exception level of the PE.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">RAZ/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-7_7">A, bit [7]</h4><div class="field"><p>SError interrupt pending. In Debug state, indicates whether an SError interrupt is pending:</p>
+<ul>
+<li>If <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{AMO, TGE} = {1, 0}, EL2 is enabled in the current Security state, and the PE is executing at EL0 or EL1, a virtual SError interrupt.
+</li><li>Otherwise, a physical SError interrupt.
+</li></ul><table class="valuetable"><tr><th>A</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No SError interrupt pending.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>SError interrupt pending.</p>
+        </td></tr></table>
+      <p>A debugger can read EDSCR to check whether an SError interrupt is pending without having to execute further instructions. A pending SError might indicate data from target memory is corrupted.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>When the PE is in Non-debug state, access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-6_6">ERR, bit [6]</h4><div class="field">
+      <p>Cumulative error flag. This bit is set to 1 following exceptions in Debug state and on any signaled overrun or underrun on the DTR or EDITR.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</p>
+<ul>
+<li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.
+</li><li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-5_0">STATUS, bits [5:0]</h4><div class="field">
+      <p>Debug status flags.</p>
+    <table class="valuetable"><tr><th>STATUS</th><th>Meaning</th></tr><tr><td class="bitfield">0b000001</td><td>
+          <p>PE is restarting, exiting Debug state.</p>
+        </td></tr><tr><td class="bitfield">0b000010</td><td>
+          <p>PE is in Non-debug state.</p>
+        </td></tr><tr><td class="bitfield">0b000111</td><td>
+          <p>Breakpoint.</p>
+        </td></tr><tr><td class="bitfield">0b010011</td><td>
+          <p>External debug request.</p>
+        </td></tr><tr><td class="bitfield">0b011011</td><td>
+          <p>Halting step, normal.</p>
+        </td></tr><tr><td class="bitfield">0b011111</td><td>
+          <p>Halting step, exclusive.</p>
+        </td></tr><tr><td class="bitfield">0b100011</td><td>
+          <p>OS Unlock Catch.</p>
+        </td></tr><tr><td class="bitfield">0b100111</td><td>
+          <p>Reset Catch.</p>
+        </td></tr><tr><td class="bitfield">0b101011</td><td>
+          <p>Watchpoint.</p>
+        </td></tr><tr><td class="bitfield">0b101111</td><td>
+          <p>HLT instruction.</p>
+        </td></tr><tr><td class="bitfield">0b110011</td><td>
+          <p>Software access to debug register.</p>
+        </td></tr><tr><td class="bitfield">0b110111</td><td>
+          <p>Exception Catch.</p>
+        </td></tr><tr><td class="bitfield">0b111011</td><td>
+          <p>Halting step, no syndrome.</p>
+        </td></tr></table>
+      <p>All other values of STATUS are reserved.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing EDSCR</h2><h4>EDSCR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x088</span></td><td>EDSCR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

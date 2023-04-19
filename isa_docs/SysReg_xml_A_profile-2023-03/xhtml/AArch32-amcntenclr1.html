@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AMCNTENCLR1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">AMCNTENCLR1, Activity Monitors Count Enable Clear Register 1</h1><p>The AMCNTENCLR1 characteristics are:</p><h2>Purpose</h2>
+        <p>Disable control bits for the auxiliary activity monitors event counters, <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a>.</p>
+      <h2>Configuration</h2><p>AArch32 System register AMCNTENCLR1 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-amcntenclr1_el0.html">AMCNTENCLR1_EL0[31:0]</a>.</p><p>AArch32 System register AMCNTENCLR1 bits [31:0] are architecturally mapped to External register <a href="ext-amcntenclr1.html">AMCNTENCLR1[31:0]</a>.</p><p>This register is present only when FEAT_AMUv1 is implemented. Otherwise, direct accesses to AMCNTENCLR1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>AMCNTENCLR1 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-31_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">P0</a></td></tr></tbody></table><h4 id="fieldset_0-31_16">Bits [31:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">P&lt;n&gt;, bit [n], for n = 15 to 0</h4><div class="field"><p>Activity monitor event counter disable bit for <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a>.</p>
+<p>When N is less than 16, bits [15:N] are RAZ/WI, where N is the value in <a href="AArch32-amcgcr.html">AMCGCR</a>.CG1NC.</p>
+<p>Possible values of each bit are:</p><table class="valuetable"><tr><th>P&lt;n&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When read, means that <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a> is disabled. When written, has no effect.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When read, means that <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a> is enabled. When written, disables <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a>.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On an AMU reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing AMCNTENCLR1</h2>
+        <p>If the number of auxiliary activity monitor event counters implemented is zero, reads and writes of AMCNTENCLR1 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>The number of auxiliary activity monitor event counters implemented is zero exactly when <a href="AArch32-amcfgr.html">AMCFGR</a>.NCG == <span class="binarynumber">0b0000</span>.</p></div>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1101</td><td>0b0011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; AMUSERENR_EL0.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; AMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HSTR_EL2.T13 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T13 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CPTR_EL2.TAM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCPTR.TAM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HAFGRTR_EL2.AMCNTEN1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = AMCNTENCLR1;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T13 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T13 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CPTR_EL2.TAM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCPTR.TAM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = AMCNTENCLR1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = AMCNTENCLR1;
+elsif PSTATE.EL == EL3 then
+    R[t] = AMCNTENCLR1;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1101</td><td>0b0011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL1 &amp;&amp; EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T13 == '1' then
+    AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+elsif PSTATE.EL == EL1 &amp;&amp; EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T13 == '1' then
+    AArch32.TakeHypTrapException(0x03);
+elsif IsHighestEL(PSTATE.EL) then
+    AMCNTENCLR1 = R[t];
+else
+    UNDEFINED;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

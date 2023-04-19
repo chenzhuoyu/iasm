@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCVIIECTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCVIIECTLR, ViewInst Include/Exclude Control Register</h1><p>The TRCVIIECTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Use this to select, or read, the Address Range Comparators for the ViewInst include/exclude function.</p>
+      <h2>Configuration</h2><p>External register TRCVIIECTLR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcviiectlr.html">TRCVIIECTLR[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and UInt(TRCIDR4.NUMACPAIRS) &gt; 0. Otherwise, direct accesses to TRCVIIECTLR are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCVIIECTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_16">EXCLUDE[0]</a></td><td class="lr" colspan="8"><a href="#fieldset_0-15_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_0">INCLUDE[0]</a></td></tr></tbody></table><h4 id="fieldset_0-31_24">Bits [31:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_16">EXCLUDE[&lt;m&gt;], bit [m+16], for m = 7 to 0</h4><div class="field">
+      <p>Exclude Address Range Comparator &lt;m&gt;. Selects whether Address Range Comparator &lt;m&gt; is in use with the ViewInst exclude function.</p>
+    <table class="valuetable"><tr><th>EXCLUDE[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The address range that Address Range Comparator &lt;m&gt; defines, is not selected for the ViewInst exclude function.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The address range that Address Range Comparator &lt;m&gt; defines, is selected for the ViewInst exclude function.</p>
+        </td></tr></table>
+      <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMACPAIRS.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_8">Bits [15:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_0">INCLUDE[&lt;m&gt;], bit [m], for m = 7 to 0</h4><div class="field"><p>Include Address Range Comparator &lt;m&gt;.</p>
+<p>Selects whether Address Range Comparator &lt;m&gt; is in use with the ViewInst include function.</p>
+<p>Selecting no comparators for the ViewInst include function indicates that all instructions are included by default.</p>
+<p>The ViewInst exclude function then indicates which ranges are excluded.</p><table class="valuetable"><tr><th>INCLUDE[&lt;m&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The address range that Address Range Comparator &lt;m&gt; defines, is not selected for the ViewInst include function.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The address range that Address Range Comparator &lt;m&gt; defines, is selected for the ViewInst include function.</p>
+        </td></tr></table>
+      <p>This bit is <span class="arm-defined-word">RES0</span> if m &gt;= <a href="ext-trcidr4.html">TRCIDR4</a>.NUMACPAIRS.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h2>Accessing TRCVIIECTLR</h2>
+        <p>Must be programmed if <a href="ext-trcidr4.html">TRCIDR4</a>.NUMACPAIRS &gt; <span class="binarynumber">0b0000</span>.</p>
+
+      
+        <p>Writes are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> if the trace unit is not in the Idle state.</p>
+      <h4>TRCVIIECTLR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x084</span></td><td>TRCVIIECTLR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

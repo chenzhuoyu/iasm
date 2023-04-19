@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SPSel</reg_short_name>
+        
+        <reg_long_name>Stack Pointer Select</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Allows the Stack Pointer to be selected between SP_EL0 and SP_ELx.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Process state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SPSel is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>63:1</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SP</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Stack pointer to use. Possible values of this bit are:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Use SP_EL0 at all Exception levels.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Use SP_ELx for Exception level ELx.</para>
+<para>When <xref browsertext="FEAT_NMI" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_NMI"/> is implemented and <xref browsertext="SCTLR_ELx" filename="appx_registers_index.fm" linkend="SCTLR_ELx"/>.SPINTMASK is 1, if execution is at ELx, an IRQ or FIQ interrupt that is targeted to ELx is masked regardless of any denotion of Superpriority.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>1</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_1" msb="63" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS SPSel" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SPSel</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    X[t, 64] = Zeros(63):PSTATE.SP;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = Zeros(63):PSTATE.SP;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = Zeros(63):PSTATE.SP;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SPSel" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SPSel, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    PSTATE.SP = X[t, 64]&lt;0&gt;;
+elsif PSTATE.EL == EL2 then
+    PSTATE.SP = X[t, 64]&lt;0&gt;;
+elsif PSTATE.EL == EL3 then
+    PSTATE.SP = X[t, 64]&lt;0&gt;;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate SPSel" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SPSel, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DISR_EL1</reg_short_name>
+        
+        <reg_long_name>Deferred Interrupt Status Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_RAS is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-disr.xml">DISR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Records that an SError interrupt has been consumed by an <instruction>ESB</instruction> instruction.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DISR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When DISR_EL1.IDS == 0</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Set to 1 when an <instruction>ESB</instruction> instruction defers an asynchronous SError interrupt. If the implementation does not include any sources of SError interrupt that can be synchronized by an Error Synchronization Barrier, then this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>30:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDS</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Indicates the deferred SError interrupt type.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Deferred error uses architecturally-defined format.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>23:13</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-12_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AET</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>12:10</rel_range>
+    <field_description order="before">
+      <para>Asynchronous Error Type. See the description of ESR_ELx.AET for an SError interrupt.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EA</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>External abort Type. See the description of ESR_ELx.EA for an SError interrupt.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>8:6</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DFSC</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Fault Status Code. See the description of ESR_ELx.DFSC for an SError interrupt.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When DISR_EL1.IDS == 1</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_1-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Set to 1 when an <instruction>ESB</instruction> instruction defers an asynchronous SError interrupt. If the implementation does not include any sources of SError interrupt that can be synchronized by an Error Synchronization Barrier, then this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-30_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>30:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDS</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Indicates the deferred SError interrupt type.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Deferred error uses <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> format.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-23_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ISS</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>23:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> syndrome. See the description of ESR_ELx[23:0] for an SError interrupt.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When DISR_EL1.IDS == 0</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_25" msb="30" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_13" msb="23" lsb="13"/>
+  <fieldat id="fieldset_0-12_10" msb="12" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_6" msb="8" lsb="6"/>
+  <fieldat id="fieldset_0-5_0" msb="5" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When DISR_EL1.IDS == 1</fields_condition>
+  <fieldat id="fieldset_1-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_1-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_1-30_25" msb="30" lsb="25"/>
+  <fieldat id="fieldset_1-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_1-23_0" msb="23" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>An indirect write to DISR_EL1 made by an <instruction>ESB</instruction> instruction does not require an explicit synchronization operation for the value that is written to be observed by a direct read of DISR_EL1 occurring in program order after the <instruction>ESB</instruction> instruction.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>DISR_EL1 is RAZ/WI if EL3 is implemented, the PE is in Non-debug state, <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EA == 1, and any of the following apply:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>At EL2.</content>
+</listitem><listitem><content>At EL1 and ((<register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.NS == 0 &amp;&amp; <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2 == 0) || <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.AMO == 0).</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS DISR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, DISR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.AMO == '1' then
+        X[t, 64] = VDISR_EL2;
+    elsif HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = DISR_EL1;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = DISR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = DISR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister DISR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR DISR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.AMO == '1' then
+        VDISR_EL2 = X[t, 64];
+    elsif HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    else
+        DISR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    else
+        DISR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    DISR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

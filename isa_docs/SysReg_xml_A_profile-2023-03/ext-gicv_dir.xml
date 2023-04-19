@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICV_DIR</reg_short_name>
+        
+        <reg_long_name>Virtual Machine Deactivate Interrupt Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3_LEGACY is implemented and EL2 is implemented</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Virtual CPU interface</reg_component>
+    <reg_offset><hexnumber>0x1000</hexnumber></reg_offset>
+    <reg_instance>GICV_DIR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Secure</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Non-secure</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Deactivates a specified virtual interrupt in the <register_link state="ext" id="ext-gich_lrn.xml">GICH_LR&lt;n&gt;</register_link> List registers.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>This register corresponds to the physical CPU interface register <register_link state="ext" id="ext-gicc_dir.xml">GICC_DIR</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC virtual CPU interface registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is available when the GIC implementation supports interrupt virtualization.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICV_DIR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>31:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTID</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>24:0</rel_range>
+    <field_description order="before"><para>The INTID of the signaled interrupt.</para>
+<note><para>INTIDs 1020-1023 are reserved and convey additional information such as spurious interrupts.</para></note><para>When affinity routing is not enabled:</para>
+<list type="unordered">
+<listitem><content>Bits [23:13] are <arm-defined-word>RES0</arm-defined-word>.</content>
+</listitem><listitem><content>For SGIs, bits [12:10] identify the CPU interface corresponding to the source PE. For all other interrupts these bits are <arm-defined-word>RES0</arm-defined-word>.</content>
+</listitem></list></field_description>
+  </field>
+  <text_after_fields><para>When the virtual machine writes to this register, the specified interrupt in the List registers is changed from active to inactive, or from active and pending to pending. If the specified interrupt is present in the List registers but is not in either the active or active and pending states, the effect is <arm-defined-word>UNPREDICTABLE</arm-defined-word>. If the specified interrupt is not present in the List registers, <register_link state="ext" id="ext-gich_hcr.xml">GICH_HCR</register_link>.EOICount is incremented, potentially generating a maintenance interrupt.</para>
+<note><para>If the specified interrupt is not present in the List registers, the virtual machine cannot recover the INTID. Therefore, the hypervisor must ensure that, when <register_link state="ext" id="ext-gicv_ctlr.xml">GICV_CTLR</register_link>.EOImode == 1, no more than one active interrupt is transferred from the List registers into a software list. If more than one active interrupt that is not stored in the List registers exists, the hypervisor must handle accesses to GICV_DIR in software, typically by trapping these accesses.</para></note><para>If the corresponding <register_link state="ext" id="ext-gich_lrn.xml">GICH_LR&lt;n&gt;</register_link>.HW == 1, indicating a hardware interrupt, then a deactivate request is sent to the physical Distributor, identifying the physical INTID from the corresponding field in the List register. This effect is identical to a Non-secure write to <register_link state="ext" id="ext-gicc_dir.xml">GICC_DIR</register_link> from the PE having that physical INTID. This means that if the corresponding physical interrupt is marked as Group 0, the request is ignored.</para>
+<note><para>Interrupt deactivation using this register is based on the provided INTID, with no requirement to deactivate interrupts in any particular order. A single register is therefore used to deactivate both Group 0 and Group 1 interrupts.</para></note></text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_25" msb="31" lsb="25"/>
+  <fieldat id="fieldset_0-24_0" msb="24" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is used only when System register access is not enabled. When System register access is enabled:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>For AArch32 implementations, <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link> provides equivalent functionality.</content>
+</listitem><listitem><content>For AArch64 implementations, <register_link state="AArch64" id="AArch64-icc_dir_el1.xml">ICC_DIR_EL1</register_link> provides equivalent functionality.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes to this register are valid only when <register_link state="ext" id="ext-gicv_ctlr.xml">GICV_CTLR</register_link>.EOImode == 1. Writes to this register are otherwise <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When affinity routing is enabled, it is a programming error to use memory-mapped registers to access the GIC.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

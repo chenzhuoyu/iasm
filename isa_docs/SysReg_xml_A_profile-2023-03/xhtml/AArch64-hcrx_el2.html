@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HCRX_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HCRX_EL2, Extended Hypervisor Configuration Register</h1><p>The HCRX_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides configuration controls for virtualization, including defining whether various operations are trapped to EL2.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_HCX is implemented. Otherwise, direct accesses to HCRX_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>The bits in this register behave as if they are 0 for all purposes other than direct reads of the register if:</p>
+
+      
+        <ul>
+<li>EL2 is not enabled in the current Security state.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.HXEn is 0.
+</li></ul>
+      <h2>Attributes</h2>
+        <p>HCRX_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_23">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="9"><a href="#fieldset_0-63_23">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">GCSEn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">EnIDCP128</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">EnSDERR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">TMEA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">EnSNERR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">D128En</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">PTTWI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">SCTLR2En</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">TCR2En</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">MSCEn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">MCE2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">CMOW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">VFNMI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">VINMI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">TALLINT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">SMPME</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">FGTnXS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">FnXS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">EnASR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">EnALS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">EnAS0</a></td></tr></tbody></table><h4 id="fieldset_0-63_23">Bits [63:23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">GCSEn, bit [22]<span class="condition"><br/>When FEAT_GCS is implemented:
+                        </span></h4><div class="field">
+      <p>Guarded Control Stack enable. Controls Guarded Control Stack behavior at EL1 and EL0.</p>
+    <table class="valuetable"><tr><th>GCSEn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Guarded Control Stack is disabled at EL1 and EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Guarded Control Stack behavior at EL1 and EL0 is not affected by mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as one when EL2 is disabled in the current Security state or <a href="AArch64-hcr_el2.html">HCR_EL2</a>.&lt;E2H,TGE&gt; == {1,1}.</p>
+<p>This field is ignored by the PE and treated as zero when EL2 is enabled in the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.&lt;E2H,TGE&gt; != {1,1} and <a href="AArch64-scr_el3.html">SCR_EL3</a>.HXEn == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">EnIDCP128, bit [21]<span class="condition"><br/>When FEAT_SYSREG128 is implemented and HCR_EL2.[E2H,TGE] != 0b11:
+                        </span></h4><div class="field">
+      <p>Enables access to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> 128-bit System registers.</p>
+    <table class="valuetable"><tr><th>EnIDCP128</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EL2 is implemented and enabled in the current Security state, accesses at EL1, EL0 to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> 128-bit System registers are trapped to EL2 using an ESR_EL2.EC value of <span class="hexnumber">0x14</span>, unless the access generates a higher priority exception.</p>
+<p>Disables the functionality of the 128-bit <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> System registers that are accessible at EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>No accesses are trapped by this control.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20-1">EnSDERR, bit [20]<span class="condition"><br/>When FEAT_ADERR is implemented:
+                        </span></h4><div class="field">
+      <p>Enable Synchronous Device Read Error. Override <a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a>.EnADERR.</p>
+    <table class="valuetable"><tr><th>EnSDERR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This field has no effect on External aborts on Device memory reads at EL1 and EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External abort on Device memory reads generate synchronous Data Abort exceptions in the EL1&amp;0 translation regime.</p>
+        </td></tr></table><p>Setting this field to 1 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Device memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</p>
+<p>Setting this field to 1 might have a performance impact for Device memory reads.</p>
+<p>This field is ignored by the PE and treated as zero when any of the following are true:</p>
+<ul>
+<li>All of the following are true:<ul>
+<li><span class="xref">FEAT_ANERR</span> is implemented.
+</li><li><a href="AArch64-id_aa64mmfr3_el1.html">ID_AA64MMFR3_EL1</a>.ADERR reads as <span class="binarynumber">0b0010</span>.
+</li><li>HCRX_EL2.EnSNERR is 1.
+</li></ul>
+
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.HXEn == 0.
+</li><li>EL2 is disabled in the current Security state.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19-1">TMEA, bit [19]<span class="condition"><br/>When FEAT_DoubleFault2 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap Masked External Aborts. Controls whether a masked error exception at a lower Exception level is taken to EL2.</p>
+    <table class="valuetable"><tr><th>TMEA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Synchronous External Abort exceptions and SError exceptions at EL1 and EL0 are unaffected by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Synchronous External Abort exceptions when PSTATE.A is 1 and masked SError exceptions at EL1 and EL0 are taken to EL2, unless routed to another Exception level by a higher priority control.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when any of the following are true:</p>
+<ul>
+<li><a href="AArch64-scr_el3.html">SCR_EL3</a>.HXEn == 0.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H,TGE} == {1,1}.
+</li><li>EL2 is disabled in the current Security state.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">EnSNERR, bit [18]<span class="condition"><br/>When FEAT_ANERR is implemented:
+                        </span></h4><div class="field">
+      <p>Enable Synchronous Normal Read Error. Override <a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a>.EnANERR.</p>
+    <table class="valuetable"><tr><th>EnSNERR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This field has no effect on External aborts on Normal memory reads at EL1 and EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External abort on Normal memory reads generate synchronous Data Abort exceptions in the EL1&amp;0 translation regime.</p>
+        </td></tr></table><p>Setting this field to 1 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Normal memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</p>
+<p>Setting this field to 1 might have a performance impact for Normal memory reads.</p>
+<p>This field is ignored by the PE and treated as zero when any of the following are true:</p>
+<ul>
+<li>All of the following are true:<ul>
+<li><span class="xref">FEAT_ADERR</span> is implemented.
+</li><li><a href="AArch64-id_aa64mmfr3_el1.html">ID_AA64MMFR3_EL1</a>.ANERR reads as <span class="binarynumber">0b0010</span>.
+</li><li>HCRX_EL2.EnSDERR is 1.
+</li></ul>
+
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.HXEn == 0.
+</li><li>EL2 is disabled in the current Security state.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">D128En, bit [17]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field"><p>128-bit System Register trap control. Enable access to 128-bit System Registers via <span class="instruction">MRRS</span>, <span class="instruction">MSRR</span> instructions.</p>
+<ul>
+<li>
+<p>If EL1 is using AArch64 state, accesses to the following registers are trapped to EL2 and reported using EC syndrome value <span class="hexnumber">0x14</span>:</p>
+<ul>
+<li>
+<p><a href="AArch64-ttbr0_el1.html">TTBR0_EL1</a>.</p>
+
+</li><li>
+<p><a href="AArch64-ttbr1_el1.html">TTBR1_EL1</a>.</p>
+
+</li><li>
+<p>If <span class="xref">FEAT_THE</span> is implemented, <a href="AArch64-rcwmask_el1.html">RCWMASK_EL1</a>, <a href="AArch64-rcwsmask_el1.html">RCWSMASK_EL1</a>.</p>
+
+</li><li>
+<p><a href="AArch64-par_el1.html">PAR_EL1</a>.</p>
+
+</li></ul>
+
+</li></ul><table class="valuetable"><tr><th>D128En</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL1 accesses to the specified registers are disabled, and trapped to EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">PTTWI, bit [16]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field"><p>Permit Translation Table Walk Incoherence.</p>
+<p>Permits RCWS instructions to generate writes that have the Reduced Coherence property.</p><table class="valuetable"><tr><th>PTTWI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, write accesses generated by RCWS at EL1&amp;0 do not have the Reduced Coherence property.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Write accesses generated by RCWS at EL1&amp;0 have the Reduced Coherence property, if enabled by <a href="AArch64-tcr2_el1.html">TCR2_EL1</a>.PTTWI.</p>
+        </td></tr></table><p>This bit is permitted to be cached in TLB.</p>
+<p>This bit is permitted to be implemented as a read-only bit with a fixed value of 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15-1">SCTLR2En, bit [15]<span class="condition"><br/>When FEAT_SCTLR2 is implemented:
+                        </span></h4><div class="field">
+      <p><a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a> Enable. In AArch64 state, accesses to <a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a> are trapped to EL2 and reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+    <table class="valuetable"><tr><th>SCTLR2En</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses to <a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a> at EL1 are trapped to EL2, unless the access generates a higher priority exception. The value in <a href="AArch64-sctlr2_el1.html">SCTLR2_EL1</a> is treated as 0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">TCR2En, bit [14]<span class="condition"><br/>When FEAT_TCR2 is implemented:
+                        </span></h4><div class="field">
+      <p><a href="AArch64-tcr2_el1.html">TCR2_EL1</a> Enable. In AArch64 state, accesses to <a href="AArch64-tcr2_el1.html">TCR2_EL1</a> are trapped to EL2 and reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+    <table class="valuetable"><tr><th>TCR2En</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses to <a href="AArch64-tcr2_el1.html">TCR2_EL1</a> at EL1 are trapped to EL2, unless the access generates a higher priority exception. The value in <a href="AArch64-tcr2_el1.html">TCR2_EL1</a> is treated as 0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_12">Bits [13:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">MSCEn, bit [11]<span class="condition"><br/>When FEAT_MOPS is implemented:
+                        </span></h4><div class="field">
+      <p>Memory Set and Memory Copy instructions Enable. Enables execution of the CPY*, SETG*, SETP*, SETM*, and SETE* instructions at EL1 or EL0.</p>
+    <table class="valuetable"><tr><th>MSCEn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Execution of the Memory Copy and Memory Set instructions is <span class="arm-defined-word">UNDEFINED</span> at EL1 or EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be <span class="arm-defined-word">UNDEFINED</span>.</p>
+        </td></tr></table><p>This bit behaves as if it is 1 if any of the following are true:</p>
+<ul>
+<li>EL2 is not implemented or enabled.
+</li><li>The value of <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} is {1, 1}.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">MCE2, bit [10]<span class="condition"><br/>When FEAT_MOPS is implemented:
+                        </span></h4><div class="field">
+      <p>Controls Memory Copy and Memory Set exceptions generated as part of attempting to execute the Memory Copy and Memory Set instructions from EL1.</p>
+    <table class="valuetable"><tr><th>MCE2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Memory Copy and Memory Set exceptions generated from EL1 are taken to EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Memory Copy and Memory Set exceptions generated from EL1 are taken to EL2.</p>
+        </td></tr></table>
+      <p>When the value of <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} is {1, 1}, this control does not affect any exceptions due to the higher priority <a href="AArch64-sctlr_el2.html">SCTLR_EL2</a>.MSCEn control.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">CMOW, bit [9]<span class="condition"><br/>When FEAT_CMOW is implemented:
+                        </span></h4><div class="field"><p>Controls cache maintenance instruction permission for the following instructions executed at EL1 or EL0.</p>
+<ul>
+<li>
+<p><a href="AArch64-ic-ivau.html">IC IVAU</a>, <a href="AArch64-dc-civac.html">DC CIVAC</a>, <a href="AArch64-dc-cigdvac.html">DC CIGDVAC</a> and <a href="AArch64-dc-cigvac.html">DC CIGVAC</a>.</p>
+
+</li><li>
+<p><a href="AArch32-icimvau.html">ICIMVAU</a>, <a href="AArch32-dccimvac.html">DCCIMVAC</a>.</p>
+
+</li></ul><table class="valuetable"><tr><th>CMOW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>These instructions executed at EL1 or EL0  with stage 2 read permission, but without stage 2 write permission do not generate a stage 2 permission fault.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>These instructions executed at EL1 or EL0, if enabled as a result of <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.UCI==1,  with stage 2 read permission, but without stage 2 write permission generate a stage 2 permission fault.</p>
+        </td></tr></table><p>For this control, stage 2 has write permission if S2AP[1] is 1 or DBM is 1 in the stage 2 descriptor. The instructions do not cause an update to the dirty state.</p>
+<p>This bit is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">VFNMI, bit [8]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field">
+      <p>Virtual FIQ Interrupt with Superpriority. Enables signaling of virtual FIQ interrupts with Superpriority.</p>
+    <table class="valuetable"><tr><th>VFNMI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VF is 1, a signaled pending virtual FIQ interrupt does not have Superpriority.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VF is 1, a signaled pending virtual FIQ interrupt has Superpriority.</p>
+        </td></tr></table>
+      <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VF is 0, this bit has no effect.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7-1">VINMI, bit [7]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field">
+      <p>Virtual IRQ Interrupt with Superpriority. Enables signaling of virtual IRQ interrupts with Superpriority.</p>
+    <table class="valuetable"><tr><th>VINMI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VI is 1, a signaled pending virtual IRQ interrupt does not have Superpriority.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VI is 1, a signaled pending virtual IRQ interrupt has Superpriority.</p>
+        </td></tr></table>
+      <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.VI is 0, this bit has no effect.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">TALLINT, bit [6]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field"><p>Traps the following writes at EL1 using AArch64 to EL2, when EL2 is implemented and enabled:</p>
+<ul>
+<li>MSR (register) writes of <a href="AArch64-allint.html">ALLINT</a>.
+</li><li>MSR (immediate) writes of <a href="AArch64-allint.html">ALLINT</a> with a value of 1.
+</li></ul><table class="valuetable"><tr><th>TALLINT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The specified MSR accesses at EL1 using AArch64 are trapped to EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">SMPME, bit [5]<span class="condition"><br/>When FEAT_SME is implemented:
+                        </span></h4><div class="field"><p>Streaming Mode Priority Mapping Enable.</p>
+<p>Controls mapping of the value of <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority for streaming execution priority at EL0 or EL1.</p><table class="valuetable"><tr><th>SMPME</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The effective priority value is taken from <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>The effective priority value is:</p>
+<ul>
+<li>When the current Exception level is EL2 or EL3, the value of <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority.
+</li><li>When the current Exception level is EL0 or EL1, the value of the <a href="AArch64-smprimap_el2.html">SMPRIMAP_EL2</a> field corresponding to the value of <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority.
+</li></ul></td></tr></table>
+      <p>When <a href="AArch64-smidr_el1.html">SMIDR_EL1</a>.SMPS is '0', this field is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">FGTnXS, bit [4]<span class="condition"><br/>When FEAT_XS is implemented:
+                        </span></h4><div class="field">
+      <p>Determines if the fine-grained traps in HFGITR_EL2 that apply to each of the TLBI maintenance instructions that are accessible at EL1 also apply to the corresponding TLBI maintenance instructions with the nXS qualifier.</p>
+    <table class="valuetable"><tr><th>FGTnXS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fine-grained trap in the HFGITR_EL2 that applies to a TLBI maintenance instruction at EL1 also applies to the corresponding TLBI instruction with the nXS qualifier at EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fine-grained trap in the HFGITR_EL2 that applies to a TLBI maintenance instruction at EL1 does not apply to the corresponding TLBI instruction with the nXS qualifier at EL1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">FnXS, bit [3]<span class="condition"><br/>When FEAT_XS is implemented:
+                        </span></h4><div class="field"><p>Determines the behavior of TLBI instructions affected by the XS attribute.</p>
+<p>This control bit also determines whether an AArch64 DSB instruction behaves as a DSB instruction with an nXS qualifier when executed at EL0 and EL1.</p><table class="valuetable"><tr><th>FnXS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not have any effect on the behavior of the TLBI maintenance instructions.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>A TLBI maintenance instruction without the nXS qualifier executed at EL1 behaves in the same way as the corresponding TLBI maintenance instruction with the nXS qualifier.</p>
+<p>An AArch64 DSB instruction executed at EL1 or EL0 behaves in the same way as the corresponding DSB instruction with the nXS qualifier executed at EL1 or EL0.</p></td></tr></table>
+      <p>This bit is permitted to be cached in a TLB.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">EnASR, bit [2]<span class="condition"><br/>When FEAT_LS64_V is implemented:
+                        </span></h4><div class="field">
+      <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, traps execution of an ST64BV instruction at EL0 or EL1 to EL2.</p>
+    <table class="valuetable"><tr><th>EnASR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Execution of an ST64BV instruction at EL0 is trapped to EL2 if the execution is not trapped by <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.EnASR.</p>
+<p>Execution of an ST64BV instruction at EL1 is trapped to EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table>
+      <p>A trap of an ST64BV instruction is reported using an ESR_ELx.EC value of <span class="hexnumber">0x0A</span>, with an ISS code of <span class="hexnumber">0x0000000</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">EnALS, bit [1]<span class="condition"><br/>When FEAT_LS64 is implemented:
+                        </span></h4><div class="field">
+      <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, traps execution of an LD64B or ST64B instruction at EL0 or EL1 to EL2.</p>
+    <table class="valuetable"><tr><th>EnALS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Execution of an LD64B or ST64B instruction at EL0 is trapped to EL2 if the execution is not trapped by <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.EnALS.</p>
+<p>Execution of an LD64B or ST64B instruction at EL1 is trapped to EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table>
+      <p>A trap of an LD64B or ST64B instruction is reported using an ESR_ELx.EC value of <span class="hexnumber">0x0A</span>, with an ISS code of <span class="hexnumber">0x0000002</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0-1">EnAS0, bit [0]<span class="condition"><br/>When FEAT_LS64_ACCDATA is implemented:
+                        </span></h4><div class="field">
+      <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, traps execution of an ST64BV0 instruction at EL0 or EL1 to EL2.</p>
+    <table class="valuetable"><tr><th>EnAS0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Execution of an ST64BV0 instruction at EL0 is trapped to EL2 if the execution is not trapped by <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.EnAS0.</p>
+<p>Execution of an ST64BV0 instruction at EL1 is trapped to EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr></table>
+      <p>A trap of an ST64BV0 instruction is reported using an ESR_ELx.EC value of <span class="hexnumber">0x0A</span>, with an ISS code of <span class="hexnumber">0x0000001</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing HCRX_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, HCRX_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0010</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0xA0];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.HXEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.HXEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = HCRX_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = HCRX_EL2;
+                </p><h4 class="assembler">MSR HCRX_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0010</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0xA0] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.HXEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.HXEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        HCRX_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    HCRX_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

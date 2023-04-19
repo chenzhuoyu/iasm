@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDPRSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDPRSR, External Debug Processor Status Register</h1><p>The EDPRSR characteristics are:</p><h2>Purpose</h2>
+        <p>Holds information about the reset and powerdown state of the PE.</p>
+      <h2>Configuration</h2><p>When FEAT_DoPD is implemented, EDPRSR is in the Core power domain. Otherwise, EDPRSR contains fields that are in the Core power domain and fields that are in the Debug power domain.
+    </p>
+        <p>If <span class="xref">FEAT_DoPD</span> is implemented then all fields in this register are in the Core power domain.</p>
+      <h2>Attributes</h2>
+        <p>EDPRSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="15"><a href="#fieldset_0-31_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">EPMADE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">ETADE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">EDADE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">STAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">ETAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">SDR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">SPMAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">EPMAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">SDAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">EDAD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">DLK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">OSLK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">HALTED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">SR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">R</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">SPD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">PU</a></td></tr></tbody></table><h4 id="fieldset_0-31_17">Bits [31:17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">EPMADE, bit [16]<span class="condition"><br/>When FEAT_RME is implemented and FEAT_PMUv3_EXT is implemented:
+                        </span></h4><div class="field"><p>External Performance Monitors Access Disable Extended Status. Together with EDPRSR.EPMAD, reports whether access to Performance Monitor registers by an external debugger is permitted.</p>
+<p>For a description of the values derived by evaluating EPMAD and EPMADE together, see EDPRSR.EPMAD.</p></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15-1">ETADE, bit [15]<span class="condition"><br/>When FEAT_RME is implemented, FEAT_TRC_EXT is implemented and FEAT_TRBE is implemented:
+                        </span></h4><div class="field"><p>External Trace Access Disable Extended Status. Together with EDPRSR.ETAD, reports whether access to trace unit registers by an external debugger is permitted.</p>
+<p>For a description of the values derived by evaluating ETAD and ETADE together, see EDPRSR.ETAD.</p></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">EDADE, bit [14]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>External Debug Access Disable Extended Status. Together with EDPRSR.EDAD, reports whether access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> by an external debugger is permitted.</p>
+<p>For a description of the values derived by evaluating EDAD and EDADE together, see EDPRSR.EDAD.</p></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">STAD, bit [13]<span class="condition"><br/>When FEAT_TRC_EXT is implemented and FEAT_TRBE is implemented:
+                        </span></h4><div class="field">
+      <p>Sticky ETAD error. Set to 1 when a Non-secure external debug interface access to an external trace register returns an error because <span class="function">AllowExternalTraceAccess</span>() == FALSE for the access.</p>
+    <table class="valuetable"><tr><th>STAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Since EDPRSR was last read, no external accesses to the trace unit registers have failed because <span class="function">AllowExternalTraceAccess</span>() was FALSE for the access.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Since EDPRSR was last read, at least one external access to the trace unit registers has failed because <span class="function">AllowExternalTraceAccess</span>() was FALSE for the access.</p>
+        </td></tr></table><p>If <span class="function">IsCorePowered</span>() == TRUE, the Core power domain is powered up, then, following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus</span>() == FALSE then this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus</span>() == TRUE then it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This bit is in the Core power domain.</p>
+<div class="note"><span class="note-header">Note</span><p>If <span class="xref">FEAT_DoPD</span> is implemented, <span class="xref">FEAT_DoubleLock</span> is not implemented.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>DoubleLockStatus()</li><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RC/WI</span>.</li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">ETAD, bit [12]<span class="condition"><br/>When FEAT_RME is implemented, FEAT_TRC_EXT is implemented and FEAT_TRBE is implemented:
+                        </span></h4><div class="field"><p>External Trace Access Disable Status. Together with EDPRSR.ETADE, reports whether access to trace unit registers by an external debugger is permitted.</p>
+<table class="valuetable"><thead><tr><th>ETADE</th><th>ETAD</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>Access to trace unit registers by an external debugger is permitted.</td></tr><tr><td><span class="binarynumber">0b0</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root and Secure access to trace unit registers by an external debugger is permitted.
+Realm and Non-secure access to trace unit registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b0</span>
+</td><td>Root and Realm access to trace unit registers by an external debugger is permitted.
+Secure and Non-secure access to trace unit registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root access to trace unit registers by an external debugger is permitted.
+Secure, Non-secure, and Realm access to trace unit registers by an external debugger is not permitted.</td></tr></tbody></table></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>When FEAT_TRC_EXT is implemented and FEAT_TRBE is implemented:
+                        </span></h4><div class="field">
+      <p>External Trace Access Disable status.</p>
+    <table class="valuetable"><tr><th>ETAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External Non-secure trace unit accesses enabled. <span class="function">AllowExternalTraceAccess</span>() == TRUE for a Non-secure access.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External Non-secure trace unit accesses disabled. <span class="function">AllowExternalTraceAccess</span>() == FALSE for a Non-secure access.</p>
+        </td></tr></table><p>This bit is in the Core power domain.</p>
+<div class="note"><span class="note-header">Note</span><p>If <span class="xref">FEAT_DoPD</span> is implemented, <span class="xref">FEAT_DoubleLock</span> is not implemented.</p></div><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>DoubleLockStatus()</li><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-12_12-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11">SDR, bit [11]</h4><div class="field"><p>Sticky Debug Restart. Set to 1 when the PE exits Debug state.</p>
+<p>Permitted values are:</p><table class="valuetable"><tr><th>SDR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The PE has not restarted since EDPRSR was last read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The PE has restarted since EDPRSR was last read.</p>
+        </td></tr></table><div class="note"><span class="note-header">Note</span><p>If a reset occurs when the PE is in Debug state, the PE exits Debug state. SDR is <span class="arm-defined-word">UNKNOWN</span> on Warm reset, meaning a debugger must also use the SR bit to determine whether the PE has left Debug state.</p></div><p>If the Core power domain is powered up, then following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RC/WI</span>.</li></ul></div><h4 id="fieldset_0-10_10-1">SPMAD, bit [10]<span class="condition"><br/>When FEAT_Debugv8p4 is implemented and FEAT_PMUv3_EXT is implemented:
+                        </span></h4><div class="field"><p>Sticky EPMAD error. Set to 1 if an external debug interface access to a Performance Monitors register returns an error because <span class="function">AllowExternalPMUAccess()</span> == FALSE.</p>
+<p>Permitted values are:</p><table class="valuetable"><tr><th>SPMAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No Non-secure external debug interface accesses to the external Performance Monitors registers have failed because <span class="function">AllowExternalPMUAccess()</span> == FALSE for the access since EDPRSR was last read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>At least one Non-secure external debug interface access to the external Performance Monitors register has failed and returned an error because <span class="function">AllowExternalPMUAccess()</span> == FALSE for the access since EDPRSR was last read.</p>
+        </td></tr></table><p>If the Core power domain is powered up, then following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE, this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RC/WI</span>.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>When FEAT_PMUv3_EXT is implemented:
+                        </span></h4><div class="field">
+      <p>Sticky EPMAD error.</p>
+    <table class="valuetable"><tr><th>SPMAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No external debug interface accesses to the Performance Monitors registers have failed because <span class="function">AllowExternalPMUAccess()</span> == FALSE since EDPRSR was last read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>At least one external debug interface access to the Performance Monitors registers has failed and returned an error because <span class="function">AllowExternalPMUAccess()</span> == FALSE since EDPRSR was last read.</p>
+        </td></tr></table><p>If the Core power domain is powered up, then, following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE, this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented, and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>OSLockStatus()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RC/WI</span>.</li></ul></div><h4 id="fieldset_0-10_10-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">EPMAD, bit [9]<span class="condition"><br/>When FEAT_RME is implemented and FEAT_PMUv3_EXT is implemented:
+                        </span></h4><div class="field"><p>External Performance Monitors Access Disable Status. Together with EDPRSR.EPMADE, reports whether access to Performance Monitor registers by an external debugger is permitted.</p>
+<table class="valuetable"><thead><tr><th>EPMADE</th><th>EPMAD</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>Access to Performance Monitor registers by an external debugger is permitted.</td></tr><tr><td><span class="binarynumber">0b0</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root and Secure access to Performance Monitor registers by an external debugger is permitted.
+Realm and Non-secure access to Performance Monitor registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b0</span>
+</td><td>Root and Realm access to Performance Monitor registers by an external debugger is permitted.
+Secure and Non-secure access to Performance Monitor registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root access to Performance Monitor registers by an external debugger is permitted.
+Secure, Non-secure, and Realm access to Performance Monitor registers by an external debugger is not permitted.</td></tr></tbody></table></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>When FEAT_Debugv8p4 is implemented and FEAT_PMUv3_EXT is implemented:
+                        </span></h4><div class="field">
+      <p>External Performance Monitors Non-secure Access Disable status.</p>
+    <table class="valuetable"><tr><th>EPMAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External Non-secure Performance Monitors access enabled. <span class="function">AllowExternalPMUAccess()</span> == TRUE for a Non-secure access.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External Non-secure Performance Monitors access disabled. <span class="function">AllowExternalPMUAccess()</span> == FALSE for a Non-secure access.</p>
+        </td></tr></table>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-9_9-3"><span class="condition"><br/>When FEAT_PMUv3_EXT is implemented and FEAT_Debugv8p4 is not implemented:
+                        </span></h4><div class="field">
+      <p>External Performance Monitors access disable status.</p>
+    <table class="valuetable"><tr><th>EPMAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External Performance Monitors access enabled. <span class="function">AllowExternalPMUAccess()</span> == TRUE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External Performance Monitors access disabled. <span class="function">AllowExternalPMUAccess()</span> == FALSE.</p>
+        </td></tr></table>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>OSLockStatus()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-9_9-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">SDAD, bit [8]<span class="condition"><br/>When FEAT_Debugv8p4 is implemented:
+                        </span></h4><div class="field">
+      <p>Sticky EDAD error. Set to 1 if an external debug interface access to a debug register returns an error because <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+    <table class="valuetable"><tr><th>SDAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No Non-secure external debug interface accesses to the debug registers have failed because <span class="function">AllowExternalDebugAccess()</span> == FALSE for the access since EDPRSR was last read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>At least one Non-secure external debug interface access to the debug registers has failed and returned an error because <span class="function">AllowExternalDebugAccess()</span> == FALSE for the access since EDPRSR was last read.</p>
+        </td></tr></table><p>If the Core power domain is powered up, then, following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Sticky EDAD error. Set to 1 if an external debug interface access to a debug register returns an error because <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+    <table class="valuetable"><tr><th>SDAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No external debug interface accesses to the debug registers have failed because <span class="function">AllowExternalDebugAccess()</span> == FALSE since EDPRSR was last read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>At least one external debug interface access to the debug registers has failed and returned an error because <span class="function">AllowExternalDebugAccess()</span> == FALSE since EDPRSR was last read.</p>
+        </td></tr></table><p>If the Core power domain is powered up, then, following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This bit is <span class="arm-defined-word">UNKNOWN</span> on reads if <span class="function">OSLockStatus()</span> == TRUE and external debug writes to <a href="ext-oslar_el1.html">OSLAR_EL1</a> do not return an error when <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-7_7-1">EDAD, bit [7]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>External Debug Access Disable Status. Together with EDPRSR.EDADE, reports whether access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> by an external debugger is permitted.</p>
+<table class="valuetable"><thead><tr><th>EDADE</th><th>EDAD</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>Access to Debug registers by an external debugger is permitted.</td></tr><tr><td><span class="binarynumber">0b0</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root and Secure access to Debug registers by an external debugger is permitted.
+Realm and Non-secure access to Debug registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b0</span>
+</td><td>Root and Realm access to Debug registers by an external debugger is permitted.
+Secure and Non-secure access to Debug registers by an external debugger is not permitted.</td></tr><tr><td><span class="binarynumber">0b1</span>
+</td><td><span class="binarynumber">0b1</span>
+</td><td>Root access to Debug registers by an external debugger is permitted.
+Secure, Non-secure, and Realm access to Debug registers by an external debugger is not permitted.</td></tr></tbody></table></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>When FEAT_Debugv8p4 is implemented:
+                        </span></h4><div class="field">
+      <p>External Debug Access Disable status.</p>
+    <table class="valuetable"><tr><th>EDAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External Non-secure access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> enabled. <span class="function">AllowExternalDebugAccess()</span> == TRUE for a Non-secure access.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External Non-secure access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> disabled. <span class="function">AllowExternalDebugAccess()</span> == FALSE for a Non-secure access.</p>
+        </td></tr></table>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-7_7-3"><span class="condition"><br/>When FEAT_Debugv8p2 is implemented:
+                        </span></h4><div class="field">
+      <p>External Debug Access Disable status.</p>
+    <table class="valuetable"><tr><th>EDAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> enabled. <span class="function">AllowExternalDebugAccess()</span> == TRUE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> disabled. <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+        </td></tr></table><p>This bit is not valid and reads <span class="arm-defined-word">UNKNOWN</span> if <span class="function">OSLockStatus()</span> == TRUE and external debug writes to <a href="ext-oslar_el1.html">OSLAR_EL1</a> do not return an error when <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+<p>This field is in the Core power domain.</p><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-7_7-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>External Debug Access Disable status.</p>
+    <table class="valuetable"><tr><th>EDAD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>External access to breakpoint registers, watchpoint registers, and <a href="ext-oslar_el1.html">OSLAR_EL1</a> enabled. <span class="function">AllowExternalDebugAccess()</span> == TRUE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>External access to breakpoint registers, watchpoint registers disabled. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether accesses to <a href="ext-oslar_el1.html">OSLAR_EL1</a> are enabled or disabled. <span class="function">AllowExternalDebugAccess()</span> == FALSE.</p>
+        </td></tr></table>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-6_6-1">DLK, bit [6]<span class="condition"><br/>When FEAT_Debugv8p4 is implemented:
+                        </span></h4><div class="field">
+      <p>This field is <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>When FEAT_Debugv8p2 is implemented and FEAT_DoubleLock is implemented:
+                        </span></h4><div class="field"><p>Double Lock.</p>
+<p>From Armv8.2, this field is deprecated.</p>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>IsCorePowered()</li><li>!DoubleLockStatus()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">UNKNOWN/WI</span>.</li></ul></div><h4 id="fieldset_0-6_6-3"><span class="condition"><br/>When FEAT_DoubleLock is implemented:
+                        </span></h4><div class="field"><p>Double Lock.</p>
+<p>This field returns the result of the pseudocode function <span class="function">DoubleLockStatus()</span>.</p>
+<p>If the Core power domain is powered up and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>EDPRSR.PU reads as 1, EDPRSR.DLK reads as 1, and EDPRSR.SPD is <span class="arm-defined-word">UNKNOWN</span>.
+</li><li>EDPRSR.PU reads as 0, EDPRSR.DLK is <span class="arm-defined-word">UNKNOWN</span>, and EDPRSR.SPD reads as 0.
+</li></ul>
+<p>This field is in the Core power domain.</p><table class="valuetable"><tr><th>DLK</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><span class="function">DoubleLockStatus()</span> returns FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="function">DoubleLockStatus()</span> returns TRUE and the Core power domain is powered up.</p>
+        </td></tr></table><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>FEAT_DoPD is not implemented</li><li>!IsCorePowered()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-6_6-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5">OSLK, bit [5]</h4><div class="field"><p>OS Lock status bit.</p>
+<p>A read of this bit returns the value of <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK.</p>
+<p>This field is in the Core power domain.</p><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>FEAT_DoPD is not implemented</li><li>!IsCorePowered()</li><li>DoubleLockStatus()</li><li>EDPRSR.R == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-4_4">HALTED, bit [4]</h4><div class="field">
+      <p>Halted status bit.</p>
+    <table class="valuetable"><tr><th>HALTED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>PE is in Non-debug state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>PE is in Debug state.</p>
+        </td></tr></table>
+      <p>This field is in the Core power domain.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>FEAT_DoPD is not implemented</li><li>!IsCorePowered()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-3_3">SR, bit [3]</h4><div class="field"><p>Sticky core Reset status bit.</p>
+<p>Permitted values are:</p><table class="valuetable"><tr><th>SR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The non-debug logic of the PE is not in reset state and has not been reset since the last time EDPRSR was read.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The non-debug logic of the PE is in reset state or has been reset since the last time EDPRSR was read.</p>
+        </td></tr></table><p>If EDPRSR.PU reads as 1 and EDPRSR.R reads as 0, which means that the Core power domain is in a powerup state and that the non-debug logic of the PE is not in reset state, then following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li></ul></li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RC/WI</span>.</li></ul></div><h4 id="fieldset_0-2_2">R, bit [2]</h4><div class="field"><p>PE Reset status bit.</p>
+<p>Permitted values are:</p><table class="valuetable"><tr><th>R</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The non-debug logic of the PE is not in reset state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The non-debug logic of the PE is in reset state.</p>
+        </td></tr></table><p>If <span class="xref">FEAT_DoubleLock</span> is implemented, the PE is in reset state, and the PE entered reset state with the OS Double Lock locked this bit has a <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> value. For more information, see <span class="xref">'EDPRSR.{DLK, R} and reset state'</span>.</p>
+<p>This field is in the Core power domain.</p><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>FEAT_DoPD is not implemented and !IsCorePowered()</li><li>DoubleLockStatus()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-1_1">SPD, bit [1]</h4><div class="field"><p>Sticky core Powerdown status bit.</p>
+<p>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, then:</p>
+<ul>
+<li>If <span class="xref">FEAT_Debugv8p2</span> is implemented, this bit reads as 0.
+</li><li>If <span class="xref">FEAT_Debugv8p2</span> is not implemented, this bit might read as 0 or 1.
+</li></ul>
+<p>For more information, see <span class="xref">'EDPRSR.{DLK, SPD, PU} and the Core power domain'</span>.</p><table class="valuetable"><tr><th>SPD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDPRSR.PU is 0, it is not known whether the state of the debug registers in the Core power domain is lost.</p>
+<p>If EDPRSR.PU is 1, the state of the debug registers in the Core power domain has not been lost.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The state of the debug registers in the Core power domain has been lost.</p>
+        </td></tr></table><p>If the Core power domain is powered up, then, following a read of EDPRSR:</p>
+<ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE this bit clears to 0.
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this bit clears to 0 or is unchanged.
+</li></ul>
+<p>When <span class="xref">FEAT_DoPD</span> is not implemented and the Core power domain is in either retention or powerdown state, the value of EDPRSR.SPD is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. For more information, see <span class="xref">'EDPRSR.SPD when the Core domain is in either retention or powerdown state'</span>.</p>
+<p>EDPRSR.{DLK, SPD, PU} describe whether registers in the Core power domain can be accessed, and whether their state has been lost since the last time the register was read. For more information, see <span class="xref">'EDPRSR.{DLK, SPD, PU} and the Core power domain'</span>.</p>
+<p>This field is in the Core power domain.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>FEAT_DoPD is not implemented</li><li>!IsCorePowered()</li></ul></li><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>IsCorePowered()</li><li>DoubleLockStatus()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-0_0-1">PU, bit [0]<span class="condition"><br/>When FEAT_DoPD is implemented:
+                        </span></h4><div class="field">
+      <p>Core powerup status bit.</p>
+    <p>Access to this field is <span class="access_level">RAO/WI</span>.</p></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>When FEAT_Debugv8p2 is implemented:
+                        </span></h4><div class="field">
+      <p>Core Powerup status bit. Indicates whether the debug registers in the Core power domain can be accessed.</p>
+    <table class="valuetable"><tr><th>PU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Either the Core power domain is in a low-power or powerdown state, or <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, meaning the debug registers in the Core power domain cannot be accessed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Core power domain is in a powerup state, and either <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE, meaning the debug registers in the Core power domain can be accessed.</p>
+        </td></tr></table><p>If <span class="xref">FEAT_DoubleLock</span> is implemented, the PE is in reset state, and the PE entered reset state with the OS Double Lock locked this bit has a <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> value. For more information, see <span class="xref">'EDPRSR.{DLK, R} and reset state'</span></p>
+<p>EDPRSR.{DLK, SPD, PU} describe whether registers in the Core power domain can be accessed, and whether their state has been lost since the last time the register was read. For more information, see <span class="xref">'EDPRSR.{DLK, SPD, PU} and the Core power domain'</span></p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-0_0-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Core Powerup status bit. Indicates whether the debug registers in the Core power domain can be accessed.</p>
+<p>When the Core power domain is powered-up and <span class="function">DoubleLockStatus()</span> == TRUE, then the value of EDPRSR.PU is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. See the description of the DLK bit for more information.</p>
+<p>Otherwise, permitted values are:</p><table class="valuetable"><tr><th>PU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Core power domain is in a low-power or powerdown state where the debug registers in the Core power domain cannot be accessed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Core power domain is in a powerup state where the debug registers in the Core power domain can be accessed.</p>
+        </td></tr></table><p>If <span class="xref">FEAT_DoubleLock</span> is implemented, the Core power domain is powered up, and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit reads as 0 or 1.</p>
+<p>If <span class="xref">FEAT_DoubleLock</span> is implemented, the PE is in reset state, and the PE entered reset state with the OS Double Lock locked this bit has a <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> value. For more information see <span class="xref">'EDPRSR.{DLK, R} and reset state'</span></p>
+<p>EDPRSR.{DLK, SPD, PU} describe whether registers in the Core power domain can be accessed, and whether their state has been lost since the last time the register was read. For more information, see <span class="xref">'EDPRSR.{DLK, SPD, PU} and the Core power domain'</span>.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing EDPRSR</h2>
+        <p>On permitted accesses to the register, other access controls affect the behavior of some fields. See the field descriptions for more information.</p>
+
+      
+        <p>If the Core power domain is powered up (EDPRSR.PU == 1), then following a read of EDPRSR:</p>
+
+      
+        <ul>
+<li>If <span class="xref">FEAT_DoubleLock</span> is not implemented or <span class="function">DoubleLockStatus()</span> == FALSE, then:<ul>
+<li>EDPRSR.{SDR, SPMAD, SDAD, SPD} are cleared to 0.
+</li><li>EDPRSR.SR is cleared to 0 if the non-debug logic of the PE is not in reset state (EDPRSR.R == 0).
+</li></ul>
+
+</li><li>If <span class="xref">FEAT_DoubleLock</span> is implemented and <span class="function">DoubleLockStatus()</span> == TRUE, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether or not this clearing occurs.
+</li></ul>
+
+      
+        <p>If <span class="xref">FEAT_DoPD</span> is not implemented and the Core power domain is powered down (EDPRSR.PU == 0), then:</p>
+
+      
+        <ul>
+<li>EDPRSR.{SDR, SPMAD, SDAD, SR} are all <span class="arm-defined-word">UNKNOWN</span>, and are either reset or restored on being powered up.
+</li><li>EDPRSR.SPD is not cleared following a read of EDPRSR. See the SPD bit description for more information.
+</li></ul>
+
+      
+        <p>The clearing of bits is an indirect write to EDPRSR.</p>
+      <h4>EDPRSR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x314</span></td><td>EDPRSR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When FEAT_DoPD is not implemented or IsCorePowered(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

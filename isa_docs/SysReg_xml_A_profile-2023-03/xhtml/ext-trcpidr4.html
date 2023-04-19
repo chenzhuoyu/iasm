@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCPIDR4</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCPIDR4, Peripheral Identification Register 4</h1><p>The TRCPIDR4 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides discovery information about the component.</p>
+
+      
+        <p>For additional information, see the CoreSight Architecture Specification.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented. Otherwise, direct accesses to TRCPIDR4 are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCPIDR4 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="24"><a href="#fieldset_0-31_8">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">SIZE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">DES_2</a></td></tr></tbody></table><h4 id="fieldset_0-31_8">Bits [31:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_4">SIZE, bits [7:4]</h4><div class="field"><p>Size of the component.</p>
+<p>The distance from the start of the address space used by this component to the end of the component identification registers.</p>
+<p>A value of <span class="binarynumber">0b0000</span> means one of the following is true:</p>
+<ul>
+<li>The component uses a single 4KB block.
+</li><li>The component uses an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> number of 4KB blocks.
+</li></ul>
+<p>Any other value means the component occupies 2<sup>TRCPIDR4.SIZE</sup> 4KB blocks.</p><p>Using this field to indicate the size of the component is deprecated. This field might not correctly indicate the size of the component. Arm recommends that software determine the size of the component from the Unique Component Identifier fields, and other <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> registers in the component.</p>
+<p>Reads as <span class="binarynumber">0b0000</span>.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-3_0">DES_2, bits [3:0]</h4><div class="field">
+      <p>Designer, JEP106 continuation code. This is the JEDEC-assigned JEP106 bank identifier for the designer of the component, minus 1. The code identifies the designer of the component, which might not be not the same as the implementer of the device containing the component. To obtain a number, or to see the assignment of these codes, contact JEDEC http://www.jedec.org.</p>
+    
+      <div class="note"><span class="note-header">Note</span>
+        <p>For a component designed by Arm Limited, the JEP106 bank is 5, meaning this field has the value <span class="hexnumber">0x4</span>.</p>
+      </div>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing TRCPIDR4</h2>
+        <p>External debugger accesses to this register are unaffected by the OS Lock.</p>
+      <h4>TRCPIDR4 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0xFD0</span></td><td>TRCPIDR4</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

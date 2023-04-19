@@ -1,0 +1,515 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SPSR_mon</reg_short_name>
+        
+        <reg_long_name>Saved Program Status Register (Monitor mode)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds the saved process state when an exception is taken to Monitor mode.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Special-purpose registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SPSR_mon is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>N</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Negative Condition flag. Set to the value of PSTATE.N on taking an exception to Monitor mode, and  copied to PSTATE.N on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Z</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Zero Condition flag. Set to the value of PSTATE.Z on taking an exception to Monitor mode, and  copied to PSTATE.Z on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>C</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Carry Condition flag. Set to the value of PSTATE.C on taking an exception to Monitor mode, and  copied to PSTATE.C on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Overflow Condition flag. Set to the value of PSTATE.V on taking an exception to Monitor mode, and  copied to PSTATE.V on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Q</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before">
+      <para>Overflow or saturation flag. Set to the value of PSTATE.Q on taking an exception to Monitor mode, and  copied to PSTATE.Q on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-26_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IT</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>15:10, 26:25</rel_range>
+    <field_description order="before">
+      <para>If-Then. Set to the value of PSTATE.IT on taking an exception to Monitor mode, and  copied to PSTATE.IT on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_description order="after"><para>SPSR_mon.IT must contain a value that is valid for the instruction being returned to.</para>
+<para>The IT field is split as follows:</para>
+<list type="unordered">
+<listitem><content>IT[1:0] is SPSR_mon[26:25].</content>
+</listitem><listitem><content>IT[7:2] is SPSR_mon[15:10].</content>
+</listitem></list></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>15</field_msb>
+        <field_lsb>10</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>26</field_msb>
+        <field_lsb>25</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>J</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before"><para><arm-defined-word>RES0</arm-defined-word>.</para>
+<para>In previous versions of the architecture, the {J, T} bits determined the AArch32 Instruction set state.</para>
+<para>Armv8 does not support either Jazelle state or T32EE state, and the T bit determines the Instruction set state.</para></field_description>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SSBS</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Speculative Store Bypass. Set to the value of PSTATE.SSBS on taking an exception to Monitor mode, and  copied to PSTATE.SSBS on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SSBS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PAN</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Privileged Access Never. Set to the value of PSTATE.PAN on taking an exception to Monitor mode, and  copied to PSTATE.PAN on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAN is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DIT</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Data Independent Timing. Set to the value of PSTATE.DIT on taking an exception to Monitor mode, and  copied to PSTATE.DIT on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DIT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IL</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Illegal Execution state. Set to the value of PSTATE.IL on taking an exception to Monitor mode, and  copied to PSTATE.IL on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GE</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Greater than or Equal flags. Set to the value of PSTATE.GE on taking an exception to Monitor mode, and  copied to PSTATE.GE on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>IT[7:2]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>15:10, 26:25</rel_range>
+    <field_description order="before"><para>This field is bits[7:2] of IT[7:0].</para>
+<para>See IT[1:0] for the field description.</para></field_description>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Endianness. Set to the value of PSTATE.E on taking an exception to Monitor mode, and  copied to PSTATE.E on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If the implementation does not support big-endian operation, SPSR_mon.E is <arm-defined-word>RES0</arm-defined-word>. If the implementation does not support little-endian operation, SPSR_mon.E is <arm-defined-word>RES1</arm-defined-word>. On executing an exception return operation in Monitor mode, if the implementation does not support big-endian operation at the Exception level being returned to, SPSR_mon.E is <arm-defined-word>RES0</arm-defined-word>, and if the implementation does not support little-endian operation at the Exception level being returned to, SPSR_mon.E is <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>SError interrupt mask. Set to the value of PSTATE.A on taking an exception to Monitor mode, and  copied to PSTATE.A on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>IRQ interrupt mask. Set to the value of PSTATE.I on taking an exception to Monitor mode, and  copied to PSTATE.I on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>FIQ interrupt mask. Set to the value of PSTATE.F on taking an exception to Monitor mode, and  copied to PSTATE.F on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>T</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>T32 Instruction set state. Set to the value of PSTATE.T on taking an exception to Monitor mode, and  copied to PSTATE.T on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>M[4:0]</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Mode. Set to the value of PSTATE.M[4:0] on taking an exception to Monitor mode, and  copied to PSTATE.M[4:0] on executing an exception return operation in Monitor mode.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Other values are reserved. If SPSR_mon.M[4:0] has a Reserved value, or a value for an unimplemented Exception level, executing an exception return operation in Monitor mode is an illegal return event, as described in <xref browsertext="'Illegal return events from AArch32 state'" filename="G_the_aarch32_system_level_programmers_model.fm" linkend="CHDDDJDB"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b10000</field_value>
+        <field_value_description>
+          <para>User.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10001</field_value>
+        <field_value_description>
+          <para>FIQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10010</field_value>
+        <field_value_description>
+          <para>IRQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10011</field_value>
+        <field_value_description>
+          <para>Supervisor.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10110</field_value>
+        <field_value_description>
+          <para>Monitor.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10111</field_value>
+        <field_value_description>
+          <para>Abort.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11010</field_value>
+        <field_value_description>
+          <para>Hyp.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11011</field_value>
+        <field_value_description>
+          <para>Undefined.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11111</field_value>
+        <field_value_description>
+          <para>System.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_25" msb="26" lsb="25" label="IT[1:0]"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_22-1" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_10" msb="15" lsb="10" label="IT[7:2]"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>SPSR_mon is only accessible in EL3 modes other than Monitor mode.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRSbanked SPSR_mon" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS{&lt;c&gt;}{&lt;q&gt;} &lt;Rd&gt;, SPSR_mon</access_instruction>
+                
+                <enc n="R" v="0b1"/>
+                
+                <enc n="M" v="0b1"/>
+                
+                <enc n="M1" v="0b1100"/>
+            </encoding>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRbanked SPSR_mon" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR{&lt;c&gt;}{&lt;q&gt;} SPSR_mon, &lt;Rn&gt;</access_instruction>
+                
+                <enc n="R" v="0b1"/>
+                
+                <enc n="M" v="0b1"/>
+                
+                <enc n="M1" v="0b1100"/>
+            </encoding>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

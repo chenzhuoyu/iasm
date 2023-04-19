@@ -1,0 +1,548 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMPCSR</reg_short_name>
+        
+        <reg_long_name>Program Counter Sample Register</reg_long_name>
+
+
+        <reg_parent_link id="pmu.xml">PMU</reg_parent_link>
+
+      
+        <reg_condition otherwise="RES0">when FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</reg_condition>
+      
+
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="63"
+            register_endbit="0"
+        table_id="139930593449688"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x200</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="31"
+            register_endbit="0"
+        table_id="139930593451704"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x200</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="63"
+            register_endbit="32"
+        table_id="139930594142248"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x204</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="63"
+            register_endbit="0"
+        table_id="139930593614984"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x220</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="31"
+            register_endbit="0"
+        table_id="139930597227432"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x220</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="63"
+            register_endbit="32"
+        table_id="139930586703240"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x224</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds a sampled instruction address value.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>PMPCSR is in the Core power domain.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <note><para>Before Armv8.2, the PC Sample-based Profiling Extension can be implemented in the external debug register space, as indicated by the value of <register_link state="ext" id="ext-eddevid.xml">EDDEVID</register_link>.PCSample.</para></note>
+      </configuration_text>
+      <configuration_text>
+        <para>Support for 64-bit atomic reads is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If 64-bit atomic reads are implemented, a 64-bit read of PMPCSR has the same side-effect as a 32-bit read of PMCSR[31:0] followed by a 32-bit read of PMPCSR[63:32], returning the combined value. For example, if the PE is in Debug state then a 64-bit atomic read returns bits[31:0] == <hexnumber>0xFFFFFFFF</hexnumber> and bits[63:32] <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMPCSR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_63-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Together with the NSE field, indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</para>
+<table><tgroup cols="3"><thead><row><entry>NSE</entry><entry>NS</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>When Secure state is implemented, Secure. Otherwise reserved.</entry></row><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Root.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Realm.</entry></row></tbody></tgroup></table></field_description>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Non-secure state sample. Indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</para>
+<para>If EL3 is not implemented, this bit indicates the Effective value of <xref browsertext="SCR" filename="appx_registers_index.fm" linkend="CEGCEECB"/>.NS.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample is from Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample is from Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-62_61" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EL</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>62:61</rel_range>
+    <field_description order="before">
+      <para>Exception level status sample. Indicates the Exception level that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Sample is from EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Sample is from EL1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Sample is from EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Sample is from EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-60_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>T</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Transactional state of the sample. Indicates the Transactional state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample is from Non-transactional state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample is from Transactional state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSE</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Together with the NS field, indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</para>
+<para>For a description of the values derived by evaluating NS and NSE together, see PMPCSR.NS.</para></field_description>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-58_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>58</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>58:56</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-55_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PCSample[55:32]</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>55:32</rel_range>
+    <field_description order="before">
+      <para>Bits[55:32] of the sampled instruction address value. The translation regime that PMPCSR samples can be determined from PMPCSR.{NS,EL}.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PCSample[31:0]</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Bits[31:0] of the sampled instruction address value.</para>
+<para>PMPCSR[31:0] reads as <hexnumber>0xFFFFFFFF</hexnumber> when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The PE is in Debug state.</content>
+</listitem><listitem><content>PC Sample-based profiling is prohibited.</content>
+</listitem></list>
+<para>If a branch instruction has retired since the PE left reset state, then the first read of PMPCSR[31:0] is permitted but not required to return <hexnumber>0xFFFFFFFF</hexnumber>.</para>
+<para>PMPCSR[31:0] reads as an <arm-defined-word>UNKNOWN</arm-defined-word> value when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>The PE is in reset state.</content>
+</listitem><listitem><content>No branch instruction has retired since the PE left reset state, Debug state, or a state where PC Sample-based Profiling is prohibited.</content>
+</listitem><listitem><content>No branch instruction has retired since the last read of PMPCSR[31:0].</content>
+</listitem></list>
+<para>For the cases where a read of PMPCSR[31:0] returns <hexnumber>0xFFFFFFFF</hexnumber> or an <arm-defined-word>UNKNOWN</arm-defined-word> value, the read has the side-effect of setting PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR to <arm-defined-word>UNKNOWN</arm-defined-word> values.</para>
+<para>Otherwise, a read of PMPCSR[31:0] returns bits [31:0] of the sampled instruction address value and has the side-effect of indirectly writing to PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR. The translation regime that PMPCSR samples can be determined from PMPCSR.{NS,EL}.</para>
+<para>For a read of PMPCSR[31:0] from the memory-mapped interface, if PMLSR.SLK == 1, meaning the <arm-defined-word>OPTIONAL</arm-defined-word> Software Lock is locked, then the side-effect of the access does not occur and PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR are unchanged.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63-1" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_61" msb="62" lsb="61"/>
+  <fieldat id="fieldset_0-60_60-1" msb="60" lsb="60"/>
+  <fieldat id="fieldset_0-59_59-1" msb="59" lsb="59"/>
+  <fieldat id="fieldset_0-58_56" msb="58" lsb="56"/>
+  <fieldat id="fieldset_0-55_32" msb="55" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> extensions to external debug might make the value of this register <arm-defined-word>UNKNOWN</arm-defined-word>, see <xref browsertext="'Permitted behavior that might make the PC Sample-based profiling registers UNKNOWN'" filename="H_the_sample_based_profiling__.fm" linkend="BABCBGEF"/>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <note><para>A 32-bit access to PMPCSR[63:32] does not update the PC sample registers. Only a 64-bit access to PMPCSR[63:0] or a 32-bit access to PMPCSR[31:0] updates the PC sample registers. This includes the value a subsequent 32-bit read of PMPCSR[63:32] will return.</para></note>
+      </access_permission_text>
+
+
+
+
+
+        <access_mechanism type="BlockAccessAbstract" table_id="139930593449688">
+        
+        
+        
+        <access_header>[63:0] Accessible at offset 0x200 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT64 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930593451704">
+        
+        
+        
+        <access_header>[31:0] Accessible at offset 0x200 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT32 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930594142248">
+        
+        
+        
+        <access_header>[63:32] Accessible at offset 0x204 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT32 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930593614984">
+        
+        
+        
+        <access_header>[63:0] Accessible at offset 0x220 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT64 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930597227432">
+        
+        
+        
+        <access_header>[31:0] Accessible at offset 0x220 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT32 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930586703240">
+        
+        
+        
+        <access_header>[63:32] Accessible at offset 0x224 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT32 is implemented
+        </access_condition>
+    </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

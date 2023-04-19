@@ -1,0 +1,472 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMUSERENR</reg_short_name>
+        
+        <reg_long_name>Performance Monitors User Enable Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported and FEAT_PMUv3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Enables or disables EL0 access to the Performance Monitors.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMUSERENR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>31:7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TID</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap ID registers. Traps EL0 read access to common event identification registers.</para>
+    </field_description>
+    <field_description order="after"><para>The register accesses affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRC</instruction> reads of <register_link state="AArch32" id="AArch32-pmceid0.xml">PMCEID0</register_link>, <register_link state="AArch32" id="AArch32-pmceid1.xml">PMCEID1</register_link>, <register_link state="AArch32" id="AArch32-pmceid2.xml">PMCEID2</register_link>, and <register_link state="AArch32" id="AArch32-pmceid3.xml">PMCEID3</register_link>.</content>
+</listitem></list>
+<para>When trapped, reads are <arm-defined-word>UNDEFINED</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to PMCEID&lt;n&gt; are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 read accesses to PMCEID&lt;n&gt; are trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p9 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>5:4</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ER</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before"><para>Event counters Read enable.</para>
+<para>When PMUSERENR.EN is 0, PMUSERENR.ER enables EL0 reads of the event counters and EL0 reads and writes of the select register.</para></field_description>
+    <field_description order="after"><para>The register accesses affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRC</instruction> reads of <register_link state="AArch32" id="AArch32-pmevcntrn.xml">PMEVCNTR&lt;n&gt;</register_link> and <register_link state="AArch32" id="AArch32-pmxevcntr.xml">PMXEVCNTR</register_link>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.</content>
+</listitem></list>
+<para>When disabled, reads and writes are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+<para>This field is ignored by the PE when PMUSERENR.EN == 1.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0 reads of the event counters and EL0 reads and writes of the select register are disabled, unless enabled by PMUSERENR.EN.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 reads of the event counters and EL0 reads and writes of the select register are enabled, unless trapped by another control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CR</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before"><para>Cycle counter Read enable.</para>
+<para>When PMUSERENR.EN is 0, PMUSERENR.CR enables EL0 reads of the cycle counter.</para></field_description>
+    <field_description order="after"><para>The register accesses affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRC</instruction> reads of <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>.</content>
+</listitem><listitem><content><instruction>MRRC</instruction> reads of <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>.</content>
+</listitem></list>
+<para>When disabled, reads are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+<para>This field is ignored by the PE when PMUSERENR.EN == 1.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0 reads of the cycle counter are disabled, unless enabled by PMUSERENR.EN.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 reads of the cycle counter are enabled, unless trapped by another control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SW</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Software increment register Write enable.</para>
+<para>When PMUSERENR.EN is 0, PMUSERENR.SW enables EL0 writes to the Software increment register.</para></field_description>
+    <field_description order="after"><para>The register accesses affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MCR</instruction> writes to <register_link state="AArch32" id="AArch32-pmswinc.xml">PMSWINC</register_link>.</content>
+</listitem></list>
+<para>When disabled, writes are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+<para>This field is ignored by the PE when PMUSERENR.EN == 1.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0 writes to the Software increment register are disabled, unless enabled by PMUSERENR.EN.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 writes to the Software increment register are enabled, unless trapped by another control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EN</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable. Enables EL0 read/write access to PMU registers.</para>
+    </field_description>
+    <field_description order="after"><para>The register accesses affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRC</instruction> or <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-pmccfiltr.xml">PMCCFILTR</register_link>, <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>, <register_link state="AArch32" id="AArch32-pmcntenclr.xml">PMCNTENCLR</register_link>, <register_link state="AArch32" id="AArch32-pmcntenset.xml">PMCNTENSET</register_link>, <register_link state="AArch32" id="AArch32-pmcr.xml">PMCR</register_link>, <register_link state="AArch32" id="AArch32-pmevcntrn.xml">PMEVCNTR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-pmovsr.xml">PMOVSR</register_link>, <register_link state="AArch32" id="AArch32-pmovsset.xml">PMOVSSET</register_link>, <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>, <register_link state="AArch32" id="AArch32-pmxevcntr.xml">PMXEVCNTR</register_link>, and <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> reads of the following registers:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-pmceid0.xml">PMCEID0</register_link> and <register_link state="AArch32" id="AArch32-pmceid1.xml">PMCEID1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.PMU"/> is implemented, <register_link state="AArch32" id="AArch32-pmceid2.xml">PMCEID2</register_link> and <register_link state="AArch32" id="AArch32-pmceid3.xml">PMCEID3</register_link>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content><instruction>MCR</instruction> writes to <register_link state="AArch32" id="AArch32-pmswinc.xml">PMSWINC</register_link>.</content>
+</listitem><listitem><content><instruction>MRRC</instruction> or <instruction>MCRR</instruction> accesses to <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>.</content>
+</listitem></list>
+<para>When trapped, reads and writes are <arm-defined-word>UNDEFINED</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0 accesses to the specified PMU System registers are trapped, unless enabled by PMUSERENR.{ER,CR,SW}.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 accesses to the specified PMU System registers are enabled, unless trapped by another control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_7" msb="31" lsb="7"/>
+  <fieldat id="fieldset_0-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_4" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>When <xref browsertext="FEAT_PMUv3p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3p9"/> is implemented and EL1 is using AArch64, <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link> contains additional controls that affect the behavior of this register.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PMUSERENR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1110"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMUSERENR_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMUSERENR;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMUSERENR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMUSERENR;
+elsif PSTATE.EL == EL3 then
+    R[t] = PMUSERENR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PMUSERENR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1110"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMUSERENR = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMUSERENR = R[t];
+elsif PSTATE.EL == EL3 then
+    PMUSERENR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

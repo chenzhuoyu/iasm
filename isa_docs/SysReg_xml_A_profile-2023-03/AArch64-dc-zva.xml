@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="False" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DC ZVA</reg_short_name>
+        
+        <reg_long_name>Data Cache Zero by VA</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Zero data cache by address. Zeroes a naturally aligned block of N bytes, where the size of N is identified in <register_link state="AArch64" id="AArch64-dczid_el0.xml">DCZID_EL0</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Cache maintenance instructions</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DC ZVA is a 64-bit System instruction.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VA</field_name>
+    <field_shortdesc>Virtual address to use</field_shortdesc>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para>Virtual address to use. There is no alignment restriction on the address within the block of N bytes that is used.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>When this instruction is executed, it can generate memory faults or watchpoints which are prioritized in the same way as other memory-related faults or watchpoints. If a synchronous data abort fault or a watchpoint is generated, the CM bit in the ESR_ELx.ISS field is set to 0.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If the memory region being zeroed is any type of Device memory, this instruction generates an Alignment fault which is prioritized in the same way as other Alignment faults that are determined by the memory type.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>This instruction applies to Normal memory regardless of cacheability attributes.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>This instruction behaves as a set of Stores to each byte within the block being accessed, and so it:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Generates a Permission fault if the translation system does not permit writes to the locations.</content>
+</listitem><listitem><content>Requires the same considerations for ordering and the management of coherency as any other store instructions.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="DC ZVA" type="SystemAccessor">
+            <encoding>
+            <access_instruction>DC ZVA, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0111"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="DC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SCTLR_EL1.DZE == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HCR_EL2.TDZ == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.DCZVA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCTLR_EL2.DZE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.MemZero(X[t, 64], CacheType_Data);
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TDZ == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.DCZVA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.MemZero(X[t, 64], CacheType_Data);
+elsif PSTATE.EL == EL2 then
+    AArch64.MemZero(X[t, 64], CacheType_Data);
+elsif PSTATE.EL == EL3 then
+    AArch64.MemZero(X[t, 64], CacheType_Data);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

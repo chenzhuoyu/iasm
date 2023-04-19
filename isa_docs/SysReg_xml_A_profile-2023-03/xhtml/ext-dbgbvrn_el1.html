@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>DBGBVR&lt;n&gt;_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">DBGBVR&lt;n&gt;_EL1, Debug Breakpoint Value Registers, n = 0 - 15</h1><p>The DBGBVR&lt;n&gt;_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Holds a virtual address, or a VMID and/or a context ID, for use in breakpoint matching. Forms breakpoint n together with control register <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.</p>
+      <h2>Configuration</h2><p>External register DBGBVR&lt;n&gt;_EL1 bits [63:0] are architecturally mapped to AArch64 System register <a href="AArch64-dbgbvrn_el1.html">DBGBVR&lt;n&gt;_EL1[63:0]</a>.</p><p>External register DBGBVR&lt;n&gt;_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-dbgbvrn.html">DBGBVR&lt;n&gt;[31:0]</a>.</p><p>External register DBGBVR&lt;n&gt;_EL1 bits [63:32] are architecturally mapped to AArch32 System register <a href="AArch32-dbgbxvrn.html">DBGBXVR&lt;n&gt;[31:0]</a>.</p><p>DBGBVR&lt;n&gt;_EL1 is in the Core power domain.
+    </p>
+        <p>How this register is interpreted depends on the value of <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT.</p>
+
+      
+        <ul>
+<li>When <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT is <span class="binarynumber">0b0x0x</span>, this register holds a virtual address.
+</li><li>When <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT is <span class="binarynumber">0b001x</span>, <span class="binarynumber">0b011x</span>, or <span class="binarynumber">0b110x</span>, this register holds a Context ID.
+</li><li>When <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT is <span class="binarynumber">0b100x</span>, this register holds a VMID.
+</li><li>When <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT is <span class="binarynumber">0b101x</span>, this register holds a VMID and a Context ID.
+</li><li>When <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT is <span class="binarynumber">0b111x</span>, this register holds two Context ID values.
+</li></ul>
+
+      
+        <p>For other values of <a href="ext-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>.BT, this register is <span class="arm-defined-word">RES0</span>.</p>
+
+      
+        <p>If breakpoint n is not implemented then accesses to this register are:</p>
+
+      
+        <ul>
+<li><span class="arm-defined-word">RES0</span> when IsCorePowered() &amp;&amp; !DoubleLockStatus() &amp;&amp; !OSLockStatus() &amp;&amp; AllowExternalDebugAccess().
+</li><li>A <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> choice of <span class="arm-defined-word">RES0</span> or ERROR otherwise.
+</li></ul>
+      <h2>Attributes</h2>
+        <p>DBGBVR&lt;n&gt;_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b0x0x:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="7"><a href="#fieldset_0-63_57">RESS[14:8]</a></td><td class="lr" colspan="4"><a href="#fieldset_0-56_53-1">Bits[56:53]</a></td><td class="lr" colspan="4"><a href="#fieldset_0-52_49-1">Bits[52:49]</a></td><td class="lr" colspan="17"><a href="#fieldset_0-48_2">VA[48:2]</a></td></tr><tr class="firstrow"><td class="lr" colspan="30"><a href="#fieldset_0-48_2">VA[48:2]</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_57">RESS[14:8], bits [63:57]</h4><div class="field"><p>Reserved, Sign extended. Software must treat this field as <span class="arm-defined-word">RES0</span> if the most significant bit of VA is 0 or <span class="arm-defined-word">RES0</span>, and as <span class="arm-defined-word">RES1</span> if the most significant bit of VA is 1.</p>
+<p>Hardware always ignores the value of these bits and it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>The bits are hardwired to a copy of the most significant bit of VA, meaning writes to these bits are ignored, and reads to the bits always return the hardwired value.
+</li><li>The value in those bits can be written, and reads will return the last value written. The value held in those bits is ignored by hardware.
+</li></ul></div><h4 id="fieldset_0-56_53-1">Bits[56:53]<span class="condition"><br/>When FEAT_LVA3 is implemented:
+                        </span></h4><h5>VA[56:53], bits [3:0]
+                 of bits 
+                        [56:53]</h5><div class="field">
+      <p>Extension to VA[48:2]. For more information, see VA[48:2].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-56_53-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><h5>RESS[7:4], bits [3:0]
+                 of bits 
+                        [56:53]</h5><div class="field">
+      <p>Extension to RESS[14:8]. For more information, see RESS[14:8].</p>
+    </div><h4 id="fieldset_0-52_49-1">Bits[52:49]<span class="condition"><br/>When FEAT_LVA is implemented:
+                        </span></h4><h5>VA[52:49], bits [3:0]
+                 of bits 
+                        [52:49]</h5><div class="field">
+      <p>Extension to VA[48:2]. For more information, see VA[48:2].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-52_49-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><h5>RESS[3:0], bits [3:0]
+                 of bits 
+                        [52:49]</h5><div class="field">
+      <p>Extension to RESS[14:8]. For more information, see RESS[14:8].</p>
+    </div><h4 id="fieldset_0-48_2">VA[48:2], bits [48:2]</h4><div class="field"><p>If the address is being matched in an AArch64 stage 1 translation regime:</p>
+<ul>
+<li>This field contains bits[48:2] of the address for comparison.
+</li><li>When <span class="xref">FEAT_LVA3</span> is implemented, (VA[56:53]:VA[52:49]) forms the upper part of the address value. If FEAT_LVA3 is not implemented, bits VA[56:53] are part of the RESS field.
+</li><li>When <span class="xref">FEAT_LVA</span> is implemented, VA[52:49] forms the upper part of the address value. If FEAT_LVA is not implemented, bits [52:49] are part of the RESS field.
+</li></ul>
+<p>If the address is being matched in an AArch32 stage 1 translation regime, the first 20 bits of this field are <span class="arm-defined-word">RES0</span>, and the rest of the field contains bits[31:2] of the address for comparison.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_0">Bits [1:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b001x:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-31_0">ContextID</a></td></tr></tbody></table><h4 id="fieldset_1-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-31_0">ContextID, bits [31:0]</h4><div class="field"><p>Context ID value for comparison.</p>
+<p>The value is compared against <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a> when (<span class="xref">FEAT_VHE</span> is implemented or <span class="xref">FEAT_Debugv8p2</span> is implemented), EL2 is using AArch64, <a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H is 1, and either:</p>
+<ul>
+<li>The PE is executing at EL2.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, the PE is executing at EL0, and EL2 is enabled in the current Security state.
+</li></ul>
+<p>Otherwise, the value is compared against the following:</p>
+<ul>
+<li>
+<p><a href="AArch32-contextidr.html">CONTEXTIDR</a> when the PE is executing at AArch32.</p>
+
+</li><li>
+<p><a href="AArch64-contextidr_el1.html">CONTEXTIDR_EL1</a> when the PE is executing at AArch64.</p>
+
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b011x, EL2 is implemented and (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented):</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_2-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_2-31_0">ContextID</a></td></tr></tbody></table><h4 id="fieldset_2-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-31_0">ContextID, bits [31:0]</h4><div class="field">
+      <p>Context ID value for comparison against <a href="AArch64-contextidr_el1.html">CONTEXTIDR_EL1</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b100x and EL2 is implemented:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_3-63_48">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_3-47_40-1">VMID[15:8]</a></td><td class="lr" colspan="8"><a href="#fieldset_3-39_32">VMID[7:0]</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_3-31_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_3-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_3-47_40-1">VMID[15:8], bits [47:40]<span class="condition"><br/>When FEAT_VHE is implemented and VTCR_EL2.VS == 1:
+                        </span></h4><div class="field"><p>Extension to VMID[7:0]. For more information, see DBGBVR&lt;n&gt;_EL1.VMID[7:0].</p>
+<p>If EL2 is using AArch32, this field is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-47_40-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_3-39_32">VMID[7:0], bits [39:32]</h4><div class="field"><p>VMID value for comparison.</p>
+<p>The VMID is 8 bits when any of the following are true:</p>
+<ul>
+<li>EL2 is using AArch32.
+</li><li><a href="AArch64-vtcr_el2.html">VTCR_EL2</a>.VS is 0.
+</li><li><span class="xref">FEAT_VMID16</span> is not implemented.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-31_0">Bits [31:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b101x and EL2 is implemented:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_4-63_48">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_4-47_40-1">VMID[15:8]</a></td><td class="lr" colspan="8"><a href="#fieldset_4-39_32">VMID[7:0]</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_4-31_0">ContextID</a></td></tr></tbody></table><h4 id="fieldset_4-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_4-47_40-1">VMID[15:8], bits [47:40]<span class="condition"><br/>When FEAT_VMID16 is implemented and VTCR_EL2.VS == 1:
+                        </span></h4><div class="field"><p>Extension to VMID[7:0]. For more information, see DBGBVR&lt;n&gt;_EL1.VMID[7:0].</p>
+<p>If EL2 is using AArch32, or if the implementation has an 8-bit VMID, this field is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-47_40-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_4-39_32">VMID[7:0], bits [39:32]</h4><div class="field"><p>VMID value for comparison.</p>
+<p>The VMID is 8 bits when any of the following are true:</p>
+<ul>
+<li>EL2 is using AArch32.
+</li><li><a href="AArch64-vtcr_el2.html">VTCR_EL2</a>.VS is 0.
+</li><li><span class="xref">FEAT_VMID16</span> is not implemented.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-31_0">ContextID, bits [31:0]</h4><div class="field">
+      <p>Context ID value for comparison against <a href="AArch64-contextidr_el1.html">CONTEXTIDR_EL1</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b110x, EL2 is implemented and (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented):</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_5-63_32">ContextID2</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_5-31_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_5-63_32">ContextID2, bits [63:32]</h4><div class="field">
+      <p>Context ID value for comparison against <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_5-31_0">Bits [31:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When DBGBCR&lt;n&gt;_EL1.BT == 0b111x, EL2 is implemented and (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented):</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_6-63_32">ContextID2</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_6-31_0">ContextID</a></td></tr></tbody></table><h4 id="fieldset_6-63_32">ContextID2, bits [63:32]</h4><div class="field">
+      <p>Context ID value for comparison against <a href="AArch64-contextidr_el2.html">CONTEXTIDR_EL2</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_6-31_0">ContextID, bits [31:0]</h4><div class="field">
+      <p>Context ID value for comparison against <a href="AArch64-contextidr_el1.html">CONTEXTIDR_EL1</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h2>Accessing DBGBVR&lt;n&gt;_EL1</h2>
+        <div class="note"><span class="note-header">Note</span><p>SoftwareLockStatus() depends on the type of access attempted and AllowExternalDebugAccess() has a new definition from Armv8.4. Refer to the Pseudocode definitions for more information.</p></div>
+      <h4>DBGBVR&lt;n&gt;_EL1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th><th>Range</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x400</span> + (16 * n)</td><td>DBGBVR&lt;n&gt;_EL1</td><td>63:0</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus(), AllowExternalDebugAccess() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus(), AllowExternalDebugAccess() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

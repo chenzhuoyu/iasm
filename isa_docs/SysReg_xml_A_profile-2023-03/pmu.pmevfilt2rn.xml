@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMEVFILT2R&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Performance Monitors Event Filter Registers</reg_long_name>
+
+
+        <reg_parent_link id="pmu.xml">PMU</reg_parent_link>
+
+      
+        <reg_condition otherwise="RES0">when FEAT_PMUv3_EXT is implemented and an implementation implements PMEVFILT2R&lt;n&gt;</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>63</reg_array_end>
+         </reg_array>
+      
+
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="31"
+            register_endbit="0"
+        table_id="139930565533648"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x800 + (4 * n)</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>IMPDEF</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+            
+            register_startbit="63"
+            register_endbit="0"
+        table_id="139930567200328"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x800 + (8 * n)</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>IMPDEF</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides additional <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> configuration controls for PMU counters.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Each PMEVFILT2R&lt;n&gt; register can provide additional configuration controls for a PMU counter, where:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>For values of n less than 31, if event counter n is implemented, then the controls are for PMU event counter &lt;n&gt;.</content>
+</listitem><listitem><content>For n equal to 31, the controls are for the cycle counter, <register_link state="ext" id="ext-pmccntr_el0.xml">PMCCNTR_EL0</register_link>.</content>
+</listitem><listitem><content>For n equal to 32, if FEAT_PMUv3_ICNTR is implemented, the controls are for the instruction counter, <register_link state="ext" id="ext-pmicntr_el0.xml">PMICNTR_EL0</register_link>.</content>
+</listitem><listitem><content>For all other values of n, PMEVFILT2R&lt;n&gt; is not implemented.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Although this mapping is recommended, it is not required and the function of each register is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>PMEVFILT2R&lt;n&gt; is in the Core power domain.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>If PMEVFILT2R&lt;n&gt; is not implemented:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When IsCorePowered() &amp;&amp; !DoubleLockStatus() &amp;&amp; !OSLockStatus() &amp;&amp; AllowExternalPMUAccess(), accesses are <arm-defined-word>RES0</arm-defined-word>.</content>
+</listitem><listitem><content>Otherwise, it is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> whether accesses to this register are <arm-defined-word>RES0</arm-defined-word> or generate an error response.</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMEVFILT2R&lt;n&gt; is a:</para>
+
+      </attributes_text>
+      <attributes_text>
+        <list type="unordered">
+<listitem><content>64-bit register when FEAT_PMUv3_EXT64 is implemented</content>
+</listitem><listitem><content>32-bit register otherwise</content>
+</listitem></list>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When FEAT_PMUv3_EXT64 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition/>
+  <text_before_fields/>
+  <field id="fieldset_1-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_PMUv3_EXT64 is implemented</fields_condition>
+  <fieldat id="fieldset_0-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition/>
+  <fieldat id="fieldset_1-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="63"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <note><para>SoftwareLockStatus() depends on the type of access attempted and AllowExternalPMUAccess() has a new definition from Armv8.4. Refer to the Pseudocode definitions for more information.</para></note>
+      </access_permission_text>
+
+
+
+
+
+        <access_mechanism type="BlockAccessAbstract" table_id="139930565533648">
+        
+        
+        
+        <access_header>[31:0] Accessible at offset 0x800 + (4 * n) from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT32 is implemented
+        </access_condition>
+    </access_mechanism>
+        <access_mechanism type="BlockAccessAbstract" table_id="139930567200328">
+        
+        
+        
+        <access_header>[63:0] Accessible at offset 0x800 + (8 * n) from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT64 is implemented
+        </access_condition>
+    </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

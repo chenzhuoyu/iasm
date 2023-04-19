@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" encoding="UTF-8" href="iform.xsl" version="1.0"?>
+<!DOCTYPE instructionsection PUBLIC "-//ARM//DTD instructionsection //EN" "iform-p.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+
+<instructionsection id="CHKFEAT" title="CHKFEAT -- A64" type="instruction">
+  <docvars>
+    <docvar key="instr-class" value="system" />
+    <docvar key="isa" value="A64" />
+    <docvar key="mnemonic" value="CHKFEAT" />
+  </docvars>
+  <heading>CHKFEAT</heading>
+  <desc>
+    <brief>
+      <para>Check feature status</para>
+    </brief>
+    <authored>
+      <para>Check feature status. This instruction indicates the status of features.</para>
+      <para>If FEAT_CHK is not implemented, this instruction executes as a <instruction>NOP</instruction>.</para>
+    </authored>
+  </desc>
+  <alias_list howmany="0"></alias_list>
+  <classes>
+    <iclass name="System" oneof="1" id="iclass_system" no_encodings="1" isa="A64">
+      <docvars>
+        <docvar key="instr-class" value="system" />
+        <docvar key="isa" value="A64" />
+        <docvar key="mnemonic" value="CHKFEAT" />
+      </docvars>
+      <iclassintro count="1"></iclassintro>
+      <arch_variants>
+        <arch_variant name="FEAT_CHK" feature="FEAT_CHK" />
+      </arch_variants>
+      <regdiagram form="32" psname="aarch64/instrs/system/hints/CHKFEAT_HF_hints" tworows="1">
+        <box hibit="31" width="10" settings="10">
+          <c>1</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="21" name="L" settings="1">
+          <c>0</c>
+        </box>
+        <box hibit="20" width="2" name="op0" settings="2">
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="18" width="3" name="op1" settings="3">
+          <c>0</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+        <box hibit="15" width="4" name="CRn" settings="4">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="11" width="4" name="CRm" usename="1" settings="4" psbits="xxxx">
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+        </box>
+        <box hibit="7" width="3" name="op2" usename="1" settings="3" psbits="xxx">
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="4" width="5" name="Rt" settings="5">
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+      </regdiagram>
+      <encoding name="CHKFEAT_HF_hints" oneofinclass="1" oneof="1" label="">
+        <docvars>
+          <docvar key="instr-class" value="system" />
+          <docvar key="isa" value="A64" />
+          <docvar key="mnemonic" value="CHKFEAT" />
+        </docvars>
+        <asmtemplate><text>CHKFEAT X16</text></asmtemplate>
+      </encoding>
+      <ps_section howmany="1">
+        <ps name="aarch64/instrs/system/hints/CHKFEAT_HF_hints" mylink="aarch64.instrs.system.hints.CHKFEAT_HF_hints" enclabels="" sections="1" secttype="noheading">
+          <pstext mayhavelinks="1" section="Decode" rep_section="decode">if !IsFeatureImplemented(FEAT_CHK) then <a link="impl-shared.EndOfInstruction.0" file="shared_pseudocode.xml" hover="function: EndOfInstruction()">EndOfInstruction</a>();</pstext>
+        </ps>
+      </ps_section>
+    </iclass>
+  </classes>
+  <explanations scope="all"></explanations>
+  <ps_section howmany="1">
+    <ps name="aarch64/instrs/system/hints/CHKFEAT_HF_hints" mylink="execute" enclabels="" sections="1" secttype="Operation">
+      <pstext mayhavelinks="1" section="Execute" rep_section="execute"><a link="impl-aarch64.X.write.2" file="shared_pseudocode.xml" hover="accessor: X[integer n, integer width] = bits(width) value">X</a>[16, 64] = <a link="AArch64.ChkFeat.1" file="shared_pseudocode.xml" hover="function: bits(64) AArch64.ChkFeat(bits(64) feat_select)">AArch64.ChkFeat</a>(<a link="impl-aarch64.X.read.2" file="shared_pseudocode.xml" hover="accessor: bits(width) X[integer n, integer width]">X</a>[16, 64]);</pstext>
+    </ps>
+  </ps_section>
+</instructionsection>

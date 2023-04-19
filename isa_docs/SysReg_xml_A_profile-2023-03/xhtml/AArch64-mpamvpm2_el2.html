@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMVPM2_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMVPM2_EL2, MPAM Virtual PARTID Mapping Register 2</h1><p>The MPAMVPM2_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>MPAMVPM2_EL2 provides mappings from virtual PARTIDs 8 - 11 to physical PARTIDs.</p>
+
+      
+        <p><a href="AArch64-mpamidr_el1.html">MPAMIDR_EL1</a>.VPMR_MAX field gives the index of the highest implemented <a href="AArch64-mpamvpm0_el2.html">MPAMVPM0_EL2</a> to <a href="AArch64-mpamvpm7_el2.html">MPAMVPM7_EL2</a> registers. VPMR_MAX can be as large as 7 (8 registers) or 32 virtual PARTIDs. If <a href="AArch64-mpamidr_el1.html">MPAMIDR_EL1</a>.VPMR_MAX == 0, there is only a single MPAMVPM&lt;n&gt;_EL2 register, <a href="AArch64-mpamvpm0_el2.html">MPAMVPM0_EL2</a>.</p>
+
+      
+        <p>Virtual PARTID mapping is enabled by <a href="AArch64-mpamhcr_el2.html">MPAMHCR_EL2</a>.EL1_VPMEN for PARTIDs in <a href="AArch64-mpam1_el1.html">MPAM1_EL1</a> and by <a href="AArch64-mpamhcr_el2.html">MPAMHCR_EL2</a>.EL0_VPMEN for PARTIDs in <a href="AArch64-mpam0_el1.html">MPAM0_EL1</a>.</p>
+
+      
+        <p>A virtual-to-physical PARTID mapping entry, PhyPARTID&lt;n&gt;, is valid only when the <a href="AArch64-mpamvpmv_el2.html">MPAMVPMV_EL2</a>.VPM_V bit in bit position n is set to 1.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_MPAM is implemented, MPAMIDR_EL1.HAS_HCR == 1 and UInt(MPAMIDR_EL1.VPMR_MAX) &gt; 1. Otherwise, direct accesses to MPAMVPM2_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>MPAMVPM2_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-63_48">PhyPARTID11</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_32">PhyPARTID10</a></td></tr><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-31_16">PhyPARTID9</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">PhyPARTID8</a></td></tr></tbody></table><h4 id="fieldset_0-63_48">PhyPARTID11, bits [63:48]</h4><div class="field">
+      <p>Virtual PARTID Mapping Entry for virtual PARTID 11.  PhyPARTID11 gives the mapping of virtual PARTID 11 to a physical PARTID.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-47_32">PhyPARTID10, bits [47:32]</h4><div class="field">
+      <p>Virtual PARTID Mapping Entry for virtual PARTID 10.  PhyPARTID10 gives the mapping of virtual PARTID 10 to a physical PARTID.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-31_16">PhyPARTID9, bits [31:16]</h4><div class="field">
+      <p>Virtual PARTID Mapping Entry for virtual PARTID 9.  PhyPARTID9 gives the mapping of virtual PARTID 9 to a physical PARTID.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_0">PhyPARTID8, bits [15:0]</h4><div class="field">
+      <p>Virtual PARTID Mapping Entry for virtual PARTID 8.  PhyPARTID8 gives the mapping of virtual PARTID 8 to a physical PARTID.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing MPAMVPM2_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MPAMVPM2_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1010</td><td>0b0110</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x950];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MPAMVPM2_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MPAMVPM2_EL2;
+                </p><h4 class="assembler">MSR MPAMVPM2_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1010</td><td>0b0110</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x950] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MPAMVPM2_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MPAMVPM2_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,636 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_AA64MMFR3_EL1</reg_short_name>
+        
+        <reg_long_name>AArch64 Memory Model Feature Register 3</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the implemented memory model and memory management support in AArch64 state.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <note><para>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <arm-defined-word>RES0</arm-defined-word> from EL1, EL2, and EL3.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_AA64MMFR3_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Spec_FPACC</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Speculative behavior in the event of a PAC authentication failure in an implementation that includes <xref browsertext="FEAT_FPACCOMBINE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_FPACCOMBINE"/>. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>For the purpose of this definition, cached microarchitecture state is the state of caching agents such as instruction caches, data caches and TLBs which can be altered as a result of speculation caused by a mispredicted execution, but is not restored to the state prior to the speculation when the misprediction is corrected.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The implementation does not disclose whether the speculative use of pointers processed by a PAC Authentication is materially different in terms of the impact on cached microarchitectural state between passing and failing of the PAC Authentication.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The speculative use of pointers processed by a PAC Authentication is not materially different in terms of the impact on cached microarchitectural state between passing and failing of the PAC Authentication.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_FPACCOMBINE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-59_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ADERR</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>59:56</rel_range>
+    <field_description order="before">
+      <para>Asynchronous Device error exceptions. With ID_AA64MMFR3_EL1.SDERR, describes the PE behavior for error exceptions on Device memory loads. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is implemented and ID_AA64MMFR3_EL1.SDERR is <binarynumber>0b0000</binarynumber>, the value of this field is <binarynumber>0b0001</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SDERR is <binarynumber>0b0001</binarynumber>, the value of this field is <binarynumber>0b0000</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SDERR is <binarynumber>0b0010</binarynumber>, the value of this field is <binarynumber>0b0010</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SDERR is <binarynumber>0b0011</binarynumber>, the value of this field is <binarynumber>0b0011</binarynumber>.</para>
+<para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> implements the functionality described by the value <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is not implemented and ID_AA64MMFR3_EL1.SDERR is <binarynumber>0b0000</binarynumber>, then the behavior is not described. Otherwise, the behavior is described by ID_AA64MMFR3_EL1.SDERR.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Some error exceptions for Device memory loads are taken asynchronously.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is implemented. SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is also implemented, then all the following apply:</para>
+<list type="unordered">
+<listitem><content>SCTLR2_ELx.EnADERR should always be set to the same value as SCTLR2_ELx.EnANERR.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR should always be set to the same value as <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is implemented. SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is also implemented, then SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR operate independently of SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SDERR</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Synchronous Device error exceptions. With ID_AA64MMFR3_EL1.ADERR, describes the PE behavior for error exceptions on Device memory loads. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is implemented and ID_AA64MMFR3_EL1.ADERR is <binarynumber>0b0000</binarynumber>, the value of this field is <binarynumber>0b0001</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ADERR is <binarynumber>0b0001</binarynumber>, the value of this field is <binarynumber>0b0000</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ADERR is <binarynumber>0b0010</binarynumber>, the value of this field is <binarynumber>0b0010</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ADERR is <binarynumber>0b0011</binarynumber>, the value of this field is <binarynumber>0b0011</binarynumber>.</para>
+<para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> implements the functionality described by the value <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is not implemented and ID_AA64MMFR3_EL1.ADERR is <binarynumber>0b0000</binarynumber>, then the behavior is not described. Otherwise, the behavior is described by ID_AA64MMFR3_EL1.ADERR.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>All error exceptions for Device memory loads are taken synchronously.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is implemented. SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is also implemented, then all the following apply:</para>
+<list type="unordered">
+<listitem><content>SCTLR2_ELx.EnADERR should always be set to the same value as SCTLR2_ELx.EnANERR.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR should always be set to the same value as <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is implemented. SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is also implemented, then SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR operate independently of SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-51_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>51:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ANERR</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before">
+      <para>Asynchronous Normal error exceptions. With ID_AA64MMFR3_EL1.SNERR, describes the PE behavior for error exceptions on Normal memory loads. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is implemented and ID_AA64MMFR3_EL1.SNERR is <binarynumber>0b0000</binarynumber>, the value of this field is <binarynumber>0b0001</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SNERR is <binarynumber>0b0001</binarynumber>, the value of this field is <binarynumber>0b0000</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SNERR is <binarynumber>0b0010</binarynumber>, the value of this field is <binarynumber>0b0010</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.SNERR is <binarynumber>0b0011</binarynumber>, the value of this field is <binarynumber>0b0011</binarynumber>.</para>
+<para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> implements the functionality described by the value <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is not implemented and ID_AA64MMFR3_EL1.SNERR is <binarynumber>0b0000</binarynumber>, then the behavior is not described. Otherwise, the behavior is described by ID_AA64MMFR3_EL1.SNERR.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Some error exceptions for Normal memory loads are taken asynchronously.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is implemented. SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is also implemented, then all the following apply:</para>
+<list type="unordered">
+<listitem><content>SCTLR2_ELx.EnANERR should always be set to the same value as SCTLR2_ELx.EnADERR.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR should always be set to the same value as <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is implemented. SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is also implemented, then SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR operate independently of SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SNERR</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Synchronous Normal error exceptions. With ID_AA64MMFR3_EL1.ANERR, describes the PE behavior for error exceptions on Normal memory loads. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is implemented and ID_AA64MMFR3_EL1.ANERR is <binarynumber>0b0000</binarynumber>, the value of this field is <binarynumber>0b0001</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ANERR is <binarynumber>0b0001</binarynumber>, the value of this field is <binarynumber>0b0000</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ANERR is <binarynumber>0b0010</binarynumber>, the value of this field is <binarynumber>0b0010</binarynumber>.</para>
+<para>When ID_AA64MMFR3_EL1.ANERR is <binarynumber>0b0011</binarynumber>, the value of this field is <binarynumber>0b0011</binarynumber>.</para>
+<para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> implements the functionality described by the value <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is not implemented and ID_AA64MMFR3_EL1.ANERR is <binarynumber>0b0000</binarynumber>, then the behavior is not described. Otherwise, the behavior is described by ID_AA64MMFR3_EL1.ANERR.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>All error exceptions for Normal memory loads are taken synchronously.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is implemented. SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is also implemented, then all the following apply:</para>
+<list type="unordered">
+<listitem><content>SCTLR2_ELx.EnANERR should always be set to the same value as SCTLR2_ELx.EnADERR.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR should always be set to the same value as <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description><para><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is implemented. SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR are implemented.</para>
+<para>If <xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is also implemented, then SCTLR2_ELx.EnANERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR operate independently of SCTLR2_ELx.EnADERR and <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-39_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>D128_2</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>39:36</rel_range>
+    <field_description order="before">
+      <para>128-bit translation table descriptor at stage 2. Indicates support for 128-bit translation table descriptor at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>128-bit translation table descriptor Extension at stage 2 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>128-bit translation table descriptor Extension at stage 2 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-35_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>D128</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>35:32</rel_range>
+    <field_description order="before">
+      <para>128-bit translation table descriptor. Indicates support for 128-bit translation table descriptor. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>128-bit translation table descriptor Extension is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>128-bit translation table descriptor Extension is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MEC</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Indicates support for Memory Encryption Contexts. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_MEC" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_MEC"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Memory Encryption Contexts is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Memory Encryption Contexts is supported for Realm physical address space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AIE</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>Attribute Indexing. Indicates support for the Attribute Index Enhancement. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_AIE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_AIE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The Attribute Index Enhancement is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The Attribute Index Enhancement at stage 1 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S2POE</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Stage 2 Permission Overlay. Indicates support for Permission Overlay at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_S2POE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_S2POE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Permission Overlay at stage 2 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Permission Overlay at stage 2 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S1POE</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Stage 1 Permission Overlay. Indicates support for Permission Overlay at stage 1. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_S1POE" filename="|A_armv8_architecture_extensions.fm" linkend="FEAT_S1POE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Permission Overlay at stage 1 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Permission Overlay at stage 1 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S2PIE</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Stage 2 Permission Indirection. Indicates support for Permission Indirection at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_S2PIE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_S2PIE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Permission Indirection at stage 2 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Permission Indirection at stage 2 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S1PIE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Stage 1 Permission Indirection. Indicates support for Permission Indirection at stage 1. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_S1PIE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_S1PIE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Permission Indirection at stage 1 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Permission Indirection at stage 1 is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SCTLRX</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>SCTLRX Extension. Indicates support for Extension of <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link>, <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link> and their associated trap controls are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link>, <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link> and their associated trap controls are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TCRX</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>TCR Extension. Indicates support for Extension of <register_link state="AArch64" id="AArch64-tcr_el1.xml">TCR_EL1</register_link>. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><register_link state="AArch64" id="AArch64-tcr2_el1.xml">TCR2_EL1</register_link>, <register_link state="AArch64" id="AArch64-tcr2_el2.xml">TCR2_EL2</register_link> and their associated trap controls are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><register_link state="AArch64" id="AArch64-tcr2_el1.xml">TCR2_EL1</register_link>, <register_link state="AArch64" id="AArch64-tcr2_el2.xml">TCR2_EL2</register_link> and their associated trap controls are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_60-1" msb="63" lsb="60"/>
+  <fieldat id="fieldset_0-59_56" msb="59" lsb="56"/>
+  <fieldat id="fieldset_0-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_0-51_48" msb="51" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_36" msb="39" lsb="36"/>
+  <fieldat id="fieldset_0-35_32" msb="35" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_AA64MMFR3_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_AA64MMFR3_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_AA64MMFR3_EL1) || boolean IMPLEMENTATION_DEFINED "ID_AA64MMFR3_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64MMFR3_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64MMFR3_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64MMFR3_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

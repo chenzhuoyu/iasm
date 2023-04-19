@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ICV_AP0R&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Interrupt Controller Virtual Active Priorities Group 0 Registers</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32, FEAT_GICv3 is implemented and EL2 is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>3</reg_array_end>
+         </reg_array>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-icv_ap0rn_el1.xml">ICV_AP0R&lt;n&gt;_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about virtual Group 0 active priorities.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC virtual interface control registers</reg_group>
+            <reg_group>GIC system registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ICV_AP0R&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields>
+    <para>The contents of these registers are <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> with the one architectural requirement that the value <hexnumber>0x00000000</hexnumber> is consistent with no interrupts being active.</para>
+  </text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="3"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Writing to these registers with any value other than the last read value of the register (or <hexnumber>0x00000000</hexnumber> when there are no Group 0 active priorities) might result in <arm-defined-word>UNPREDICTABLE</arm-defined-word> behavior of the virtual interrupt prioritization system, causing:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Interrupts that should preempt execution to not preempt execution.</content>
+</listitem><listitem><content>Interrupts that should not preempt execution to preempt execution.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>ICV_AP0R1 is implemented only in implementations that support 6 or more bits of priority. ICV_AP0R2 and ICV_AP0R3 are implemented only in implementations that support 7 bits of priority. Unimplemented registers are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writing to the active priority registers in any order other than the following order might result in <arm-defined-word>UNPREDICTABLE</arm-defined-word> behavior of the interrupt prioritization system:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>ICV_AP0R&lt;n&gt;.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-icv_ap1rn.xml">ICV_AP1R&lt;n&gt;</register_link>.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC ICC_AP0R&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-3</acc_array_range>
+                </acc_array>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1000"/>
+                
+                <enc n="opc2" v="0b1:m[1:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(opc2&lt;1:0&gt;);
+
+if m == 1 &amp;&amp; NUM_GIC_PRIORITY_BITS &lt; 6 then
+    UNDEFINED;
+elsif (m == 2 || m == 3) &amp;&amp; NUM_GIC_PRIORITY_BITS &lt; 7 then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; PSTATE.M != M32_Monitor &amp;&amp; SCR.FIQ == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif ICC_SRE.SRE == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; ICH_HCR_EL2.TALL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ICH_HCR.TALL0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.FMO == '1' then
+        R[t] = ICV_AP0R[m];
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.FMO == '1' then
+        R[t] = ICV_AP0R[m];
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; PSTATE.M != M32_Monitor &amp;&amp; SCR.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch32.TakeMonitorTrapException();
+    else
+        R[t] = ICC_AP0R[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SCR.FIQ == '1' then
+        UNDEFINED;
+    elsif ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SCR.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch32.TakeMonitorTrapException();
+    else
+        R[t] = ICC_AP0R[m];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICC_AP0R[m];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR ICC_AP0R&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-3</acc_array_range>
+                </acc_array>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1000"/>
+                
+                <enc n="opc2" v="0b1:m[1:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(opc2&lt;1:0&gt;);
+
+if m == 1 &amp;&amp; NUM_GIC_PRIORITY_BITS &lt; 6 then
+    UNDEFINED;
+elsif (m == 2 || m == 3) &amp;&amp; NUM_GIC_PRIORITY_BITS &lt; 7 then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; PSTATE.M != M32_Monitor &amp;&amp; SCR.FIQ == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif ICC_SRE.SRE == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; ICH_HCR_EL2.TALL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ICH_HCR.TALL0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.FMO == '1' then
+        ICV_AP0R[m] = R[t];
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.FMO == '1' then
+        ICV_AP0R[m] = R[t];
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; PSTATE.M != M32_Monitor &amp;&amp; SCR.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch32.TakeMonitorTrapException();
+    else
+        ICC_AP0R[m] = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SCR.FIQ == '1' then
+        UNDEFINED;
+    elsif ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; SCR.FIQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch32.TakeMonitorTrapException();
+    else
+        ICC_AP0R[m] = R[t];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICC_AP0R[m] = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

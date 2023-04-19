@@ -1,0 +1,478 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Entities and elements for text formatting.
+Currently, text formatting can appear in the following elements:
+* <reg_purpose>
+* <usage_constraints_text>
+* <configuration_text>
+* <reg_attributes>
+* <field_description>
+* <field_value_description>
+* <pf_before_fields>
+* <pf_after_fields>
+
+Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved.
+-->
+<!ENTITY % formatted_words 'register_link|instruction|xref|arm-defined-word|sup|sub|b|binarynumber|hexnumber|signal|syntax|value|function|enum|enumvalue|url'>
+<!ENTITY % formatted_text '(#PCDATA|para|list|listitem|content|table|note|%formatted_words;)*'>
+<!-- Paragraphs -->
+<!ELEMENT para (#PCDATA|%formatted_words;)*>
+<!-- Lists, and list items -->
+<!ELEMENT list (listitem+)>
+<!ATTLIST list type (ordered|unordered|var|param) #REQUIRED role (standard|compressed|break|wide) #IMPLIED language CDATA #IMPLIED>
+<!ELEMENT listitem ((term*|param*), content)>
+<!ELEMENT term (#PCDATA|%formatted_words;)*>
+<!ELEMENT param (#PCDATA|%formatted_words;)*>
+<!ELEMENT content (#PCDATA|list|para|%formatted_words;)*>
+<!-- Notes -->
+<!ELEMENT note (#PCDATA|para|list|table)*>
+<!-- Word/phrase formatting -->
+<!ELEMENT hexnumber (#PCDATA)>
+<!ELEMENT binarynumber (#PCDATA)>
+<!ELEMENT sub (#PCDATA|%formatted_words;)*>
+<!ELEMENT sup (#PCDATA|%formatted_words;)*>
+<!ELEMENT b (#PCDATA|%formatted_words;)*>
+<!ELEMENT signal (#PCDATA)>
+<!ELEMENT syntax (#PCDATA)*>
+<!ELEMENT value (#PCDATA)*>
+<!ELEMENT function (#PCDATA)*>
+<!ELEMENT enum (#PCDATA)*>
+<!ELEMENT enumvalue (#PCDATA)*>
+<!ELEMENT arm-defined-word (#PCDATA)> <!-- Defined words such as UNDEFINED. The browseable XML renders these in smallcaps.-->
+<!ELEMENT register_link (#PCDATA)>    <!-- Links to other pages in the system register XML. -->
+<!ATTLIST register_link state CDATA #IMPLIED id CDATA #IMPLIED>
+<!ELEMENT instruction (#PCDATA)*>
+<!ELEMENT xref EMPTY> <!-- For xrefs that will point to other locations in the Armv8 ARM. -->
+<!ATTLIST xref linkend CDATA #REQUIRED
+          filename CDATA #IMPLIED
+          browsertext CDATA #REQUIRED>
+<!ELEMENT url (#PCDATA)*>
+<!-- linkend is the target ID within the Armv8 ARM;
+    filename is the name of the Framemaker XML file that that ID is defined in;
+    browsertext is the text that will be displayed when this XML is rendered in the browseable XML. -->
+
+<!-- Table formatting; most similar to the definitions in iform.dtd, but with fewer attributes defined -->
+<!ELEMENT entry (#PCDATA|%formatted_words;)*>
+<!ELEMENT row (entry+)>
+<!ELEMENT tbody (row+)>
+<!ELEMENT thead (row+)>
+<!ELEMENT tgroup (thead, tbody)>
+<!ATTLIST tgroup cols CDATA #REQUIRED>
+<!ELEMENT table (tgroup+)>
+
+
+<!--
+  <textpage>: a page of formatted text.
+    This is simply a formatted page of text.
+    -->
+<!ELEMENT textsection (para)*>
+<!ATTLIST textsection title CDATA #REQUIRED>
+
+
+<!-- Register elements and attributes -->
+<!--
+<register_page> : a single register XML page with a timestamp. The root element of a register XML page.
+<registers>     : Contains all the registers on one page; usually this is only one.
+<register>      : Contains the information about a single register. More details in comments below.
+-->
+<!ELEMENT register_page (registers, timestamp)>
+<!ELEMENT registers (register+)>
+<!ELEMENT register (reg_short_name, reg_long_name?, power_domain_text?, reg_parent_link?, reg_condition?, reg_documents_other_regs?, reg_documented_in?, reg_array?, reg_address*, reg_reset_value?, usage_constraint_set*, reg_mappings?, reg_purpose?, reg_groups, reg_reverse_traps_and_enables?, reg_configuration?, reg_banking?, reg_attributes?, reg_fieldsets, reg_encoding*, reg_variables?, access_mechanisms?, arch_variants?)>
+<!ATTLIST register is_register (True|False) #REQUIRED> <!-- True if a register, False if a system operation -->
+<!ATTLIST register is_internal (True|False) #REQUIRED> <!-- True if accessible through the system register interface, false if accessible externally or memory-mapped -->
+<!ATTLIST register execution_state (AArch32|AArch64) #IMPLIED> <!-- Set to either AArch32 or AArch64 for a register that is accessible through the system register interface. Not present for an external or memory-mapped register -->
+<!ATTLIST register is_banked (True|False) #REQUIRED>   <!-- True if an AArch32 register whose Secure and Non-secure views are two separate registers -->
+<!ATTLIST register is_stub_entry (True|False) #REQUIRED> <!-- Present if this register is actually described in another entry, such as ESR_EL1/2/3 being described in ESR_ELx. -->
+<!ELEMENT reg_short_name (#PCDATA)>  <!-- e.g. SCTLR -->
+<!ELEMENT reg_long_name (#PCDATA)>   <!-- e.g. System Control Register -->
+<!ELEMENT power_domain_text %formatted_text;>   <!-- e.g. Renderable text for power_domain, if set. -->
+
+<!ELEMENT reg_parent_link (#PCDATA)>
+<!ATTLIST reg_parent_link id CDATA #REQUIRED>
+
+<!-- Circumstances under which a register reset value applies. -->
+<!ELEMENT reg_reset_value (reg_reset_limited_to_el*,reg_reset_special_text?)>
+<!ATTLIST reg_reset_value type CDATA #IMPLIED>
+<!ELEMENT reg_reset_limited_to_el (#PCDATA)>        <!-- For some registers, the reset values for their fields only apply at certain exception levels (e.g. EL3 and/or EL2). -->
+<!ELEMENT reg_reset_special_text %formatted_text;>  <!-- For some other registers, the reset values for their fields apply in more complicated circumstances, so we put text in to describe them. -->
+
+<!ELEMENT reg_groups (reg_group*)>      <!-- Functional groups this register is a member of. -->
+<!ELEMENT reg_group (#PCDATA)>          <!-- e.g. Fault handling registers, Debug registers, Identification registers -->
+
+<!ELEMENT reg_documents_other_regs (register_link+)> <!-- If this register page documents other registers, they are listed here. -->
+
+<!ELEMENT reg_documented_in (#PCDATA)> <!-- The name of the register that this register is documented under. -->
+<!ATTLIST reg_documented_in id CDATA #REQUIRED> <!-- The filename for that register page. -->
+
+<!-- If this register is actually a description of several identical registers
+that differ only by number - e.g. DBGBVRn - this gives the range of values for n. -->
+<!ELEMENT reg_array (reg_array_start,reg_array_end)>
+<!ELEMENT reg_array_start (#PCDATA)>
+<!ELEMENT reg_array_end (#PCDATA)>
+
+<!-- How to access external or memory-mapped registers. -->
+<!ELEMENT reg_address (reg_component?,reg_frame?,reg_offset,reg_instance?,reg_access*)>
+<!ATTLIST reg_address external_access (True|False) #REQUIRED> <!-- True if the register can be accessed externally. -->
+<!ATTLIST reg_address mem_map_access (True|False) #REQUIRED>  <!-- True if the register can be accessed by the internal memory-mapped interface. -->
+<!ATTLIST reg_address power_domain CDATA #IMPLIED>           <!-- e.g. Core, Debug. -->
+<!ATTLIST reg_address block_access (True|False) #IMPLIED>
+<!ATTLIST reg_address memory_access (True|False) #IMPLIED>
+<!ATTLIST reg_address table_id CDATA #IMPLIED>
+<!ATTLIST reg_address register_startbit (31|63) #IMPLIED>     <!-- If this is an offset for half of a 64-bit register, this is the start bit of that half. -->
+<!ATTLIST reg_address register_endbit (0|32) #IMPLIED>        <!-- Likewise for the end bit of that half of the register. Possible pairs are [31:0] and [63:32]. -->
+<!ELEMENT reg_component (#PCDATA)> <!-- e.g. CTI, PMU, Debug -->
+<!ELEMENT reg_frame (#PCDATA)>     <!-- Timer and GIC have several memory frames, e.g. CNTBaseN and CNTEL0BaseN. -->
+<!ELEMENT reg_offset (#PCDATA|%formatted_words;)*>    <!-- e.g. 0x400. For registers that actually describe a range of registers, e.g. DBGBCRn, this may contain 'n' directly, or a description such as '0x010+m' with some description of m -->
+<!ELEMENT reg_instance (#PCDATA)>
+<!ELEMENT reg_access (reg_access_state*)>
+<!ATTLIST reg_access name CDATA #IMPLIED> <!-- The name of the item being referred to, e.g. 'SCTLR (S)'. If there is only one <reg_access> element this will be empty. -->
+<!ELEMENT reg_access_state (reg_access_level?,reg_access_type)>
+<!ELEMENT reg_access_level (#PCDATA)> <!-- e.g. 'EL0' for internal registers, 'OSLK' for external registers -->
+<!ELEMENT reg_access_type (#PCDATA)>  <!-- e.g. RW,RO,WO. There are some more complex access types for some registers. -->
+
+<!-- How to access internal (system register interface) registers. -->
+<!--
+As listed in the definition for <register>, a register may have multiple encodings - these are ways they can be accessed via the system register interface.
+This (usually) happens for AArch32 registers that have a 32-bit version of the register that can be accessed using the MRC/MCR instructions,
+and a 64-bit version of the register that can be accessed using the MRRC/MCRR instructions.
+-->
+<!ELEMENT reg_encoding (reg_condition?,reg_read_instruction?,reg_write_instruction?,reg_encoding_params,reg_encoding_text?)>
+<!ELEMENT reg_condition %formatted_text;> <!-- e.g. 'TTBCR.EAE==0','accessing the 64-bit version'. The condition under which you would use this encoding to read from or write to this register. -->
+<!ATTLIST reg_condition otherwise CDATA #REQUIRED> <!-- Register value if reg_condition is not met. -->
+<!ATTLIST reg_condition verbatim (True|False) #IMPLIED> <!-- Is the condition represented as text -->
+<!ELEMENT reg_read_instruction (#PCDATA)>   <!-- Assembly language to use to read from this register, along with a summary comment. -->
+<!ATTLIST reg_read_instruction mnemonic CDATA #REQUIRED> <!-- Instruction used to read the register, e.g. MRC,MRRC,MRS. -->
+<!ELEMENT reg_write_instruction (#PCDATA)>  <!-- Assembly language to use to write to this register, along with a summary comment. -->
+<!ATTLIST reg_write_instruction mnemonic CDATA #REQUIRED> <!-- Instruction used to write the register, e.g. MCR,MCRR,MSR. -->
+<!ELEMENT reg_encoding_params (encoding_param+)> <!-- The parameters to pass into the read/write instruction in order to read/write this particular register. -->
+<!ELEMENT encoding_param (encoding_fieldname, encoding_fieldvalue)>
+<!ELEMENT encoding_fieldname (#PCDATA)>    <!-- e.g. coproc,opc1,CRn and so on for MRC/MCR. See the documentation for MRRC/MCRR, MRS/MSR and other register reading/writing instructions for their parameter names. -->
+<!ELEMENT encoding_fieldvalue (#PCDATA)>   <!-- e.g. '0001'. These are formatted as binary. For registers that are describing multiple registers, such as DBGBCRn, these may contain ranges describing n, e.g. 'n&lt;3:0&gt;'. -->
+<!ELEMENT reg_encoding_text %formatted_text;> <!-- Additional text to be displayed following this encoding. -->
+
+<!-- Which AArch32/AArch64/external registers are mapped to this register. -->
+<!--
+This covers two sets of behaviour for registers:
+* The two registers are architecturally defined as sharing the same bits. These have 'Architectural' as their <mapped_type>.
+* The two registers can be implemented as sharing the same bits, but this is optional because it's not visible to the architecture.
+  (This happens with registers at EL3.) These have 'Optional' as their <mapped_type>.
+It also covers a set of behaviour for system operations:
+* The two operations may not be implemented in the same way but share the same behaviour. These have 'Functional' as their <mapped_type>.
+-->
+<!ELEMENT reg_mappings (reg_mapping*,instance_mapping*)>
+<!ELEMENT reg_mapping (mapped_name,mapped_type,mapped_execution_state,mapped_from_startbit?,mapped_from_endbit?,mapped_from_sec_state?,mapped_from_condition?,mapped_to_startbit?,mapped_to_endbit?,mapped_to_sec_state?,mapped_from_rangeset?,mapped_to_rangeset?,mapped_to_condition?)>
+<!ELEMENT mapped_name (#PCDATA)>                <!-- Name of the other register or operation this one is mapped to. -->
+<!ATTLIST mapped_name filename CDATA #IMPLIED> <!-- XML file for the other register or operation. (In the browseable XML, the mappings include links.) -->
+<!ELEMENT mapped_type (#PCDATA)>                <!-- Architectural|Optional|Functional as described above. -->
+<!ELEMENT mapped_execution_state (#PCDATA)>     <!-- AArch32|AArch64|external. Whether the other register or operation is available in AArch32, AArch64, or through the external or memory-mapped interfaces. -->
+<!--
+A 32-bit register in one execution state may be mapped to only half of a 64-bit register in another state.
+e.g. DBGBXVRn in AArch32 is mapped to DBGBVRn_EL1[63:32] (the high half) in AArch64.
+In the register XML for DBGBXVRn, we would have:
+  <mapped_to_startbit>63</mapped_to_startbit>
+  <mapped_to_endbit>32</mapped_to_endbit>
+and no <mapped_from_startbit> or <mapped_from_endbit>.
+-->
+<!ELEMENT mapped_from_startbit (#PCDATA)> <!-- e.g. 63,31. -->
+<!ELEMENT mapped_from_endbit (#PCDATA)>   <!-- e.g. 32,0. -->
+<!ELEMENT mapped_to_startbit (#PCDATA)>
+<!ELEMENT mapped_to_endbit (#PCDATA)>     <!-- As above. -->
+<!--
+A register in AArch64 may also be mapped to only the Secure or Non-secure version of a banked register in AArch32.
+e.g. the Non-secure version of SCTLR in AArch32 is mapped to SCTLR_EL1 in AArch64.
+In the register XML for SCTLR, we would have:
+  <mapped_from_sec_state>S</mapped_from_sec_state>
+and no <mapped_to_sec_state>.
+-->
+<!ELEMENT mapped_from_sec_state (#PCDATA)> <!-- S|NS -->
+<!ELEMENT mapped_to_sec_state (#PCDATA)>   <!-- S|NS -->
+<!--
+A few registers are only mapped to each other under limited conditions.
+e.g. DFAR (Secure version) in AArch32 is mapped to HDFAR in AArch32 when EL2 is implemented.
+The difference between <mapped_from_condition> and <mapped_to_condition> isn't significant.
+-->
+<!ELEMENT mapped_from_condition (#PCDATA)>
+<!ELEMENT mapped_to_condition (#PCDATA)>
+<!--
+Rangesets permitting discontiguous mappings
+-->
+<!ELEMENT mapped_from_rangeset (range*)>
+<!ATTLIST mapped_from_rangeset output CDATA #REQUIRED> <!-- comma-separated bit ranges -->
+<!ELEMENT mapped_to_rangeset (range*)>
+<!ATTLIST mapped_to_rangeset output CDATA #REQUIRED> <!-- comma-separated bit ranges -->
+<!ELEMENT range (msb,lsb)>
+<!ELEMENT msb (#PCDATA)>
+<!ELEMENT lsb (#PCDATA)>
+
+<!-- Instance mappings have their own structure, to reduce implementation logic complexity -->
+<!ELEMENT instance_mapping (mapped_from_name,mapped_to_name,mapped_from_startbit?,mapped_from_endbit?,mapped_from_sec_state?,mapped_from_condition?,mapped_to_startbit?,mapped_to_endbit?,mapped_to_sec_state?,mapped_from_rangeset?,mapped_to_rangeset?,mapped_to_condition?)>
+<!ELEMENT mapped_from_name (#PCDATA)>                <!-- Name of the instance this mapping maps FROM. -->
+<!ATTLIST mapped_from_name filename CDATA #IMPLIED> <!-- XML file for the other register or operation. (In the browseable XML, the mappings include links.) -->
+<!ELEMENT mapped_to_name (#PCDATA)>                <!-- Name of the instance this mapping maps TO. -->
+<!ATTLIST mapped_to_name filename CDATA #IMPLIED> <!-- XML file for the other register or operation. (In the browseable XML, the mappings include links.) -->
+
+<!-- More register-description information -->
+<!-- These correspond to sections in the Arm ARM register pages that contain descriptive text. -->
+<!ELEMENT reg_purpose (purpose_text*)>                     <!-- Short descriptive summary of the register. -->
+<!ELEMENT purpose_text %formatted_text;>                   <!-- Corresponds to the 'Purpose' section in the ARM ARM. -->
+<!ELEMENT reg_reverse_traps_and_enables (reverse_trap_or_enable_text*)> <!-- Lists traps and/or enables that affect this register. -->
+<!ELEMENT reverse_trap_or_enable_text %formatted_text;>    <!-- a single trap or enable -->
+<!ELEMENT reg_configuration (configuration_text*)>         <!-- Contains text about the way that this register can be implemented. -->
+<!ELEMENT configuration_text %formatted_text;>             <!-- Corresponds to the 'Configuration' section in the ARM ARM. -->
+<!ELEMENT reg_banking (reg_bank*)>                     <!-- Contains summary text about the sort of banking this register exhibits, if relevant. -->
+<!ELEMENT reg_bank (bank_cond?, bank_text)>
+<!ELEMENT bank_cond %formatted_text;>                   <!-- Corresponds to the banking information of the register. -->
+<!ELEMENT bank_text %formatted_text;>                   <!-- Corresponds to the banking information of the register. -->
+<!ELEMENT reg_attributes (attributes_text*)>               <!-- Contains basic information about the length of this register. -->
+<!ELEMENT attributes_text %formatted_text;>                <!-- corresponds to the 'Attributes' section in the ARM ARM. -->
+
+<!-- Definitions of register fields. -->
+<!-- A register can have multiple possible layouts, depending on
+how the register is being accessed, and other conditions. -->
+<!ELEMENT reg_fieldsets (shared_fields?,fields*,reg_fieldset*)>
+ <!-- It can also have a field whose possible values are common to all layouts of a register.
+ At the moment, there will only be fields in <shared_fields> if different values of that particular field
+ produce different layouts for a register, i.e. the condition is 'this field = a certain value'.
+ An example of this is HSR in AArch64. -->
+
+<!ELEMENT shared_fields (field*)>
+<!ELEMENT fields (fields_condition?,fields_instance?,text_before_fields?,field+,text_after_fields?)>
+<!ATTLIST fields length CDATA #REQUIRED>
+<!ATTLIST fields id ID #REQUIRED>
+<!ELEMENT fields_instance (#PCDATA)> <!-- e.g. 'TTBCR.EAE==1', 'HSR.EC=0b000111'. This instance of a fieldset -->
+<!ELEMENT text_before_fields %formatted_text;> <!-- If this fieldset has text to come before the fields, it is here. -->
+<!ELEMENT text_after_fields %formatted_text;> <!-- If this fieldset has text to come after the fields, it is here. -->
+
+<!-- Definitions of an individual register field in a particular register layout. -->
+<!ELEMENT field (field_name?,field_shortdesc?,field_msb,field_lsb,field_rangeset?,field_array_indexes?,field_description*,field_values?,valid_values?,field_description*,field_resets?,field_access?,partial_fieldset*,arch_variants?,fields_condition?)>
+<!ATTLIST field is_variable_length (True|False) #REQUIRED> <!-- For most fields this is False; for fields such as PMCNTENCLR[30:0], which are N bits where N depends on something else, this is True. -->
+<!ATTLIST field has_partial_fieldset (True|False) #REQUIRED> <!-- For most fields this is False; a few fields such as ESR_ELx.ISS have a very short description of their own, and then have several smaller fieldsets they can break down into depending on another field. -->
+<!ATTLIST field is_linked_to_partial_fieldset (True|False) #REQUIRED> <!-- For most fields this is False; a few fields such as ESR_ELx.EC relate to other fields that break down into smaller fields. This attribute helps to indicate that there'll be extra information about which breakdown of the other field to use. -->
+<!ATTLIST field is_access_restriction_possible (True|False) #REQUIRED> <!-- For most fields this is False; a few fields such as GICD_CTLR.DS need this in order to be able to add some additional explanatory text to the reset value. -->
+<!ATTLIST field is_constant_value (True|False) #REQUIRED> <!-- For most fields this is False; a few fields have a constant value. -->
+<!ATTLIST field is_partial_field (True|False) #REQUIRED> <!-- For most fields this is False; True if the field is split over non-contiguous bits. -->
+<!ATTLIST field id ID #REQUIRED>
+<!ATTLIST field rwtype CDATA #IMPLIED> <!-- If the field contains a reserved-like value, we must know what type of value it is. -->
+<!ATTLIST field reserved_type CDATA #IMPLIED> <!-- Conditional Fields can have a reserved type that determines their value if none of the conditions are TRUE. -->
+<!ATTLIST field is_expansion (True|False) #IMPLIED> <!-- Is this field an expansion of a split-range field kept for backwards compatibility -->
+<!ATTLIST field is_conditional_field_name (True|False) #IMPLIED> <!-- Is this field a part of a conditional field where the name of the field is conditional, such that field names need to be rendered after conditions -->
+
+<!ELEMENT field_name (#PCDATA)>       <!-- e.g. 'NS','Architecture'. If present, will contain characters in [A-Za-z0-9_] and may also end with [m] or [m:n] where m and n are integers. -->
+<!ELEMENT field_shortdesc %formatted_text;>  <!-- Short description of what the field is used for. In the browseable XML, if <field_name> is not present, the contents of this field are used in the register diagram. -->
+<!ELEMENT field_msb (#PCDATA)>        <!-- Integer from 63 to 0. -->
+<!ELEMENT field_lsb (#PCDATA)>        <!-- Integer from 63 to 0. -->
+<!ELEMENT rel_range (#PCDATA)>        <!-- Relative range of this field within it's parent field - if no parent field, this is set to the absolute range of the field -->
+<!ELEMENT partial_fieldset (fields,reg_fieldset)>  <!-- A few fields such as ESR_ELx.ISS have a very short description of their own, and then further breakdowns into smaller fieldsets. This is for those smaller fieldsets. -->
+<!ELEMENT fields_condition (#PCDATA)> <!-- e.g. 'TTBCR.EAE==1', 'HSR.EC=0b000111'. The condition under which this field appears. -->
+<!ELEMENT valid_values (valid_value+)>
+<!ELEMENT valid_value (#PCDATA)>
+
+<!ELEMENT field_rangesets (field_rangeset*)> <!-- Describe the complete split-field range breakdown -->
+<!ELEMENT field_rangeset (field_msb, field_lsb)> <!-- A single range of the split-field -->
+
+<!--
+Some fields are identical apart from the item in a list of things that they apply to,
+e.g. bits [2n+1:2n] of DACR define access to domain n in AArch32.
+Since these should be described together, in the XML output they are defined as one field with one description,
+and the browseable XML uses the presence of <field_array> to display the individual fields in the register diagram.
+-->
+<!ELEMENT field_array_indexes (field_array_index*)> <!--- describe the indexes of a range of indexed (array) fields E.g. P<x> which expands to P10-P0 will have one range 10-0 -->
+<!ATTLIST field_array_indexes index_variable CDATA #REQUIRED> <!-- The variable name describing this array field. E.g. for a field called P<x> index variable is 'x' -->
+<!ATTLIST field_array_indexes element_size CDATA #REQUIRED> <!-- the size of a single field in the array field. Calculated by dividing sum of widths of all rangesets  by the sum of widths of all indexes -->
+<!ATTLIST field_array_indexes range_specifier CDATA #IMPLIED> <!-- A range expression describing each individual field in this array using the index_variable -->
+
+<!ELEMENT field_array_index (field_array_start, field_array_end)> <!-- A single range of array field indexes -->
+
+<!ELEMENT field_array_start (#PCDATA)>    <!-- Integer. Value of n for the most significant field in the array. -->
+<!ELEMENT field_array_end (#PCDATA)>      <!-- Integer. Value of n for the least significant field in the array. -->
+
+<!-- Descriptive text for a register field. -->
+<!--
+The 'order' attribute is used in the browseable XML to determine where to display tables of possible values.
+* First all the <field_description order='before'> elements are displayed.
+* Then the <field_values> element and its children are displayed as a table.
+* Then all the <field_description order='after'> elements are displayed.
+-->
+<!ELEMENT field_description %formatted_text;>
+<!ATTLIST field_description order (before|value|after) #REQUIRED>
+<!-- Values for a register field. -->
+<!-- If present, field_value_name is displayed in the table of meanings.
+If it is present it is because it is different from the actual name of the field.
+For example, some register fields are non-contiguous, and only one of them contains a list of the values for that field,
+but rather than including 'IRGN[1]' as a table heading, <field_value_name> is set as 'IRGN'.
+-->
+<!ELEMENT field_values (field_value_name?,field_value_instance*)>
+<!ELEMENT field_value_name (#PCDATA)>
+<!ELEMENT field_value_instance (field_value,field_value_description+,field_value_links_to?,field_value_applies_to?,field_value_condition?)>
+<!ELEMENT field_value (#PCDATA)>              <!-- Binary integer, no leading 0b. -->
+<!ELEMENT field_value_description %formatted_text;>  <!-- Descriptive text for a given value. -->
+<!ELEMENT field_value_links_to (#PCDATA)>  <!-- If (like ESR_ELx.EC) this value of this field determines the layout of another field, this element indicates which layout. -->
+<!ATTLIST field_value_links_to linked_field_name CDATA #REQUIRED>      <!-- The name of the other field this determines the layout of. (For ESR_ELx.EC, this is the ISS field.) -->
+<!ATTLIST field_value_links_to linked_field_condition CDATA #REQUIRED> <!-- The condition/description that distinguishes the layout of the other field. (Examples for ESR_ELx.EC are 'Exceptions with an unknown reason'.) -->
+<!ATTLIST field_value_links_to linked_field_id CDATA #REQUIRED>        <!-- The unique ID for the other field, to allow consistent linking -->
+<!ELEMENT field_value_applies_to (register_link*)> <!-- If (like ESR_ELx.EC or SPSR_xxx.M[3:0]) this value of a field has restrictions on what it applies to, this field lists them. -->
+                                                   <!-- The list is a collection of register_link elements. -->
+<!ATTLIST field_value_applies_to applies_to_all (True|False) #REQUIRED> <!-- True if this value applies to all the child registers, False otherwise. Used to make rendering columns less tedious for values that are set for all child registers. -->
+<!ELEMENT field_value_condition (#PCDATA)>
+
+
+<!-- Reset values for a register field. -->
+<!ELEMENT field_resets (field_reset*)>
+<!ELEMENT field_reset ((field_reset_number|field_reset_expression|field_reset_other_field|field_reset_standard_text|field_reset_special_text|field_reset_conditions|field_instance_resets)+)> <!-- Usually there will be just one value here. If more than one, then it is an IMP DEF choice which of these an implementation does. -->
+<!ELEMENT field_instance_resets ((field_instance_reset)+)>
+<!ELEMENT field_instance_reset ((field_reset)+)>
+<!ATTLIST field_instance_reset inst_name CDATA #IMPLIED>
+<!ELEMENT field_reset_conditions ((field_reset_condition)+)>
+<!ELEMENT field_reset_condition ((field_reset)+)>
+<!ATTLIST field_reset reset_type CDATA #IMPLIED> <!-- If set, one of Warm|Cold|External debug|IMPLEMENTATION DEFINED. The type of reset that this value applies to; see the specifications for more details. --> <!-- TODO: Is this still needed? -->
+<!ATTLIST field_reset in_domain CDATA #IMPLIED>
+<!ATTLIST field_reset impdef CDATA #IMPLIED>
+<!ATTLIST field_reset reset_instance CDATA #IMPLIED> <!-- Set when a field reset involves an InstanceReset -->
+<!ATTLIST field_reset_condition condition CDATA #IMPLIED>
+<!ELEMENT field_reset_number (#PCDATA)>                                                                <!-- First possible type of reset value: a (binary) number that the field resets to. -->
+<!ELEMENT field_reset_other_field (field_reset_other_field_regname,field_reset_other_field_fieldname)> <!-- Second possible type of reset value: the value of a field in another register. -->
+<!ELEMENT field_reset_other_field_regname (#PCDATA)>
+<!ATTLIST field_reset_other_field_regname state (AArch32|AArch64|ext) #REQUIRED>                       <!-- The execution state (AArch32/64) or 'ext' for external registers. Used to compose links. -->
+<!ELEMENT field_reset_other_field_fieldname (#PCDATA)>
+<!ELEMENT field_reset_standard_text (#PCDATA)>                                                         <!-- Third possible type of reset value: an abbreviation that corresponds to some standard text. -->
+<!ELEMENT field_reset_special_text %formatted_text;>                                                   <!-- Fourth possible type of reset value: custom text to explain complicated reset circumstances.-->
+<!ELEMENT field_reset_expression (#PCDATA)>                                                            <!-- An ASL expression describing the reset behavior -->
+
+<!--
+What circumstances a register field can be accessed in, if the circumstances are different
+for fields in the same register. (This is the case for some external debug registers.)
+The circumstances are described in the same way as for <reg_access> and its children, above:
+* For internal registers, this is a list of combinations of exception level and security state.
+* For external registers, this is a list of conditions on the processor (the conditions themselves may be defined elsewhere in a specification).
+-->
+<!ELEMENT field_access (field_access_state+)>
+<!ELEMENT field_access_state (field_access_level?,field_access_type)>
+<!ELEMENT field_access_level (#PCDATA|field_access_sublevel)*> <!-- e.g. 'EL0' for internal registers, 'OSLK' for external registers -->
+<!ATTLIST field_access_level operand (AND|OR) #IMPLIED>
+<!ELEMENT field_access_sublevel (#PCDATA)>
+<!ELEMENT field_access_type (#PCDATA|field_access_state)*>  <!-- e.g. RW,RO,WO. There are some more complex access types for some registers. -->
+
+<!ELEMENT instance_accesses (instance_access+)>
+<!ELEMENT instance_access (field_access_state+)>
+<!ATTLIST instance_access instance CDATA #IMPLIED>
+
+<!--
+  <reg_fieldset> contains a description of how the register fields are laid out.
+-->
+<!ELEMENT reg_fieldset (arch_variants?, fields_condition?, fieldat+)>
+<!ATTLIST reg_fieldset length CDATA #REQUIRED>
+<!ELEMENT fieldat EMPTY>
+<!ATTLIST fieldat id CDATA #IMPLIED
+                  label CDATA #IMPLIED
+                  split (True|False) #IMPLIED
+                  whole CDATA #IMPLIED
+                  msb CDATA #REQUIRED
+                  lsb CDATA #REQUIRED>
+<!--
+  fieldat attributes are largely used for controlling rendering logic:
+  -id links it to a field_id
+  -label is used for variouos things, including overriding the name of the field linked by id for rendering purposes (e.g for rendering ConditionalField headers which have multiple possible names, or other similar headers)
+  -split is a bool used to denote that the fieldat element is part of a larger singular split field and shouldn't ordinarily be rendered (as an earlier fieldat will already have handled rendering the whle split_field bit description)
+  -whole is used to store the whole bit description of the split_field a field belongs to (used as the rendering base for such a fieldat element)
+  -msb stores msb of linked field (or current split section if a split field)
+  -lsb stores lsb of linked field (or current split section if a split field)
+-->
+
+<!-- Timestamp and version number, for the page footer. -->
+<!ELEMENT timestamp (#PCDATA)>
+
+
+<!--
+ <reg_variables> contains constraints on the variables associated with this register, e.g. the
+ 'n' in 'PMEVTYPER<n>_EL0'.
+-->
+<!ELEMENT reg_variables (reg_variable+)>
+
+<!ELEMENT reg_variable (reg_variable_val*)>
+<!ATTLIST reg_variable variable CDATA #REQUIRED
+                       prefix CDATA #IMPLIED
+                       min CDATA #IMPLIED
+                       max CDATA #IMPLIED>
+<!-- A <reg_variable> defines a variable associated with a register, e.g. the 'n'
+     in 'PMEVTYPER<n>_EL0', with:
+     - variable: the name of the variable (e.g. 'n').
+     - prefix: for variables such as 'Cm' or 'Cn', this would be 'C'.
+     - min: the minimum value of the variable.
+     - max: the maximum value of the variable.
+-->
+
+<!ELEMENT reg_variable_val (#PCDATA)>
+
+<!--
+ <access_mechanisms> contains descriptions of how this register can be accessed from software.
+-->
+<!ELEMENT access_mechanisms (acc_array*, access_permission_text*, access_mechanism*, access_mechanism_text?)>
+
+<!--
+ The <access_mechanism_text> element holds additional text related the encodings used to access
+ the register.
+-->
+<!ELEMENT access_mechanism_text %formatted_text;>
+
+<!-- An <access_mechanism> is a set of related instructions for a given register,
+     e.g. 'MRS' and 'MSR', and their attributes (e.g. encoding, access
+     permissions, and traps/enables.)
+     In cases where multiple instructions can access a register,
+     multiple <access_mechanism> child elements are present.
+-->
+<!ELEMENT access_mechanism (encoding?, access_header?, access_condition?, access_permission?)>
+<!ATTLIST access_mechanism accessor CDATA #IMPLIED>
+<!ATTLIST access_mechanism type CDATA #IMPLIED>
+<!ATTLIST access_mechanism table_id CDATA #IMPLIED>
+
+<!ELEMENT access_condition %formatted_text;> <!-- Textual representation of accessor condition, if the accessor has one-->
+<!ELEMENT access_header %formatted_text;> <!-- Textual representation of accessor header, if the accessor needs one predefined (isn't a SystemAccessor)-->
+
+<!--
+ The <encoding> for a mnemonic lists the values of the operands needed to decode this access,
+ along with the assembler syntax for the access.
+-->
+<!ELEMENT encoding (acc_array?, access_instruction, enc+)>
+<!ELEMENT access_instruction (#PCDATA)>
+<!ELEMENT enc EMPTY>
+<!ATTLIST enc n CDATA #REQUIRED
+              v CDATA #REQUIRED>
+
+<!-- For SystemAccessorArray structures part of RegisterArrays
+ - this gives the letter to represent the index, as well as the range of values it takes. -->
+<!ELEMENT acc_array (acc_array_range)>
+<!ATTLIST acc_array var CDATA #REQUIRED>
+<!ELEMENT acc_array_range (#PCDATA)>
+
+<!-- The <access_permission> element holds all the access permissions for an instance of the
+     register, in the form of pseudocode.
+-->
+<!ELEMENT access_permission (ps)>
+<!ELEMENT ps (pstext)>
+<!ATTLIST ps name CDATA #REQUIRED
+             sections CDATA #REQUIRED
+             secttype (access_permission) #REQUIRED>
+<!ELEMENT pstext %formatted_text;>
+
+
+<!-- The <access_permission_text> element holds additional text related to the Accessibility that
+     is to be rendered after the permissions table.
+-->
+<!ELEMENT access_permission_text %formatted_text;>
+
+<!--
+ <arch_variants>: wrapping multiple <arch_variant>s
+-->
+
+<!ELEMENT arch_variants (arch_variant*)>
+
+<!--
+ <arch_variant>: a variant of the ARM architecture
+   that this instruction encoding is defined for. e.g. 'ARMv8-M'.
+
+ Attributes:
+   name: text describing the variant.
+-->
+
+<!ELEMENT arch_variant EMPTY>
+<!ATTLIST arch_variant name CDATA #REQUIRED>

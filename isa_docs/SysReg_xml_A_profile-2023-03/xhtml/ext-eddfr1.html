@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDDFR1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDDFR1, External Debug Feature Register 1</h1><p>The EDDFR1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides top level information about the debug system in AArch64.</p>
+      <h2>Configuration</h2><p>When FEAT_DoPD is implemented, EDDFR1 is in the Core power domain. Otherwise, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether EDDFR1 is implemented in the Core power domain or in the Debug power domain.
+    </p><h2>Attributes</h2>
+        <p>EDDFR1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_56-1">ABL_CMPs</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">EBEP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">ITE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">ABLE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">PMICNTR</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">SPMU</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">CTX_CMPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">WRPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-15_8">BRPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">SYSPMUID</a></td></tr></tbody></table><h4 id="fieldset_0-63_56-1">ABL_CMPs, bits [63:56]<span class="condition"><br/>When FEAT_ABLE is implemented:
+                        </span></h4><div class="field">
+      <p>Number of breakpoints that support address linking, minus 1.</p>
+    <p>The values <span class="hexnumber">0x40</span> to <span class="hexnumber">0xFF</span> are reserved.</p>
+<p>The number of breakpoints that support address linking is never more than the number of watchpoints.</p></div><h4 id="fieldset_0-63_56-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_52">Bits [55:52]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-51_48">EBEP, bits [51:48]</h4><div class="field">
+      <p>This field either has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.EBEP or reads as zero.</p>
+    </div><h4 id="fieldset_0-47_44">ITE, bits [47:44]</h4><div class="field">
+      <p>This field either has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.ITE or reads as zero.</p>
+    </div><h4 id="fieldset_0-43_40">ABLE, bits [43:40]</h4><div class="field">
+      <p>Address Breakpoint Linking Extension. Defined values are:</p>
+    <table class="valuetable"><tr><th>ABLE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Address Breakpoint Linking Extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Address Breakpoint Linking Extension implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ABLE</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>In an implementation that supports AArch64, this field has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.ABLE.</p></div><h4 id="fieldset_0-39_36">PMICNTR, bits [39:36]</h4><div class="field">
+      <p>This field either has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.PMICNTR or reads as zero.</p>
+    </div><h4 id="fieldset_0-35_32">SPMU, bits [35:32]</h4><div class="field">
+      <p>This field either has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.SPMU or reads as zero.</p>
+    </div><h4 id="fieldset_0-31_24">CTX_CMPs, bits [31:24]</h4><div class="field">
+      <p>Number of breakpoints that are context-aware, minus 1. The value <span class="hexnumber">0x00</span> means that the number of breakpoints that are context-aware is described by <a href="ext-eddfr.html">EDDFR</a>.CTX_CMPs. Otherwise, the value of this field is the number of breakpoints that are context-aware, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>CTX_CMPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="ext-eddfr.html">EDDFR</a>.CTX_CMPs is the number of breakpoints that are context-aware, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of breakpoints that are context-aware minus 1.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The value of this field is never greater than EDDFR1.BRPs.</p>
+<p>In an implementation that supports AArch64, this field has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.CTX_CMPs.</p></div><h4 id="fieldset_0-23_16">WRPs, bits [23:16]</h4><div class="field">
+      <p>Number of watchpoints, minus 1. The value <span class="hexnumber">0x00</span> means that the number of watchpoints is described by <a href="ext-eddfr.html">EDDFR</a>.WRPs. Otherwise, the value of this field is the number of watchpoints, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>WRPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="ext-eddfr.html">EDDFR</a>.WRPs is the number of watchpoints, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of watchpoints minus 1.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In an implementation that supports AArch64, this field has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.WRPs.</p></div><h4 id="fieldset_0-15_8">BRPs, bits [15:8]</h4><div class="field">
+      <p>Number of breakpoints, minus 1. The value <span class="hexnumber">0x00</span> means that the number of breakpoints is described by <a href="ext-eddfr.html">EDDFR</a>.BRPs. Otherwise, the value of this field is the number of breakpoints, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>BRPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="ext-eddfr.html">EDDFR</a>.BRPs is the number of breakpoints, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of breakpoints minus 1.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In an implementation that supports AArch64, this field has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.BRPs.</p></div><h4 id="fieldset_0-7_0">SYSPMUID, bits [7:0]</h4><div class="field">
+      <p>This field either has the same value as <a href="AArch64-id_aa64dfr1_el1.html">ID_AA64DFR1_EL1</a>.SYSPMUID or reads as zero.</p>
+    </div><h2>Accessing EDDFR1</h2><h4>EDDFR1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th><th>Range</th></tr><tr><td>Debug</td><td><span class="hexnumber">0xD48</span></td><td>EDDFR1</td><td>31:0</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered() and !DoubleLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th><th>Range</th></tr><tr><td>Debug</td><td><span class="hexnumber">0xD4C</span></td><td>EDDFR1</td><td>63:32</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered() and !DoubleLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

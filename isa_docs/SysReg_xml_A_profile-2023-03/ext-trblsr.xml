@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBLSR</reg_short_name>
+        
+        <reg_long_name>Lock Status Register</reg_long_name>
+
+        <power_domain_text>TRBLSR is in the Core power domain</power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_TRBE_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>TRBE</reg_component>
+    <reg_offset><hexnumber>0xFB4</hexnumber></reg_offset>
+    <reg_instance>TRBLSR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus() or !IsCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates the Software Lock is not implemented.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For additional information, see the CoreSight Architecture Specification.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBLSR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRBLSR</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>31:3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ">
+    <field_msb>2</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>2:1</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ.</para>
+    </field_description>
+    <field_description order="after"><para>Not thirty-two bit. Describes the size of the <register_link state="ext" id="ext-trblar.xml">TRBLAR</register_link> register.</para>
+<para>This field reads-as-zero.</para></field_description>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SLI</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates the Software Lock is not implemented.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Software Lock is not implemented. Writes to the <register_link state="ext" id="ext-trblar.xml">TRBLAR</register_link> are ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Software Lock is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_3" msb="31" lsb="3"/>
+  <fieldat id="fieldset_0-2_1" msb="2" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

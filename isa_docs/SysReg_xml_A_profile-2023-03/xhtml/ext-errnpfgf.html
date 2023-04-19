@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERR&lt;n&gt;PFGF</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERR&lt;n&gt;PFGF, Error Record &lt;n&gt; Pseudo-fault Generation Feature Register, n = 0 - 65534</h1><p>The ERR&lt;n&gt;PFGF characteristics are:</p><h2>Purpose</h2>
+        <p>Defines which common architecturally-defined fault generation features are implemented.</p>
+      <h2>Configuration</h2><p>This register is present only when error record &lt;n&gt; is implemented, the node implements the Common Fault Injection Model Extension (ERR&lt;n&gt;FR.INJ != 0b00) and error record &lt;n&gt; is the first error record owned by a node. Otherwise, direct accesses to ERR&lt;n&gt;PFGF are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-errnfr.html">ERR&lt;n&gt;FR</a> describes the features implemented by the node.</p>
+      <h2>Attributes</h2>
+        <p>ERR&lt;n&gt;PFGF is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_31">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_31">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">R</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">SYN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">NA</a></td><td class="lr" colspan="15"><a href="#fieldset_0-27_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12">MV</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">AV</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">PN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">ER</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">CI</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6-1">CE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">DE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">UEO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">UER</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">UEU</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">UC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">OF</a></td></tr></tbody></table><h4 id="fieldset_0-63_31">Bits [63:31]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30">R, bit [30]</h4><div class="field">
+      <p>Restartable. Support for Error Generation Counter restart mode.</p>
+    <table class="valuetable"><tr><th>R</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The node does not support this feature. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.R is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Error Generation Counter restart mode is implemented and is controlled by <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.R. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.R is a read/write field.</p>
+        </td></tr></table></div><h4 id="fieldset_0-29_29">SYN, bit [29]</h4><div class="field">
+      <p>Syndrome. Fault syndrome injection.</p>
+    <table class="valuetable"><tr><th>SYN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When an injected error is recorded, the node sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.{IERR, SERR} to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> values. <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.{IERR, SERR} are <span class="arm-defined-word">UNKNOWN</span> when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.V is 0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When an injected error is recorded, the node does not update the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.{IERR, SERR} fields. <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.{IERR, SERR} are writable when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.V is 0.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>If ERR&lt;n&gt;PFGF.SYN is 1 then software can write specific values into the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.{IERR, SERR} fields when setting up a fault injection event. The sets of values that can be written to these fields is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+      </div>
+    </div><h4 id="fieldset_0-28_28">NA, bit [28]</h4><div class="field">
+      <p>No access required. Defines whether this component fakes detection of the error on an access to the component or spontaneously in the fault injection state.</p>
+    <table class="valuetable"><tr><th>NA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The component fakes detection of the error on an access to the component.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The component fakes detection of the error spontaneously in the fault injection state.</p>
+        </td></tr></table></div><h4 id="fieldset_0-27_13">Bits [27:13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12">MV, bit [12]</h4><div class="field"><p>Miscellaneous syndrome.</p>
+<p>Defines whether software can control all or part of the syndrome recorded in the ERR&lt;n&gt;MISC&lt;m&gt; registers when an injected error is recorded.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> which ERR&lt;n&gt;MISC&lt;m&gt; syndrome fields, if any, are updated by the node when an injected error is recorded. Some syndrome fields might always be updated by the node when an error, including an injected error, is recorded. For example, a corrected error counter might always be updated when any countable error, including a injected countable error, is recorded.</p><table class="valuetable"><tr><th>MV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When an injected error is recorded, the node might update the ERR&lt;n&gt;MISC&lt;m&gt; registers:</p>
+<ul>
+<li>If any syndrome is recorded by the node in the ERR&lt;n&gt;MISC&lt;m&gt; registers, then <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is set to 1.
+</li><li>Otherwise, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is unchanged.
+</li></ul>
+<p>If the node always sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV to 1 when recording an injected error then <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.MV might be RAO/WI. Otherwise <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.MV is <span class="arm-defined-word">RES0</span>.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When an injected error is recorded, the node might update some, but not all ERR&lt;n&gt;MISC&lt;m&gt; syndrome fields:</p>
+<ul>
+<li>If any syndrome is recorded by the node in the ERR&lt;n&gt;MISC&lt;m&gt; registers, then <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is set to 1.
+</li><li>Otherwise, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is set to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.MV.
+</li></ul>
+<p>ERR&lt;n&gt;MISC&lt;m&gt; syndrome fields that are not updated by the node are writable when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is 0.</p>
+<p>If the node always sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV to 1 when recording an injected error then <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.MV is RAO/WI. Otherwise <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.MV is a read/write field.</p></td></tr></table>
+      <p>If ERR&lt;n&gt;PFGF.MV is 1, software can write specific additional syndrome values into the ERR&lt;n&gt;MISC&lt;m&gt; registers when setting up a fault injection event. The permitted values that can be written to these registers are <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><h4 id="fieldset_0-11_11">AV, bit [11]</h4><div class="field">
+      <p>Address syndrome. Defines whether software can control the address recorded in <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a> when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>AV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When an injected error is recorded, the node might record an address in <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a>. If an address is recorded in <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a>, then <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV is set to 1. Otherwise, <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a> and <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV are unchanged.</p>
+<p>If the node always records an address and sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV to 1 when recording an injected error then <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.AV might be RAO/WI. Otherwise <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.AV is <span class="arm-defined-word">RES0</span>.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When an injected error is recorded, the node does not update <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a> and does one of:</p>
+<ul>
+<li>Sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.AV. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.AV is a read/write field.
+</li><li>Sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV to 1. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.AV is RAO/WI.
+</li></ul>
+<p><a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a> is writable when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV is 0.</p></td></tr></table>
+      <p>If ERR&lt;n&gt;PFGF.AV is 1 then software can write a specific address value into <a href="ext-errnaddr.html">ERR&lt;n&gt;ADDR</a> when setting up a fault injection event.</p>
+    </div><h4 id="fieldset_0-10_10-1">PN, bit [10]<span class="condition"><br/>When the node supports this flag:
+                        </span></h4><div class="field">
+      <p>Poison flag. Describes how the fault generation feature of the node sets the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN status flag.</p>
+    <table class="valuetable"><tr><th>PN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When an injected error is recorded, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the node sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN to 1. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.PN is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When an injected error is recorded, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN is set to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.PN. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.PN is a read/write field.</p>
+        </td></tr></table>
+      <p>This behavior replaces the architecture-defined rules for setting the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN bit.</p>
+    </div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-9_9-1">ER, bit [9]<span class="condition"><br/>When the node supports this flag:
+                        </span></h4><div class="field">
+      <p>Error Reported flag. Describes how the fault generation feature of the node sets the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER status flag.</p>
+    <table class="valuetable"><tr><th>ER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When an injected error is recorded, the node sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER according to the architecture-defined rules for setting the ER field. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.ER is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When an injected error is recorded, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER is set to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.ER. This behavior replaces the architecture-defined rules for setting the ER bit. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.ER is a read/write field.</p>
+        </td></tr></table></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-8_8-1">CI, bit [8]<span class="condition"><br/>When the node supports this flag:
+                        </span></h4><div class="field">
+      <p>Critical Error flag. Describes how the fault generation feature of the node sets the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI status flag.</p>
+    <table class="valuetable"><tr><th>CI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When an injected error is recorded, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the node sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI to 1. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CI is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When an injected error is recorded, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI is set to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CI. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CI is a read/write field.</p>
+        </td></tr></table>
+      <p>This behavior replaces the architecture-defined rules for setting the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI bit.</p>
+    </div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-7_6-1">CE, bits [7:6]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Corrected Error generation. Describes the types of Corrected error that the fault generation feature of the node can generate.</p>
+    <table class="valuetable"><tr><th>CE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>The fault generation feature of the node does not generate Corrected errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CE is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>The fault generation feature of the node allows generation of a non-specific Corrected error, that is, a Corrected error that is recorded by setting <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CE to <span class="binarynumber">0b10</span>. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CE is a read/write field. The values <span class="binarynumber">0b10</span> and <span class="binarynumber">0b11</span> in <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CE are reserved.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>The fault generation feature of the node allows generation of transient or persistent Corrected errors, that is, Corrected errors that are recorded by setting <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CE to <span class="binarynumber">0b01</span> or <span class="binarynumber">0b11</span> respectively. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CE is a read/write field. The value <span class="binarynumber">0b01</span> in <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.CE is reserved.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.CE indicates whether the node supports this type of error.</p></div><h4 id="fieldset_0-7_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-5_5-1">DE, bit [5]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Deferred Error generation. Describes whether the fault generation feature of the node can generate Deferred errors.</p>
+    <table class="valuetable"><tr><th>DE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fault generation feature of the node does not generate Deferred errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.DE is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fault generation feature of the node allows generation of Deferred errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.DE is a read/write field.</p>
+        </td></tr></table>
+      <p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.DE indicates whether the node supports this type of error.</p>
+    </div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-4_4-1">UEO, bit [4]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Latent or Restartable Error generation. Describes whether the fault generation feature of the node can generate Latent or Restartable errors.</p>
+    <table class="valuetable"><tr><th>UEO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fault generation feature of the node does not generate Latent or Restartable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UEO is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fault generation feature of the node allows generation of Latent or Restartable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UEO is a read/write field.</p>
+        </td></tr></table>
+      <p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UEO indicates whether the node supports this type of error.</p>
+    </div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-3_3-1">UER, bit [3]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Signaled or Recoverable Error generation. Describes whether the fault generation feature of the node can generate Signaled or Recoverable errors.</p>
+    <table class="valuetable"><tr><th>UER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fault generation feature of the node does not generate Signaled or Recoverable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UER is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fault generation feature of the node allows generation of Signaled or Recoverable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UER is a read/write field.</p>
+        </td></tr></table>
+      <p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UER indicates whether the node supports this type of error.</p>
+    </div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-2_2-1">UEU, bit [2]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Unrecoverable Error generation. Describes whether the fault generation feature of the node can generate Unrecoverable errors.</p>
+    <table class="valuetable"><tr><th>UEU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fault generation feature of the node does not generate Unrecoverable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UEU is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fault generation feature of the node allows generation of Unrecoverable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UEU is a read/write field.</p>
+        </td></tr></table>
+      <p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UEU indicates whether the node supports this type of error.</p>
+    </div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-1_1-1">UC, bit [1]<span class="condition"><br/>When the node supports this type of error:
+                        </span></h4><div class="field">
+      <p>Uncontainable Error generation. Describes whether the fault generation feature of the node can generate Uncontainable errors.</p>
+    <table class="valuetable"><tr><th>UC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The fault generation feature of the node does not generate Uncontainable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UC is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The fault generation feature of the node allows generation of Uncontainable errors. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.UC is a read/write field.</p>
+        </td></tr></table>
+      <p>If <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.FRX is 1 then <a href="ext-errnfr.html">ERR&lt;n&gt;FR</a>.UC indicates whether the node supports this type of error.</p>
+    </div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-0_0-1">OF, bit [0]<span class="condition"><br/>When the node supports this flag:
+                        </span></h4><div class="field">
+      <p>Overflow flag. Describes how the fault generation feature of the node sets the <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF status flag.</p>
+    <table class="valuetable"><tr><th>OF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When an injected error is recorded, the node sets <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF according to the architecture-defined rules for setting the OF field. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.OF is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When an injected error is recorded, <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF is set to <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.OF. This behavior replaces the architecture-defined rules for setting the OF bit. <a href="ext-errnpfgctl.html">ERR&lt;n&gt;PFGCTL</a>.OF is a read/write field.</p>
+        </td></tr></table></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h2>Accessing ERR&lt;n&gt;PFGF</h2><h4>ERR&lt;n&gt;PFGF can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0x800</span> + (64 * n)</td><td>ERR&lt;n&gt;PFGF</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

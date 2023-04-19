@@ -1,0 +1,659 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SCTLR2_EL1</reg_short_name>
+        
+        <reg_long_name>System Control Register (EL1)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_SCTLR2 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides top level control of the system, including its memory system, at EL1 and EL0.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Other system control registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SCTLR2_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>63:7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnIDCP128</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> 128-bit System registers.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Accesses at EL0 to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> 128-bit System registers are trapped to EL1 using an ESR_EL1.EC value of <hexnumber>0x14</hexnumber>, unless the access generates a higher priority exception.</para>
+<para>Disables the functionality of the 128-bit <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> System registers that are accessible at EL1.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>No accesses are trapped by this control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SYSREG128 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EASE</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>External Aborts to SError interrupt exception vector.</para>
+    </field_description>
+    <field_description order="after"><para>This field is ignored by the PE and treated as zero when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.SCTLR2En is 0.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.SCTLR2En == 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Synchronous External Abort exceptions taken to EL1 are taken to the appropriate synchronous exception vector offset from <register_link state="AArch64" id="AArch64-vbar_el1.xml">VBAR_EL1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Synchronous External Abort exceptions taken to EL1 are taken to the appropriate SError exception vector offset from <register_link state="AArch64" id="AArch64-vbar_el1.xml">VBAR_EL1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleFault2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-4_4-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnANERR</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable Asynchronous Normal Read Error.</para>
+    </field_description>
+    <field_description order="after"><para>It is implementation-specific whether this field applies to memory reads generated by each of the following:</para>
+<list type="unordered">
+<listitem><content>SVE register loads, when <xref browsertext="FEAT_SME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_SME"/> is implemented and the PE is in Streaming SVE mode.</content>
+</listitem><listitem><content>SME register loads.</content>
+</listitem><listitem><content><value>LD&lt;op&gt;</value>, <value>SWP</value> and <value>CAS{P}</value> Atomic instructions that return a value to the PE.</content>
+</listitem><listitem><content><value>ST64BV{0}</value> instructions that return a value to the PE.</content>
+</listitem><listitem><content><value>RCW</value> instructions that return a value to the PE.</content>
+</listitem></list>
+<para>Setting this field to 0 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Normal memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</para>
+<para>Setting this field to 0 might have a performance impact for Normal memory reads.</para>
+<para>This field is ignored by the PE and treated as zero when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.SCTLR2En is 0.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSNERR is 1.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.SCTLR2En == 0.</content>
+</listitem></list>
+<para>Otherwise, this field is ignored by the PE and treated as one when all of the following are true:</para>
+<list type="unordered">
+<listitem><content><xref browsertext="FEAT_ADERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ADERR"/> is implemented.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-id_aa64mmfr3_el1.xml">ID_AA64MMFR3_EL1</register_link>.ANERR reads as <binarynumber>0b0010</binarynumber>.</content>
+</listitem><listitem><content>SCTLR2_EL1.EnADERR is 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>External abort on Normal memory reads generate synchronous Data Abort exceptions in the EL1&amp;0 translation regime.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>External abort on Normal memory reads generate synchronous Data Abort or asynchronous SError exceptions in the EL1&amp;0 translation regime.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_ANERR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-4_4-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-3_3-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnADERR</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable Asynchronous Device Read Error.</para>
+    </field_description>
+    <field_description order="after"><para>It is implementation-specific whether this field applies to memory reads generated by each of the following:</para>
+<list type="unordered">
+<listitem><content>FP&amp;SIMD register loads.</content>
+</listitem><listitem><content>SVE register loads.</content>
+</listitem><listitem><content>SME register loads.</content>
+</listitem><listitem><content><value>LD&lt;op&gt;</value>, <value>SWP</value> and <value>CAS{P}</value> Atomic instructions that return a value to the PE.</content>
+</listitem><listitem><content><value>ST64BV{0}</value> instructions that return a value to the PE.</content>
+</listitem><listitem><content><value>RCW</value> instructions that return a value to the PE.</content>
+</listitem></list>
+<para>Setting this field to 0 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Device memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</para>
+<para>Setting this field to 0 might have a performance impact for Device memory reads.</para>
+<para>This field is ignored by the PE and treated as zero when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.SCTLR2En is 0.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnSDERR is 1.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.SCTLR2En == 0.</content>
+</listitem></list>
+<para>Otherwise, this field is ignored by the PE and treated as one when all of the following are true:</para>
+<list type="unordered">
+<listitem><content><xref browsertext="FEAT_ANERR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ANERR"/> is implemented.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-id_aa64mmfr3_el1.xml">ID_AA64MMFR3_EL1</register_link>.ADERR reads as <binarynumber>0b0010</binarynumber>.</content>
+</listitem><listitem><content>SCTLR2_EL1.EnANERR is 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>External abort on Device memory reads generate synchronous Data Abort exceptions in the EL1&amp;0 translation regime.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>External abort on Device memory reads generate synchronous Data Abort or asynchronous SError exceptions in the EL1&amp;0 translation regime.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_ADERR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-3_3-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-2_2-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NMEA</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL1.</para>
+    </field_description>
+    <field_description order="after"><para>This field is ignored by the PE and treated as zero when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>All of the following are true:<list type="unordered">
+<listitem><content>EL2 is implemented and enabled in the current Security state.</content>
+</listitem><listitem><content>The Effective value of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.SCTLR2En is 0.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.SCTLR2En == 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>SError exceptions are not taken at EL1 if PSTATE.A == 1, unless routed to a higher Exception level.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>SError exceptions are taken at EL1 regardless of the value of PSTATE.A, unless routed to a higher Exception level.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleFault2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-2_2-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_7" msb="63" lsb="7"/>
+  <fieldat id="fieldset_0-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5-1" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4-1" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3-1" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2-1" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS SCTLR2_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SCTLR2_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.SCTLR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.SCTLR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        X[t, 64] = NVMem[0x278];
+    else
+        X[t, 64] = SCTLR2_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        X[t, 64] = SCTLR2_EL2;
+    else
+        X[t, 64] = SCTLR2_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SCTLR2_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SCTLR2_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SCTLR2_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.SCTLR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.SCTLR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        NVMem[0x278] = X[t, 64];
+    else
+        SCTLR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        SCTLR2_EL2 = X[t, 64];
+    else
+        SCTLR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    SCTLR2_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MRS SCTLR2_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SCTLR2_EL12</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        X[t, 64] = NVMem[0x278];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+            UNDEFINED;
+        elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            X[t, 64] = SCTLR2_EL1;
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        X[t, 64] = SCTLR2_EL1;
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SCTLR2_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SCTLR2_EL12, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        NVMem[0x278] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+            UNDEFINED;
+        elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            SCTLR2_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        SCTLR2_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCACATR&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCACATR&lt;n&gt;, Address Comparator Access Type Register &lt;n&gt;, n = 0 - 15</h1><p>The TRCACATR&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Defines the type of access for the corresponding <a href="ext-trcacvrn.html">TRCACVR&lt;n&gt;</a> Register. This register configures the context type, Exception levels, alignment, masking that is applied by the Address Comparator, and how the Address Comparator behaves when it is one half of an Address Range Comparator.</p>
+      <h2>Configuration</h2><p>External register TRCACATR&lt;n&gt; bits [63:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcacatrn.html">TRCACATR&lt;n&gt;[63:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and UInt(TRCIDR4.NUMACPAIRS) * 2 &gt; n. Otherwise, direct accesses to TRCACATR&lt;n&gt; are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCACATR&lt;n&gt; is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_19">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="13"><a href="#fieldset_0-63_19">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">EXLEVEL_RL_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">EXLEVEL_RL_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">EXLEVEL_RL_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">EXLEVEL_NS_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">EXLEVEL_NS_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">EXLEVEL_NS_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">EXLEVEL_S_EL3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">EXLEVEL_S_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">EXLEVEL_S_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">EXLEVEL_S_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-6_4-1">CONTEXT</a></td><td class="lr" colspan="2"><a href="#fieldset_0-3_2-1">CONTEXTTYPE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_19">Bits [63:19]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">EXLEVEL_RL_EL2, bit [18]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL2 == 1:
+                        </span></h4><div class="field">
+      <p>Realm EL2 address comparison control. Controls whether a comparison can occur at EL2 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL2 is 0 the Address Comparator performs comparisons in Realm EL2.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL2 is 1 the Address Comparator does not perform comparisons in Realm EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL2 is 0 the Address Comparator does not perform comparisons in Realm EL2.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL2 is 1 the Address Comparator performs comparisons in Realm EL2.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">EXLEVEL_RL_EL1, bit [17]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL1 == 1:
+                        </span></h4><div class="field">
+      <p>Realm EL1 address comparison control. Controls whether a comparison can occur at EL1 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL1 is 0 the Address Comparator performs comparisons in Realm EL1.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL1 is 1 the Address Comparator does not perform comparisons in Realm EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL1 is 0 the Address Comparator does not perform comparisons in Realm EL1.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL1 is 1 the Address Comparator performs comparisons in Realm EL1.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">EXLEVEL_RL_EL0, bit [16]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL0 == 1:
+                        </span></h4><div class="field">
+      <p>Realm EL0 address comparison control. Controls whether a comparison can occur at EL0 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL0 is 0 the Address Comparator performs comparisons in Realm EL0.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL0 is 1 the Address Comparator does not perform comparisons in Realm EL0.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL0 is 0 the Address Comparator does not perform comparisons in Realm EL0.</p>
+<p>When TRCACATR&lt;n&gt;.EXLEVEL_NS_EL0 is 1 the Address Comparator performs comparisons in Realm EL0.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15">Bit [15]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">EXLEVEL_NS_EL2, bit [14]<span class="condition"><br/>When Non-secure EL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Non-secure EL2 address comparison control. Controls whether a comparison can occur at EL2 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Non-secure EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Non-secure EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">EXLEVEL_NS_EL1, bit [13]<span class="condition"><br/>When Non-secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Non-secure EL1 address comparison control. Controls whether a comparison can occur at EL1 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Non-secure EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Non-secure EL1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">EXLEVEL_NS_EL0, bit [12]<span class="condition"><br/>When Non-secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Non-secure EL0 address comparison control. Controls whether a comparison can occur at EL0 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Non-secure EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Non-secure EL0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">EXLEVEL_S_EL3, bit [11]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>EL3 address comparison control. Controls whether a comparison can occur at EL3.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">EXLEVEL_S_EL2, bit [10]<span class="condition"><br/>When EL2 is implemented and FEAT_SEL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Secure EL2 address comparison control. Controls whether a comparison can occur at EL2 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Secure EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Secure EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">EXLEVEL_S_EL1, bit [9]<span class="condition"><br/>When Secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Secure EL1 address comparison control. Controls whether a comparison can occur at EL1 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Secure EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Secure EL1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">EXLEVEL_S_EL0, bit [8]<span class="condition"><br/>When Secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Secure EL0 address comparison control. Controls whether a comparison can occur at EL0 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Address Comparator performs comparisons in Secure EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Address Comparator does not perform comparisons in Secure EL0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7">Bit [7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_4-1">CONTEXT, bits [6:4]<span class="condition"><br/>When TRCIDR4.NUMCIDC != 0b0000 or TRCIDR4.NUMVMIDC != 0b0000:
+                        </span></h4><div class="field">
+      <p>Selects a Context Identifier Comparator or Virtual Context Identifier Comparator:</p>
+    <table class="valuetable"><tr><th>CONTEXT</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Comparator 0.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Comparator 1.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 1 or UInt(TRCIDR4.NUMVMIDC) &gt; 1</td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Comparator 2.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 2 or UInt(TRCIDR4.NUMVMIDC) &gt; 2</td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Comparator 3.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 3 or UInt(TRCIDR4.NUMVMIDC) &gt; 3</td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Comparator 4.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 4 or UInt(TRCIDR4.NUMVMIDC) &gt; 4</td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>Comparator 5.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 5 or UInt(TRCIDR4.NUMVMIDC) &gt; 5</td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>Comparator 6.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 6 or UInt(TRCIDR4.NUMVMIDC) &gt; 6</td></tr><tr><td class="bitfield">0b111</td><td>
+          <p>Comparator 7.</p>
+        </td><td>When UInt(TRCIDR4.NUMCIDC) &gt; 7 or UInt(TRCIDR4.NUMVMIDC) &gt; 7</td></tr></table>
+      <p>The width of this field is dependent on the maximum number of Context Identifier Comparators or Virtual Context Identifier Comparators implemented. Unimplemented bits are <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_2-1">CONTEXTTYPE, bits [3:2]<span class="condition"><br/>When TRCIDR4.NUMCIDC != 0b0000 or TRCIDR4.NUMVMIDC != 0b0000:
+                        </span></h4><div class="field">
+      <p>Controls whether the Address Comparator is dependent on a Context Identifier Comparator, a Virtual Context Identifier Comparator, or both comparisons.</p>
+    <table class="valuetable"><tr><th>CONTEXTTYPE</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>The Address Comparator is not dependent on the Context Identifier Comparators or Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>The Address Comparator is dependent on the Context Identifier Comparator that TRCACATR&lt;n&gt;.CONTEXT specifies. The Address Comparator signals a match only if both the Context Identifier Comparator and the address comparison match.</p>
+        </td><td>When TRCIDR4.NUMCIDC != 0b0000</td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>The Address Comparator is dependent on the Virtual Context Identifier Comparator that TRCACATR&lt;n&gt;.CONTEXT specifies. The Address Comparator signals a match only if both the Virtual Context Identifier Comparator and the address comparison match.</p>
+        </td><td>When TRCIDR4.NUMVMIDC != 0b0000</td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>The Address Comparator is dependent on the Context Identifier Comparator and Virtual Context Identifier Comparator that TRCACATR&lt;n&gt;.CONTEXT specifies. The Address Comparator signals a match only if the Context Identifier Comparator, the Virtual Context Identifier Comparator, and address comparison all match.</p>
+        </td><td>When TRCIDR4.NUMCIDC != 0b0000 and TRCIDR4.NUMVMIDC != 0b0000</td></tr></table><p>If <a href="ext-trcidr4.html">TRCIDR4</a>.NUMCIDC == <span class="binarynumber">0b0000</span>, then bit [2] is <span class="arm-defined-word">RES0</span>.</p>
+<p>If <a href="ext-trcidr4.html">TRCIDR4</a>.NUMVMIDC == <span class="binarynumber">0b0000</span>, then bit [3] is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_0">Bits [1:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing TRCACATR&lt;n&gt;</h2>
+        <p>Must be programmed if any of the following are true:</p>
+
+      
+        <ul>
+<li><a href="ext-trcbbctlr.html">TRCBBCTLR</a>.RANGE[n/2] == 1.
+</li><li><a href="ext-trcrsctlrn.html">TRCRSCTLR&lt;a&gt;</a>.GROUP == <span class="binarynumber">0b0100</span> and <a href="ext-trcrsctlrn.html">TRCRSCTLR&lt;a&gt;</a>.SAC[n] == 1.
+</li><li><a href="ext-trcrsctlrn.html">TRCRSCTLR&lt;a&gt;</a>.GROUP == <span class="binarynumber">0b0101</span> and <a href="ext-trcrsctlrn.html">TRCRSCTLR&lt;a&gt;</a>.ARC[n/2] == 1.
+</li><li><a href="ext-trcviiectlr.html">TRCVIIECTLR</a>.EXCLUDE[n/2] == 1.
+</li><li><a href="ext-trcviiectlr.html">TRCVIIECTLR</a>.INCLUDE[n/2] == 1.
+</li><li><a href="ext-trcvissctlr.html">TRCVISSCTLR</a>.START[n] == 1.
+</li><li><a href="ext-trcvissctlr.html">TRCVISSCTLR</a>.STOP[n] == 1.
+</li><li>TRCSSCCR&lt;&gt;.ARC[n/2] == 1.
+</li><li>TRCSSCCR&lt;&gt;.SAC[n] == 1.
+</li><li><a href="ext-trcqctlr.html">TRCQCTLR</a>.RANGE[n/2] == 1.
+</li></ul>
+
+      
+        <p>Writes are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> if the trace unit is not in the Idle state.</p>
+      <h4>TRCACATR&lt;n&gt; can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x480</span> + (8 * n)</td><td>TRCACATR&lt;n&gt;</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

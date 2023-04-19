@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE architecture_info SYSTEM "architecture_info.dtd">
+
+<!--
+     ========================================================================
+     Copyright (c) 2016-2023 Arm Limited or its affiliates. All rights reserved.
+
+     This document is Non-Confidential. This document may only be used and
+     distributed in accordance with the terms of the agreement entered into
+     by Arm and the party that Arm delivered this document to.
+
+     The data contained in this document is preliminary and subject to
+     change or correction following further review.
+     ========================================================================
+-->
+
+<!-- This file is used by parts of the "one_register.xsl" when
+     rendering certain statements that require knowledge of the
+     architecture being described. -->
+
+<architecture_info arch_profile="A" s_ns_implemented="True" aarch32_implemented="True" aarch64_implemented="True">
+  <implemented_els>
+    <implemented_el el_name="EL0"/>
+    <implemented_el el_name="EL1"/>
+    <implemented_el el_name="EL2"/>
+    <implemented_el el_name="EL3"/>
+  </implemented_els>
+</architecture_info>  

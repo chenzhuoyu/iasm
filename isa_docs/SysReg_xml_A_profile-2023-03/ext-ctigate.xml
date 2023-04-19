@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CTIGATE</reg_short_name>
+        
+        <reg_long_name>CTI Channel Gate Enable register</reg_long_name>
+
+        <power_domain_text>CTIGATE is in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>CTI</reg_component>
+    <reg_offset><hexnumber>0x140</hexnumber></reg_offset>
+    <reg_instance>CTIGATE</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Determines whether events on channels propagate through the CTM to other ECT components, or from the CTM into the CTI.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Cross-Trigger Interface registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CTIGATE is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GATE&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Channel &lt;x&gt; gate enable.</para>
+<para>Bits [31:N] are RAZ/WI. N is the number of ECT channels implemented as defined by the <register_link state="ext" id="ext-ctidevid.xml">CTIDEVID</register_link>.NUMCHAN field.</para></field_description>
+    <field_description order="after">
+      <para>If GATE&lt;x&gt; is set to 0, no new events will be propagated to the ECT, and if the ECT supports multicycle channel events any existing output channel events will be terminated.</para>
+    </field_description>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="x">
+      <field_array_index>
+        <field_array_start>31</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Disable output and, if <register_link state="ext" id="ext-ctidevid.xml">CTIDEVID</register_link>.INOUT == <binarynumber>0b01</binarynumber>, input channel &lt;x&gt; propagation.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Enable output and, if <register_link state="ext" id="ext-ctidevid.xml">CTIDEVID</register_link>.INOUT == <binarynumber>0b01</binarynumber>, input channel &lt;x&gt; propagation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="External debug">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="GATE31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_0" label="GATE30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="GATE29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_0" label="GATE28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="GATE27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_0" label="GATE26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="GATE25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_0" label="GATE24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="GATE23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-31_0" label="GATE22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="GATE21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-31_0" label="GATE20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="GATE19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-31_0" label="GATE18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="GATE17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-31_0" label="GATE16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="GATE15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-31_0" label="GATE14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="GATE13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-31_0" label="GATE12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="GATE11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-31_0" label="GATE10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="GATE9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-31_0" label="GATE8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="GATE7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-31_0" label="GATE6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="GATE5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-31_0" label="GATE4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="GATE3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-31_0" label="GATE2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="GATE1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-31_0" label="GATE0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

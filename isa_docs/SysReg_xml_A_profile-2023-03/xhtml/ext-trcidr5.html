@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCIDR5</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCIDR5, ID Register 5</h1><p>The TRCIDR5 characteristics are:</p><h2>Purpose</h2>
+        <p>Returns the tracing capabilities of the trace unit.</p>
+      <h2>Configuration</h2><p>External register TRCIDR5 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcidr5.html">TRCIDR5[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented. Otherwise, direct accesses to TRCIDR5 are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCIDR5 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">OE</a></td><td class="lr" colspan="3"><a href="#fieldset_0-30_28">NUMCNTR</a></td><td class="lr" colspan="3"><a href="#fieldset_0-27_25">NUMSEQSTATE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23">LPOVERRIDE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22">ATBTRIG</a></td><td class="lr" colspan="6"><a href="#fieldset_0-21_16">TRACEIDSIZE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-11_9">NUMEXTINSEL</a></td><td class="lr" colspan="9"><a href="#fieldset_0-8_0">NUMEXTIN</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">OE, bit [31]</h4><div class="field">
+      <p>Indicates support for the ETE Trace Output Enable.</p>
+    <table class="valuetable"><tr><th>OE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>ETE Trace Output Enable is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>ETE Trace Output Enable is implemented.</p>
+        </td></tr></table><p>When <span class="xref">FEAT_ETEv1p3</span> is implemented and when any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> trace output interface is implemented, this field is 1.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-30_28">NUMCNTR, bits [30:28]</h4><div class="field">
+      <p>Indicates the number of Counters that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMCNTR</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>No Counters are available.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>One Counter implemented.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Two Counters implemented.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Three Counters implemented.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Four Counters implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <a href="ext-trcidr4.html">TRCIDR4</a>.NUMRSPAIR == <span class="binarynumber">0b0000</span> then this field is <span class="binarynumber">0b000</span>.</p></div><h4 id="fieldset_0-27_25">NUMSEQSTATE, bits [27:25]</h4><div class="field">
+      <p>Indicates if the Sequencer is implemented and the number of Sequencer states that are implemented.</p>
+    <table class="valuetable"><tr><th>NUMSEQSTATE</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>The Sequencer is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Four Sequencer states are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <a href="ext-trcidr4.html">TRCIDR4</a>.NUMRSPAIR == <span class="binarynumber">0b0000</span> then this field is <span class="binarynumber">0b000</span>.</p></div><h4 id="fieldset_0-24_24">Bit [24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23">LPOVERRIDE, bit [23]</h4><div class="field">
+      <p>Indicates support for Low-power Override Mode.</p>
+    <table class="valuetable"><tr><th>LPOVERRIDE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit does not support Low-power Override Mode.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit supports Low-power Override Mode.</p>
+        </td></tr></table></div><h4 id="fieldset_0-22_22">ATBTRIG, bit [22]</h4><div class="field">
+      <p>Indicates if the implementation can support ATB triggers.</p>
+    <table class="valuetable"><tr><th>ATBTRIG</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The implementation does not support ATB triggers.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports ATB triggers.</p>
+        </td></tr></table>
+      <p>If <a href="ext-trcidr4.html">TRCIDR4</a>.NUMRSPAIR == <span class="binarynumber">0b0000</span> then this field is 0.</p>
+    </div><h4 id="fieldset_0-21_16">TRACEIDSIZE, bits [21:16]</h4><div class="field">
+      <p>Indicates the trace ID width.</p>
+    <table class="valuetable"><tr><th>TRACEIDSIZE</th><th>Meaning</th></tr><tr><td class="bitfield">0b000000</td><td>
+          <p>The external trace interface is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b000111</td><td>
+          <p>The implementation supports a 7-bit trace ID.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Note that AMBA ATB requires a 7-bit trace ID width.</p></div><h4 id="fieldset_0-15_12">Bits [15:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_9">NUMEXTINSEL, bits [11:9]</h4><div class="field">
+      <p>Indicates how many External Input Selector resources are implemented.</p>
+    <table class="valuetable"><tr><th>NUMEXTINSEL</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>No External Input Selector resources are available.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>1 External Input Selector resource is available.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>2 External Input Selector resources are available.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>3 External Input Selector resources are available.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>4 External Input Selector resources are available.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-8_0">NUMEXTIN, bits [8:0]</h4><div class="field">
+      <p>Indicates how many External Inputs are implemented.</p>
+    <table class="valuetable"><tr><th>NUMEXTIN</th><th>Meaning</th></tr><tr><td class="bitfield">0b111111111</td><td>
+          <p>Unified PMU event selection.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h2>Accessing TRCIDR5</h2><h4>TRCIDR5 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x1F4</span></td><td>TRCIDR5</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

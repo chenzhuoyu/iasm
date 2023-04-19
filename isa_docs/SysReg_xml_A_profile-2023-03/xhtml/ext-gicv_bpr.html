@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICV_BPR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICV_BPR, Virtual Machine Binary Point Register</h1><p>The GICV_BPR characteristics are:</p><h2>Purpose</h2>
+        <p>Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 0 interrupt preemption.</p>
+
+      
+        <p>This register corresponds to <a href="ext-gicc_bpr.html">GICC_BPR</a> in the physical CPU interface.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p><a href="ext-gich_lrn.html">GICH_LR&lt;n&gt;</a>.Group determines whether a virtual interrupt is Group 0 or Group 1.</p></div>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3_LEGACY is implemented and EL2 is implemented. Otherwise, direct accesses to GICV_BPR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>This register is available when the GIC implementation supports interrupt virtualization.</p>
+
+      
+        <p>When <a href="ext-gicv_ctlr.html">GICV_CTLR</a>.CBPR == 1, this register determines interrupt preemption for both Group 0 and Group 1 interrupts.</p>
+      <h2>Attributes</h2>
+        <p>GICV_BPR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="29"><a href="#fieldset_0-31_3">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-2_0">Binary_Point</a></td></tr></tbody></table><h4 id="fieldset_0-31_3">Bits [31:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_0">Binary_Point, bits [2:0]</h4><div class="field"><p>Controls how the 8-bit interrupt priority field is split into a group priority field, that determines interrupt preemption, and a subpriority field.</p>
+<p>For information about how this field determines the interrupt priority bits assigned to the group priority field, see <span class="xref">'ICC_BPR0_EL1 Binary Point for Group 1 interrupts when CBPR == 1, or for Group 0 interrupts' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields">
+    <p>The Binary_Point field of this register is aliased to <a href="ext-gich_vmcr.html">GICH_VMCR</a>.VBPR0.</p>
+  </div><h2>Accessing GICV_BPR</h2>
+        <p>This register is used only when System register access is not enabled. When System register access is enabled:</p>
+
+      
+        <ul>
+<li>For AArch32 implementations, <a href="AArch32-icc_bpr0.html">ICC_BPR0</a> provides equivalent functionality.
+</li><li>For AArch64 implementations, <a href="AArch64-icc_bpr0_el1.html">ICC_BPR0_EL1</a> provides equivalent functionality.
+</li></ul>
+      <h4>GICV_BPR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Virtual CPU interface</td><td><span class="hexnumber">0x0008</span></td><td>GICV_BPR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 0, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Secure, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Non-secure, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- 
+     ========================================================================
+     Copyright (c) 2015-2023 Arm Limited or its affiliates. All rights reserved.
+
+     This document is Non-Confidential. This document may only be used and
+     distributed in accordance with the terms of the agreement entered into
+     by Arm and the party that Arm delivered this document to.
+
+     The data contained in this document is preliminary and subject to
+     change or correction following further review.
+     ========================================================================
+-->
+
+
+<!--
+    <access_instruction_defs> - Top-level element.
+-->
+<!ELEMENT access_instruction_defs (access_instruction_def+)>
+
+<!--
+    <access_instruction_def> - Definition of a single access instruction.
+
+      @execution_state: Execution state in which this applies.
+      @id:              The ID of the access instruction 
+                        (corresponding to the ISA XML.)
+-->
+<!ELEMENT access_instruction_def (name, access_type?, access_syntax+)>
+<!ATTLIST access_instruction_def execution_state (AArch32|AArch64) #REQUIRED
+                                 id CDATA #REQUIRED>
+
+<!--
+    <name> - The 'title' for the access instruction.
+             (This should again match the ISA XML.)
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!--
+    <access_type> - Type of the register access by this instruction.
+                    It is omitted for system instructions.
+      @type: read   - instruction will read register.
+             write  - instruction will write register.
+             modify - instruction will modify (whole or part of) register.
+    
+-->
+<!ELEMENT access_type EMPTY>
+<!ATTLIST access_type type (read|write|modify) #REQUIRED>
+
+<!--
+    <access_syntax> - Syntax for the instruction.
+      @name: The mnemonic of the instruction.
+-->
+<!ELEMENT access_syntax (var*)>
+<!ATTLIST access_syntax name CDATA #REQUIRED
+                        variant CDATA #IMPLIED>
+
+<!--
+    <var> - Variable field within the syntax.
+      @n: Name of the variable field.
+      @t: Optional type for the field.
+      @prefix: Optional, this is a prefix for field values, e.g. 'c' for 'CRm'.
+-->
+<!ELEMENT var (var*)>
+<!ATTLIST var n CDATA #REQUIRED
+              t CDATA #IMPLIED
+              prefix CDATA #IMPLIED>

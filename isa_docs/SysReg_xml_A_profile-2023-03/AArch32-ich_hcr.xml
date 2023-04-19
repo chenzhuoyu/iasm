@@ -1,0 +1,705 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ICH_HCR</reg_short_name>
+        
+        <reg_long_name>Interrupt Controller Hyp Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL2 is capable of using AArch32, FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented)</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-ich_hcr_el2.xml">ICH_HCR_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the environment for VMs.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC system registers</reg_group>
+            <reg_group>GIC host interface control registers</reg_group>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If EL2 is not implemented, this register is <arm-defined-word>RES0</arm-defined-word> from EL3.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ICH_HCR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EOIcount</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>31:27</rel_range>
+    <field_description order="before"><para>This field is incremented whenever a successful write to a virtual EOIR or DIR register would have resulted in a virtual interrupt deactivation.  That is either:</para>
+<list type="unordered">
+<listitem><content>A virtual write to EOIR with a valid interrupt identifier that is not in the LPI range (that is &lt; 8192) when EOI mode is zero and no List Register was found.</content>
+</listitem><listitem><content>A virtual write to DIR with a valid interrupt identifier that is not in the LPI range (that is &lt; 8192) when EOI mode is one and no List Register was found.</content>
+</listitem></list>
+<para>This allows software to manage more active interrupts than there are implemented List Registers.</para>
+<para>It is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> whether a virtual write to EOIR that does not clear a bit in the Active Priorities registers (<register_link state="AArch32" id="AArch32-ich_ap0rn.xml">ICH_AP0R&lt;n&gt;</register_link>/<register_link state="AArch32" id="AArch32-ich_ap1rn.xml">ICH_AP1R&lt;n&gt;</register_link>) increments EOIcount. Permitted behaviors are:</para>
+<list type="unordered">
+<listitem><content>Increment EOIcount.</content>
+</listitem><listitem><content>Leave EOIcount unchanged.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-26_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>26:15</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-14_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TDIR</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap Non-secure EL1 writes to <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link> and <register_link state="AArch32" id="AArch32-icv_dir.xml">ICV_DIR</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Arm deprecates not including this trap bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 writes of <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link> and <register_link state="AArch32" id="AArch32-icv_dir.xml">ICV_DIR</register_link> are not trapped to EL2, unless trapped by other mechanisms.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 writes of <register_link state="AArch32" id="AArch32-icv_dir.xml">ICV_DIR</register_link> are trapped to EL2. It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether Non-secure writes of <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link> are trapped. Not trapping <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link> writes is DEPRECATED.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GICv3_TDIR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TSEI</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Trap all locally generated SEIs. This bit allows the hypervisor to intercept locally generated SEIs that would otherwise be taken at Non-secure EL1.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If <register_link state="AArch32" id="AArch32-ich_vtr.xml">ICH_VTR</register_link>.SEIS is 0, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Locally generated SEIs do not cause a trap to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Locally generated SEIs trap to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TALL1</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before">
+      <para>Trap all Non-secure EL1 accesses to ICC_* and ICV_* System registers for Group 1 interrupts to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 1 interrupts proceed as normal.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 1 interrupts trap to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TALL0</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Trap all Non-secure EL1 accesses to ICC_* and ICV_* System registers for Group 0 interrupts to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 0 interrupts proceed as normal.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 0 interrupts trap to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TC</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Trap all Non-secure EL1 accesses to System registers that are common to Group 0 and Group 1 to EL2.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This affects accesses to <register_link state="AArch32" id="AArch32-icc_sgi0r.xml">ICC_SGI0R</register_link>, <register_link state="AArch32" id="AArch32-icc_sgi1r.xml">ICC_SGI1R</register_link>, <register_link state="AArch32" id="AArch32-icc_asgi1r.xml">ICC_ASGI1R</register_link>, <register_link state="AArch32" id="AArch32-icc_ctlr.xml">ICC_CTLR</register_link>, <register_link state="AArch32" id="AArch32-icc_dir.xml">ICC_DIR</register_link>, <register_link state="AArch32" id="AArch32-icc_pmr.xml">ICC_PMR</register_link>, <register_link state="AArch32" id="AArch32-icc_rpr.xml">ICC_RPR</register_link>, <register_link state="AArch32" id="AArch32-icv_ctlr.xml">ICV_CTLR</register_link>, <register_link state="AArch32" id="AArch32-icv_dir.xml">ICV_DIR</register_link>, <register_link state="AArch32" id="AArch32-icv_pmr.xml">ICV_PMR</register_link>, and <register_link state="AArch32" id="AArch32-icv_rpr.xml">ICV_RPR</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to common registers proceed as normal.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure EL1 accesses to common registers trap to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-8_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>vSGIEOICount</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Controls whether deactivation of virtual SGIs can increment ICH_HCR_EL2.EOIcount</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Deactivation of virtual SGIs can increment ICH_HCR.EOIcount.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Deactivation of virtual SGIs does not increment ICH_HCR.EOIcount.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-8_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp1DIE</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>VM Group 1 Disabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 1 interrupts from the virtual CPU interface to the connected vPE is disabled:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt signaled when <register_link state="AArch32" id="AArch32-ich_vmcr.xml">ICH_VMCR</register_link>.VENG1 is 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp1EIE</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>VM Group 1 Enabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 1 interrupts from the virtual CPU interface to the connected vPE is enabled:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt signaled when <register_link state="AArch32" id="AArch32-ich_vmcr.xml">ICH_VMCR</register_link>.VENG1 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp0DIE</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>VM Group 0 Disabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 0 interrupts from the virtual CPU interface to the connected vPE is disabled:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt signaled when <register_link state="AArch32" id="AArch32-ich_vmcr.xml">ICH_VMCR</register_link>.VENG0 is 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp0EIE</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>VM Group 0 Enabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 0 interrupts from the virtual CPU interface to the connected vPE is enabled:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt signaled when <register_link state="AArch32" id="AArch32-ich_vmcr.xml">ICH_VMCR</register_link>.VENG0 is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NPIE</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>No Pending Interrupt Enable. Enables the signaling of a maintenance interrupt when there are no List registers with the State field set to <binarynumber>0b01</binarynumber> (pending):</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt signaled while the List registers contain no interrupts in the pending state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LRENPIE</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>List Register Entry Not Present Interrupt Enable. Enables the signaling of a maintenance interrupt while the virtual CPU interface does not have a corresponding valid List register entry for an EOI request:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt is asserted while the EOIcount field is not 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UIE</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Underflow Interrupt Enable. Enables the signaling of a maintenance interrupt when the List registers are empty, or hold only one valid entry:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt is asserted if none, or only one, of the List register entries is marked as a valid interrupt.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>En</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable. Global enable bit for the virtual CPU interface:</para>
+    </field_description>
+    <field_description order="after"><para>When this field is set to 0:</para>
+<list type="unordered">
+<listitem><content>The virtual CPU interface does not signal any maintenance interrupts.</content>
+</listitem><listitem><content>The virtual CPU interface does not signal any virtual interrupts.</content>
+</listitem><listitem><content>A read of <register_link state="AArch32" id="AArch32-icv_iar0.xml">ICV_IAR0</register_link>, <register_link state="AArch32" id="AArch32-icv_iar1.xml">ICV_IAR1</register_link>, <register_link state="ext" id="ext-gicv_iar.xml">GICV_IAR</register_link> or <register_link state="ext" id="ext-gicv_aiar.xml">GICV_AIAR</register_link> returns a spurious interrupt ID.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Virtual CPU interface operation disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Virtual CPU interface operation enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_27" msb="31" lsb="27"/>
+  <fieldat id="fieldset_0-26_15" msb="26" lsb="15"/>
+  <fieldat id="fieldset_0-14_14-1" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8-1" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC ICH_HCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b100"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_HCR;
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_HCR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR ICH_HCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b100"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_HCR = R[t];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_HCR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

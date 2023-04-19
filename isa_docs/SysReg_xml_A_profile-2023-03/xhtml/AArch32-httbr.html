@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTTBR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HTTBR, Hyp Translation Table Base Register</h1><p>The HTTBR characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the base address of the translation table for the initial lookup for stage 1 of an address translation in the EL2 translation regime, and other information for this translation regime.</p>
+      <h2>Configuration</h2><p>AArch32 System register HTTBR bits [47:1] are architecturally mapped to AArch64 System register <a href="AArch64-ttbr0_el2.html">TTBR0_EL2[47:1]</a>.</p><p>This register is present only when EL2 is capable of using AArch32. Otherwise, direct accesses to HTTBR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>HTTBR is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-63_48">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_1">BADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="31"><a href="#fieldset_0-47_1">BADDR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">CnP</a></td></tr></tbody></table><h4 id="fieldset_0-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_1">BADDR, bits [47:1]</h4><div class="field"><p>Translation table base address, bits[47:x], Bits [x-1:1] are <span class="arm-defined-word">RES0</span>, with the additional requirement that if bits[x-1:3] are not all zero, this is a misaligned translation table base address, with effects that are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, and must be one of the following:</p>
+<ul>
+<li>Register bits [x-1:3] are treated as if all the bits are zero. The value read back from these bits is either the value written or zero.
+</li><li>The result of the calculation of an address for a translation table walk using this register can be corrupted in those bits that are nonzero.
+</li></ul>
+<p>x is determined from the value of <a href="AArch32-htcr.html">HTCR</a>.T0SZ as follows:</p>
+<ul>
+<li>If <a href="AArch32-htcr.html">HTCR</a>.T0SZ is 0 or 1, x = 5 - <a href="AArch32-htcr.html">HTCR</a>.T0SZ.
+</li><li>If <a href="AArch32-htcr.html">HTCR</a>.T0SZ is greater than 1, x = 14 - <a href="AArch32-htcr.html">HTCR</a>.T0SZ.
+</li></ul>
+<p>If bits[47:40] of the translation table base address are not zero, an Address size fault is generated.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0-1">CnP, bit [0]<span class="condition"><br/>When FEAT_TTCNP is implemented:
+                        </span></h4><div class="field">
+      <p>Common not Private. This bit indicates whether each entry that is pointed to by HTTBR is a member of a common set that can be used by every PE in the Inner Shareable domain for which the value of HTTBR.CnP is 1.</p>
+    <table class="valuetable"><tr><th>CnP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The translation table entries pointed to by HTTBR are permitted to differ from corresponding entries for HTTBR for other PEs in the Inner Shareable domain. This is not affected by the value of HTTBR.CnP on those other PEs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The translation table entries pointed to by HTTBR are the same as the translation table entries pointed to by HTTBR on every other PE in the Inner Shareable domain for which the value of HTTBR.CnP is 1.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>If the value of the HTTBR.CnP bit is 1 on multiple PEs in the same Inner Shareable domain and those HTTBRs do not point to the same translation table entries when the other conditions specified for the case when the value of CnP is 1 apply, then the results of translations are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, see <span class="xref">'CONSTRAINED UNPREDICTABLE behaviors due to caching of control or data values'</span>.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing HTTBR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</h4><table class="access_instructions"><tr><th>coproc</th><th>CRm</th><th>opc1</th></tr><tr><td>0b1111</td><td>0b0010</td><td>0b0100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x04);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    (R[t2], R[t]) = (HTTBR&lt;63:32&gt;, HTTBR&lt;31:0&gt;);
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        (R[t2], R[t]) = (HTTBR&lt;63:32&gt;, HTTBR&lt;31:0&gt;);
+                </p><h4 class="assembler">MCRR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</h4><table class="access_instructions"><tr><th>coproc</th><th>CRm</th><th>opc1</th></tr><tr><td>0b1111</td><td>0b0010</td><td>0b0100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x04);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    HTTBR = R[t2]:R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        HTTBR = R[t2]:R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

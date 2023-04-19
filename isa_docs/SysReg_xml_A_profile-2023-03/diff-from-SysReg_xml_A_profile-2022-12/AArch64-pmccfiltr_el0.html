@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>PMCCFILTR_EL0</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMCCFILTR_EL0, Performance Monitors Cycle Count Filter Register</h1><p>The PMCCFILTR_EL0 characteristics are:</p><h2>Purpose</h2><p>Determines the modes in which the Cycle Counter, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, increments.</p><h2>Configuration</h2><p>AArch64 System register PMCCFILTR_EL0 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-pmccfiltr.html">PMCCFILTR[31:0]</a>.</p><p>AArch64 System register PMCCFILTR_EL0 bits [63:32] are architecturally mapped to External register <a href="pmu.pmccfiltr_el0.html">PMU.PMCCFILTR_EL0[63:32]</a> when FEAT_PMUv3_TH is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_EXT64 is implemented.</p><p>AArch64 System register PMCCFILTR_EL0 bits [31:0] are architecturally mapped to External register <a href="pmu.pmccfiltr_el0.html">PMU.PMCCFILTR_EL0[31:0]</a>.</p><p>This register is present only when FEAT_PMUv3 is implemented. Otherwise, direct accesses to PMCCFILTR_EL0 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2><p>PMCCFILTR_EL0 is a 64-bit register.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">P</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">U</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29-1">NSK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28-1">NSU</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">NSH</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">M</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24-1">SH</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">T</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">RLK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">RLU</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">RLH</a></td><td class="lr" colspan="20"><a href="#fieldset_0-19_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-31_31">P, bit [31]</h4><div class="field"><p>EL1 filtering. Controls counting cycles in EL1.</p><table class="valuetable"><tr><th>P</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>This field has no effect on filtering of cycles.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Cycles in EL1 are not counted.</p></td></tr></table><p>If Secure and Non-secure states are implemented, then counting cycles in Non-secure EL1 is further controlled by PMCCFILTR_EL0.NSK.</p><p>If <span class="xref">FEAT_RME</span> is implemented, then counting cycles in Realm EL1 is further controlled by PMCCFILTR_EL0.RLK.</p><p>If EL3 is implemented, then counting cycles in EL3 is further controlled by PMCCFILTR_EL0.M.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30">U, bit [30]</h4><div class="field"><p>EL0 filtering. Controls counting cycles in EL0.</p><table class="valuetable"><tr><th>U</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>This field has no effect on filtering of cycles.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Cycles in EL0 are not counted.</p></td></tr></table><p>If Secure and Non-secure states are implemented, then counting cycles in Non-secure EL0 is further controlled by PMCCFILTR_EL0.NSU.</p><p>If <span class="xref">FEAT_RME</span> is implemented, then counting cycles in Realm EL0 is further controlled by PMCCFILTR_EL0.RLU.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29-1">NSK, bit [29]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field"><p>Non-secure EL1 filtering. Controls counting cycles in Non-secure EL1. If PMCCFILTR_EL0.NSK is not equal to PMCCFILTR_EL0.P, then cycles in Non-secure EL1 are not counted. Otherwise, PMCCFILTR_EL0.NSK has no effect on filtering of cycles in Non-secure EL1.</p><table class="valuetable"><tr><th>NSK</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMCCFILTR_EL0.P == 0, this field has no effect on filtering of cycles.</p><p>When PMCCFILTR_EL0.P == 1, cycles in Non-secure EL1 are not counted.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMCCFILTR_EL0.P == 0, cycles in Non-secure EL1 are not counted.</p><p>When PMCCFILTR_EL0.P == 1, this field has no effect on filtering of cycles.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-28_28-1">NSU, bit [28]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field"><p>Non-secure EL0 filtering. Controls counting cycles in Non-secure EL0. If PMCCFILTR_EL0.NSU is not equal to PMCCFILTR_EL0.U, then cycles in Non-secure EL0 are not counted. Otherwise, PMCCFILTR_EL0.NSU has no effect on filtering of cycles in Non-secure EL0.</p><table class="valuetable"><tr><th>NSU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMCCFILTR_EL0.U == 0, this field has no effect on filtering of cycles.</p><p>When PMCCFILTR_EL0.U == 1, cycles in Non-secure EL0 are not counted.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMCCFILTR_EL0.U == 0, cycles in Non-secure EL0 are not counted.</p><p>When PMCCFILTR_EL0.U == 1, this field has no effect on filtering of cycles.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-28_28-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-27_27-1">NSH, bit [27]<span class="condition"><br/>When EL2 is implemented:
+                        </span></h4><div class="field"><p>EL2 filtering. Controls counting cycles in EL2.</p><table class="valuetable"><tr><th>NSH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Cycles in EL2 are not counted.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>This field has no effect on filtering of cycles.</p></td></tr></table><p>If EL3 is implemented and <span class="xref">FEAT_SEL2</span> is implemented, then counting cycles in Secure EL2 is further controlled by PMCCFILTR_EL0.SH.</p><p>If <span class="xref">FEAT_RME</span> is implemented, then counting cycles in Realm EL2 is further controlled by PMCCFILTR_EL0.RLH.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-26_26-1">M, bit [26]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field"><p>EL3 filtering. Controls counting cycles in EL3. If PMCCFILTR_EL0.M is not equal to PMCCFILTR_EL0.P, then cycles in EL3 are not counted. Otherwise, PMCCFILTR_EL0.M has no effect on filtering of cycles in EL3.</p><table class="valuetable"><tr><th>M</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMCCFILTR_EL0.P == 0, this field has no effect on filtering of cycles.</p><p>When PMCCFILTR_EL0.P == 1, cycles in EL3 are not counted.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMCCFILTR_EL0.P == 0, cycles in EL3 are not counted.</p><p>When PMCCFILTR_EL0.P == 1, this field has no effect on filtering of cycles.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-25_25">Bit [25]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-24_24-1">SH, bit [24]<span class="condition"><br/>When EL3 is implemented and FEAT_SEL2 is implemented:
+                        </span></h4><div class="field"><p>Secure EL2 filtering. Controls counting cycles in Secure EL2. If PMCCFILTR_EL0.SH is equal to PMCCFILTR_EL0.NSH, then cycles in Secure EL2 are not counted. Otherwise, PMCCFILTR_EL0.SH has no effect on filtering of cycles in Secure EL2.</p><table class="valuetable"><tr><th>SH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMCCFILTR_EL0.NSH == 0, cycles in Secure EL2 are not counted.</p><p>When PMCCFILTR_EL0.NSH == 1, this field has no effect on filtering of cycles.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMCCFILTR_EL0.NSH == 0, this field has no effect on filtering of cycles.</p><p>When PMCCFILTR_EL0.NSH == 1, cycles in Secure EL2 are not counted.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-23_23-1">T, bit [23]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field"><p>Transactional state filtering bit. Controls counting of Attributable events in Non-transactional state.</p><table class="valuetable"><tr><th>T</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>This bit has no effect on the filtering of events.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Do not count Attributable events in Non-transactional state.</p></td></tr></table><p>For each Unattributable event, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the filtering applies.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-22_22-1">RLK, bit [22]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Realm EL1  (kernel) filtering bit. Controls counting in Realm EL1.</p><p>If the value of this bit is equal to the value of the PMCCFILTR_EL0.P bit, cycles in Realm EL1 are counted.</p><p>Otherwise, cycles in Realm EL1 are not counted.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-21_21-1">RLU, bit [21]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Realm EL0  (unprivileged) filtering bit. Controls counting in Realm EL0.</p><p>If the value of this bit is equal to the value of the PMCCFILTR_EL0.U bit, cycles in Realm EL0 are counted.</p><p>Otherwise, cycles in Realm EL0 are not counted.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-20_20-1">RLH, bit [20]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Realm EL2  filtering bit. Controls counting in Realm EL2.</p><p>If the value of this bit is not equal to the value of the PMCCFILTR_EL0.NSH bit, cycles in Realm EL2 are counted.</p><p>Otherwise, cycles in Realm EL2 are not counted.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-19_0">Bits [19:0]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><div class="access_mechanisms"><h2>Accessing PMCCFILTR_EL0</h2><p>PMCCFILTR_EL0 can also be accessed by using <a href="AArch64-pmxevtyper_el0.html">PMXEVTYPER_EL0</a> with <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>.SEL set to <span class="binarynumber">0b11111</span>.</p><p>PMCCFILTR_EL0 reads-as-zero and ignores writes if all of the following are true:</p><ul><li>FEAT_PMUv3p9 is implemented.
+</li><li>PSTATE.EL == EL0.
+</li><li><a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a>.UEN == 1.
+</li><li><a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>.C == 0.
+</li></ul><p>PMCCFILTR_EL0 ignores writes if all of the following are true:</p><ul><li>FEAT_PMUv3p9 is implemented.
+</li><li>PSTATE.EL == EL0.
+</li><li><a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a>.{UEN,CR} == {1,1}.
+</li></ul><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt>, PMCCFILTR_EL0</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b011</td><td>0b1110</td><td>0b1111</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif <ins>(IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN> == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; </ins>PMUSERENR_EL0.EN == '0<ins>')</ins><del>'</del> then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE> != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMCCFILTR_EL0;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMCCFILTR_EL0;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMCCFILTR_EL0;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMCCFILTR_EL0;
+                </p><h4 class="assembler">MSR PMCCFILTR_EL0, &lt;Xt></h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b011</td><td>0b1110</td><td>0b1111</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif <ins>(IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN> == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; </ins>PMUSERENR_EL0.EN == '0<ins>')</ins><del>'</del> then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE> != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMCCFILTR_EL0 = X[t, 64];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMCCFILTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMCCFILTR_EL0 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMCCFILTR_EL0 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMCCFILTR_EL0 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>01</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

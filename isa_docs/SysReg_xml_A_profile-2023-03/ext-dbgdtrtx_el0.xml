@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DBGDTRTX_EL0</reg_short_name>
+        
+        <reg_long_name>Debug Data Transfer Register, Transmit</reg_long_name>
+
+        <power_domain_text>DBGDTRTX_EL0 is in the Core power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0x08C</hexnumber></reg_offset>
+    <reg_instance>DBGDTRTX_EL0</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdtrtxint.xml">DBGDTRTXint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Transfers data from the PE to an external debugger. For example, it is used by a debug target to transfer data to the debugger. See <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link> for additional architectural mappings. It is a component of the Debug Communication Channel.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DBGDTRTX_EL0 is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_shortdesc>Return DTRTX</field_shortdesc>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Return DTRTX.</para>
+<para>Reads of this register:</para>
+<list type="unordered">
+<listitem><content>
+<para>If TXfull is set to 1, return the last value written to DTRTX.</para>
+</content>
+</listitem><listitem><content>
+<para>If TXfull is set to 0, return an <arm-defined-word>UNKNOWN</arm-defined-word> value.</para>
+</content>
+</listitem></list>
+<para>After the read, TXfull is cleared to 0.</para>
+<para>Writes to this register:</para>
+<list type="unordered">
+<listitem><content>
+<para>If TXfull is set to 1, set DTRTX to <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+</content>
+</listitem><listitem><content>
+<para>If TXfull is set to 0, update the value in DTRTX.</para>
+</content>
+</listitem></list>
+<para>After the write, TXfull remains unchanged.</para>
+<para>For the full behavior of the Debug Communications Channel, see <xref browsertext="'The Debug Communication Channel and Instruction Transfer Register'" filename="H_the_debug_communication_channel__.fm" linkend="BABHHAAE"/>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ITE == 0 when the PE exits Debug state on receiving a Restart request trigger event, the behavior of any operation issued by a DTR access in memory access mode that has not completed execution is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>, and must do one of the following:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>It must complete execution in Debug state before the PE executes the restart sequence.</content>
+</listitem><listitem><content>It must complete execution in Non-debug state before the PE executes the restart sequence.</content>
+</listitem><listitem><content>It must be abandoned. This means that the instruction does not execute. Any registers or memory accessed by the instruction are left in an <arm-defined-word>UNKNOWN</arm-defined-word> state.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

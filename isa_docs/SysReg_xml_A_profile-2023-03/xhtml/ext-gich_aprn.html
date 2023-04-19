@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICH_APR&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICH_APR&lt;n&gt;, Active Priorities Registers, n = 0 - 3</h1><p>The GICH_APR&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>These registers track which preemption levels are active in the virtual CPU interface, and indicate the current active priority. Corresponding bits are set to 1 in this register when an interrupt is acknowledged, based on <a href="ext-gich_lrn.html">GICH_LR&lt;n&gt;</a>.Priority, and the least significant bit set is cleared on EOI.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3_LEGACY is implemented and EL2 is implemented. Otherwise, direct accesses to GICH_APR&lt;n&gt; are <span class="arm-defined-word">RES0</span>.</p>
+        <p>This register is available when the GIC implementation supports interrupt virtualization.</p>
+
+      
+        <p>The number of registers required depends on how many bits are implemented in <a href="ext-gich_lrn.html">GICH_LR&lt;n&gt;</a>.Priority:</p>
+
+      
+        <ul>
+<li>When 5 priority bits are implemented, 1 register is required (GICH_APR0).
+</li><li>When 6 priority bits are implemented, 2 registers are required (GICH_APR0, GICH_APR1).
+</li><li>When 7 priority bits are implemented, 4 registers are required (GICH_APR0, GICH_APR1, GICH_APR2, GICH_APR3).
+</li></ul>
+
+      
+        <p>Unimplemented registers are RAZ/WI.</p>
+      <h2>Attributes</h2>
+        <p>GICH_APR&lt;n&gt; is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P31</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P30</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P29</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P28</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P27</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P26</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P25</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P24</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P23</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P22</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P21</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P20</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P19</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P18</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P17</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P16</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">P0</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">P&lt;x&gt;, bit [x], for x = 31 to 0</h4><div class="field">
+      <p>Active priorities. Possible values of each bit are:</p>
+    <table class="valuetable"><tr><th>P&lt;x&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>There is no interrupt active at the priority corresponding to that bit.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>There is an interrupt active at the priority corresponding to that bit.</p>
+        </td></tr></table><p>The correspondence between priorities and bits depends on the number of bits of priority that are implemented.</p>
+<p>If 5 bits of priority are implemented (bits [7:3] of priority), then there are 32 priority groups, and the active state of these priorities are held in GICH_APR0 in the bits corresponding to Priority[7:3].</p>
+<p>If 6 bits of priority are implemented (bits [7:2] of priority), then there are 64 priority groups, and:</p>
+<ul>
+<li>The active state of priorities 0 - 124 are held in GICH_APR0 in the bits corresponding to 0:Priority[6:2].
+</li><li>The active state of priorities 128 - 252 are held in GICH_APR1 in the bits corresponding to 1:Priority[6:2].
+</li></ul>
+<p>If 7 bits of priority are implemented (bits [7:1] of priority), then there are 128 priority groups, and:</p>
+<ul>
+<li>The active state of priorities 0 - 62 are held in GICH_APR0 in the bits corresponding to 00:Priority[5:1].
+</li><li>The active state of priorities 64 - 126 are held in GICH_APR1 in the bits corresponding to 01:Priority[5:1].
+</li><li>The active state of priorities 128 - 190 are held in GICH_APR2 in the bits corresponding to 10:Priority[5:1].
+</li><li>The active state of priorities 192 - 254 are held in GICH_APR3 in the bits corresponding to 11:Priority[5:1].
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h2>Accessing GICH_APR&lt;n&gt;</h2>
+        <p>These registers are used only when System register access is not enabled. When System register access is enabled the following registers provide equivalent functionality:</p>
+
+      
+        <ul>
+<li>In AArch64:<ul>
+<li>For Group 0, <a href="AArch64-ich_ap0rn_el2.html">ICH_AP0R&lt;n&gt;_EL2</a>.
+</li><li>For Group 1, <a href="AArch64-ich_ap1rn_el2.html">ICH_AP1R&lt;n&gt;_EL2</a>.
+</li></ul>
+
+</li><li>In AArch32:<ul>
+<li>For Group 0, <a href="AArch32-ich_ap0rn.html">ICH_AP0R&lt;n&gt;</a>.
+</li><li>For Group 1, <a href="AArch32-ich_ap1rn.html">ICH_AP1R&lt;n&gt;</a>.
+</li></ul>
+
+</li></ul>
+      <h4>GICH_APR&lt;n&gt; can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Virtual interface control</td><td><span class="hexnumber">0x00F0</span> + (4 * n)</td><td>GICH_APR&lt;n&gt;</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 0, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Secure, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Non-secure, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

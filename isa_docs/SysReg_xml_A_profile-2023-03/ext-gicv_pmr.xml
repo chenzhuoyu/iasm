@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICV_PMR</reg_short_name>
+        
+        <reg_long_name>Virtual Machine Priority Mask Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3_LEGACY is implemented and EL2 is implemented</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Virtual CPU interface</reg_component>
+    <reg_offset><hexnumber>0x0004</hexnumber></reg_offset>
+    <reg_instance>GICV_PMR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Non-secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>This register provides a virtual interrupt priority filter. Only virtual interrupts with a higher priority than the value in this register are signaled to the PE.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <note><para>Higher interrupt priority corresponds to a lower value of the Priority field.</para></note>
+      </purpose_text>
+      <purpose_text>
+        <para>This register corresponds to the physical CPU interface register <register_link state="ext" id="ext-gicc_pmr.xml">GICC_PMR</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC virtual CPU interface registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is available when the GIC implementation supports interrupt virtualization.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>The Priority field of this register is aliased to <register_link state="ext" id="ext-gich_vmcr.xml">GICH_VMCR</register_link>.VMPR, to enable state to be switched easily between virtual machines during context-switching.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICV_PMR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>31:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Priority</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before"><para>The priority mask level for the virtual CPU interface. If the priority of the interrupt is higher than the value indicated by this field, the interface signals the interrupt to the PE.</para>
+<para>If the GIC implementation supports fewer than 256 priority levels some bits might be RAZ/WI, as follows:</para>
+<list type="unordered">
+<listitem><content>For 128 supported levels, bit [0] = <binarynumber>0b0</binarynumber>.</content>
+</listitem><listitem><content>For 64 supported levels, bits [1:0] = <binarynumber>0b00</binarynumber>.</content>
+</listitem><listitem><content>For 32 supported levels, bits [2:0] = <binarynumber>0b000</binarynumber>.</content>
+</listitem><listitem><content>For 16 supported levels, bits [3:0] = <binarynumber>0b0000</binarynumber>.</content>
+</listitem></list>
+<para>For more information, see <xref browsertext="'Interrupt prioritization' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_interrupt_handling_and_prioritization.fm" linkend="CJHFJEBC"/>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_8" msb="31" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is used only when System register access is not enabled. When System register access is enabled:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>For AArch32 implementations, <register_link state="AArch32" id="AArch32-icc_pmr.xml">ICC_PMR</register_link> provides equivalent functionality.</content>
+</listitem><listitem><content>For AArch64 implementations, <register_link state="AArch64" id="AArch64-icc_pmr_el1.xml">ICC_PMR_EL1</register_link> provides equivalent functionality.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

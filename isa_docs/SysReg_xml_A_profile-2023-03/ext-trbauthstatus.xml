@@ -1,0 +1,303 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBAUTHSTATUS</reg_short_name>
+        
+        <reg_long_name>Authentication Status Register</reg_long_name>
+
+        <power_domain_text>TRBAUTHSTATUS is in the Core power domain</power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_TRBE_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>TRBE</reg_component>
+    <reg_offset><hexnumber>0xFB8</hexnumber></reg_offset>
+    <reg_instance>TRBAUTHSTATUS</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus() or !IsCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the state of the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> authentication interface for debug.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For additional information, see the CoreSight Architecture Specification.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBAUTHSTATUS is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRBAUTHSTATUS</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RTNID</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>27:26</rel_range>
+    <field_description order="before">
+      <para>Root non-invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RTID</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Root invasive debug.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has the same value as <register_link state="ext" id="ext-dbgauthstatus_el1.xml">DBGAUTHSTATUS_EL1</register_link>.RTID.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RLNID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Realm non-invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-13_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RLID</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>13:12</rel_range>
+    <field_description order="before">
+      <para>Realm invasive debug.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has the same value as <register_link state="ext" id="ext-dbgauthstatus_el1.xml">DBGAUTHSTATUS_EL1</register_link>.RLID.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SNID</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>7:6</rel_range>
+    <field_description order="before">
+      <para>Secure non-invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-5_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SID</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>5:4</rel_range>
+    <field_description order="before">
+      <para>Secure invasive debug.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has the same value as <register_link state="ext" id="ext-dbgauthstatus_el1.xml">DBGAUTHSTATUS_EL1</register_link>.SID.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSNID</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Non-secure non-invasive debug.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSID</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Non-secure invasive debug.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has the same value as <register_link state="ext" id="ext-dbgauthstatus_el1.xml">DBGAUTHSTATUS_EL1</register_link>.NSID.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_26" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_12" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_6" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-5_4" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

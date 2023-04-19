@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>AMEVCNTR1&lt;n&gt;_EL0</reg_short_name>
+        
+        <reg_long_name>Activity Monitors Event Counter Registers 1</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_AMUv1 is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>15</reg_array_end>
+         </reg_array>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-amevcntr1n.xml">AMEVCNTR1&lt;n&gt;</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-amevcntr1n.xml">AMEVCNTR1&lt;n&gt;</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides access to the auxiliary activity monitor event counters.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Activity Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>AMEVCNTR1&lt;n&gt;_EL0 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ACNT</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before"><para>Auxiliary activity monitor event counter n.</para>
+<para>Value of auxiliary activity monitor event counter n, where n is the number of this register and is a number from 0 to 15.</para>
+<para>If <xref browsertext="FEAT_AMUv1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.AMU"/> is implemented, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.AMVOFFEN is 1, <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.AMVOFFEN is 1, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} is not {1,1}, EL2 is implemented in the current Security state, and <register_link state="AArch64" id="AArch64-amcr_el0.xml">AMCR_EL0</register_link>.CG1RZ is 0, reads to these registers at EL0 or EL1 return (PCount&lt;63:0&gt; - <register_link state="AArch64" id="AArch64-amevcntvoff1n_el2.xml">AMEVCNTVOFF1&lt;n&gt;_EL2</register_link>&lt;63:0&gt;).</para>
+<para>PCount is the physical count returned when AMEVCNTR1&lt;n&gt;_EL0 is read from EL2 or EL3.</para></field_description>
+    <field_description order="after">
+      <para>If the counter is enabled, writes to this register have <arm-defined-word>UNPREDICTABLE</arm-defined-word> results.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="AMU">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="15"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If &lt;n&gt; is greater than or equal to the number of auxiliary activity monitor event counters, reads and writes of AMEVCNTR1&lt;n&gt;_EL0 are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <note><para><register_link state="AArch64" id="AArch64-amcgcr_el0.xml">AMCGCR_EL0</register_link>.CG1NC identifies the number of auxiliary activity monitor event counters.</para></note>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS AMEVCNTR1&lt;m&gt;_EL0" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-15</acc_array_range>
+                </acc_array>
+            <access_instruction>MRS &lt;Xt&gt;, AMEVCNTR1&lt;m&gt;_EL0</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b1101"/>
+                
+                <enc n="CRm" v="0b110:m[3]"/>
+                
+                <enc n="op2" v="m[2:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;0&gt;:op2&lt;2:0&gt;);
+
+if m &gt;= NUM_AMU_CG1_MONITORS then
+    UNDEFINED;
+elsif !IsG1ActivityMonitorImplemented(m) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif AMUSERENR_EL0.EN == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TAM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HAFGRTR_EL2.AMEVCNTR1&lt;m&gt;_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif AMCR_EL0.CG1RZ == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = AMEVCNTR1_EL0[m];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TAM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HAFGRTR_EL2.AMEVCNTR1&lt;m&gt;_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !IsHighestEL(PSTATE.EL) &amp;&amp; AMCR_EL0.CG1RZ == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = AMEVCNTR1_EL0[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TAM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TAM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !IsHighestEL(PSTATE.EL) &amp;&amp; AMCR_EL0.CG1RZ == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = AMEVCNTR1_EL0[m];
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = AMEVCNTR1_EL0[m];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister AMEVCNTR1&lt;m&gt;_EL0" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-15</acc_array_range>
+                </acc_array>
+            <access_instruction>MSR AMEVCNTR1&lt;m&gt;_EL0, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b1101"/>
+                
+                <enc n="CRm" v="0b110:m[3]"/>
+                
+                <enc n="op2" v="m[2:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;0&gt;:op2&lt;2:0&gt;);
+
+if m &gt;= NUM_AMU_CG1_MONITORS then
+    UNDEFINED;
+elsif !IsG1ActivityMonitorImplemented(m) then
+    UNDEFINED;
+elsif IsHighestEL(PSTATE.EL) then
+    AMEVCNTR1_EL0[m] = X[t, 64];
+else
+    UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

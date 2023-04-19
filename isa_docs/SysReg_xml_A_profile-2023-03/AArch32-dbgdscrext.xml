@@ -1,0 +1,893 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DBGDSCRext</reg_short_name>
+        
+        <reg_long_name>Debug Status and Control Register, External View</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mdscr_el1.xml">MDSCR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>15</mapped_from_startbit>
+    <mapped_from_endbit>15</mapped_from_endbit>
+    <mapped_to_startbit>15</mapped_to_startbit>
+    <mapped_to_endbit>15</mapped_to_endbit>
+    <mapped_from_rangeset output="15">
+      <range>
+        <msb>15</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="15">
+      <range>
+        <msb>15</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>12</mapped_from_startbit>
+    <mapped_from_endbit>12</mapped_from_endbit>
+    <mapped_to_startbit>12</mapped_to_startbit>
+    <mapped_to_endbit>12</mapped_to_endbit>
+    <mapped_from_rangeset output="12">
+      <range>
+        <msb>12</msb>
+        <lsb>12</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="12">
+      <range>
+        <msb>12</msb>
+        <lsb>12</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>5</mapped_from_startbit>
+    <mapped_from_endbit>2</mapped_from_endbit>
+    <mapped_to_startbit>5</mapped_to_startbit>
+    <mapped_to_endbit>2</mapped_to_endbit>
+    <mapped_from_rangeset output="5:2">
+      <range>
+        <msb>5</msb>
+        <lsb>2</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="5:2">
+      <range>
+        <msb>5</msb>
+        <lsb>2</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Main control register for the debug implementation.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is required in all implementations.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DBGDSCRext is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TFO</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trace Filter override. Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO.</para>
+    </field_description>
+    <field_description order="after"><para>When the OS Lock is unlocked, <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When the OS Lock is locked, <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_TRF is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXfull</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>DTRRX full. Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull.</para>
+<para>Arm deprecates use of this bit other than for save/restore. Use <register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link> to access the DTRRX full status.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXfull</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before"><para>DTRTX full. Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull.</para>
+<para>Arm deprecates use of this bit other than for save/restore. Use <register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link> to access the DTRTX full status.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXO</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, if bits [27,6] of the value written to DBGDSCRext are {1,0}, that is, the RXO bit is 1 and the ERR bit is 0, the PE sets <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.{RXO,ERR} to <arm-defined-word>UNKNOWN</arm-defined-word> values.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXU</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, if bits [26,6] of the value written to DBGDSCRext are {1,0}, that is, the TXU bit is 1 and the ERR bit is 0, the PE sets <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.{TXU,ERR} to <arm-defined-word>UNKNOWN</arm-defined-word> values.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTdis</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>23:22</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, this field is RO, and software must treat it as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this field is RW and holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis. Reads and writes of this field are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDA</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SC2</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_PCSRv8 is implemented, FEAT_VHE is implemented and FEAT_PCSRv8p2 is not implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before"><para>Non-secure status.</para>
+<para>Arm deprecates use of this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SPNIDdis</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Secure privileged profiling disabled status bit.</para>
+    </field_description>
+    <field_description order="after"><para>This field reads as 0 if any of the following applies, and reads as 1 otherwise:</para>
+<list type="unordered">
+<listitem><content><xref browsertext="FEAT_Debugv8p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.Debug"/> is not implemented and <function>ExternalSecureNoninvasiveDebugEnabled()</function> returns TRUE.</content>
+</listitem><listitem><content>EL3 is using AArch32 and the value of <register_link state="AArch32" id="AArch32-sdcr.xml">SDCR</register_link>.SPME is 1.</content>
+</listitem><listitem><content>EL3 is using AArch64 and the value of <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.SPME is 1.</content>
+</listitem></list>
+<para>Arm deprecates use of this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Profiling allowed in Secure privileged modes.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Profiling prohibited in Secure privileged modes.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SPIDdis</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Secure privileged AArch32 invasive self-hosted debug disabled status bit. The value of this bit depends on the value of <register_link state="AArch32" id="AArch32-sdcr.xml">SDCR</register_link>.SPD and the pseudocode function <function>AArch32.SelfHostedSecurePrivilegedInvasiveDebugEnabled()</function>.</para>
+    </field_description>
+    <field_description order="after"><para>This bit reads as 1 if any of the following is true and reads as 0 otherwise:</para>
+<list type="unordered">
+<listitem><content>EL3 is using AArch32 and <register_link state="AArch32" id="AArch32-sdcr.xml">SDCR</register_link>.SPD has the value <binarynumber>0b10</binarynumber>.</content>
+</listitem><listitem><content>EL3 is using AArch64 and <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.SPD32 has the value <binarynumber>0b10</binarynumber>.</content>
+</listitem><listitem><content>EL3 is using AArch32, <register_link state="AArch32" id="AArch32-sdcr.xml">SDCR</register_link>.SPD has the value <binarynumber>0b00</binarynumber>, and <function>AArch32.SelfHostedSecurePrivilegedInvasiveDebugEnabled()</function> returns FALSE.</content>
+</listitem><listitem><content>EL3 is using AArch64, <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.SPD32 has the value <binarynumber>0b00</binarynumber>, and <function>AArch32.SelfHostedSecurePrivilegedInvasiveDebugEnabled()</function> returns FALSE.</content>
+</listitem></list>
+<para>Arm deprecates use of this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Self-hosted debug enabled in Secure privileged AArch32 modes.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Self-hosted debug disabled in Secure privileged AArch32 modes.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MDBGen</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before">
+      <para>Monitor debug events enable. Enable Breakpoint, Watchpoint, and Vector Catch exceptions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Breakpoint, Watchpoint, and Vector Catch exceptions disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Breakpoint, Watchpoint, and Vector Catch exceptions enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HDE</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UDCCdis</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before">
+      <para>Traps EL0 accesses to the DCC registers to Undefined mode.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>All accesses to these registers are trapped, including LDC and STC accesses to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link> and <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link>, and MRRC accesses to <register_link state="AArch32" id="AArch32-dbgdsar.xml">DBGDSAR</register_link> and <register_link state="AArch32" id="AArch32-dbgdrar.xml">DBGDRAR</register_link>.</para>
+      </note>
+      <para>Traps of EL0 accesses to the <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link> are ignored in Debug state.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL0 accesses to the <register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link>, <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link>, <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>, <register_link state="AArch32" id="AArch32-dbgdidr.xml">DBGDIDR</register_link>, <register_link state="AArch32" id="AArch32-dbgdsar.xml">DBGDSAR</register_link>, and <register_link state="AArch32" id="AArch32-dbgdrar.xml">DBGDRAR</register_link> are trapped to Undefined mode.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>11:7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ERR</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When DBGOSLSR.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-5_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MOE</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>5:2</rel_range>
+    <field_description order="before">
+      <para>Method of Entry for debug exception. When a debug exception is taken to an Exception level using AArch32, this field is set to indicate the event that caused the exception:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Breakpoint.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>Software breakpoint (BKPT) instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>Vector catch.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1010</field_value>
+        <field_value_description>
+          <para>Watchpoint.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_22" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_7" msb="11" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_2" msb="5" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Individual fields within this register might have restricted accessibility when the OS Lock is unlocked, <register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>.OSLK == 0. See the field descriptions for more detail.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC DBGDSCRext" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGDSCRext;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGDSCRext;
+elsif PSTATE.EL == EL3 then
+    R[t] = DBGDSCRext;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR DBGDSCRext" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGDSCRext = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGDSCRext = R[t];
+elsif PSTATE.EL == EL3 then
+    DBGDSCRext = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

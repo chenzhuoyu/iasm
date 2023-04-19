@@ -1,0 +1,364 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CTR_EL0</reg_short_name>
+        
+        <reg_long_name>Cache Type Register</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-ctr.xml">CTR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the architecture of the caches.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CTR_EL0 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_38" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>63:38</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-37_32-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TminLine</field_name>
+    <field_msb>37</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before"><para>Tag minimum Line. Log<sub>2</sub> of the number of words covered by Allocation Tags in the smallest cache line of all caches which can contain Allocation tags that are controlled by the PE.</para>
+<note><list type="unordered"><listitem><content>For an implementation with cache lines containing 64 bytes of data and 4 Allocation Tags, this will be log<sub>2</sub>(64/4) = 4.</content></listitem><listitem><content>For an implementation with Allocations Tags in separate cache lines of 128 Allocation Tags per line, this will be log<sub>2</sub>(128*16/4) = 9.</content></listitem></list></note></field_description>
+    <fields_condition>When FEAT_MTE2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-37_32-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>37</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES1">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DIC</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Instruction cache invalidation requirements for data to instruction coherence.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instruction cache invalidation to the Point of Unification is required for data to instruction coherence.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Instruction cache invalidation to the Point of Unification is not required for data to instruction coherence.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDC</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Data cache clean requirements for instruction to data coherence. The meaning of this bit is:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Data cache clean to the Point of Unification is required for instruction to data coherence, unless CLIDR_EL1.LoC == <binarynumber>0b000</binarynumber> or (CLIDR_EL1.LoUIS == <binarynumber>0b000</binarynumber> &amp;&amp; CLIDR_EL1.LoUU == <binarynumber>0b000</binarynumber>).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Data cache clean to the Point of Unification is not required for instruction to data coherence.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CWG</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before"><para>Cache writeback granule. Log<sub>2</sub> of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified.</para>
+<para>A value of <binarynumber>0b0000</binarynumber> indicates that this register does not provide Cache writeback granule information and either:</para>
+<list type="unordered">
+<listitem><content>The architectural maximum of 512 words (2KB) must be assumed.</content>
+</listitem><listitem><content>The Cache writeback granule can be determined from maximum cache line size encoded in the Cache Size ID Registers.</content>
+</listitem></list>
+<para>Values greater than <binarynumber>0b1001</binarynumber> are reserved.</para>
+<para>Arm recommends that an implementation that does not support cache write-back implements this field as <binarynumber>0b0001</binarynumber>. This applies, for example, to an implementation that supports only write-through caches.</para></field_description>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ERG</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before"><para>Exclusives reservation granule, and, if FEAT_TME is implemented, transactional reservation granule. Log<sub>2</sub> of the number of words of the maximum size of the reservation granule for the Load-Exclusive and Store-Exclusive instructions, and, if FEAT_TME is implemented, for detecting transactional conflicts.</para>
+<para>A value of <binarynumber>0b0000</binarynumber> indicates that this register does not provide granule information and the architectural maximum of 512 words (2KB) must be assumed.</para>
+<para>Value <binarynumber>0b0001</binarynumber> and values greater than <binarynumber>0b1001</binarynumber> are reserved.</para></field_description>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DminLine</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Log<sub>2</sub> of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>L1Ip</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Level 1 instruction cache policy. Indicates the indexing and tagging policy for the L1 instruction cache. Possible values of this field are:</para>
+    </field_description>
+    <field_description order="after"><para>From Armv8, the value <binarynumber>0b01</binarynumber> is reserved.</para>
+<para>The value <binarynumber>0b00</binarynumber> is permitted only in an implementation that includes <xref browsertext="FEAT_VPIPT" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.PIPTV"/>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>VMID aware Physical Index, Physical tag (VPIPT).</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_VPIPT is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>ASID-tagged Virtual Index, Virtual Tag (AIVIVT).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Virtual Index, Physical Tag (VIPT).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Physical Index, Physical Tag (PIPT).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-13_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>13:4</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IminLine</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Log<sub>2</sub> of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_38" msb="63" lsb="38"/>
+  <fieldat id="fieldset_0-37_32-1" msb="37" lsb="32"/>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_4" msb="13" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS CTR_EL0" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, CTR_EL0</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SCTLR_EL1.UCT == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HCR_EL2.TID2 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.CTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCTLR_EL2.UCT == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID2 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.CTR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = CTR_EL0;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = CTR_EL0;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

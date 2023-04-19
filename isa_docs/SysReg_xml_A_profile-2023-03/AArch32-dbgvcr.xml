@@ -1,0 +1,881 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DBGVCR</reg_short_name>
+        
+        <reg_long_name>Debug Vector Catch Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-dbgvcr32_el2.xml">DBGVCR32_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls Vector Catch debug events.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is required in all implementations.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DBGVCR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When EL3 is implemented and EL3 is using AArch32</fields_condition>
+  <fields_instance>EL3 implemented and using AArch32</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSF</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSI</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSD</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSP</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSS</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before"><para>Supervisor Call (SVC) vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSU</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>25</rel_range>
+    <field_description order="before"><para>Undefined Instruction vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x04</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-24_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>24:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MF</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable in Monitor mode.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MI</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable in Monitor mode.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MD</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable in Monitor mode.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MP</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable in Monitor mode.</para>
+<para>The exception vector offset is <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MS</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before"><para>Secure Monitor Call (SMC) vector catch enable in Monitor mode.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SF</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SI</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SD</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SP</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SS</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before"><para>Supervisor Call (SVC) vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SU</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Undefined Instruction vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x04</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When EL3 is implemented and EL3 is using AArch64</fields_condition>
+  <fields_instance>EL3 implemented and using AArch64</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSF</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSI</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSD</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSP</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSS</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before"><para>Supervisor Call (SVC) vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSU</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>25</rel_range>
+    <field_description order="before"><para>Undefined Instruction vector catch enable in Non-secure state.</para>
+<para>The exception vector offset is <hexnumber>0x04</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-24_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>24:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SF</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SI</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SD</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SP</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SS</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before"><para>Supervisor Call (SVC) vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SU</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Undefined Instruction vector catch enable in Secure state.</para>
+<para>The exception vector offset is <hexnumber>0x04</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_2" length="32">
+  <fields_condition>When EL3 is not implemented</fields_condition>
+  <fields_instance>EL3 not implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_2-31_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>31:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>FIQ vector catch enable.</para>
+<para>The exception vector offset is <hexnumber>0x1C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>IRQ vector catch enable.</para>
+<para>The exception vector offset is <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>D</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before"><para>Data Abort exception vector catch enable.</para>
+<para>The exception vector offset is <hexnumber>0x10</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>P</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before"><para>Prefetch Abort vector catch enable.</para>
+<para>The exception vector offset <hexnumber>0x0C</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before"><para>Supervisor Call (SVC) vector catch enable.</para>
+<para>The exception vector offset is <hexnumber>0x08</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>U</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Undefined Instruction vector catch enable.</para>
+<para>The exception vector offset is <hexnumber>0x04</hexnumber>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When EL3 is implemented and EL3 is using AArch32</fields_condition>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_16" msb="24" lsb="16"/>
+  <fieldat id="fieldset_0-15_15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When EL3 is implemented and EL3 is using AArch64</fields_condition>
+  <fieldat id="fieldset_1-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_1-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_1-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_1-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_1-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_1-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_1-25_25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_1-24_8" msb="24" lsb="8"/>
+  <fieldat id="fieldset_1-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_1-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_1-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_1-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_1-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_1-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_1-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_1-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When EL3 is not implemented</fields_condition>
+  <fieldat id="fieldset_2-31_8" msb="31" lsb="8"/>
+  <fieldat id="fieldset_2-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_2-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_2-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_2-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_2-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_2-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_2-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_2-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC DBGVCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGVCR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGVCR;
+elsif PSTATE.EL == EL3 then
+    R[t] = DBGVCR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR DBGVCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGVCR = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        DBGVCR = R[t];
+elsif PSTATE.EL == EL3 then
+    DBGVCR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

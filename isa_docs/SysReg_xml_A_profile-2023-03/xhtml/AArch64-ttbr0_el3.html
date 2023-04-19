@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TTBR0_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TTBR0_EL3, Translation Table Base Register 0 (EL3)</h1><p>The TTBR0_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the base address of the translation table for the initial lookup for stage 1 of an address translation in the EL3 translation regime, and other information for this translation regime.</p>
+      <h2>Configuration</h2><p>This register is present only when EL3 is implemented. Otherwise, direct accesses to TTBR0_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>TTBR0_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When FEAT_D128 is implemented and TCR_EL3.D128 == 1:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_56">RES0</a></td><td class="lr" colspan="24"><a href="#fieldset_0-55_5">BADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="27"><a href="#fieldset_0-55_5">BADDR</a></td><td class="lr" colspan="2"><a href="#fieldset_0-4_3">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-2_1">SKL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">CnP</a></td></tr></tbody></table><h4 id="fieldset_0-63_56">Bits [63:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_5">BADDR, bits [55:5]</h4><div class="field"><ul>
+<li>Bits A[55:x] of the stage 1 translation table base address bits are in register bits[55:x].
+</li><li>Bits A[(x-1):0] of the stage 1 translation table base address are zero.
+</li></ul>
+<p>Address bit x is the minimum address bit required to align the translation table to the size of the table. x is calculated based on LOG2(StartTableSize), as described in VMSAv9-128. The smallest permitted value of x is 5.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_3">Bits [4:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_1">SKL, bits [2:1]</h4><div class="field"><p>Skip Level associated with translation table walks using <a href="AArch64-ttbr0_el3.html">TTBR0_EL3</a>.</p>
+<p>This determines the number of levels to be skipped from the regular start level of the stage 1 EL3 translation table walks using <a href="AArch64-ttbr0_el3.html">TTBR0_EL3</a>.</p><table class="valuetable"><tr><th>SKL</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Skip 0 level from the regular start level.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Skip 1 level from the regular start level.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Skip 2 levels from the regular start level.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Skip 3 levels from the regular start level.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">CnP, bit [0]</h4><div class="field">
+      <p>Common not Private, for stage 2 of the Secure EL1&amp;0 translation regime. In an implementation that includes <span class="xref">FEAT_TTCNP</span>, indicates whether each entry that is pointed to by VSTTBR_EL2 is a member of a common set that can be used by every PE in the Inner Shareable domain for which the value of VSTTBR_EL2.CnP is 1.</p>
+    <table class="valuetable"><tr><th>CnP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The translation table entries pointed to by VSTTBR_EL2 are permitted to differ from the entries for VSTTBR_EL2 for other PEs in the Inner Shareable domain. This is not affected by the value of the current VMID.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The translation table entries pointed to by VSTTBR_EL2 are the same as the translation table entries for every other PE in the Inner Shareable domain for which the value of VSTTBR_EL2.CnP is 1 and the VMID is the same as the current VMID.</p>
+        </td></tr></table><p>This bit is permitted to be cached in a TLB.</p>
+<div class="note"><span class="note-header">Note</span><p>If the value of VSTTBR_EL2.CnP bit is 1 on multiple PEs in the same Inner Shareable domain and those VSTTBR_EL2s do not point to the same translation table entries when using the current VMID, then the results of translations using VSTTBR_EL2 are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, see <span class="xref">'CONSTRAINED UNPREDICTABLE behaviors due to caching of control or data values'</span>.</p></div><p>When this register has an architecturally-defined reset value, this field resets to a value that is architecturally <span class="arm-defined-word">UNKNOWN</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When FEAT_D128 is not implemented or TCR_EL3.D128 == 0:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_1-63_48">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_1-47_1">BADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="31"><a href="#fieldset_1-47_1">BADDR</a></td><td class="lr" colspan="1"><a href="#fieldset_1-0_0-1">CnP</a></td></tr></tbody></table><h4 id="fieldset_1-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-47_1">BADDR, bits [47:1]</h4><div class="field"><ul>
+<li>Bits A[47:x] of the stage 1 translation table base address bits are in register bits[47:x].
+</li><li>Bits A[(x-1):0] of the stage 1 translation table base address are zero.
+</li></ul>
+<p>Address bit x is the minimum address bit required to align the translation table to the size of the table. The AArch64 Virtual Memory System Architecture chapter describes how x is calculated based on the value of <a href="AArch64-tcr_el3.html">TCR_EL3</a>.T0SZ, the translation stage, and the translation granule size.</p>
+<div class="note"><span class="note-header">Note</span><p>If an OA size of more than 48 bits is in use, and the translation table has fewer than eight entries, the table must be aligned to 64 bytes. Otherwise the translation table must be aligned to the size of the table.</p></div><p>If the value of <a href="AArch64-tcr_el3.html">TCR_EL3</a>.PS is not <span class="binarynumber">0b110</span>, then:</p>
+<ul>
+<li>Register bits[(x-1):1] are <span class="arm-defined-word">RES0</span>.
+</li><li>If the implementation supports 52-bit PAs and IPAs, then bits A[51:48] of the stage 1 translation table base address are <span class="binarynumber">0b0000</span>.
+</li></ul>
+<p>If <span class="xref">FEAT_LPA</span> is implemented and the value of <a href="AArch64-tcr_el3.html">TCR_EL3</a>.PS is <span class="binarynumber">0b110</span>, then:</p>
+<ul>
+<li>Bits A[51:48] of the stage 1 translation table base address bits are in register bits[5:2].
+</li><li>Register bit[1] is <span class="arm-defined-word">RES0</span>.
+</li><li>The smallest permitted value of x is 6.
+</li><li>When x&gt;6, register bits[(x-1):6] are <span class="arm-defined-word">RES0</span>.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p><a href="AArch64-tcr_el3.html">TCR_EL3</a>.PS==<span class="binarynumber">0b110</span> is permitted when:</p><ul><li><span class="xref">FEAT_LPA</span> is implemented and the 64KB translation granule is used.</li><li><span class="xref">FEAT_LPA2</span> is implemented and the 4KB or 16KB translation granule is used.</li></ul><p>When the value of <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>.PARange indicates that the implementation does not support a 52 bit PA size, if a translation table lookup uses this register when the Effective value of <a href="AArch64-tcr_el3.html">TCR_EL3</a>.PS is <span class="binarynumber">0b110</span> and the value of register bits[5:2] is nonzero, an Address size fault is generated.</p><p>When the value of <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>.PARange indicates that the implementation supports a 56 bit PA size, bits A[55:52] of the stage 1 translation table base address are zero.</p></div><p>If any register bit[47:1] that is defined as <span class="arm-defined-word">RES0</span> has the value 1 when a translation table walk is done using TTBR0_EL3, then the translation table base address might be misaligned, with effects that are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, and must be one of the following:</p>
+<ul>
+<li>Bits A[(x-1):0] of the stage 1 translation table base address are treated as if all the bits are zero. The value read back from the corresponding register bits is either the value written to the register or zero.
+</li><li>The result of the calculation of an address for a translation table walk using this register can be corrupted in those bits that are nonzero.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-0_0-1">CnP, bit [0]<span class="condition"><br/>When FEAT_TTCNP is implemented:
+                        </span></h4><div class="field">
+      <p>Common not Private. This bit indicates whether each entry that is pointed to by TTBR0_EL3 is a member of a common set that can be used by every PE in the Inner Shareable domain for which the value of TTBR0_EL3.CnP is 1.</p>
+    <table class="valuetable"><tr><th>CnP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The translation table entries pointed to by TTBR0_EL3, for the current translation regime, are permitted to differ from corresponding entries for TTBR0_EL3 for other PEs in the Inner Shareable domain. This is not affected by the value of TTBR0_EL3.CnP on those other PEs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The translation table entries pointed to by TTBR0_EL3 are the same as the translation table entries for every other PE in the Inner Shareable domain for which the value of TTBR0_EL3.CnP is 1 and the translation table entries are pointed to by TTBR0_EL3.</p>
+        </td></tr></table><p>This bit is permitted to be cached in a TLB.</p>
+<div class="note"><span class="note-header">Note</span><p>If the value of the TTBR0_EL3.CnP bit is 1 on multiple PEs in the same Inner Shareable domain and those TTBR0_EL3s do not point to the same translation table entries the results of translations using TTBR0_EL3 are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, see <span class="xref">'CONSTRAINED UNPREDICTABLE behaviors due to caching of control or data values'</span>.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing TTBR0_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, TTBR0_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0010</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = TTBR0_EL3;
+                </p><h4 class="assembler">MSR TTBR0_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0010</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    TTBR0_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

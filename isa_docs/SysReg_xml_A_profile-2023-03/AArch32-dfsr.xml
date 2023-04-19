@@ -1,0 +1,1075 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DFSR</reg_short_name>
+        
+        <reg_long_name>Data Fault Status Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-esr_el1.xml">ESR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds status information about the last data fault.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Exception and fault handling registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The current translation table format determines which format of the register is used.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DFSR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fields_instance>TTBCR.EAE==0</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>31:17</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FnV</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is valid only for a synchronous External abort other than a synchronous External abort on a translation table walk. It is <arm-defined-word>RES0</arm-defined-word> for all other Data Abort exceptions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-dfar.xml">DFAR</register_link> is valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-dfar.xml">DFAR</register_link> is not valid, and holds an <arm-defined-word>UNKNOWN</arm-defined-word> value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AET</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Asynchronous Error Type. When DFSC is <binarynumber>0b010001</binarynumber>, describes the PE error state after taking the SError interrupt exception. Possible values are:</para>
+    </field_description>
+    <field_description order="after"><para>This field is valid only if the DFSC code is <binarynumber>0b010001</binarynumber>. It is <arm-defined-word>RES0</arm-defined-word> for all other aborts.</para>
+<para>In the event of multiple errors taken as a single SError interrupt exception, the overall PE error state is reported.</para>
+<note><para>Software can use this information to determine what recovery might be possible. The recovery software must also examine any implemented fault records to determine the location and extent of the error.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Uncontainable (UC).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Unrecoverable state (UEU).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Restartable state (UEO).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Recoverable state (UER).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CM</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Cache maintenance fault. For synchronous faults, this bit indicates whether a cache maintenance instruction generated the fault.</para>
+    </field_description>
+    <field_description order="after"><para>On a synchronous Data Abort exception on a translation table walk, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<para>On an asynchronous fault, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Abort not caused by execution of a cache maintenance instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Abort caused by execution of a cache maintenance instruction, or on an address translation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ExT</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before"><para>External abort type. This bit can be used to provide an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> classification of External aborts.</para>
+<para>In an implementation that does not provide any classification of External aborts, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>For aborts other than External aborts this bit always returns 0.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WnR</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Write not Read bit. Indicates whether the abort was caused by a write or a read instruction.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For faults on the cache maintenance and address translation System instructions in the (coproc==<binarynumber>0b1111</binarynumber>) encoding space this bit always returns a value of 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Abort caused by a read instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Abort caused by a write instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FS</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10, 3:0</rel_range>
+    <field_description order="before">
+      <para>Fault status bits. Possible values of FS[4:0] are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>For more information about the lookup level associated with a fault, see <xref browsertext="'The level associated with MMU faults on a Short-descriptor translation table lookup'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="CACCBBHH"/>.</para>
+<para>The FS field is split as follows:</para>
+<list type="unordered">
+<listitem><content>FS[4] is DFSR[10].</content>
+</listitem><listitem><content>FS[3:0] is DFSR[3:0].</content>
+</listitem></list></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>10</field_msb>
+        <field_lsb>10</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>3</field_msb>
+        <field_lsb>0</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_values>
+      <field_value_name>FS</field_value_name>
+      <field_value_instance>
+        <field_value>0b00001</field_value>
+        <field_value_description>
+          <para>Alignment fault.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00010</field_value>
+        <field_value_description>
+          <para>Debug exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00011</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>Fault on instruction cache maintenance.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00101</field_value>
+        <field_value_description>
+          <para>Translation fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00110</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00111</field_value>
+        <field_value_description>
+          <para>Translation fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01000</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, not on translation table walk.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01001</field_value>
+        <field_value_description>
+          <para>Domain fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01011</field_value>
+        <field_value_description>
+          <para>Domain fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01100</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, on translation table walk, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01101</field_value>
+        <field_value_description>
+          <para>Permission fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01110</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, on translation table walk, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01111</field_value>
+        <field_value_description>
+          <para>Permission fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10000</field_value>
+        <field_value_description>
+          <para>TLB conflict abort.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10100</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> fault (Lockdown fault).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10101</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> fault (Unsupported Exclusive access fault).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10110</field_value>
+        <field_value_description>
+          <para>SError interrupt.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11000</field_value>
+        <field_value_description>
+          <para>SError interrupt, from a parity or ECC error on memory access.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11001</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access, not on translation table walk.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11100</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on translation table walk, level 1.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11110</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on translation table walk, level 2.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>On taking a Data Abort exception, this bit is set as follows:</para>
+    </field_description>
+    <field_description order="after">
+      <para>Hardware does not interpret this bit to determine the behavior of the memory system, and therefore software can set this bit to 0 or 1 without affecting operation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Using the Short-descriptor translation table formats.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Using the Long-descriptor translation table formats.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Domain</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before"><para>The domain of the fault address.</para>
+<para>Arm deprecates any use of this field, see <xref browsertext="'The Domain field in the DFSR'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="BEIBBDDD"/>.</para>
+<para>This field is <arm-defined-word>UNKNOWN</arm-defined-word> for certain faults where the DFSR is updated and reported using the Short-descriptor FSR encodings, see <xref browsertext="'Validity of Domain field on faults that update the DFSR when using the Short-descriptor encodings'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="BEIGFEFJ"/>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>FS[3:0]</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>10, 3:0</rel_range>
+    <field_description order="before"><para>This field is bits[3:0] of FS[4:0].</para>
+<para>See FS[4] for the field description.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fields_instance>TTBCR.EAE==1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>31:17</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FnV</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is valid only for a synchronous External abort other than a synchronous External abort on a translation table walk. It is <arm-defined-word>RES0</arm-defined-word> for all other Data Abort exceptions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-dfar.xml">DFAR</register_link> is valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-dfar.xml">DFAR</register_link> is not valid, and holds an <arm-defined-word>UNKNOWN</arm-defined-word> value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-15_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AET</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Asynchronous Error Type. When DFSC is <binarynumber>0b010001</binarynumber>, describes the PE error state after taking the SError interrupt exception. Possible values are:</para>
+    </field_description>
+    <field_description order="after"><para>This field is valid only if the DFSC code is <binarynumber>0b010001</binarynumber>. It is <arm-defined-word>RES0</arm-defined-word> for all other aborts.</para>
+<para>In the event of multiple errors taken as a single SError interrupt exception, the overall PE error state is reported.</para>
+<note><para>Software can use this information to determine what recovery might be possible. The recovery software must also examine any implemented fault records to determine the location and extent of the error.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Uncontainable (UC).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Unrecoverable state (UEU).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Restartable state (UEO).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Recoverable state (UER).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_1-15_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_1-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CM</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Cache maintenance fault. For synchronous faults, this bit indicates whether a cache maintenance instruction generated the fault.</para>
+    </field_description>
+    <field_description order="after"><para>On a synchronous Data Abort exception on a translation table walk, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<para>On an asynchronous fault, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Abort not caused by execution of a cache maintenance instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Abort caused by execution of a cache maintenance instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ExT</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before"><para>External abort type. This bit can be used to provide an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> classification of External aborts.</para>
+<para>In an implementation that does not provide any classification of External aborts, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>For aborts other than External aborts this bit always returns 0.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WnR</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Write not Read bit. Indicates whether the abort was caused by a write or a read instruction.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For faults on the cache maintenance and address translation System instructions in the (coproc==<binarynumber>0b1111</binarynumber>) encoding space this bit always returns a value of 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Abort caused by a read instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Abort caused by a write instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>On taking a Data Abort exception, this bit is set as follows:</para>
+    </field_description>
+    <field_description order="after">
+      <para>Hardware does not interpret this bit to determine the behavior of the memory system, and therefore software can set this bit to 0 or 1 without affecting operation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Using the Short-descriptor translation table formats.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Using the Long-descriptor translation table formats.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-8_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>8:6</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>STATUS</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Fault status bits. Possible values of this field are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>For more information about the lookup level associated with a fault, see <xref browsertext="'The level associated with MMU faults on a Long-descriptor translation table lookup'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="BEIEGEFF"/>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000000</field_value>
+        <field_value_description>
+          <para>Address size fault in translation table base register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000001</field_value>
+        <field_value_description>
+          <para>Address size fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000010</field_value>
+        <field_value_description>
+          <para>Address size fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000011</field_value>
+        <field_value_description>
+          <para>Address size fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000101</field_value>
+        <field_value_description>
+          <para>Translation fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000110</field_value>
+        <field_value_description>
+          <para>Translation fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000111</field_value>
+        <field_value_description>
+          <para>Translation fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001001</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001010</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001011</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001101</field_value>
+        <field_value_description>
+          <para>Permission fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001110</field_value>
+        <field_value_description>
+          <para>Permission fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001111</field_value>
+        <field_value_description>
+          <para>Permission fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010000</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, not on translation table walk.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010001</field_value>
+        <field_value_description>
+          <para>Asynchronous SError interrupt.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010101</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010110</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010111</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011000</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access, not on translation table walk.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011001</field_value>
+        <field_value_description>
+          <para>Asynchronous SError interrupt, from a parity or ECC error on memory access.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011101</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 1.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011110</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 2.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011111</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 3.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100001</field_value>
+        <field_value_description>
+          <para>Alignment fault.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100010</field_value>
+        <field_value_description>
+          <para>Debug exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110000</field_value>
+        <field_value_description>
+          <para>TLB conflict abort.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110100</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> fault (Lockdown).</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110101</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> fault (Unsupported Exclusive access).</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fieldat id="fieldset_0-31_17" msb="31" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_14-1" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10" label="FS[4]"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0" label="FS[3:0]"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fieldat id="fieldset_1-31_17" msb="31" lsb="17"/>
+  <fieldat id="fieldset_1-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_1-15_14-1" msb="15" lsb="14"/>
+  <fieldat id="fieldset_1-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_1-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_1-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_1-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_1-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_1-8_6" msb="8" lsb="6"/>
+  <fieldat id="fieldset_1-5_0" msb="5" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC DFSR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0101"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T5 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T5 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = DFSR_NS;
+    else
+        R[t] = DFSR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = DFSR_NS;
+    else
+        R[t] = DFSR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        R[t] = DFSR_S;
+    else
+        R[t] = DFSR_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR DFSR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0101"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T5 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T5 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        DFSR_NS = R[t];
+    else
+        DFSR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        DFSR_NS = R[t];
+    else
+        DFSR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        DFSR_S = R[t];
+    else
+        DFSR_NS = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

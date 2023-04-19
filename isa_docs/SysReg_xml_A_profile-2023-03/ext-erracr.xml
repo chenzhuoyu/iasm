@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ERRACR</reg_short_name>
+        
+        <reg_long_name>Access Configuration Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when (Root state is implemented or Secure state is implemented) and an implementation implements ERRACR</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>RAS</reg_component>
+    <reg_offset><hexnumber>0xE40</hexnumber></reg_offset>
+    <reg_instance>ERRACR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When (FEAT_RME is implemented and an access is not Root) or an access is Non-secure</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls visibility of error records.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ERRACR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>ERRACR</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> observation controls. Additional <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> access control bits.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAO">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAO.</para>
+    </field_description>
+    <field_description order="after"><para>Indicates ERRACR is present.</para>
+<para>This field reads-as-one.</para></field_description>
+  </field>
+  <field id="fieldset_0-30_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>30:6</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-5_4-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>RLRA</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Realm Restricted Access. Controls Realm access to error records and interrupt configuration registers in the error record group.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link>, if implemented) in the error record group. The effect on any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When Realm access to error records is disabled, a Realm read of <register_link state="ext" id="ext-errgsr.xml">ERRGSR</register_link> will return the error record status for the error records that cannot be accessed.</para>
+<para>When Realm access is fully or partially disabled, the effect on Realm accesses to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<note><para>Realm access to error records is enabled from reset.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Realm access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link> registers are RAZ/WI to Realm accesses.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Realm read access is enabled. Realm writes are ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Realm read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Error recovery">
+        <field_reset_number>3</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented and the error record group allows configuration of Realm register accesses</fields_condition>
+  </field>
+  <field id="fieldset_0-5_4-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-3_2-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>SRA</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Secure Restricted Access. Controls Secure access to error records and interrupt configuration registers in the error record group.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link>, if implemented) in the error record group. The effect on any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When Secure access to error records is disabled, a Secure read of <register_link state="ext" id="ext-errgsr.xml">ERRGSR</register_link> will return the error record status for the error records that cannot be accessed.</para>
+<para>When Secure access is fully or partially disabled, the effect on Secure accesses to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<note><para>Secure access to error records is enabled from reset.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Secure access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link> registers are RAZ/WI to Secure accesses.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Secure read access is enabled. Secure writes are ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Secure read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Error recovery">
+        <field_reset_number>3</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When Secure state is implemented, FEAT_RME is implemented and the error record group allows configuration of Secure register accesses</fields_condition>
+  </field>
+  <field id="fieldset_0-3_2-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NSRA</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Non-secure Restricted Access. Controls Non-secure access to error records and interrupt configuration registers in the error record group.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This control applies to all error record registers (ERR&lt;n&gt;*, including fault injection registers ERR&lt;n&gt;PFG* if implemented), and interrupt configuration registers (ERR&lt;irq&gt;CR&lt;m&gt; and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link>, if implemented) in the error record group. The effect on any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When Non-secure access to error records is disabled, a Non-secure read of <register_link state="ext" id="ext-errgsr.xml">ERRGSR</register_link> will return the error record status for the error records that cannot be accessed.</para>
+<para>When Non-secure access is fully or partially disabled, the effect on Non-secure accesses to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> registers is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<note><para>Non-secure access to error records is enabled from reset.</para></note><para>If <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented and ERRACR.{RLRA, SRA} are not implemented, then ERRACR.NSRA applies to all Security states other than Root.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-secure access is disabled. All error record, ERR&lt;irq&gt;CR&lt;m&gt;, and <register_link state="ext" id="ext-errirqsr.xml">ERRIRQSR</register_link> registers are RAZ/WI to Non-secure accesses.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Non-secure read access is enabled. Non-secure writes are ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Non-secure read/write access is allowed. If the error record group supports MSIs, generated MSIs are always Non-secure.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Error recovery">
+        <field_reset_number>3</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_6" msb="30" lsb="6"/>
+  <fieldat id="fieldset_0-5_4-1" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-3_2-1" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBTRG_EL1</reg_short_name>
+        
+        <reg_long_name>Trace Buffer Trigger Counter Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_TRBE is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-trbtrg_el1.xml">TRBTRG_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when FEAT_TRBE_EXT is implemented</mapped_to_condition>
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Specifies the number of bytes of trace to capture following a Detected Trigger before a Trigger Event.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBTRG_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>TRBTRG_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TRG</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Trigger count.</para>
+<para>Specifies the number of bytes of trace to capture following a Detected Trigger before a Trigger Event.</para>
+<para>TRBTRG_EL1 decrements by 1 for every byte of trace written to the trace buffer when all of the following are true:</para>
+<list type="unordered">
+<listitem><content>TRBTRG_EL1 is nonzero.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-trbsr_el1.xml">TRBSR_EL1</register_link>.TRG is 1.</content>
+</listitem></list>
+<para>The architecture places restrictions on the values that software can write to the counter.</para></field_description>
+    <field_description order="after">
+      <note>
+        <para>As a result of the restrictions an implementation might treat some of TRG[M:0] as <arm-defined-word>RES0</arm-defined-word>, where M is defined by <register_link state="AArch64" id="AArch64-trbidr_el1.xml">TRBIDR_EL1</register_link>.Align.</para>
+      </note>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>The PE might ignore a write to TRBTRG_EL1 if any of the following apply:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.E == <binarynumber>0b1</binarynumber>, and either <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is not implemented or the Trace Buffer Unit is using Self-hosted mode.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.XE == <binarynumber>0b1</binarynumber>, <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is implemented, and the Trace Buffer Unit is using External mode.</para>
+</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS TRBTRG_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, TRBTRG_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.TRBTRG_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBTRG_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBTRG_EL1;
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBTRG_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister TRBTRG_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR TRBTRG_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.TRBTRG_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBTRG_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBTRG_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBTRG_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

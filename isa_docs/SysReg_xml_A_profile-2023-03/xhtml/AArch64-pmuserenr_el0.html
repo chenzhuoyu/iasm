@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMUSERENR_EL0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMUSERENR_EL0, Performance Monitors User Enable Register</h1><p>The PMUSERENR_EL0 characteristics are:</p><h2>Purpose</h2>
+        <p>Enables or disables EL0 access to the Performance Monitors.</p>
+      <h2>Configuration</h2><p>AArch64 System register PMUSERENR_EL0 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-pmuserenr.html">PMUSERENR[31:0]</a>.</p><p>This register is present only when FEAT_PMUv3 is implemented. Otherwise, direct accesses to PMUSERENR_EL0 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>PMUSERENR_EL0 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_7">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="25"><a href="#fieldset_0-63_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">TID</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">IR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">UEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">ER</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">CR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">SW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">EN</a></td></tr></tbody></table><h4 id="fieldset_0-63_7">Bits [63:7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">TID, bit [6]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap ID registers. Traps EL0 read access to common event identification registers.</p>
+    <table class="valuetable"><tr><th>TID</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses to PMCEID&lt;n&gt;_EL0 and PMCEID&lt;n&gt; are not trapped by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL0 read accesses to PMCEID&lt;n&gt;_EL0 and PMCEID&lt;n&gt; are trapped.</p>
+        </td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> reads of <a href="AArch64-pmceid0_el0.html">PMCEID0_EL0</a> and <a href="AArch64-pmceid1_el0.html">PMCEID1_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRC</span> reads of <a href="AArch32-pmceid0.html">PMCEID0</a>, <a href="AArch32-pmceid1.html">PMCEID1</a>, <a href="AArch32-pmceid2.html">PMCEID2</a>, and <a href="AArch32-pmceid3.html">PMCEID3</a>.
+</li></ul>
+<p>When trapped, reads generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> reads are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> reads are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">IR, bit [5]<span class="condition"><br/>When FEAT_PMUv3_ICNTR is implemented:
+                        </span></h4><div class="field"><p>Instruction counter Read-only.</p>
+<p>When PMUSERENR_EL0.UEN is 1, EL0 reads of the instruction counter and EL0 writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> are enabled by PMUSERENR_EL0.UEN, unless trapped by another control, and PMUSERENR_EL0.IR controls the behavior of EL0 writes to the instruction counter and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.</p><table class="valuetable"><tr><th>IR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Permitted EL0 writes are not affected by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Permitted EL0 writes to the instruction counter and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.F0 are ignored.</p>
+        </td></tr></table><p>In AArch64 state, when PMUSERENR_EL0.UEN is 1, <span class="instruction">MSR</span> writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> and <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are affected by this control.</p>
+<p>Ignored writes are not trapped and do not generate an exception.</p>
+<p>This field is ignored by the PE when PMUSERENR_EL0.UEN == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">UEN, bit [4]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field">
+      <p>User Enable, with access controlled by <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>. Enables EL0 read/write access to PMU registers, other than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.</p>
+    <table class="valuetable"><tr><th>UEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, then EL0 accesses to <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> and <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are trapped.</p>
+<p>EL0 accesses to the other specified PMU registers, <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>, and <a href="AArch32-pmcr.html">PMCR</a> are trapped, unless enabled by PMUSERENR_EL0.{ER,CR,SW,EN}.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>EL0 accesses to the specified PMU registers are enabled, unless trapped by another control. The behavior of permitted accesses is controlled by PMUSERENR_EL0.{IR,ER,CR,SW} and <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>.</p>
+<p>EL0 accesses to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a> and <a href="AArch32-pmcr.html">PMCR</a> are trapped.</p></td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> or <span class="instruction">MSR</span> accesses to the following registers:<ul>
+<li><a href="AArch64-pmccfiltr_el0.html">PMCCFILTR_EL0</a>, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, <a href="AArch64-pmcntenclr_el0.html">PMCNTENCLR_EL0</a>, <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>, <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>, <a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-pmovsclr_el0.html">PMOVSCLR_EL0</a>, <a href="AArch64-pmovsset_el0.html">PMOVSSET_EL0</a>, <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>, <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>, and <a href="AArch64-pmxevtyper_el0.html">PMXEVTYPER_EL0</a>.
+</li><li>If <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> and <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a>.
+</li></ul>
+
+</li><li><span class="instruction">MRS</span> reads of <a href="AArch64-pmceid0_el0.html">PMCEID0_EL0</a> and <a href="AArch64-pmceid1_el0.html">PMCEID1_EL0</a>.
+</li><li><span class="instruction">MSR</span> writes to <a href="AArch64-pmswinc_el0.html">PMSWINC_EL0</a> and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> or <span class="instruction">MCR</span> accesses to <a href="AArch32-pmccfiltr.html">PMCCFILTR</a>, <a href="AArch32-pmccntr.html">PMCCNTR</a>, <a href="AArch32-pmcntenclr.html">PMCNTENCLR</a>, <a href="AArch32-pmcntenset.html">PMCNTENSET</a>, <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a>, <a href="AArch32-pmevtypern.html">PMEVTYPER&lt;n&gt;</a>, <a href="AArch32-pmovsr.html">PMOVSR</a>, <a href="AArch32-pmovsset.html">PMOVSSET</a>, <a href="AArch32-pmselr.html">PMSELR</a>, <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>, and <a href="AArch32-pmxevtyper.html">PMXEVTYPER</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRC</span> reads of <a href="AArch32-pmceid0.html">PMCEID0</a>, <a href="AArch32-pmceid1.html">PMCEID1</a>, <a href="AArch32-pmceid2.html">PMCEID2</a>, and <a href="AArch32-pmceid3.html">PMCEID3</a>.</p>
+
+</li><li>
+<p><span class="instruction">MCR</span> writes to <a href="AArch32-pmswinc.html">PMSWINC</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRRC</span> or <span class="instruction">MCRR</span> accesses to <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li></ul>
+<p>When trapped, reads and writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li><li>AArch32 <span class="instruction">MRRC</span> and <span class="instruction">MCRR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x04</span>.
+</li></ul>
+<p>This field is ignored by the PE and treated as zero when EL1 is using AArch32.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">ER, bit [3]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field"><p>Event counters Read enable or Read-only.</p>
+<p>When PMUSERENR_EL0.{UEN,EN} is {0,0}, PMUSERENR_EL0.ER enables EL0 reads of the event counters and EL0 reads and writes of the select register.</p>
+<p>When PMUSERENR_EL0.UEN is 1, EL0 reads of the event counters and EL0 writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> are enabled by PMUSERENR_EL0.UEN, unless trapped by another control, and PMUSERENR_EL0.ER controls the behavior of EL0 writes to the event counters and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.</p><table class="valuetable"><tr><th>ER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 reads of the event counters and EL0 reads and writes of the select register are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes are not affected by this mechanism.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 reads of the event counters and EL0 reads and writes of the select register are enabled, unless trapped by another control.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes to the event counters and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.P[30:0] are ignored.</p></td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li>When PMUSERENR_EL0.{UEN,EN} is {0,0}:<ul>
+<li><span class="instruction">MRS</span> reads of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> and <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>.
+</li><li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>.
+</li></ul>
+
+</li><li>When PMUSERENR_EL0.UEN is 1, <span class="instruction">MSR</span> writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>, <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> and <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p>When PMUSERENR_EL0.{UEN,EN} is {0,0}:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> reads of <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a> and <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses to <a href="AArch32-pmselr.html">PMSELR</a>.</p>
+
+</li></ul>
+
+</li><li>
+<p>When PMUSERENR_EL0.UEN is 1, <span class="instruction">MCR</span> writes to <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a> and <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>.</p>
+
+</li></ul>
+<p>When disabled, reads and writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li></ul>
+<p>Ignored writes are not trapped and do not generate an exception.</p>
+<p>This field is ignored by the PE when PMUSERENR_EL0.{UEN,EN} == {0,1}.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Event counters Read enable.</p>
+<p>When PMUSERENR_EL0.EN is 0, PMUSERENR_EL0.ER enables EL0 reads of the event counters and EL0 reads and writes of the select register.</p><table class="valuetable"><tr><th>ER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL0 reads of the event counters and EL0 reads and writes of the select register are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL0 reads of the event counters and EL0 reads and writes of the select register are enabled, unless trapped by another control.</p>
+        </td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> reads of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> and <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>.
+</li><li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> reads of <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a> and <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses to <a href="AArch32-pmselr.html">PMSELR</a>.</p>
+
+</li></ul>
+<p>When disabled, reads and writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li></ul>
+<p>This field is ignored by the PE when PMUSERENR_EL0.EN == 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-1">CR, bit [2]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field"><p>Cycle counter Read enable or Read-only.</p>
+<p>When PMUSERENR_EL0.{UEN,EN} is {0,0}, PMUSERENR_EL0.CR enables EL0 reads of the cycle counter.</p>
+<p>When PMUSERENR_EL0.UEN is 1, EL0 reads of the cycle counter and EL0 writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> are enabled by PMUSERENR_EL0.UEN, unless trapped by another control, and PMUSERENR_EL0.CR controls the behavior of EL0 writes to the cycle counter and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.</p><table class="valuetable"><tr><th>CR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 reads of the cycle counter are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes are not affected by this mechanism.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 reads of the cycle counter are enabled, unless trapped by another control.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes to the cycle counter and <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.C are ignored.</p></td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li>When PMUSERENR_EL0.{UEN,EN} is {0,0}, <span class="instruction">MRS</span> reads of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li><li>When PMUSERENR_EL0.UEN is 1, <span class="instruction">MSR</span> writes to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> and <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p>When PMUSERENR_EL0.{UEN,EN} is {0,0}:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> reads of <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRRC</span> reads of <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li></ul>
+
+</li><li>
+<p>When PMUSERENR_EL0.UEN is 1:</p>
+<ul>
+<li>
+<p><span class="instruction">MCR</span> writes to <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li><li>
+<p><span class="instruction">MCRR</span> writes to <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li></ul>
+
+</li></ul>
+<p>When disabled, reads generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> reads are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> reads are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li><li>AArch32 <span class="instruction">MRRC</span> reads are reported using EC syndrome value <span class="hexnumber">0x04</span>.
+</li></ul>
+<p>Ignored writes are not trapped and do not generate an exception.</p>
+<p>This field is ignored by the PE when PMUSERENR_EL0.{UEN,EN} == {0,1}.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Cycle counter Read enable.</p>
+<p>When PMUSERENR_EL0.EN is 0, PMUSERENR_EL0.CR enables EL0 reads of the cycle counter.</p><table class="valuetable"><tr><th>CR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL0 reads of the cycle counter are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL0 reads of the cycle counter are enabled, unless trapped by another control.</p>
+        </td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> reads of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> reads of <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRRC</span> reads of <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li></ul>
+<p>When disabled, reads generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> reads are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> reads are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li><li>AArch32 <span class="instruction">MRRC</span> reads are reported using EC syndrome value <span class="hexnumber">0x04</span>.
+</li></ul>
+<p>This field is ignored by the PE when PMUSERENR_EL0.EN == 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1-1">SW, bit [1]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field"><p>Software increment register Write enable.</p>
+<p>When PMUSERENR_EL0.UEN is 0, PMUSERENR_EL0.SW enables EL0 writes to the Software increment register.</p>
+<p>When PMUSERENR_EL0.UEN is 1, EL0 writes to the Software increment register are enabled by PMUSERENR_EL0.UEN, unless trapped by another control, and PMUSERENR_EL0.SW controls the behavior of EL0 writes to the Software increment register.</p><table class="valuetable"><tr><th>SW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 writes to the Software increment register are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes are not affected by this mechanism.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PMUSERENR_EL0.UEN == 0, EL0 writes to the Software increment register are enabled, unless trapped by another control.</p>
+<p>When PMUSERENR_EL0.UEN == 1, permitted EL0 writes to the Software increment register ignore the value of <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>.</p></td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MSR</span> writes to <a href="AArch64-pmswinc_el0.html">PMSWINC_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MCR</span> writes to <a href="AArch32-pmswinc.html">PMSWINC</a>.
+</li></ul>
+<p>When disabled, writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MSR</span> writes are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MCR</span> writes are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li></ul>
+<p>This field is ignored by the PE when PMUSERENR_EL0.{UEN,EN} == {0,1}.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Software increment register Write enable.</p>
+<p>When PMUSERENR_EL0.EN is 0, PMUSERENR_EL0.SW enables EL0 writes to the Software increment register.</p><table class="valuetable"><tr><th>SW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL0 writes to the Software increment register are disabled, unless enabled by PMUSERENR_EL0.EN.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL0 writes to the Software increment register are enabled, unless trapped by another control.</p>
+        </td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MSR</span> writes to <a href="AArch64-pmswinc_el0.html">PMSWINC_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MCR</span> writes to <a href="AArch32-pmswinc.html">PMSWINC</a>.
+</li></ul>
+<p>When disabled, writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MSR</span> writes are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MCR</span> writes are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li></ul>
+<p>This field is ignored by the PE when PMUSERENR_EL0.EN == 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">EN, bit [0]</h4><div class="field"><p>Enable.</p>
+<p>Enables EL0 read/write access to PMU registers, other than the instruction counter.</p><table class="valuetable"><tr><th>EN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>EL0 accesses to the specified PMU System registers are trapped, unless enabled by PMUSERENR_EL0.{UEN,ER,CR,SW}.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL0 accesses to the specified PMU System registers are enabled, unless trapped by another control.</p>
+        </td></tr></table><p>In AArch64 state, the register accesses affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> or <span class="instruction">MSR</span> accesses to <a href="AArch64-pmccfiltr_el0.html">PMCCFILTR_EL0</a>, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, <a href="AArch64-pmcntenclr_el0.html">PMCNTENCLR_EL0</a>, <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>, <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>, <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>, <a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-pmovsclr_el0.html">PMOVSCLR_EL0</a>, <a href="AArch64-pmovsset_el0.html">PMOVSSET_EL0</a>, <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>, <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>, and <a href="AArch64-pmxevtyper_el0.html">PMXEVTYPER_EL0</a>.
+</li><li><span class="instruction">MRS</span> reads of <a href="AArch64-pmceid0_el0.html">PMCEID0_EL0</a> and <a href="AArch64-pmceid1_el0.html">PMCEID1_EL0</a>.
+</li><li><span class="instruction">MSR</span> writes to the following registers:<ul>
+<li><a href="AArch64-pmswinc_el0.html">PMSWINC_EL0</a>.
+</li><li>If <span class="xref">FEAT_PMUv3p9</span> is implemented, <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.
+</li></ul>
+
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>When <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, this field does not affect <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> and <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a>.</p></div><p>In AArch32 state, the register accesses affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> or <span class="instruction">MCR</span> accesses to <a href="AArch32-pmccfiltr.html">PMCCFILTR</a>, <a href="AArch32-pmccntr.html">PMCCNTR</a>, <a href="AArch32-pmcntenclr.html">PMCNTENCLR</a>, <a href="AArch32-pmcntenset.html">PMCNTENSET</a>, <a href="AArch32-pmcr.html">PMCR</a>, <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a>, <a href="AArch32-pmevtypern.html">PMEVTYPER&lt;n&gt;</a>, <a href="AArch32-pmovsr.html">PMOVSR</a>, <a href="AArch32-pmovsset.html">PMOVSSET</a>, <a href="AArch32-pmselr.html">PMSELR</a>, <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>, and <a href="AArch32-pmxevtyper.html">PMXEVTYPER</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRC</span> reads of the following registers:</p>
+<ul>
+<li>
+<p><a href="AArch32-pmceid0.html">PMCEID0</a> and <a href="AArch32-pmceid1.html">PMCEID1</a>.</p>
+
+</li><li>
+<p>If <span class="xref">FEAT_PMUv3p1</span> is implemented, <a href="AArch32-pmceid2.html">PMCEID2</a> and <a href="AArch32-pmceid3.html">PMCEID3</a>.</p>
+
+</li></ul>
+
+</li><li>
+<p><span class="instruction">MCR</span> writes to <a href="AArch32-pmswinc.html">PMSWINC</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRRC</span> or <span class="instruction">MCRR</span> accesses to <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li></ul>
+<p>When trapped, reads and writes generate an exception to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, and:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>AArch32 <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x03</span>.
+</li><li>AArch32 <span class="instruction">MRRC</span> and <span class="instruction">MCRR</span> accesses are reported using EC syndrome value <span class="hexnumber">0x04</span>.
+</li></ul>
+<p>This field is ignored by the PE when <span class="xref">FEAT_PMUv3p9</span> is implemented and PMUSERENR_EL0.UEN == 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing PMUSERENR_EL0</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, PMUSERENR_EL0</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b011</td><td>0b1001</td><td>0b1110</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMUSERENR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMUSERENR_EL0;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMUSERENR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMUSERENR_EL0;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMUSERENR_EL0;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMUSERENR_EL0;
+                </p><h4 class="assembler">MSR PMUSERENR_EL0, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b011</td><td>0b1001</td><td>0b1110</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMUSERENR_EL0 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMUSERENR_EL0 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMUSERENR_EL0 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMUSERENR_EL0 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

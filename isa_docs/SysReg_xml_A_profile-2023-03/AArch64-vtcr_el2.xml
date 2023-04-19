@@ -1,0 +1,1408 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>VTCR_EL2</reg_short_name>
+        
+        <reg_long_name>Virtualization Translation Control Register</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-vtcr.xml">VTCR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The control register for stage 2 of the EL1&amp;0 translation regime.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If EL2 is not implemented, this register is <arm-defined-word>RES0</arm-defined-word> from EL3.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>This register has no effect if EL2 is not enabled in the current Security state.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>VTCR_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>IsProfile(PROFILE_A)</fields_instance>
+  <text_before_fields>
+    <para>Unless stated otherwise, any of the bits in VTCR_EL2 are permitted to be cached in a TLB.</para>
+  </text_before_fields>
+  <field id="fieldset_0-63_45" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>63:45</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-44_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HAFT</field_name>
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Hardware managed Access Flag for Table descriptors.</para>
+<para>Enables the Hardware managed Access Flag for Table descriptors.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Hardware managed Access Flag for Table descriptors is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Hardware managed Access Flag for Table descriptors is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HAFT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-44_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-43_42" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>43:42</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-41_41-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TL0</field_name>
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Control bit to check for presence of MMU TopLevel0 permission attribute.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This bit does not have any effect on stage 2 translations.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Enables MMU TopLevel0 permission attribute check for TTBR0_EL1 and TTBR1_EL1 translations.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-41_41-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-40_40-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>GCSH</field_name>
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Assured stage 1 translations for Guarded control stacks. Enforces use of the AssuredOnly attribute in stage 2 for the memory accessed by privileged Guarded control stack data accesses.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is permitted to be cached in a TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For the memory accessed by privileged Guarded control stack data accesses, the AssuredOnly attribute in stage 2 is not required to be set.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>For the memory accessed by privileged Guarded control stack data accesses, the AssuredOnly attribute in stage 2 is required to be set.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented and FEAT_GCS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-40_40-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-39_39" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>39</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-38_38-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>D128</field_name>
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables VMSAv9-128 translation system for stage 2 translation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Translation system follows VMSA-64 translation process.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Translation system follows VMSAv9-128 translation process.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_D128 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-38_38-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-37_37-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>S2POE</field_name>
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable Permission Overlay. Enables permission overlay in stage 2 Permission model.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is not permitted to be cached in a TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Overlay disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Overaly enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S2POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-37_37-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-36_36-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>S2PIE</field_name>
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Select Permission Model. Enables usage of permission indirection in stage 2 Permission model.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is <arm-defined-word>RES1</arm-defined-word> when VTCR_EL2.D128 is set.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Direct permission model.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Indirect permission model.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S2PIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-36_36-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-35_35-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TL1</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Control bit to check for presence of MMU TopLevel1 permission attribute.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This bit does not have any effect on stage 2 translations.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Enables MMU TopLevel1 permission attribute check for TTBR0_EL1 and TTBR1_EL1 translations.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-35_35-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AssuredOnly</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>AssuredOnly attribute enable for VMSAv8-64. Configures use of bit[58] of the stage 2 translation table Block or Page descriptor.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is <arm-defined-word>RES0</arm-defined-word> when <register_link state="AArch64" id="AArch64-vtcr_el2.xml">VTCR_EL2</register_link>.D128 is 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bit[58] of each stage 2 translation Block or Page descriptor does not indicate AssuredOnly attribute.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bit[58] of each stage 2 translation Block or Page descriptor indicates AssuredOnly attribute.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-33_33-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SL2</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Starting level of the stage 2 translation lookup controlled by VTCR_EL2.</para>
+<para>If VTCR_EL2.DS == 1, then VTCR_EL2.SL2, in combination with VTCR_EL2.SL0, gives encodings for the stage 2 translation table walk initial lookup level.</para>
+<para>If VTCR_EL2.DS == 0, then VTCR_EL2.SL2 is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>If the translation granule size is not 4KB, then this field is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LPA2 is implemented and (FEAT_D128 is not implemented or VTCR_EL2.D128 == 0)</fields_condition>
+  </field>
+  <field id="fieldset_0-33_33-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-32_32-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DS</field_name>
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>This field affects whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is <arm-defined-word>RES0</arm-defined-word> for a 64KB translation granule.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Bits[49:48] of translation descriptors are <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>Bits[9:8] in Block and Page descriptors encode shareability information in the SH[1:0] field. Bits[9:8] in Table descriptors are ignored by hardware.</para>
+<para>The minimum value of VTCR_EL2.T0SZ is 16. Any memory access using a smaller value generates a stage 2 level 0 translation table fault.</para>
+<para>The minimum value of <register_link state="AArch64" id="AArch64-vstcr_el2.xml">VSTCR_EL2</register_link>.T0SZ is 16. Any memory access using a smaller value generates a stage 2 level 0 translation table fault.</para>
+<para>Output address[51:48] is 0000.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Bits[49:48] of translation descriptors hold output address[49:48].</para>
+<para>Bits[9:8] in translation descriptors hold output address[51:50].</para>
+<para>The shareability information of Block and Page descriptors for cacheable locations is determined by VTCR_EL2.SH0.</para>
+<para>The minimum value of VTCR_EL2.T0SZ is 12. Any memory access using a smaller value generates a stage 2 level 0 translation table fault.</para>
+<para>The minimum value of <register_link state="AArch64" id="AArch64-vstcr_el2.xml">VSTCR_EL2</register_link>.T0SZ is 12. Any memory access using a smaller value generates a stage 2 level 0 translation table fault.</para>
+<note><para>As <xref browsertext="FEAT_LPA" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.LVAandPA"/> must be implemented if VTCR_EL2.DS == 1, the minimum values of VTCR_EL2.T0SZ and <register_link state="AArch64" id="AArch64-vstcr_el2.xml">VSTCR_EL2</register_link>.T0SZ are 12, as determined by that extension.</para></note><para>For the TLBI range instructions affecting IPA, the format of the argument is changed so that bits[36:0] hold BaseADDR[52:16]. For the 4KB translation granule, bits[15:12] of BaseADDR are treated as 0000. For the 16KB translation granule, bits[15:14] of BaseADDR are treated as 00.</para>
+<note><para>This forces alignment of the ranges used by the TLBI range instructions.</para></note></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LPA2 is implemented and (FEAT_D128 is not implemented or VTCR_EL2.D128 == 0)</fields_condition>
+  </field>
+  <field id="fieldset_0-32_32-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES1">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSA</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure stage 2 translation output address space for the Secure EL1&amp;0 translation regime.</para>
+    </field_description>
+    <field_description order="after"><para>This bit behaves as 1 for all purposes other than reading back the value of the bit when one of the following is true:</para>
+<list type="unordered">
+<listitem><content>The value of VTCR_EL2.NSW is 1.</content>
+</listitem><listitem><content>The value of <register_link state="AArch64" id="AArch64-vstcr_el2.xml">VSTCR_EL2</register_link>.SA is 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>All stage 2 translations for the Non-secure IPA space of the Secure EL1&amp;0 translation regime access the Secure PA space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All stage 2 translations for the Non-secure IPA space of the Secure EL1&amp;0 translation regime access the Non-secure PA space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SEL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSW</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure stage 2 translation table address space for the Secure EL1&amp;0 translation regime.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>All stage 2 translation table walks for the Non-secure IPA space of the Secure EL1&amp;0 translation regime are to the Secure PA space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All stage 2 translation table walks for the Non-secure IPA space of the Secure EL1&amp;0 translation regime are to the Non-secure PA space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SEL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU62</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[62] of the stage 2 translation table Block or Page entry.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bit[62] of each stage 2 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bit[62] of each stage 2 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU61</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[61] of the stage 2 translation table Block or Page entry.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bit[61] of each stage 2 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bit[61] of each stage 2 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU60</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[60] of the stage 2 translation table Block or Page entry.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bit[60] of each stage 2 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bit[60] of each stage 2 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-25_25-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HWU59</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Use. Indicates <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> hardware use of bit[59] of the stage 2 translation table Block or Page entry.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Bit[59] of each stage 2 translation table Block or Page entry cannot be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Bit[59] of each stage 2 translation table Block or Page entry can be used by hardware for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> purpose.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HPDS2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-25_25-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-24_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>24:23</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HD</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware management of dirty state in stage 2 translations when EL2 is enabled in the current Security state.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Stage 2 hardware management of dirty state disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Stage 2 hardware management of dirty state enabled, only if the VTCR_EL2.HA bit is also set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HAFDBS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HA</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hardware Access flag update in stage 2 translations when EL2 is enabled in the current Security state.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Stage 2 Access flag update disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Stage 2 Access flag update enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HAFDBS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>VS</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>VMID Size.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>8-bit VMID. The upper 8 bits of <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link> are ignored by the hardware, and treated as if they are all zeros, for every purpose except when reading back the register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>16-bit VMID. The upper 8 bits of <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link> are used for allocation and matching in the TLB.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_VMID16 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PS</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before">
+      <para>Physical address Size for the second stage of translation.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The reserved values behave in the same way as the <binarynumber>0b101</binarynumber> or <binarynumber>0b110</binarynumber> encoding, but software must not rely on this property as the behavior of the reserved values might change in a future revision of the architecture.</para>
+<para>If the translation granule is not 64KB and <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is not implemented, the value <binarynumber>0b110</binarynumber> is treated as reserved.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether an implementation that does not implement <xref browsertext="FEAT_LPA" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.LVAandPA"/> supports setting the value of <binarynumber>0b110</binarynumber> for the 64KB translation granule size or whether setting this value behaves as the <binarynumber>0b101</binarynumber> encoding.</para>
+<para>In an implementation that supports 52-bit PAs, if the value of this field is not <binarynumber>0b110</binarynumber> or a value treated as <binarynumber>0b110</binarynumber>, then bits[51:48] of every translation table base address for the stage of translation controlled by VTCR_EL2 are <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>32 bits, 4GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>36 bits, 64GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>40 bits, 1TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>42 bits, 4TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>44 bits, 16TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>48 bits, 256TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>52 bits, 4PB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>56 bits, 64PB.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_D128 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TG0</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Granule size for the <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.</para>
+    </field_description>
+    <field_description order="after"><para>Other values are reserved.</para>
+<para>If <xref browsertext="FEAT_GTG" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.GTG"/> is implemented, <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>.{TGran4_2, TGran16_2, TGran64_2} indicate which granule sizes are supported for stage 2 translation.</para>
+<para>If <xref browsertext="FEAT_GTG" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.GTG"/> is not implemented, <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>.{TGran4, TGran16, TGran64} indicate which granule sizes are supported.</para>
+<para>If the value is programmed to either a reserved value or a size that has not been implemented, then the hardware will treat the field as if it has been programmed to an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> choice of the sizes that has been implemented for all purposes other than the value read back from this register.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the value read back is the value programmed or the value that corresponds to the size chosen.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>4KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>64KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>16KB.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-13_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH0</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>13:12</rel_range>
+    <field_description order="before">
+      <para>Shareability attribute for memory associated with translation table walks using <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link> or <register_link state="AArch64" id="AArch64-vsttbr_el2.xml">VSTTBR_EL2</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ORGN0</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Outer cacheability attribute for memory associated with translation table walks using <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link> or <register_link state="AArch64" id="AArch64-vsttbr_el2.xml">VSTTBR_EL2</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRGN0</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Inner cacheability attribute for memory associated with translation table walks using <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link> or <register_link state="AArch64" id="AArch64-vsttbr_el2.xml">VSTTBR_EL2</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SL0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Starting level of the stage 2 translation lookup, controlled by VTCR_EL2. The meaning of this field depends on the value of VTCR_EL2.TG0.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If this field is programmed to a value that is not consistent with the programming of VTCR_EL2.T0SZ, then a stage 2 level 0 Translation fault is generated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description><para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule):</para>
+<list type="unordered">
+<listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is not implemented, start at level 2.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and VTCR_EL2.SL2 is <binarynumber>0b0</binarynumber>, start at level 2.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and VTCR_EL2.SL2 is <binarynumber>0b1</binarynumber>, start at level -1.</para>
+</content>
+</listitem></list>
+<para>If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description><para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule):</para>
+<list type="unordered">
+<listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is not implemented, start at level 1.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and VTCR_EL2.SL2 is <binarynumber>0b0</binarynumber>, start at level 1.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, the combination of VTCR_EL2.SL0 == 01 and VTCR_EL2.SL2 == 1 is reserved.</para>
+</content>
+</listitem></list>
+<para>If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 2.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description><para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule):</para>
+<list type="unordered">
+<listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is not implemented, start at level 0.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and VTCR_EL2.SL2 is <binarynumber>0b0</binarynumber>, start at level 0.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, the combination of VTCR_EL2.SL0 == 10 and VTCR_EL2.SL2 == 1 is reserved.</para>
+</content>
+</listitem></list>
+<para>If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 1.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description><para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule):</para>
+<list type="unordered">
+<listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is not implemented, start at level 3.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and VTCR_EL2.SL2 is <binarynumber>0b0</binarynumber>, start at level 3.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, the combination of VTCR_EL2.SL0 == 11 and VTCR_EL2.SL2 == 1 is reserved.</para>
+</content>
+</listitem></list>
+<para>If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) and <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, start at level 0.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TTST is implemented and (FEAT_D128 is not implemented or VTCR_EL2.D128 == 0)</fields_condition>
+  </field>
+  <field id="fieldset_0-7_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SL0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Starting level of the stage 2 translation lookup, controlled by VTCR_EL2. The meaning of this field depends on the value of VTCR_EL2.TG0.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved. If this field is programmed to a reserved value, or to a value that is not consistent with the programming of VTCR_EL2.T0SZ, then a stage 2 level 0 Translation fault is generated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule), start at level 2. If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule), start at level 1. If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>If VTCR_EL2.TG0 is <binarynumber>0b00</binarynumber> (4KB granule), start at level 0. If VTCR_EL2.TG0 is <binarynumber>0b10</binarynumber> (16KB granule) or <binarynumber>0b01</binarynumber> (64KB granule), start at level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TTST is not implemented and (FEAT_D128 is not implemented or VTCR_EL2.D128 == 0)</fields_condition>
+  </field>
+  <field id="fieldset_0-7_6-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>T0SZ</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before"><para>The size offset of the memory region addressed by <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>. The region size is 2<sup>(64-T0SZ)</sup> bytes.</para>
+<para>The maximum and minimum possible values for T0SZ depend on the level of translation table and the memory translation granule size, as described in <xref browsertext="'The AArch64 Virtual Memory System Architecture'" filename="D_the_aarch64_virtual_memory_system_architecture" linkend="CACIIIJC"/>.</para>
+<para>If this field is programmed to a value that is not consistent with the programming of SL0, then a stage 2 level 0 Translation fault is generated.</para>
+<note><para>For the 4KB translation granule, if <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and this field is less than 16, the translation table walk begins with a level -1 initial lookup.</para><para>For the 16KB translation granule, if <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented and this field is less than 17, the translation table walk begins with a level 0 initial lookup.</para></note></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_45" msb="63" lsb="45"/>
+  <fieldat id="fieldset_0-44_44-1" msb="44" lsb="44"/>
+  <fieldat id="fieldset_0-43_42" msb="43" lsb="42"/>
+  <fieldat id="fieldset_0-41_41-1" msb="41" lsb="41"/>
+  <fieldat id="fieldset_0-40_40-1" msb="40" lsb="40"/>
+  <fieldat id="fieldset_0-39_39" msb="39" lsb="39"/>
+  <fieldat id="fieldset_0-38_38-1" msb="38" lsb="38"/>
+  <fieldat id="fieldset_0-37_37-1" msb="37" lsb="37"/>
+  <fieldat id="fieldset_0-36_36-1" msb="36" lsb="36"/>
+  <fieldat id="fieldset_0-35_35-1" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-34_34-1" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-33_33-1" msb="33" lsb="33"/>
+  <fieldat id="fieldset_0-32_32-1" msb="32" lsb="32"/>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30-1" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27-1" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25-1" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_23" msb="24" lsb="23"/>
+  <fieldat id="fieldset_0-22_22-1" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_12" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_6-1" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-5_0" msb="5" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Unless stated otherwise, any of the bits in VTCR_EL2 are permitted to be cached in a TLB.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS VTCR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, VTCR_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x040];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = VTCR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = VTCR_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister VTCR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR VTCR_EL2, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x040] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    VTCR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    VTCR_EL2 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

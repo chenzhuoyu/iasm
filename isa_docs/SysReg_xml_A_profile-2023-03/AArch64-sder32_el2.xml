@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SDER32_EL2</reg_short_name>
+        
+        <reg_long_name>AArch32 Secure Debug Enable Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL2 is implemented, FEAT_SEL2 is implemented and EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-sder32_el3.xml">SDER32_EL3</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is implemented</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-sder.xml">SDER</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Allows access to the AArch32 register <register_link state="AArch32" id="AArch32-sder.xml">SDER</register_link> from Secure EL2 and EL3 only.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Generic System Control</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is ignored by the PE when one or more of the following are true:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>
+<para>The PE is in Non-secure state.</para>
+</content>
+</listitem><listitem><content>
+<para>EL1 is using AArch64.</para>
+</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SDER32_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>63:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SUNIDEN</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Secure User Non-Invasive Debug Enable.</para>
+    </field_description>
+    <field_description order="after"><para>When Secure EL1 is using AArch32, the forms of non-invasive debug affected by this control are:</para>
+<list type="unordered">
+<listitem><content>The PC Sample-based Profiling Extension. See About the PC Sample-based Profiling Extension.</content>
+</listitem><listitem><content>When SelfHostedTraceEnabled() == FALSE, processor trace.</content>
+</listitem><listitem><content>When EL3 is implemented, Performance Monitors.</content>
+</listitem></list>
+<para>When Secure EL1 is using AArch64, this bit has no effect.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This bit has no effect on non-invasive debug.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-invasive debug is allowed in Secure EL0 using AArch32.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SUIDEN</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Secure User Invasive Debug Enable.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This bit does not affect the generation of debug exceptions at Secure EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If EL1 is using AArch32, debug exceptions from Secure EL0 are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-0_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_2" msb="63" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0-1" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS SDER32_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SDER32_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if !HaveEL(EL2) || !IsFeatureImplemented(FEAT_SEL2) || !HaveAArch32EL(EL1) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if !IsCurrentSecurityState(SS_Secure) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if !IsCurrentSecurityState(SS_Secure) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SDER32_EL2;
+elsif PSTATE.EL == EL3 then
+    if SCR_EL3.EEL2 == '0' then
+        UNDEFINED;
+    else
+        X[t, 64] = SDER32_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SDER32_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SDER32_EL2, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if !HaveEL(EL2) || !IsFeatureImplemented(FEAT_SEL2) || !HaveAArch32EL(EL1) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if !IsCurrentSecurityState(SS_Secure) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if !IsCurrentSecurityState(SS_Secure) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SDER32_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if SCR_EL3.EEL2 == '0' then
+        UNDEFINED;
+    else
+        SDER32_EL2 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PFAR_EL1</reg_short_name>
+        
+        <reg_long_name>Physical Fault Address Register (EL1)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_PFAR is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Records the faulting physical address for a synchronous External Abort, or SError exception taken to EL1.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>A group mapping that does not have a known primary</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PFAR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>PFAR_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_63-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Together with PFAR_EL1.NSE, reports the physical address space of the access that triggered the exception.</para>
+<table><tgroup cols="3"><thead><row><entry>NSE</entry><entry>NS</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>When Secure state is implemented, Secure. Otherwise reserved.</entry></row><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Reserved.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Realm.</entry></row></tbody></tgroup></table></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure. Reports the physical address space of the access that triggered the exception.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure physical address space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure physical address space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-62_62-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSE</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Together with PFAR_EL1.NS, reports the physical address space of the access that triggered the exception.</para>
+<para>For a description of the values derived by evaluating NS and NSE together, see MFAR_EL3.NS.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-62_62-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-61_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>61</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>61:56</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-55_52-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PA[55:52]</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>When FEAT_D128 is implemented, extension to PFAR_EL1.PA[47:0].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_D128 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-55_52-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-51_48-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PA[51:48]</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>When FEAT_LPA is implemented, extension to PFAR_EL1.PA[47:0].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LPA is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-51_48-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-47_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PA</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>47:0</rel_range>
+    <field_description order="before">
+      <para>Physical Address. Bits [47:0] of the aborting physical address.</para>
+    </field_description>
+    <field_description order="after"><para>For implementations with fewer than 48 physical address bits, the corresponding upper bits in this field are <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>The recorded address can be any address within the same naturally-aligned fault granule as the faulting physical address, where the size of the fault granule is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> and no larger than the larger than:</para>
+<list type="unordered">
+<listitem><content>The size of the range of values permitted to be recorded in <register_link state="AArch64" id="AArch64-far_el1.xml">FAR_EL1</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63-1" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62-1" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_56" msb="61" lsb="56"/>
+  <fieldat id="fieldset_0-55_52-1" msb="55" lsb="52"/>
+  <fieldat id="fieldset_0-51_48-1" msb="51" lsb="48"/>
+  <fieldat id="fieldset_0-47_0" msb="47" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>PFAR_EL1 is not valid and reads <arm-defined-word>UNKNOWN</arm-defined-word> if <register_link state="AArch64" id="AArch64-esr_el1.xml">ESR_EL1</register_link>.PFV is recorded as 0.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS PFAR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, PFAR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0110"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HFGRTR2_EL2.nPFAR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        X[t, 64] = NVMem[0x2D0];
+    else
+        X[t, 64] = PFAR_EL1;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        X[t, 64] = PFAR_EL2;
+    else
+        X[t, 64] = PFAR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PFAR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister PFAR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR PFAR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0110"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HFGWTR2_EL2.nPFAR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        NVMem[0x2D0] = X[t, 64];
+    else
+        PFAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        PFAR_EL2 = X[t, 64];
+    else
+        PFAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PFAR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MRS PFAR_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, PFAR_EL12</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0110"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        X[t, 64] = NVMem[0x2D0];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        X[t, 64] = PFAR_EL1;
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        X[t, 64] = PFAR_EL1;
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister PFAR_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR PFAR_EL12, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0110"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        NVMem[0x2D0] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        PFAR_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        PFAR_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

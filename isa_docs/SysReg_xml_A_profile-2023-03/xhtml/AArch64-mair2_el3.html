@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MAIR2_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MAIR2_EL3, Extended Memory Attribute Indirection Register (EL3)</h1><p>The MAIR2_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides the memory attribute encodings corresponding to the possible AttrIndx values in a VMSAv8-64 or VMSAv9-128 translation table entry for stage 1 translations at EL1.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_AIE is implemented. Otherwise, direct accesses to MAIR2_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>MAIR2_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr7</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr6</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr5</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr4</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr3</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr2</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr1</a></td><td class="lr" colspan="8"><a href="#fieldset_0-63_0">Attr0</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">Attr&lt;n&gt;, bits [8n+7:8n], for n = 7 to 0</h4><div class="field"><p>Memory Attribute encoding.</p>
+<p>When stage 1 Attributes Index Extension is enabled and AttrIndx[3] in a VMSAv8-64 or VMSAv9-128 translation table entry is 1, AttrIndx[2:0] gives the value of &lt;n&gt; in Attr&lt;n&gt;.</p>
+<p>When stage 1 Attributes Index Extension is enabled and AttrIndx[3] in a VMSAv8-64 or VMSAv9-128 translation table entry is 0, see MAIR_ELx.Attr</p>
+<p>Attr is encoded as follows:</p>
+<table class="valuetable"><thead><tr><th>Attr</th><th>Meaning</th></tr></thead><tbody><tr><td>0b0000dd00</td><td>Device memory.
+See encoding of 'dd' for the type of Device memory.</td></tr><tr><td>0b0000dd01</td><td>If FEAT_XS is implemented:
+Device memory with the XS attribute set to 0.
+See encoding of 'dd' for the type of Device memory.
+Otherwise, <span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr><tr><td>0b0000dd1x</td><td><span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr><tr><td>0booooiiii,
+(oooo != 0000 and iiii != 0000)</td><td>Normal memory. See encoding of 'oooo' and 'iiii' for the
+type of Normal Memory.</td></tr><tr><td><span class="binarynumber">0b01000000</span></td><td>If FEAT_XS is implemented:
+Normal Inner Non-cacheable, Outer Non-cacheable memory
+with the XS attribute set to 0.
+Otherwise, <span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr><tr><td><span class="binarynumber">0b10100000</span></td><td>If FEAT_XS is implemented:
+Normal Inner Write-through Cacheable, Outer Write-through Cacheable,
+Read-Allocate, No-Write Allocate, Non-transient memory
+with the XS attribute set to 0.
+Otherwise, <span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr><tr><td><span class="binarynumber">0b11110000</span></td><td>If FEAT_MTE2 is implemented:
+Tagged Normal Inner Write-Back, Outer Write-Back,
+Read-Allocate, Write-Allocate Non-transient memory.
+Otherwise, <span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr><tr><td><span class="binarynumber">0bxxxx0000</span>, where
+xxxx != 0000
+and xxxx != 0100
+and xxxx != 1010
+and xxxx != 1111</td><td><span class="arm-defined-word">UNPREDICTABLE</span>.</td></tr></tbody></table>
+<p>'dd' is encoded as follows:</p>
+<table class="valuetable"><thead><tr><th>dd</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b00</span></td><td>Device-nGnRnE memory</td></tr><tr><td><span class="binarynumber">0b01</span></td><td>Device-nGnRE memory</td></tr><tr><td><span class="binarynumber">0b10</span></td><td>Device-nGRE memory</td></tr><tr><td><span class="binarynumber">0b11</span></td><td>Device-GRE memory</td></tr></tbody></table>
+<p>'oooo' is encoded as follows:</p>
+<table class="valuetable"><thead><tr><th>'oooo'</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0000</span></td><td>See encoding of Attr</td></tr><tr><td>0b00RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Outer Write-Through Transient</td></tr><tr><td><span class="binarynumber">0b0100</span></td><td>Normal memory, Outer Non-cacheable</td></tr><tr><td>0b01RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Outer Write-Back Transient</td></tr><tr><td>0b10RW</td><td>Normal memory, Outer Write-Through Non-transient</td></tr><tr><td>0b11RW</td><td>Normal memory, Outer Write-Back Non-transient</td></tr></tbody></table>
+<p>R = Outer Read-Allocate policy, W = Outer Write-Allocate policy.</p>
+<p>'iiii' is encoded as follows:</p>
+<table class="valuetable"><thead><tr><th>'iiii'</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0000</span></td><td>See encoding of Attr</td></tr><tr><td>0b00RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Inner Write-Through Transient</td></tr><tr><td><span class="binarynumber">0b0100</span></td><td>Normal memory, Inner Non-cacheable</td></tr><tr><td>0b01RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Inner Write-Back Transient</td></tr><tr><td>0b10RW</td><td>Normal memory, Inner Write-Through Non-transient</td></tr><tr><td>0b11RW</td><td>Normal memory, Inner Write-Back Non-transient</td></tr></tbody></table>
+<p>R = Inner Read-Allocate policy, W = Inner Write-Allocate policy.</p>
+<p>The R and W bits in 'oooo' and 'iiii' fields have the following meanings:</p>
+<table class="valuetable"><thead><tr><th>R or W</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td>No Allocate</td></tr><tr><td><span class="binarynumber">0b1</span></td><td>Allocate</td></tr></tbody></table>
+<p>When <span class="xref">FEAT_XS</span> is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing MAIR2_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MAIR2_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b1010</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MAIR2_EL3;
+                </p><h4 class="assembler">MSR MAIR2_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b1010</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    MAIR2_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

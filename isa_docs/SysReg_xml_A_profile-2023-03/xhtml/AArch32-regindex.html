@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><title>AArch32 Registers</title><link rel="stylesheet" type="text/css" href="insn.css"/></head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="alphindextitle">AArch32 System Registers</h1>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-actlr.html">ACTLR</a>:
+        Auxiliary Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-actlr2.html">ACTLR2</a>:
+        Auxiliary Control Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-adfsr.html">ADFSR</a>:
+        Auxiliary Data Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-aidr.html">AIDR</a>:
+        Auxiliary ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-aifsr.html">AIFSR</a>:
+        Auxiliary Instruction Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amair0.html">AMAIR0</a>:
+        Auxiliary Memory Attribute Indirection Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amair1.html">AMAIR1</a>:
+        Auxiliary Memory Attribute Indirection Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcfgr.html">AMCFGR</a>:
+        Activity Monitors Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcgcr.html">AMCGCR</a>:
+        Activity Monitors Counter Group Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcntenclr0.html">AMCNTENCLR0</a>:
+        Activity Monitors Count Enable Clear Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcntenclr1.html">AMCNTENCLR1</a>:
+        Activity Monitors Count Enable Clear Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcntenset0.html">AMCNTENSET0</a>:
+        Activity Monitors Count Enable Set Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcntenset1.html">AMCNTENSET1</a>:
+        Activity Monitors Count Enable Set Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amcr.html">AMCR</a>:
+        Activity Monitors Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amevcntr0n.html">AMEVCNTR0&lt;n&gt;</a>:
+        Activity Monitors Event Counter Registers 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a>:
+        Activity Monitors Event Counter Registers 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amevtyper0n.html">AMEVTYPER0&lt;n&gt;</a>:
+        Activity Monitors Event Type Registers 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amevtyper1n.html">AMEVTYPER1&lt;n&gt;</a>:
+        Activity Monitors Event Type Registers 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-amuserenr.html">AMUSERENR</a>:
+        Activity Monitors User Enable Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-apsr.html">APSR</a>:
+        Application Program Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ccsidr.html">CCSIDR</a>:
+        Current Cache Size ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ccsidr2.html">CCSIDR2</a>:
+        Current Cache Size ID Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-clidr.html">CLIDR</a>:
+        Cache Level ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntfrq.html">CNTFRQ</a>:
+        Counter-timer Frequency register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthctl.html">CNTHCTL</a>:
+        Counter-timer Hyp Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthps_ctl.html">CNTHPS_CTL</a>:
+        Counter-timer Secure Physical Timer Control Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthps_cval.html">CNTHPS_CVAL</a>:
+        Counter-timer Secure Physical Timer CompareValue Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthps_tval.html">CNTHPS_TVAL</a>:
+        Counter-timer Secure Physical Timer TimerValue Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthp_ctl.html">CNTHP_CTL</a>:
+        Counter-timer Hyp Physical Timer Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthp_cval.html">CNTHP_CVAL</a>:
+        Counter-timer Hyp Physical CompareValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthp_tval.html">CNTHP_TVAL</a>:
+        Counter-timer Hyp Physical Timer TimerValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthvs_ctl.html">CNTHVS_CTL</a>:
+        Counter-timer Secure Virtual Timer Control Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthvs_cval.html">CNTHVS_CVAL</a>:
+        Counter-timer Secure Virtual Timer CompareValue Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthvs_tval.html">CNTHVS_TVAL</a>:
+        Counter-timer Secure Virtual Timer TimerValue Register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthv_ctl.html">CNTHV_CTL</a>:
+        Counter-timer Virtual Timer Control register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthv_cval.html">CNTHV_CVAL</a>:
+        Counter-timer Virtual Timer CompareValue register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cnthv_tval.html">CNTHV_TVAL</a>:
+        Counter-timer Virtual Timer TimerValue register (EL2)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntkctl.html">CNTKCTL</a>:
+        Counter-timer Kernel Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntpct.html">CNTPCT</a>:
+        Counter-timer Physical Count register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntpctss.html">CNTPCTSS</a>:
+        Counter-timer Self-Synchronized Physical Count register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntp_ctl.html">CNTP_CTL</a>:
+        Counter-timer Physical Timer Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntp_cval.html">CNTP_CVAL</a>:
+        Counter-timer Physical Timer CompareValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntp_tval.html">CNTP_TVAL</a>:
+        Counter-timer Physical Timer TimerValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntvct.html">CNTVCT</a>:
+        Counter-timer Virtual Count register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntvctss.html">CNTVCTSS</a>:
+        Counter-timer Self-Synchronized Virtual Count register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntvoff.html">CNTVOFF</a>:
+        Counter-timer Virtual Offset register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntv_ctl.html">CNTV_CTL</a>:
+        Counter-timer Virtual Timer Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntv_cval.html">CNTV_CVAL</a>:
+        Counter-timer Virtual Timer CompareValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cntv_tval.html">CNTV_TVAL</a>:
+        Counter-timer Virtual Timer TimerValue register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-contextidr.html">CONTEXTIDR</a>:
+        Context ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cpacr.html">CPACR</a>:
+        Architectural Feature Access Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cpsr.html">CPSR</a>:
+        Current Program Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-csselr.html">CSSELR</a>:
+        Cache Size Selection Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ctr.html">CTR</a>:
+        Cache Type Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dacr.html">DACR</a>:
+        Domain Access Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgauthstatus.html">DBGAUTHSTATUS</a>:
+        Debug Authentication Status register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgbcrn.html">DBGBCR&lt;n&gt;</a>:
+        Debug Breakpoint Control Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgbvrn.html">DBGBVR&lt;n&gt;</a>:
+        Debug Breakpoint Value Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgbxvrn.html">DBGBXVR&lt;n&gt;</a>:
+        Debug Breakpoint Extended Value Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgclaimclr.html">DBGCLAIMCLR</a>:
+        Debug CLAIM Tag Clear register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgclaimset.html">DBGCLAIMSET</a>:
+        Debug CLAIM Tag Set register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdccint.html">DBGDCCINT</a>:
+        DCC Interrupt Enable Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdevid.html">DBGDEVID</a>:
+        Debug Device ID register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdevid1.html">DBGDEVID1</a>:
+        Debug Device ID register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdevid2.html">DBGDEVID2</a>:
+        Debug Device ID register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdidr.html">DBGDIDR</a>:
+        Debug ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdrar.html">DBGDRAR</a>:
+        Debug ROM Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdsar.html">DBGDSAR</a>:
+        Debug Self Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>:
+        Debug Status and Control Register, External View</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdscrint.html">DBGDSCRint</a>:
+        Debug Status and Control Register, Internal View</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdtrrxext.html">DBGDTRRXext</a>:
+        Debug OS Lock Data Transfer Register, Receive, External View</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a>:
+        Debug Data Transfer Register, Receive</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdtrtxext.html">DBGDTRTXext</a>:
+        Debug OS Lock Data Transfer Register, Transmit</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>:
+        Debug Data Transfer Register, Transmit</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgosdlr.html">DBGOSDLR</a>:
+        Debug OS Double Lock Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgoseccr.html">DBGOSECCR</a>:
+        Debug OS Lock Exception Catch Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgoslar.html">DBGOSLAR</a>:
+        Debug OS Lock Access Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgoslsr.html">DBGOSLSR</a>:
+        Debug OS Lock Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgprcr.html">DBGPRCR</a>:
+        Debug Power Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgvcr.html">DBGVCR</a>:
+        Debug Vector Catch Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgwcrn.html">DBGWCR&lt;n&gt;</a>:
+        Debug Watchpoint Control Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgwfar.html">DBGWFAR</a>:
+        Debug Watchpoint Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>:
+        Debug Watchpoint Value Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dfar.html">DFAR</a>:
+        Data Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dfsr.html">DFSR</a>:
+        Data Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-disr.html">DISR</a>:
+        Deferred Interrupt Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dlr.html">DLR</a>:
+        Debug Link Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dspsr.html">DSPSR</a>:
+        Debug Saved Program Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dspsr2.html">DSPSR2</a>:
+        Debug Saved Process State Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-elr_hyp.html">ELR_hyp</a>:
+        Exception Link Register (Hyp mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erridr.html">ERRIDR</a>:
+        Error Record ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-errselr.html">ERRSELR</a>:
+        Error Record Select Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxaddr.html">ERXADDR</a>:
+        Selected Error Record Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxaddr2.html">ERXADDR2</a>:
+        Selected Error Record Address Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxctlr.html">ERXCTLR</a>:
+        Selected Error Record Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxctlr2.html">ERXCTLR2</a>:
+        Selected Error Record Control Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxfr.html">ERXFR</a>:
+        Selected Error Record Feature Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxfr2.html">ERXFR2</a>:
+        Selected Error Record Feature Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc0.html">ERXMISC0</a>:
+        Selected Error Record Miscellaneous Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc1.html">ERXMISC1</a>:
+        Selected Error Record Miscellaneous Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc2.html">ERXMISC2</a>:
+        Selected Error Record Miscellaneous Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc3.html">ERXMISC3</a>:
+        Selected Error Record Miscellaneous Register 3</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc4.html">ERXMISC4</a>:
+        Selected Error Record Miscellaneous Register 4</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc5.html">ERXMISC5</a>:
+        Selected Error Record Miscellaneous Register 5</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc6.html">ERXMISC6</a>:
+        Selected Error Record Miscellaneous Register 6</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxmisc7.html">ERXMISC7</a>:
+        Selected Error Record Miscellaneous Register 7</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-erxstatus.html">ERXSTATUS</a>:
+        Selected Error Record Primary Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-fcseidr.html">FCSEIDR</a>:
+        FCSE Process ID register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-fpexc.html">FPEXC</a>:
+        Floating-Point Exception Control register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-fpscr.html">FPSCR</a>:
+        Floating-Point Status and Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-fpsid.html">FPSID</a>:
+        Floating-Point System ID register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hacr.html">HACR</a>:
+        Hyp Auxiliary Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hactlr.html">HACTLR</a>:
+        Hyp Auxiliary Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hactlr2.html">HACTLR2</a>:
+        Hyp Auxiliary Control Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hadfsr.html">HADFSR</a>:
+        Hyp Auxiliary Data Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-haifsr.html">HAIFSR</a>:
+        Hyp Auxiliary Instruction Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hamair0.html">HAMAIR0</a>:
+        Hyp Auxiliary Memory Attribute Indirection Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hamair1.html">HAMAIR1</a>:
+        Hyp Auxiliary Memory Attribute Indirection Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hcptr.html">HCPTR</a>:
+        Hyp Architectural Feature Trap Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hcr.html">HCR</a>:
+        Hyp Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hcr2.html">HCR2</a>:
+        Hyp Configuration Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hdcr.html">HDCR</a>:
+        Hyp Debug Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hdfar.html">HDFAR</a>:
+        Hyp Data Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hifar.html">HIFAR</a>:
+        Hyp Instruction Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hmair0.html">HMAIR0</a>:
+        Hyp Memory Attribute Indirection Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hmair1.html">HMAIR1</a>:
+        Hyp Memory Attribute Indirection Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hpfar.html">HPFAR</a>:
+        Hyp IPA Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hrmr.html">HRMR</a>:
+        Hyp Reset Management Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hsctlr.html">HSCTLR</a>:
+        Hyp System Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hsr.html">HSR</a>:
+        Hyp Syndrome Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hstr.html">HSTR</a>:
+        Hyp System Trap Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-htcr.html">HTCR</a>:
+        Hyp Translation Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-htpidr.html">HTPIDR</a>:
+        Hyp Software Thread ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-htrfcr.html">HTRFCR</a>:
+        Hyp Trace Filter Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-httbr.html">HTTBR</a>:
+        Hyp Translation Table Base Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-hvbar.html">HVBAR</a>:
+        Hyp Vector Base Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_ap0rn.html">ICC_AP0R&lt;n&gt;</a>:
+        Interrupt Controller Active Priorities Group 0 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_ap1rn.html">ICC_AP1R&lt;n&gt;</a>:
+        Interrupt Controller Active Priorities Group 1 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_asgi1r.html">ICC_ASGI1R</a>:
+        Interrupt Controller Alias Software Generated Interrupt Group 1 Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_bpr0.html">ICC_BPR0</a>:
+        Interrupt Controller Binary Point Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_bpr1.html">ICC_BPR1</a>:
+        Interrupt Controller Binary Point Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_ctlr.html">ICC_CTLR</a>:
+        Interrupt Controller Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_dir.html">ICC_DIR</a>:
+        Interrupt Controller Deactivate Interrupt Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_eoir0.html">ICC_EOIR0</a>:
+        Interrupt Controller End Of Interrupt Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_eoir1.html">ICC_EOIR1</a>:
+        Interrupt Controller End Of Interrupt Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_hppir0.html">ICC_HPPIR0</a>:
+        Interrupt Controller Highest Priority Pending Interrupt Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_hppir1.html">ICC_HPPIR1</a>:
+        Interrupt Controller Highest Priority Pending Interrupt Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_hsre.html">ICC_HSRE</a>:
+        Interrupt Controller Hyp System Register Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_iar0.html">ICC_IAR0</a>:
+        Interrupt Controller Interrupt Acknowledge Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_iar1.html">ICC_IAR1</a>:
+        Interrupt Controller Interrupt Acknowledge Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_igrpen0.html">ICC_IGRPEN0</a>:
+        Interrupt Controller Interrupt Group 0 Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_igrpen1.html">ICC_IGRPEN1</a>:
+        Interrupt Controller Interrupt Group 1 Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_mctlr.html">ICC_MCTLR</a>:
+        Interrupt Controller Monitor Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_mgrpen1.html">ICC_MGRPEN1</a>:
+        Interrupt Controller Monitor Interrupt Group 1 Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_msre.html">ICC_MSRE</a>:
+        Interrupt Controller Monitor System Register Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_pmr.html">ICC_PMR</a>:
+        Interrupt Controller Interrupt Priority Mask Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_rpr.html">ICC_RPR</a>:
+        Interrupt Controller Running Priority Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_sgi0r.html">ICC_SGI0R</a>:
+        Interrupt Controller Software Generated Interrupt Group 0 Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_sgi1r.html">ICC_SGI1R</a>:
+        Interrupt Controller Software Generated Interrupt Group 1 Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icc_sre.html">ICC_SRE</a>:
+        Interrupt Controller System Register Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_ap0rn.html">ICH_AP0R&lt;n&gt;</a>:
+        Interrupt Controller Hyp Active Priorities Group 0 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_ap1rn.html">ICH_AP1R&lt;n&gt;</a>:
+        Interrupt Controller Hyp Active Priorities Group 1 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_eisr.html">ICH_EISR</a>:
+        Interrupt Controller End of Interrupt Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_elrsr.html">ICH_ELRSR</a>:
+        Interrupt Controller Empty List Register Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_hcr.html">ICH_HCR</a>:
+        Interrupt Controller Hyp Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a>:
+        Interrupt Controller List Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_lrcn.html">ICH_LRC&lt;n&gt;</a>:
+        Interrupt Controller List Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_misr.html">ICH_MISR</a>:
+        Interrupt Controller Maintenance Interrupt State Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_vmcr.html">ICH_VMCR</a>:
+        Interrupt Controller Virtual Machine Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ich_vtr.html">ICH_VTR</a>:
+        Interrupt Controller VGIC Type Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_ap0rn.html">ICV_AP0R&lt;n&gt;</a>:
+        Interrupt Controller Virtual Active Priorities Group 0 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_ap1rn.html">ICV_AP1R&lt;n&gt;</a>:
+        Interrupt Controller Virtual Active Priorities Group 1 Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_bpr0.html">ICV_BPR0</a>:
+        Interrupt Controller Virtual Binary Point Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_bpr1.html">ICV_BPR1</a>:
+        Interrupt Controller Virtual Binary Point Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_ctlr.html">ICV_CTLR</a>:
+        Interrupt Controller Virtual Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_dir.html">ICV_DIR</a>:
+        Interrupt Controller Deactivate Virtual Interrupt Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_eoir0.html">ICV_EOIR0</a>:
+        Interrupt Controller Virtual End Of Interrupt Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_eoir1.html">ICV_EOIR1</a>:
+        Interrupt Controller Virtual End Of Interrupt Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_hppir0.html">ICV_HPPIR0</a>:
+        Interrupt Controller Virtual Highest Priority Pending Interrupt Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_hppir1.html">ICV_HPPIR1</a>:
+        Interrupt Controller Virtual Highest Priority Pending Interrupt Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_iar0.html">ICV_IAR0</a>:
+        Interrupt Controller Virtual Interrupt Acknowledge Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_iar1.html">ICV_IAR1</a>:
+        Interrupt Controller Virtual Interrupt Acknowledge Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_igrpen0.html">ICV_IGRPEN0</a>:
+        Interrupt Controller Virtual Interrupt Group 0 Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_igrpen1.html">ICV_IGRPEN1</a>:
+        Interrupt Controller Virtual Interrupt Group 1 Enable register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_pmr.html">ICV_PMR</a>:
+        Interrupt Controller Virtual Interrupt Priority Mask Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icv_rpr.html">ICV_RPR</a>:
+        Interrupt Controller Virtual Running Priority Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_afr0.html">ID_AFR0</a>:
+        Auxiliary Feature Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_dfr0.html">ID_DFR0</a>:
+        Debug Feature Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_dfr1.html">ID_DFR1</a>:
+        Debug Feature Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar0.html">ID_ISAR0</a>:
+        Instruction Set Attribute Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar1.html">ID_ISAR1</a>:
+        Instruction Set Attribute Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar2.html">ID_ISAR2</a>:
+        Instruction Set Attribute Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar3.html">ID_ISAR3</a>:
+        Instruction Set Attribute Register 3</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar4.html">ID_ISAR4</a>:
+        Instruction Set Attribute Register 4</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar5.html">ID_ISAR5</a>:
+        Instruction Set Attribute Register 5</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_isar6.html">ID_ISAR6</a>:
+        Instruction Set Attribute Register 6</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr0.html">ID_MMFR0</a>:
+        Memory Model Feature Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr1.html">ID_MMFR1</a>:
+        Memory Model Feature Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr2.html">ID_MMFR2</a>:
+        Memory Model Feature Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr3.html">ID_MMFR3</a>:
+        Memory Model Feature Register 3</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr4.html">ID_MMFR4</a>:
+        Memory Model Feature Register 4</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_mmfr5.html">ID_MMFR5</a>:
+        Memory Model Feature Register 5</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_pfr0.html">ID_PFR0</a>:
+        Processor Feature Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_pfr1.html">ID_PFR1</a>:
+        Processor Feature Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-id_pfr2.html">ID_PFR2</a>:
+        Processor Feature Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ifar.html">IFAR</a>:
+        Instruction Fault Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ifsr.html">IFSR</a>:
+        Instruction Fault Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-isr.html">ISR</a>:
+        Interrupt Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-jidr.html">JIDR</a>:
+        Jazelle ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-jmcr.html">JMCR</a>:
+        Jazelle Main Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-joscr.html">JOSCR</a>:
+        Jazelle OS Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mair0.html">MAIR0</a>:
+        Memory Attribute Indirection Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mair1.html">MAIR1</a>:
+        Memory Attribute Indirection Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-midr.html">MIDR</a>:
+        Main ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mpidr.html">MPIDR</a>:
+        Multiprocessor Affinity Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mvbar.html">MVBAR</a>:
+        Monitor Vector Base Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mvfr0.html">MVFR0</a>:
+        Media and VFP Feature Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mvfr1.html">MVFR1</a>:
+        Media and VFP Feature Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-mvfr2.html">MVFR2</a>:
+        Media and VFP Feature Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-nmrr.html">NMRR</a>:
+        Normal Memory Remap Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-nsacr.html">NSACR</a>:
+        Non-Secure Access Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-par.html">PAR</a>:
+        Physical Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmccfiltr.html">PMCCFILTR</a>:
+        Performance Monitors Cycle Count Filter Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmccntr.html">PMCCNTR</a>:
+        Performance Monitors Cycle Count Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmceid0.html">PMCEID0</a>:
+        Performance Monitors Common Event Identification register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmceid1.html">PMCEID1</a>:
+        Performance Monitors Common Event Identification register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmceid2.html">PMCEID2</a>:
+        Performance Monitors Common Event Identification register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmceid3.html">PMCEID3</a>:
+        Performance Monitors Common Event Identification register 3</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmcntenclr.html">PMCNTENCLR</a>:
+        Performance Monitors Count Enable Clear register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmcntenset.html">PMCNTENSET</a>:
+        Performance Monitors Count Enable Set register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmcr.html">PMCR</a>:
+        Performance Monitors Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a>:
+        Performance Monitors Event Count Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmevtypern.html">PMEVTYPER&lt;n&gt;</a>:
+        Performance Monitors Event Type Registers</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmintenclr.html">PMINTENCLR</a>:
+        Performance Monitors Interrupt Enable Clear register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmintenset.html">PMINTENSET</a>:
+        Performance Monitors Interrupt Enable Set register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmmir.html">PMMIR</a>:
+        Performance Monitors Machine Identification Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmovsr.html">PMOVSR</a>:
+        Performance Monitors Overflow Flag Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmovsset.html">PMOVSSET</a>:
+        Performance Monitors Overflow Flag Status Set register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmselr.html">PMSELR</a>:
+        Performance Monitors Event Counter Selection Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmswinc.html">PMSWINC</a>:
+        Performance Monitors Software Increment register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmuserenr.html">PMUSERENR</a>:
+        Performance Monitors User Enable Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>:
+        Performance Monitors Selected Event Count Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-pmxevtyper.html">PMXEVTYPER</a>:
+        Performance Monitors Selected Event Type Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-prrr.html">PRRR</a>:
+        Primary Region Remap Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-revidr.html">REVIDR</a>:
+        Revision ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-rmr.html">RMR</a>:
+        Reset Management Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-rvbar.html">RVBAR</a>:
+        Reset Vector Base Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-scr.html">SCR</a>:
+        Secure Configuration Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-sctlr.html">SCTLR</a>:
+        System Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-sdcr.html">SDCR</a>:
+        Secure Debug Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-sder.html">SDER</a>:
+        Secure Debug Enable Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr.html">SPSR</a>:
+        Saved Program Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_abt.html">SPSR_abt</a>:
+        Saved Program Status Register (Abort mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_fiq.html">SPSR_fiq</a>:
+        Saved Program Status Register (FIQ mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_hyp.html">SPSR_hyp</a>:
+        Saved Program Status Register (Hyp mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_irq.html">SPSR_irq</a>:
+        Saved Program Status Register (IRQ mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_mon.html">SPSR_mon</a>:
+        Saved Program Status Register (Monitor mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_svc.html">SPSR_svc</a>:
+        Saved Program Status Register (Supervisor mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-spsr_und.html">SPSR_und</a>:
+        Saved Program Status Register (Undefined mode)</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tcmtr.html">TCMTR</a>:
+        TCM Type Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbtr.html">TLBTR</a>:
+        TLB Type Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tpidrprw.html">TPIDRPRW</a>:
+        PL1 Software Thread ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tpidruro.html">TPIDRURO</a>:
+        PL0 Read-Only Software Thread ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tpidrurw.html">TPIDRURW</a>:
+        PL0 Read/Write Software Thread ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-trfcr.html">TRFCR</a>:
+        Trace Filter Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ttbcr.html">TTBCR</a>:
+        Translation Table Base Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ttbcr2.html">TTBCR2</a>:
+        Translation Table Base Control Register 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ttbr0.html">TTBR0</a>:
+        Translation Table Base Register 0</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ttbr1.html">TTBR1</a>:
+        Translation Table Base Register 1</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vbar.html">VBAR</a>:
+        Vector Base Address Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vdfsr.html">VDFSR</a>:
+        Virtual SError Exception Syndrome Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vdisr.html">VDISR</a>:
+        Virtual Deferred Interrupt Status Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vmpidr.html">VMPIDR</a>:
+        Virtualization Multiprocessor ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vpidr.html">VPIDR</a>:
+        Virtualization Processor ID Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vtcr.html">VTCR</a>:
+        Virtualization Translation Control Register</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-vttbr.html">VTTBR</a>:
+        Virtualization Translation Table Base Register</span></p></div>
+  <hr/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:16</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+  
+</html>

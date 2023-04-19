@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE register_index SYSTEM 'reg_alphaindex.dtd'>
+<!--Copyright (c) 2010-2017 ARM Limited or its affiliates. All rights reserved.-->
+<!--This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by ARM and the party that ARM delivered this document to.-->
+<!--The data contained in this document is preliminary and subject to change or correction following further review.-->
+<?xml-stylesheet href="reg_alphaindex.xsl" type="text/xsl"?>
+<register_index>
+  <toptitle architecture="AArch32 Instructions"/>
+  <register_links title="AArch32 System Instructions">
+    <register_link heading="ATS12NSOPR" id="ATS12NSOPR" registerfile="AArch32-ats12nsopr.xml">Address Translate Stages 1 and 2 Non-secure Only PL1 Read</register_link>
+    <register_link heading="ATS12NSOPW" id="ATS12NSOPW" registerfile="AArch32-ats12nsopw.xml">Address Translate Stages 1 and 2 Non-secure Only PL1 Write</register_link>
+    <register_link heading="ATS12NSOUR" id="ATS12NSOUR" registerfile="AArch32-ats12nsour.xml">Address Translate Stages 1 and 2 Non-secure Only Unprivileged Read</register_link>
+    <register_link heading="ATS12NSOUW" id="ATS12NSOUW" registerfile="AArch32-ats12nsouw.xml">Address Translate Stages 1 and 2 Non-secure Only Unprivileged Write</register_link>
+    <register_link heading="ATS1CPR" id="ATS1CPR" registerfile="AArch32-ats1cpr.xml">Address Translate Stage 1 Current state PL1 Read</register_link>
+    <register_link heading="ATS1CPRP" id="ATS1CPRP" registerfile="AArch32-ats1cprp.xml">Address Translate Stage 1 Current state PL1 Read PAN</register_link>
+    <register_link heading="ATS1CPW" id="ATS1CPW" registerfile="AArch32-ats1cpw.xml">Address Translate Stage 1 Current state PL1 Write</register_link>
+    <register_link heading="ATS1CPWP" id="ATS1CPWP" registerfile="AArch32-ats1cpwp.xml">Address Translate Stage 1 Current state PL1 Write PAN</register_link>
+    <register_link heading="ATS1CUR" id="ATS1CUR" registerfile="AArch32-ats1cur.xml">Address Translate Stage 1 Current state Unprivileged Read</register_link>
+    <register_link heading="ATS1CUW" id="ATS1CUW" registerfile="AArch32-ats1cuw.xml">Address Translate Stage 1 Current state Unprivileged Write</register_link>
+    <register_link heading="ATS1HR" id="ATS1HR" registerfile="AArch32-ats1hr.xml">Address Translate Stage 1 Hyp mode Read</register_link>
+    <register_link heading="ATS1HW" id="ATS1HW" registerfile="AArch32-ats1hw.xml">Address Translate Stage 1 Hyp mode Write</register_link>
+    <register_link heading="BPIALL" id="BPIALL" registerfile="AArch32-bpiall.xml">Branch Predictor Invalidate All</register_link>
+    <register_link heading="BPIALLIS" id="BPIALLIS" registerfile="AArch32-bpiallis.xml">Branch Predictor Invalidate All, Inner Shareable</register_link>
+    <register_link heading="BPIMVA" id="BPIMVA" registerfile="AArch32-bpimva.xml">Branch Predictor Invalidate by VA</register_link>
+    <register_link heading="CFPRCTX" id="CFPRCTX" registerfile="AArch32-cfprctx.xml">Control Flow Prediction Restriction by Context</register_link>
+    <register_link heading="COSPRCTX" id="COSPRCTX" registerfile="AArch32-cosprctx.xml">Clear Other Speculative Restriction by Context</register_link>
+    <register_link heading="CP15DMB" id="CP15DMB" registerfile="AArch32-cp15dmb.xml">Data Memory Barrier System instruction</register_link>
+    <register_link heading="CP15DSB" id="CP15DSB" registerfile="AArch32-cp15dsb.xml">Data Synchronization Barrier System instruction</register_link>
+    <register_link heading="CP15ISB" id="CP15ISB" registerfile="AArch32-cp15isb.xml">Instruction Synchronization Barrier System instruction</register_link>
+    <register_link heading="CPPRCTX" id="CPPRCTX" registerfile="AArch32-cpprctx.xml">Cache Prefetch Prediction Restriction by Context</register_link>
+    <register_link heading="DCCIMVAC" id="DCCIMVAC" registerfile="AArch32-dccimvac.xml">Data Cache line Clean and Invalidate by VA to PoC</register_link>
+    <register_link heading="DCCISW" id="DCCISW" registerfile="AArch32-dccisw.xml">Data Cache line Clean and Invalidate by Set/Way</register_link>
+    <register_link heading="DCCMVAC" id="DCCMVAC" registerfile="AArch32-dccmvac.xml">Data Cache line Clean by VA to PoC</register_link>
+    <register_link heading="DCCMVAU" id="DCCMVAU" registerfile="AArch32-dccmvau.xml">Data Cache line Clean by VA to PoU</register_link>
+    <register_link heading="DCCSW" id="DCCSW" registerfile="AArch32-dccsw.xml">Data Cache line Clean by Set/Way</register_link>
+    <register_link heading="DCIMVAC" id="DCIMVAC" registerfile="AArch32-dcimvac.xml">Data Cache line Invalidate by VA to PoC</register_link>
+    <register_link heading="DCISW" id="DCISW" registerfile="AArch32-dcisw.xml">Data Cache line Invalidate by Set/Way</register_link>
+    <register_link heading="DTLBIALL" id="DTLBIALL" registerfile="AArch32-dtlbiall.xml">Data TLB Invalidate All</register_link>
+    <register_link heading="DTLBIASID" id="DTLBIASID" registerfile="AArch32-dtlbiasid.xml">Data TLB Invalidate by ASID match</register_link>
+    <register_link heading="DTLBIMVA" id="DTLBIMVA" registerfile="AArch32-dtlbimva.xml">Data TLB Invalidate by VA</register_link>
+    <register_link heading="DVPRCTX" id="DVPRCTX" registerfile="AArch32-dvprctx.xml">Data Value Prediction Restriction by Context</register_link>
+    <register_link heading="ICIALLU" id="ICIALLU" registerfile="AArch32-iciallu.xml">Instruction Cache Invalidate All to PoU</register_link>
+    <register_link heading="ICIALLUIS" id="ICIALLUIS" registerfile="AArch32-icialluis.xml">Instruction Cache Invalidate All to PoU, Inner Shareable</register_link>
+    <register_link heading="ICIMVAU" id="ICIMVAU" registerfile="AArch32-icimvau.xml">Instruction Cache line Invalidate by VA to PoU</register_link>
+    <register_link heading="ITLBIALL" id="ITLBIALL" registerfile="AArch32-itlbiall.xml">Instruction TLB Invalidate All</register_link>
+    <register_link heading="ITLBIASID" id="ITLBIASID" registerfile="AArch32-itlbiasid.xml">Instruction TLB Invalidate by ASID match</register_link>
+    <register_link heading="ITLBIMVA" id="ITLBIMVA" registerfile="AArch32-itlbimva.xml">Instruction TLB Invalidate by VA</register_link>
+    <register_link heading="TLBIALL" id="TLBIALL" registerfile="AArch32-tlbiall.xml">TLB Invalidate All</register_link>
+    <register_link heading="TLBIALLH" id="TLBIALLH" registerfile="AArch32-tlbiallh.xml">TLB Invalidate All, Hyp mode</register_link>
+    <register_link heading="TLBIALLHIS" id="TLBIALLHIS" registerfile="AArch32-tlbiallhis.xml">TLB Invalidate All, Hyp mode, Inner Shareable</register_link>
+    <register_link heading="TLBIALLIS" id="TLBIALLIS" registerfile="AArch32-tlbiallis.xml">TLB Invalidate All, Inner Shareable</register_link>
+    <register_link heading="TLBIALLNSNH" id="TLBIALLNSNH" registerfile="AArch32-tlbiallnsnh.xml">TLB Invalidate All, Non-Secure Non-Hyp</register_link>
+    <register_link heading="TLBIALLNSNHIS" id="TLBIALLNSNHIS" registerfile="AArch32-tlbiallnsnhis.xml">TLB Invalidate All, Non-Secure Non-Hyp, Inner Shareable</register_link>
+    <register_link heading="TLBIASID" id="TLBIASID" registerfile="AArch32-tlbiasid.xml">TLB Invalidate by ASID match</register_link>
+    <register_link heading="TLBIASIDIS" id="TLBIASIDIS" registerfile="AArch32-tlbiasidis.xml">TLB Invalidate by ASID match, Inner Shareable</register_link>
+    <register_link heading="TLBIIPAS2" id="TLBIIPAS2" registerfile="AArch32-tlbiipas2.xml">TLB Invalidate by Intermediate Physical Address, Stage 2</register_link>
+    <register_link heading="TLBIIPAS2IS" id="TLBIIPAS2IS" registerfile="AArch32-tlbiipas2is.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Inner Shareable</register_link>
+    <register_link heading="TLBIIPAS2L" id="TLBIIPAS2L" registerfile="AArch32-tlbiipas2l.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Last level</register_link>
+    <register_link heading="TLBIIPAS2LIS" id="TLBIIPAS2LIS" registerfile="AArch32-tlbiipas2lis.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Last level, Inner Shareable</register_link>
+    <register_link heading="TLBIMVA" id="TLBIMVA" registerfile="AArch32-tlbimva.xml">TLB Invalidate by VA</register_link>
+    <register_link heading="TLBIMVAA" id="TLBIMVAA" registerfile="AArch32-tlbimvaa.xml">TLB Invalidate by VA, All ASID</register_link>
+    <register_link heading="TLBIMVAAIS" id="TLBIMVAAIS" registerfile="AArch32-tlbimvaais.xml">TLB Invalidate by VA, All ASID, Inner Shareable</register_link>
+    <register_link heading="TLBIMVAAL" id="TLBIMVAAL" registerfile="AArch32-tlbimvaal.xml">TLB Invalidate by VA, All ASID, Last level</register_link>
+    <register_link heading="TLBIMVAALIS" id="TLBIMVAALIS" registerfile="AArch32-tlbimvaalis.xml">TLB Invalidate by VA, All ASID, Last level, Inner Shareable</register_link>
+    <register_link heading="TLBIMVAH" id="TLBIMVAH" registerfile="AArch32-tlbimvah.xml">TLB Invalidate by VA, Hyp mode</register_link>
+    <register_link heading="TLBIMVAHIS" id="TLBIMVAHIS" registerfile="AArch32-tlbimvahis.xml">TLB Invalidate by VA, Hyp mode, Inner Shareable</register_link>
+    <register_link heading="TLBIMVAIS" id="TLBIMVAIS" registerfile="AArch32-tlbimvais.xml">TLB Invalidate by VA, Inner Shareable</register_link>
+    <register_link heading="TLBIMVAL" id="TLBIMVAL" registerfile="AArch32-tlbimval.xml">TLB Invalidate by VA, Last level</register_link>
+    <register_link heading="TLBIMVALH" id="TLBIMVALH" registerfile="AArch32-tlbimvalh.xml">TLB Invalidate by VA, Last level, Hyp mode</register_link>
+    <register_link heading="TLBIMVALHIS" id="TLBIMVALHIS" registerfile="AArch32-tlbimvalhis.xml">TLB Invalidate by VA, Last level, Hyp mode, Inner Shareable</register_link>
+    <register_link heading="TLBIMVALIS" id="TLBIMVALIS" registerfile="AArch32-tlbimvalis.xml">TLB Invalidate by VA, Last level, Inner Shareable</register_link>
+  </register_links>
+  <timestamp>30/03/2023 19:16</timestamp>
+</register_index>

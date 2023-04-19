@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>EDDFR1</reg_short_name>
+        
+        <reg_long_name>External Debug Feature Register 1</reg_long_name>
+
+        <power_domain_text>When FEAT_DoPD is implemented, EDDFR1 is in the Core power domain. Otherwise, it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether EDDFR1 is implemented in the Core power domain or in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+      register_startbit="31"
+      register_endbit="0"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0xD48</hexnumber></reg_offset>
+    <reg_instance>EDDFR1</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered() and !DoubleLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>IMPDEF</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+      register_startbit="63"
+      register_endbit="32"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0xD4C</hexnumber></reg_offset>
+    <reg_instance>EDDFR1</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered() and !DoubleLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>IMPDEF</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides top level information about the debug system in AArch64.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>EDDFR1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>EDDFR1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_56-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ABL_CMPs</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Number of breakpoints that support address linking, minus 1.</para>
+    </field_description>
+    <field_description order="after"><para>The values <hexnumber>0x40</hexnumber> to <hexnumber>0xFF</hexnumber> are reserved.</para>
+<para>The number of breakpoints that support address linking is never more than the number of watchpoints.</para></field_description>
+    <fields_condition>When FEAT_ABLE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_56-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-51_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EBEP</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>51:48</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.EBEP or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ITE</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.ITE or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ABLE</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Address Breakpoint Linking Extension. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_ABLE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_ABLE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.ABLE.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Address Breakpoint Linking Extension not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Address Breakpoint Linking Extension implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-39_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMICNTR</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>39:36</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.PMICNTR or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-35_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SPMU</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>35:32</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.SPMU or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CTX_CMPs</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>31:24</rel_range>
+    <field_description order="before">
+      <para>Number of breakpoints that are context-aware, minus 1. The value <hexnumber>0x00</hexnumber> means that the number of breakpoints that are context-aware is described by <register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.CTX_CMPs. Otherwise, the value of this field is the number of breakpoints that are context-aware, minus 1. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The value of this field is never greater than EDDFR1.BRPs.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.CTX_CMPs.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.CTX_CMPs is the number of breakpoints that are context-aware, minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01..0x3F</field_value>
+        <field_value_description>
+          <para>Number of breakpoints that are context-aware minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WRPs</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Number of watchpoints, minus 1. The value <hexnumber>0x00</hexnumber> means that the number of watchpoints is described by <register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.WRPs. Otherwise, the value of this field is the number of watchpoints, minus 1. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.WRPs.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.WRPs is the number of watchpoints, minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01..0x3F</field_value>
+        <field_value_description>
+          <para>Number of watchpoints minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BRPs</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para>Number of breakpoints, minus 1. The value <hexnumber>0x00</hexnumber> means that the number of breakpoints is described by <register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.BRPs. Otherwise, the value of this field is the number of breakpoints, minus 1. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.BRPs.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-eddfr.xml">EDDFR</register_link>.BRPs is the number of breakpoints, minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01..0x3F</field_value>
+        <field_value_description>
+          <para>Number of breakpoints minus 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SYSPMUID</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr1_el1.xml">ID_AA64DFR1_EL1</register_link>.SYSPMUID or reads as zero.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_56-1" msb="63" lsb="56"/>
+  <fieldat id="fieldset_0-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_0-51_48" msb="51" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_36" msb="39" lsb="36"/>
+  <fieldat id="fieldset_0-35_32" msb="35" lsb="32"/>
+  <fieldat id="fieldset_0-31_24" msb="31" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,1139 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBSR_EL1</reg_short_name>
+        
+        <reg_long_name>Trace Buffer Status/syndrome Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_TRBE is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides syndrome information to software for a trace buffer management event.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBSR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>63:56</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-55_32" has_partial_fieldset="True" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MSS2</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>55:32</rel_range>
+    <field_description order="before">
+      <para>Management event Specific Syndrome 2. Contains syndrome specific to the management event.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The syndrome contents for each management event are described in the following sections.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <partial_fieldset>
+      <fields id="fieldset_0-55_32_0" length="24">
+        <fields_condition/>
+        <fields_instance>other trace buffer management events</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-55_32_0-23_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>23</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>23:0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="24">
+        <fields_condition/>
+        <fieldat id="fieldset_0-55_32_0-23_0" msb="23" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-55_32_1" length="24">
+        <fields_condition/>
+        <fields_instance>a buffer management event for an IMPLEMENTATION DEFINED reason</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-55_32_1-23_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>IMPLEMENTATION DEFINED</field_name>
+          <field_msb>23</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>23:0</rel_range>
+          <field_description order="before">
+            <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="24">
+        <fields_condition/>
+        <fieldat id="fieldset_0-55_32_1-23_0" msb="23" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-55_32_2" length="24">
+        <fields_condition/>
+        <fields_instance>stage 1 or stage 2 Data Aborts on write to trace buffer</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-55_32_2-23_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>23</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>23:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-55_32_2-7_7-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+          <field_name>AssuredOnly</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>7</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.</para>
+          </field_description>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Data Abort is not due to AssuredOnly.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Data Abort is due to AssuredOnly.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <fields_condition>When FEAT_THE is implemented, TRBSR_EL1.EC == 0b100101 and GetTRBSR_EL1_FSC() == 0b0011xx</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-7_7-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+          <field_msb>7</field_msb>
+          <field_lsb>7</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+          <fields_condition>Otherwise</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+          <field_name>Overlay</field_name>
+          <field_msb>6</field_msb>
+          <field_lsb>6</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>Overlay flag. If a memory access generates a Data Abort for a Permission fault, then this field holds information about the fault.</para>
+          </field_description>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Data Abort due to Base Permissions.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Data Abort due to Overlay Permissions.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <fields_condition>When (FEAT_S1POE is implemented or FEAT_S2POE is implemented) and GetTRBSR_EL1_FSC() == 0b0011xx</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+          <field_msb>6</field_msb>
+          <field_lsb>6</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+          <fields_condition>Otherwise</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-5_5-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+          <field_name>DirtyBit</field_name>
+          <field_msb>5</field_msb>
+          <field_lsb>5</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>DirtyBit flag. If a memory access generates a Data Abort (Write Access) for a Permission fault (When using Indirect Permission), then this field holds information about the fault.</para>
+          </field_description>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Permission Fault is not due to state of nDirty / Dirty bit.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Permission Fault is due to state of nDirty / Dirty bit.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <fields_condition>When (FEAT_S1PIE is implemented or FEAT_S2PIE is implemented) and GetTRBSR_EL1_FSC() == 0b0011xx</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-5_5-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+          <field_msb>5</field_msb>
+          <field_lsb>5</field_lsb>
+          <rel_range>0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+          <fields_condition>Otherwise</fields_condition>
+        </field>
+        <field id="fieldset_0-55_32_2-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>4</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>4:0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="24">
+        <fields_condition/>
+        <fieldat id="fieldset_0-55_32_2-23_8" msb="23" lsb="8"/>
+        <fieldat id="fieldset_0-55_32_2-7_7-1" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-55_32_2-6_6-1" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-55_32_2-5_5-1" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-55_32_2-4_0" msb="4" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+  </field>
+  <field id="fieldset_0-31_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="True" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EC</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>31:26</rel_range>
+    <field_description order="before">
+      <para>Event class. Top-level description of the cause of the trace buffer management event.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000000</field_value>
+        <field_value_description>
+          <para>Other trace buffer management event. All trace buffer management events other than those described by the other defined Event class codes.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="MSS" linked_field_condition="other trace buffer management events" linked_field_id="fieldset_0-15_0_0"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011110</field_value>
+        <field_value_description><para>Granule Protection Check fault on write to trace buffer, other than Granule Protection Fault (GPF). That is, any of the following:</para>
+<list type="unordered">
+<listitem><content>Granule Protection Table (GPT) address size fault.</content>
+</listitem><listitem><content>GPT walk fault.</content>
+</listitem><listitem><content>Synchronous External abort on GPT fetch.</content>
+</listitem></list>
+<para>A GPF on translation table walk or update is reported as either a Stage 1 or Stage 2 Data Abort, as appropriate. Other GPFs are reported as a Stage 1 Data Abort.</para></field_value_description>
+        <field_value_links_to linked_field_name="MSS" linked_field_condition="Granule Protection Check fault" linked_field_id="fieldset_0-15_0_2"/>
+        <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011111</field_value>
+        <field_value_description>
+          <para>Buffer management event for an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> reason.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="MSS" linked_field_condition="Buffer management event for IMPLEMENTATION DEFINED reason" linked_field_id="fieldset_0-15_0_1"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100100</field_value>
+        <field_value_description>
+          <para>Stage 1 Data Abort on write to trace buffer.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="MSS" linked_field_condition="stage 1 or stage 2 Data Aborts on write to trace buffer" linked_field_id="fieldset_0-15_0_3"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100101</field_value>
+        <field_value_description>
+          <para>Stage 2 Data Abort on write to trace buffer.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="MSS" linked_field_condition="stage 1 or stage 2 Data Aborts on write to trace buffer" linked_field_id="fieldset_0-15_0_3"/>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DAT</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Data. Indicates when the Trace Buffer Unit has trace data that has not yet been written to memory.</para>
+    </field_description>
+    <field_description order="after"><para>When TRBSR_EL1.{DAT, S} is {0, 1}, meaning Collection is stopped and the Trace Buffer Unit internal buffers are empty, then all trace data has been written to memory. An additional Data Synchronization Barrier may be required to ensure that the writes are Complete. When TRBSR_EL1.DAT is 0 and Collection is not stopped, there may still be trace data held by the trace unit that the Trace Buffer Unit has not Accepted.</para>
+<para>That is, TRBSR_EL1.DAT reads as 1 when the Trace Buffer Unit has Accepted trace data from the trace unit, but has not yet written it to memory.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Internal buffers are empty. All Trace operations Accepted by the Trace Buffer Unit will Complete in finite time.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Internal buffers are not empty.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRBE_EXT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRQ</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>Maintenance interrupt status.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt is not asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Maintenance interrupt is asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TRG</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before">
+      <para>Triggered.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No Detected Trigger has been observed since this field was last cleared to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A Detected Trigger has been observed since this field was last cleared to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WRAP</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Wrapped.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For each byte of trace the Trace Buffer Unit Accepts and writes to the trace buffer at the address in the current write pointer, if the current write pointer is equal to the Limit pointer minus one, the current write pointer is wrapped by setting it to the Base pointer, and this field is set to 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The current write pointer has not wrapped since this field was last cleared to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The current write pointer has wrapped since this field was last cleared to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EA</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <arch_variants>
+      <arch_variant name="v9Ap3"/>
+    </arch_variants>
+    <fields_condition>From Armv9.3</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EA</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>External Abort.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>An External Abort has not been asserted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>An External Abort has been asserted and detected by the Trace Buffer Unit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When the PE sets this bit as the result of an External Abort</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>Stopped.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Collection has not been stopped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Collection is stopped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="True" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MSS</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Management Event Specific Syndrome. Contains syndrome specific to the management event.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The syndrome contents for each management event are described in the following sections.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_0" length="16">
+        <fields_condition/>
+        <fields_instance>other trace buffer management events</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_0-15_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>6</field_lsb>
+          <rel_range>15:6</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_0-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>BSC</field_name>
+          <field_msb>5</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>5:0</rel_range>
+          <field_description order="before">
+            <para>Trace buffer status code.</para>
+          </field_description>
+          <field_description order="after">
+            <para>All other values are reserved.</para>
+          </field_description>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b000000</field_value>
+              <field_value_description>
+                <para>Collection not stopped, or access not allowed.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000001</field_value>
+              <field_value_description>
+                <para>Trace buffer filled. Collection stopped because the current write pointer wrapped to the base pointer and the trace buffer mode is Fill mode.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000010</field_value>
+              <field_value_description>
+                <para>Trigger Event. Collection stopped because of a Trigger Event. See <register_link state="AArch64" id="AArch64-trbtrg_el1.xml">TRBTRG_EL1</register_link> for more information.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000011</field_value>
+              <field_value_description>
+                <para>Manual Stop. Collection stopped because of a Manual Stop event. See <register_link state="ext" id="ext-trbcr.xml">TRBCR</register_link>.ManStop for more information.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_TRBE_EXT is implemented</field_value_condition>
+            </field_value_instance>
+          </field_values>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_0-15_6" msb="15" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_0-5_0" msb="5" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_1" length="16">
+        <fields_condition/>
+        <fields_instance>Buffer management event for IMPLEMENTATION DEFINED reason</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_1-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>IMPLEMENTATION DEFINED</field_name>
+          <field_msb>15</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>15:0</rel_range>
+          <field_description order="before">
+            <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_1-15_0" msb="15" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_2" length="16">
+        <fields_condition>When FEAT_RME is implemented</fields_condition>
+        <fields_instance>Granule Protection Check fault</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_2-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>15:0</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition>When FEAT_RME is implemented</fields_condition>
+        <fieldat id="fieldset_0-15_0_2-15_0" msb="15" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_3" length="16">
+        <fields_condition/>
+        <fields_instance>stage 1 or stage 2 Data Aborts on write to trace buffer</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_3-15_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>6</field_lsb>
+          <rel_range>15:6</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_3-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>FSC</field_name>
+          <field_msb>5</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>5:0</rel_range>
+          <field_description order="before">
+            <para>Fault status code.</para>
+          </field_description>
+          <field_description order="after">
+            <para>All other values are reserved.</para>
+          </field_description>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b000000</field_value>
+              <field_value_description>
+                <para>Address size fault, level 0 of translation or translation table base register.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000001</field_value>
+              <field_value_description>
+                <para>Address size fault, level 1.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000010</field_value>
+              <field_value_description>
+                <para>Address size fault, level 2.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000011</field_value>
+              <field_value_description>
+                <para>Address size fault, level 3.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000100</field_value>
+              <field_value_description>
+                <para>Translation fault, level 0.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000101</field_value>
+              <field_value_description>
+                <para>Translation fault, level 1.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000110</field_value>
+              <field_value_description>
+                <para>Translation fault, level 2.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b000111</field_value>
+              <field_value_description>
+                <para>Translation fault, level 3.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001001</field_value>
+              <field_value_description>
+                <para>Access flag fault, level 1.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001010</field_value>
+              <field_value_description>
+                <para>Access flag fault, level 2.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001011</field_value>
+              <field_value_description>
+                <para>Access flag fault, level 3.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001000</field_value>
+              <field_value_description>
+                <para>Access flag fault, level 0.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001100</field_value>
+              <field_value_description>
+                <para>Permission fault, level 0.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001101</field_value>
+              <field_value_description>
+                <para>Permission fault, level 1.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001110</field_value>
+              <field_value_description>
+                <para>Permission fault, level 2.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b001111</field_value>
+              <field_value_description>
+                <para>Permission fault, level 3.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010000</field_value>
+              <field_value_description>
+                <para>Synchronous External abort, not on translation table walk or hardware update of translation table.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010001</field_value>
+              <field_value_description>
+                <para>Asynchronous External abort.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010010</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level -2.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_D128 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010011</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level -1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010100</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level 0.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010101</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level 1.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010110</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level 2.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b010111</field_value>
+              <field_value_description>
+                <para>Synchronous External abort on translation table walk or hardware update of translation table, level 3.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b011011</field_value>
+              <field_value_description>
+                <para>Synchronous parity or ECC error on memory access on translation table walk or hardware update of translation table, level -1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented and FEAT_RAS is not implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100001</field_value>
+              <field_value_description>
+                <para>Alignment fault.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100010</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level -2.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_D128 is implemented and FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100011</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level -1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented and FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100100</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level 0.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100101</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level 1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100110</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level 2.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b100111</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault on translation table walk or hardware update of translation table, level 3.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b101000</field_value>
+              <field_value_description>
+                <para>Granule Protection Fault, not on translation table walk or hardware update of translation table.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b101001</field_value>
+              <field_value_description>
+                <para>Address size fault, level -1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b101010</field_value>
+              <field_value_description>
+                <para>Translation fault, level -2.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_D128 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b101011</field_value>
+              <field_value_description>
+                <para>Translation fault, level -1.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b101100</field_value>
+              <field_value_description>
+                <para>Address Size fault, level -2.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_D128 is implemented</field_value_condition>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b110000</field_value>
+              <field_value_description>
+                <para>TLB conflict abort.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b110001</field_value>
+              <field_value_description>
+                <para>Unsupported atomic hardware update fault.</para>
+              </field_value_description>
+              <field_value_condition>When FEAT_HAFDBS is implemented</field_value_condition>
+            </field_value_instance>
+          </field_values>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_3-15_6" msb="15" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_3-5_0" msb="5" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_56" msb="63" lsb="56"/>
+  <fieldat id="fieldset_0-55_32" msb="55" lsb="32"/>
+  <fieldat id="fieldset_0-31_26" msb="31" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>The PE might ignore a write to TRBSR_EL1 if any of the following apply:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.E == <binarynumber>0b1</binarynumber>, and either <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is not implemented or the Trace Buffer Unit is using Self-hosted mode.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.XE == <binarynumber>0b1</binarynumber>, <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is implemented, and the Trace Buffer Unit is using External mode.</para>
+</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS TRBSR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, TRBSR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.TRBSR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBSR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBSR_EL1;
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBSR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister TRBSR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR TRBSR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.TRBSR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBSR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBSR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBSR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

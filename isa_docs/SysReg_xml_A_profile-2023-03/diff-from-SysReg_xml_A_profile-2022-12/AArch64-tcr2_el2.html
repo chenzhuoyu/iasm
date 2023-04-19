@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>TCR2_EL2</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TCR2_EL2, Extended Translation Control Register (EL2)</h1><p>The TCR2_EL2 characteristics are:</p><h2>Purpose</h2><p>The control register for stage 1 of the EL2&amp;0 translation regime.</p><h2>Configuration</h2><p>This register is present only when FEAT_TCR2 is implemented. Otherwise, direct accesses to TCR2_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2><p>TCR2_EL2 is a 64-bit register.</p><h2>Field descriptions</h2><h3>When HCR_EL2.E2H == 0:</h3><table class="regdiagram"><thead><tr><td><ins class="nocount">63</ins></td><td><ins class="nocount">62</ins></td><td><ins class="nocount">61</ins></td><td><ins class="nocount">60</ins></td><td><ins class="nocount">59</ins></td><td><ins class="nocount">58</ins></td><td><ins class="nocount">57</ins></td><td><ins class="nocount">56</ins></td><td><ins class="nocount">55</ins></td><td><ins class="nocount">54</ins></td><td><ins class="nocount">53</ins></td><td><ins class="nocount">52</ins></td><td><ins class="nocount">51</ins></td><td><ins class="nocount">50</ins></td><td><ins class="nocount">49</ins></td><td><ins class="nocount">48</ins></td><td><ins class="nocount">47</ins></td><td><ins class="nocount">46</ins></td><td><ins class="nocount">45</ins></td><td><ins class="nocount">44</ins></td><td><ins class="nocount">43</ins></td><td><ins class="nocount">42</ins></td><td><ins class="nocount">41</ins></td><td><ins class="nocount">40</ins></td><td><ins class="nocount">39</ins></td><td><ins class="nocount">38</ins></td><td><ins class="nocount">37</ins></td><td><ins class="nocount">36</ins></td><td><ins class="nocount">35</ins></td><td><ins class="nocount">34</ins></td><td><ins class="nocount">33</ins></td><td><ins class="nocount">32</ins></td></tr></thead><tfoot><tr><td><ins class="nocount">31</ins></td><td><ins class="nocount">30</ins></td><td><ins class="nocount">29</ins></td><td><ins class="nocount">28</ins></td><td><ins class="nocount">27</ins></td><td><ins class="nocount">26</ins></td><td><ins class="nocount">25</ins></td><td><ins class="nocount">24</ins></td><td><ins class="nocount">23</ins></td><td><ins class="nocount">22</ins></td><td><ins class="nocount">21</ins></td><td><ins class="nocount">20</ins></td><td><ins class="nocount">19</ins></td><td><ins class="nocount">18</ins></td><td><ins class="nocount">17</ins></td><td><ins class="nocount">16</ins></td><td><ins class="nocount">15</ins></td><td><ins class="nocount">14</ins></td><td><ins class="nocount">13</ins></td><td><ins class="nocount">12</ins></td><td><ins class="nocount">11</ins></td><td><ins class="nocount">10</ins></td><td><ins class="nocount">9</ins></td><td><ins class="nocount">8</ins></td><td><ins class="nocount">7</ins></td><td><ins class="nocount">6</ins></td><td><ins class="nocount">5</ins></td><td><ins class="nocount">4</ins></td><td><ins class="nocount">3</ins></td><td><ins class="nocount">2</ins></td><td><ins class="nocount">1</ins></td><td><ins class="nocount">0</ins></td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_13"><ins class="nocount">RES0</ins></a></td></tr><tr class="firstrow"><td class="lr" colspan="19"><a href="#fieldset_0-63_13"><ins class="nocount">RES0</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1"><ins class="nocount">AMEC0</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1"><ins class="nocount">HAFT</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1"><ins class="nocount">PTTWI</ins></a></td><td class="lr" colspan="5"><a href="#fieldset_0-9_5"><ins class="nocount">RES0</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1"><ins class="nocount">AIE</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1"><ins class="nocount">POE</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2"><ins class="nocount">RES0</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1"><ins class="nocount">PIE</ins></a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1"><ins class="nocount">PnCH</ins></a></td></tr></tbody></table><table class="regdiagram"><thead><tr><td><del class="nocount">63</del></td><td><del class="nocount">62</del></td><td><del class="nocount">61</del></td><td><del class="nocount">60</del></td><td><del class="nocount">59</del></td><td><del class="nocount">58</del></td><td><del class="nocount">57</del></td><td><del class="nocount">56</del></td><td><del class="nocount">55</del></td><td><del class="nocount">54</del></td><td><del class="nocount">53</del></td><td><del class="nocount">52</del></td><td><del class="nocount">51</del></td><td><del class="nocount">50</del></td><td><del class="nocount">49</del></td><td><del class="nocount">48</del></td><td><del class="nocount">47</del></td><td><del class="nocount">46</del></td><td><del class="nocount">45</del></td><td><del class="nocount">44</del></td><td><del class="nocount">43</del></td><td><del class="nocount">42</del></td><td><del class="nocount">41</del></td><td><del class="nocount">40</del></td><td><del class="nocount">39</del></td><td><del class="nocount">38</del></td><td><del class="nocount">37</del></td><td><del class="nocount">36</del></td><td><del class="nocount">35</del></td><td><del class="nocount">34</del></td><td><del class="nocount">33</del></td><td><del class="nocount">32</del></td></tr></thead><tfoot><tr><td><del class="nocount">31</del></td><td><del class="nocount">30</del></td><td><del class="nocount">29</del></td><td><del class="nocount">28</del></td><td><del class="nocount">27</del></td><td><del class="nocount">26</del></td><td><del class="nocount">25</del></td><td><del class="nocount">24</del></td><td><del class="nocount">23</del></td><td><del class="nocount">22</del></td><td><del class="nocount">21</del></td><td><del class="nocount">20</del></td><td><del class="nocount">19</del></td><td><del class="nocount">18</del></td><td><del class="nocount">17</del></td><td><del class="nocount">16</del></td><td><del class="nocount">15</del></td><td><del class="nocount">14</del></td><td><del class="nocount">13</del></td><td><del class="nocount">12</del></td><td><del class="nocount">11</del></td><td><del class="nocount">10</del></td><td><del class="nocount">9</del></td><td><del class="nocount">8</del></td><td><del class="nocount">7</del></td><td><del class="nocount">6</del></td><td><del class="nocount">5</del></td><td><del class="nocount">4</del></td><td><del class="nocount">3</del></td><td><del class="nocount">2</del></td><td><del class="nocount">1</del></td><td><del class="nocount">0</del></td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_14"><del class="nocount">RES0</del></a></td></tr><tr class="firstrow"><td class="lr" colspan="18"><a href="#fieldset_0-63_14"><del class="nocount">RES0</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1"><del class="nocount">AMEC1</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1"><del class="nocount">AMEC0</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1"><del class="nocount">HAFT</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1"><del class="nocount">PTTWI</del></a></td><td class="lr" colspan="4"><a href="#fieldset_0-9_6"><del class="nocount">RES0</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1"><del class="nocount">D128</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1"><del class="nocount">AIE</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1"><del class="nocount">POE</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2"><del class="nocount">RES0</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1"><del class="nocount">PIE</del></a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1"><del class="nocount">PnCH</del></a></td></tr></tbody></table><div class="text_before_fields"><p>Unless stated otherwise, all the bits in<ins> TCR2_EL2 are permitted to be cached in a TLB.</ins><a href="AArch64-tcr2_el2.html"><del>TCR2_EL2</del></a><del>, when they have the value 1, are permitted to be cached in a TLB.</del></p></div><h4 id="fieldset_0-63_13">Bits [63:<ins>13</ins><del>14</del>]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-13_13-1"><del>AMEC1, bit [13]</del><span class="condition"><br/><del>When FEAT_MEC is implemented and FEAT_VHE is implemented:
+                        </del></span></h4><div class="field"><p><del>This field controls the enabling of the Alternate MECID translations for the EL2&amp;0 TTBR1 translation regime.</del></p><p><del>TCR2_EL2.AMEC1 is provided to enable the safe update of </del><a href="AArch64-ttbr_el2.html"><del>TTBR_EL2</del></a><del> and </del><a href="AArch64-mecid_a_el2.html"><del>MECID_A_EL2</del></a><del>, by disabling access and speculation to AMEC == 1 Block or Page descriptors during the update.</del></p><table class="valuetable"><tr><th><del>AMEC1</del></th><th><del>Meaning</del></th></tr><tr><td class="bitfield"><del>0b0</del></td><td><p><del>Use of a Block or Page descriptor containing AMEC == 1 generates a Translation fault.</del></p></td></tr><tr><td class="bitfield"><del>0b1</del></td><td><p><del>Accesses translated by a Block or Page descriptor containing AMEC == 1 are associated with the MECID configured in </del><a href="AArch64-mecid_a1_el2.html"><del>MECID_A1_EL2</del></a><del>.</del></p></td></tr></table><p><del>The reset behavior of this field is:</del></p><ul><li><del>On a Warm reset:</del><ul><li><del>When EL3 is not implemented,
+            this field resets to
+            </del><span class="binarynumber"><del>0</del></span><del>.
+</del></li><li><del>Otherwise,
+            this field resets to
+            an architecturally </del><span class="arm-defined-word"><del>UNKNOWN</del></span><del> value.</del></li></ul></li></ul><p><del>Accessing this field has the following behavior:</del></p><ul><li><del>When IsCurrentSecurityState(SS_Secure), access to this field
+                            is </del><span class="access_level"><del>RES0</del></span><del>.</del></li><li><del>When IsCurrentSecurityState(SS_NonSecure), access to this field
+                            is </del><span class="access_level"><del>RES0</del></span><del>.</del></li><li><del>When SCTLR2_EL2.EMEC != 0, access to this field
+                            is </del><span class="access_level"><del>RES1</del></span><del>.</del></li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/><del>Otherwise:
+                        </del></span></h4><div class="field"><p><del>Reserved, </del><span class="arm-defined-word"><del>RES0</del></span><del>.</del></p></div><h4 id="fieldset_0-12_12-1">AMEC0, bit [12]<span class="condition"><br/>When FEAT_MEC is implemented:
+                        </span></h4><div class="field"><p>This field controls the enabling of the Alternate MECID translations for the EL2 <del>and EL2&amp;0 TTBR0 </del>translation <ins>regime.</ins><del>regimes.</del></p><p>TCR2_EL2.AMEC0 is provided to enable the safe update of <a href="AArch64-ttbr0_el2.html"><ins>TTBR0_EL2</ins></a><a href="AArch64-ttbr_el2.html"><del>TTBR_EL2</del></a> and <a href="AArch64-mecid_a0_el2.html"><ins>MECID_A0_EL2</ins></a><a href="AArch64-mecid_a_el2.html"><del>MECID_A_EL2</del></a>, by disabling access and speculation to AMEC=1 Block or Page descriptors during the update.</p><table class="valuetable"><tr><th>AMEC0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Use of a Block or Page descriptor containing AMEC == 1 generates a Translation fault.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Accesses translated by a Block or Page descriptor containing AMEC == 1 are associated with the MECID configured in <a href="AArch64-mecid_a0_el2.html">MECID_A0_EL2</a>.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul><p>Accessing this field has the following behavior:</p><ul><li>When IsCurrentSecurityState(SS_Secure), access to this field
+                            is <span class="access_level">RES0</span>.</li><li>When IsCurrentSecurityState(SS_NonSecure), access to this field
+                            is <span class="access_level">RES0</span>.</li><li>When SCTLR2_EL2.EMEC != 0, access to this field
+                            is <span class="access_level">RES1</span>.</li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-11_11-1">HAFT, bit [11]<span class="condition"><br/>When FEAT_HAFT is implemented:
+                        </span></h4><div class="field"><p>Hardware managed Access Flag for <ins>Table descriptors.</ins><del>Tables.</del></p><p>Enables the Hardware managed Access Flag for <ins>Table descriptors.</ins><del>Tables.</del></p><table class="valuetable"><tr><th>HAFT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Hardware managed Access Flag for <ins>Table descriptors</ins><del>Tables</del> is disabled.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Hardware managed Access Flag for <ins>Table descriptors</ins><del>Tables</del> is enabled.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-10_10-1">PTTWI, bit [10]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field"><p>Permit Translation table walk Incoherence.</p><p>Permits RCWS instructions to <ins>generate writes that </ins>have<ins> the</ins> Reduced Coherence property.</p><table class="valuetable"><tr><th>PTTWI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Write accesses generated by RCWS at EL2 or EL2&amp;0 do not have the Reduced Coherence property.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Write accesses generated by RCWS at EL2 or EL2&amp;0 have the Reduced Coherence property.</p></td></tr></table><p>This bit is permitted to be <ins>implemented</ins><del>built</del> as a read-only bit with a fixed value of 0.</p><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.TCR2En == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-9_5">Bits [9:<ins>5</ins><del>6</del>]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-5_5-1"><del>D128, bit [5]</del><span class="condition"><br/><del>When FEAT_D128 is implemented:
+                        </del></span></h4><div class="field"><p><del>Enable 128-bit Page Table Descriptors.</del></p><p><del>Enables VMSAv9-128 translation system for the Stage 1 EL2 Translation Process.</del></p><table class="valuetable"><tr><th><del>D128</del></th><th><del>Meaning</del></th></tr><tr><td class="bitfield"><del>0b0</del></td><td><p><del>Translation system follows VMSA-64 translation process.</del></p></td></tr><tr><td class="bitfield"><del>0b1</del></td><td><p><del>Translation system follows VMSAv9-128 translation process.</del></p></td></tr></table><p><del>The reset behavior of this field is:</del></p><ul><li><del>On a Warm reset:</del><ul><li><del>When EL3 is not implemented,
+            this field resets to
+            </del><span class="binarynumber"><del>0</del></span><del>.
+</del></li><li><del>Otherwise,
+            this field resets to
+            an architecturally </del><span class="arm-defined-word"><del>UNKNOWN</del></span><del> value.</del></li></ul></li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/><del>Otherwise:
+                        </del></span></h4><div class="field"><p><del>Reserved, </del><span class="arm-defined-word"><del>RES0</del></span><del>.</del></p></div><h4 id="fieldset_0-4_4-1">AIE, bit [4]<span class="condition"><br/>When FEAT_AIE is implemented:
+                        </span></h4><div class="field"><p>Enable Attribute Indexing Extension. Control for Attribute Indexing Extension for <ins>stage</ins><del>Stage</del> 1 EL2 <ins>translation.</ins><del>Translation Process.</del></p><table class="valuetable"><tr><th>AIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Attribute Indexing Extension Disabled.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Attribute Indexing Extension Enabled.</p></td></tr></table><p><del>This field is </del><span class="arm-defined-word"><del>RES1</del></span><del> when TCR2_EL2.D128 is set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-3_3-1">POE, bit [3]<span class="condition"><br/>When FEAT_S1POE is implemented:
+                        </span></h4><div class="field"><p>POE. Controls setting of permission overlay for EL2 accesses in stage 1 of the EL2 translation regime.</p><table class="valuetable"><tr><th>POE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Permission overlay disabled for EL2 access in stage 1 of EL2 translation regime.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Permission overlay enabled for EL2 access in stage 1 of EL2 translation regime.</p></td></tr></table><p>This bit is not permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-2_2">Bit [2]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-1_1-1">PIE, bit [1]<span class="condition"><br/>When FEAT_S1PIE is implemented:
+                        </span></h4><div class="field"><p>Select Permission Model. Controls setting of indirect permission model in <ins>stage</ins><del>Stage</del> 1 EL2 <ins>translation.</ins><del>Translation Process.</del></p><table class="valuetable"><tr><th>PIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Direct permission model.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Indirect permission model.</p></td></tr></table><p><del>This field is </del><span class="arm-defined-word"><del>RES1</del></span><del> when TCR2_EL2.D128 is set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-0_0-1">PnCH, bit [0]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field"><p>Protected attribute enable.Indicates use of bit[52] of the stage 1 translation table entry.</p><table class="valuetable"><tr><th>PnCH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Bit[52] of each stage 1 translation table entry does not indicate protected attribute.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Bit[52] of each stage 1 translation table entry indicates protected attribute.</p></td></tr></table><p><del>This field is </del><span class="arm-defined-word"><del>RES0</del></span><del> when TCR2_EL2.D128 is set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h3>When HCR_EL2.E2H == 1:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_16">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_1-63_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-15_15-1">DisCH1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-14_14-1">DisCH0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-13_13-1"><ins class="nocount">AMEC1</ins></a><a href="#fieldset_1-13_13"><del class="nocount">RES0</del></a></td><td class="lr" colspan="1"><a href="#fieldset_1-12_12-1">AMEC0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-11_11-1">HAFT</a></td><td class="lr" colspan="1"><a href="#fieldset_1-10_10-1">PTTWI</a></td><td class="lr" colspan="2"><a href="#fieldset_1-9_8-1">SKL1</a></td><td class="lr" colspan="2"><a href="#fieldset_1-7_6-1">SKL0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-5_5-1">D128</a></td><td class="lr" colspan="1"><a href="#fieldset_1-4_4-1">AIE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-3_3-1">POE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-2_2-1">E0POE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-1_1-1">PIE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-0_0-1">PnCH</a></td></tr></tbody></table><div class="text_before_fields"><p>Unless stated otherwise, all the bits in <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>, when they have the value 1, are permitted to be cached in a TLB.</p></div><h4 id="fieldset_1-63_16">Bits [63:16]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-15_15-1">DisCH1, bit [15]<span class="condition"><br/>When FEAT_D128 is implemented and TCR2_EL2.D128 == 1:
+                        </span></h4><div class="field"><p>Disable <ins>the </ins>Contiguous <ins>bit</ins><del>Hint</del> for <ins>the </ins>Start Table for<del> VARange 1.</del> <a href="AArch64-ttbr1_el2.html"><ins>TTBR1_EL2</ins></a><ins>.</ins></p><table class="valuetable"><tr><th>DisCH1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p><ins>The </ins>Contiguous <ins>bit</ins><del>Hint</del> of Block or Page descriptors of the Start Table for<del> VARange 1 are not affected by this field.</del> <a href="AArch64-ttbr1_el2.html"><ins>TTBR1_EL2</ins></a><ins> is not affected by this field.</ins></p></td></tr><tr><td class="bitfield">0b1</td><td><p><ins>The </ins>Contiguous <ins>bit</ins><del>Hint</del> of Block or Page descriptors of the Start Table for<del> VARange 1 are disabled.</del> <a href="AArch64-ttbr1_el2.html"><ins>TTBR1_EL2</ins></a><ins> is treated as 0.</ins></p></td></tr></table><p>The reset behavior of this field is:</p><ul><li><ins>On a Warm reset, 
+      this field resets
+       to an architecturally </ins><span class="arm-defined-word"><ins>UNKNOWN</ins></span><ins> value.</ins></li><li><del>On a Warm reset:</del><ul><li><del>When EL3 is not implemented,
+            this field resets to
+            </del><span class="binarynumber"><del>0</del></span><del>.
+</del></li><li><del>Otherwise,
+            this field resets to
+            an architecturally </del><span class="arm-defined-word"><del>UNKNOWN</del></span><del> value.</del></li></ul></li></ul></div><h4 id="fieldset_1-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-14_14-1">DisCH0, bit [14]<span class="condition"><br/>When FEAT_D128 is implemented and TCR2_EL2.D128 == 1:
+                        </span></h4><div class="field"><p>Disable <ins>the </ins>Contiguous <ins>bit</ins><del>Hint</del> for <ins>the </ins>Start Table for<del> VARange 0.</del> <a href="AArch64-ttbr0_el2.html"><ins>TTBR0_EL2</ins></a><ins>.</ins></p><table class="valuetable"><tr><th>DisCH0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p><ins>The </ins>Contiguous <ins>bit</ins><del>Hint</del> of Block or Page descriptors of the Start Table for<del> VARange 0 are not affected by this field.</del> <a href="AArch64-ttbr0_el2.html"><ins>TTBR0_EL2</ins></a><ins> is not affected by this field.</ins></p></td></tr><tr><td class="bitfield">0b1</td><td><p><ins>The </ins>Contiguous <ins>bit</ins><del>Hint</del> of Block or Page descriptors of the Start Table for<del> VARange 0 are disabled.</del> <a href="AArch64-ttbr0_el2.html"><ins>TTBR0_EL2</ins></a><ins> is treated as 0.</ins></p></td></tr></table><p>The reset behavior of this field is:</p><ul><li><ins>On a Warm reset, 
+      this field resets
+       to an architecturally </ins><span class="arm-defined-word"><ins>UNKNOWN</ins></span><ins> value.</ins></li><li><del>On a Warm reset:</del><ul><li><del>When EL3 is not implemented,
+            this field resets to
+            </del><span class="binarynumber"><del>0</del></span><del>.
+</del></li><li><del>Otherwise,
+            this field resets to
+            an architecturally </del><span class="arm-defined-word"><del>UNKNOWN</del></span><del> value.</del></li></ul></li></ul></div><h4 id="fieldset_1-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-13_13-1"><ins>AMEC1, bit</ins><del>Bit</del> [13]<span class="condition"><br/><ins>When FEAT_MEC is implemented:
+                        </ins></span></h4><div class="field"><p><ins>This field controls the enabling of the Alternate MECID translations for accesses in the </ins><a href="AArch64-ttbr1_el2.html"><ins>TTBR1_EL2</ins></a><ins> half of the VA range, for the EL2&amp;0 translation regime.</ins></p><p><ins>TCR2_EL2.AMEC1 is provided to enable the safe update of </ins><a href="AArch64-ttbr1_el2.html"><ins>TTBR1_EL2</ins></a><ins> and </ins><a href="AArch64-mecid_a1_el2.html"><ins>MECID_A1_EL2</ins></a><ins>, by disabling access and speculation to AMEC == 1 Block or Page descriptors during the update.</ins></p><table class="valuetable"><tr><th><ins>AMEC1</ins></th><th><ins>Meaning</ins></th></tr><tr><td class="bitfield"><ins>0b0</ins></td><td><p><ins>Use of a Block or Page descriptor containing AMEC == 1 generates a Translation fault.</ins></p></td></tr><tr><td class="bitfield"><ins>0b1</ins></td><td><p><ins>Accesses translated by a Block or Page descriptor containing AMEC == 1 are associated with the MECID configured in </ins><a href="AArch64-mecid_a1_el2.html"><ins>MECID_A1_EL2</ins></a><ins>.</ins></p></td></tr></table><p><ins>The reset behavior of this field is:</ins></p><ul><li><ins>On a Warm reset:</ins><ul><li><ins>When EL3 is not implemented,
+            this field resets to
+            </ins><span class="binarynumber"><ins>0</ins></span><ins>.
+</ins></li><li><ins>Otherwise,
+            this field resets to
+            an architecturally </ins><span class="arm-defined-word"><ins>UNKNOWN</ins></span><ins> value.</ins></li></ul></li></ul><p><ins>Accessing this field has the following behavior:</ins></p><ul><li><ins>When IsCurrentSecurityState(SS_Secure), access to this field
+                            is </ins><span class="access_level"><ins>RES0</ins></span><ins>.</ins></li><li><ins>When IsCurrentSecurityState(SS_NonSecure), access to this field
+                            is </ins><span class="access_level"><ins>RES0</ins></span><ins>.</ins></li><li><ins>When SCTLR2_EL2.EMEC != 0, access to this field
+                            is </ins><span class="access_level"><ins>RES1</ins></span><ins>.</ins></li></ul></div><h4 id="fieldset_1-13_13-2"><span class="condition"><br/><ins>Otherwise:
+                        </ins></span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-12_12-1">AMEC0, bit [12]<span class="condition"><br/>When FEAT_MEC is implemented:
+                        </span></h4><div class="field"><p>This field controls the enabling of the Alternate MECID translations for <ins>accesses</ins><del>the</del> <ins>in</ins><del>EL2</del> <ins>the</ins><del>and EL2&amp;0 TTBR0 translation regimes.</del> <a href="AArch64-ttbr0_el2.html"><ins>TTBR0_EL2</ins></a><ins> half of the VA range, for the EL2&amp;0 translation regime.</ins></p><p>TCR2_EL2.AMEC0 is provided to enable the safe update of <a href="AArch64-ttbr_el2.html">TTBR_EL2</a> and <a href="AArch64-mecid_a_el2.html">MECID_A_EL2</a>, by disabling access and speculation to AMEC=1 Block or Page descriptors during the update.</p><table class="valuetable"><tr><th>AMEC0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Use of a Block or Page descriptor containing AMEC == 1 generates a Translation fault.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Accesses translated by a Block or Page descriptor containing AMEC == 1 are associated with the MECID configured in <a href="AArch64-mecid_a0_el2.html">MECID_A0_EL2</a>.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul><p>Accessing this field has the following behavior:</p><ul><li>When IsCurrentSecurityState(SS_Secure), access to this field
+                            is <span class="access_level">RES0</span>.</li><li>When IsCurrentSecurityState(SS_NonSecure), access to this field
+                            is <span class="access_level">RES0</span>.</li><li>When SCTLR2_EL2.EMEC != 0, access to this field
+                            is <span class="access_level">RES1</span>.</li></ul></div><h4 id="fieldset_1-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-11_11-1">HAFT, bit [11]<span class="condition"><br/>When FEAT_HAFT is implemented:
+                        </span></h4><div class="field"><p>Hardware managed Access Flag for <ins>Table descriptors.</ins><del>Tables.</del></p><p>Enables the Hardware managed Access Flag for <ins>Table descriptors.</ins><del>Tables.</del></p><table class="valuetable"><tr><th>HAFT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Hardware managed Access Flag for <ins>Table descriptors</ins><del>Tables</del> is disabled.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Hardware managed Access Flag for <ins>Table descriptors</ins><del>Tables</del> is enabled.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-10_10-1">PTTWI, bit [10]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field"><p>Permit Translation table walk Incoherence.</p><p>Permits RCWS instructions to <ins>generate writes that </ins>have<ins> the</ins> Reduced Coherence property.</p><table class="valuetable"><tr><th>PTTWI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Write accesses generated by RCWS do not have the Reduced Coherence property.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Write accesses generated by RCWS have the Reduced Coherence property.</p></td></tr></table><p>This bit is permitted to be <ins>implemented</ins><del>built</del> as a read-only bit with a fixed value of 0.</p><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.TCR2En == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-9_8-1">SKL1, bits [9:8]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field"><p>Skip Level associated with translation table walks using <a href="AArch64-ttbr1_el2.html">TTBR1_EL2</a>.</p><p>This determines the number of levels to be skipped in the regular start level of the <ins>stage</ins><del>Stage</del> 1 EL2&amp;0 translation table walks using <a href="AArch64-ttbr1_el2.html">TTBR1_EL2</a>.</p><table class="valuetable"><tr><th>SKL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td><p>Skip 0 level in the regular start level.</p></td></tr><tr><td class="bitfield">0b01</td><td><p>Skip 1 level in the regular start level.</p></td></tr><tr><td class="bitfield">0b10</td><td><p>Skip 2 levels in the regular start level.</p></td></tr><tr><td class="bitfield">0b11</td><td><p>Skip 3 levels in the regular start level.</p></td></tr></table><p>This field is IGNORED when <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>.D128 is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-9_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-7_6-1">SKL0, bits [7:6]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field"><p>Skip Level associated with translation table walks using <a href="AArch64-ttbr0_el2.html">TTBR0_EL2</a>.</p><p>This determines the number of levels to be skipped in the regular start level of the <ins>stage</ins><del>Stage</del> 1 EL2&amp;0 translation table walks using <a href="AArch64-ttbr0_el2.html">TTBR0_EL2</a>.</p><table class="valuetable"><tr><th>SKL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td><p>Skip 0 level in the regular start level.</p></td></tr><tr><td class="bitfield">0b01</td><td><p>Skip 1 level in the regular start level.</p></td></tr><tr><td class="bitfield">0b10</td><td><p>Skip 2 levels in the regular start level.</p></td></tr><tr><td class="bitfield">0b11</td><td><p>Skip 3 levels in the regular start level.</p></td></tr></table><p>This field is IGNORED when <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>.D128 is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-7_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-5_5-1">D128, bit [5]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field"><p><del>Enables VMSAv9-128 translation system for the Stage 1 EL2&amp;0 Translation Process.</del></p><p><ins>Enables</ins><del>Enable</del> <ins>VMSAv9-128</ins><del>128-bit</del> <ins>translation</ins><del>Page</del> <ins>system</ins><del>Table</del> <ins>for stage 1 EL2&amp;0 translation.</ins><del>Descriptors.</del></p><table class="valuetable"><tr><th>D128</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Translation system follows VMSA-64 translation process.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Translation system follows VMSAv9-128 translation process.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-4_4-1">AIE, bit [4]<span class="condition"><br/>When FEAT_AIE is implemented:
+                        </span></h4><div class="field"><p>Enable Attribute Indexing Extension. Control for Attribute Indexing Extension for <ins>stage</ins><del>Stage</del> 1 EL2&amp;0 <ins>translation.</ins><del>Translation Process.</del></p><table class="valuetable"><tr><th>AIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Attribute Indexing Extension Disabled.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Attribute Indexing Extension Enabled.</p></td></tr></table><p>This field is <span class="arm-defined-word">RES1</span> when <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>.D128 is <ins>1.</ins><del>set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-3_3-1">POE, bit [3]<span class="condition"><br/>When FEAT_S1POE is implemented:
+                        </span></h4><div class="field"><p>POE. Controls setting of permission overlay for EL2 accesses in stage 1 of the EL2&amp;0 translation regime.</p><table class="valuetable"><tr><th>POE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Permission overlay disabled for EL2 access in stage 1 of EL2&amp;0 translation regime.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Permission overlay enabled for EL2 access in stage 1 of EL2&amp;0 translation regime.</p></td></tr></table><p>This bit is not permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-2_2-1">E0POE, bit [2]<span class="condition"><br/>When FEAT_S1POE is implemented:
+                        </span></h4><div class="field"><p>EL0 POE. controls setting of permission overlay in stage 1 of the EL2 translation regime.</p><table class="valuetable"><tr><th>E0POE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Permission overlay disabled for EL0 access in stage 1 of EL2&amp;0 translation regime.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Permission overlay enabled for EL0 access in stage 1 of EL2&amp;0 translation regime.</p></td></tr></table><p>This bit is not permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-1_1-1">PIE, bit [1]<span class="condition"><br/>When FEAT_S1PIE is implemented:
+                        </span></h4><div class="field"><p>Select Permission Model. Controls setting of indirect permission model in <ins>stage</ins><del>Stage</del> 1 EL2 <ins>translation.</ins><del>Translation Process.</del></p><table class="valuetable"><tr><th>PIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Direct permission model.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Indirect permission model.</p></td></tr></table><p>This field is <span class="arm-defined-word">RES1</span> when <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>.D128 is <ins>1.</ins><del>set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_1-0_0-1">PnCH, bit [0]<span class="condition"><br/>When FEAT_THE is implemented:
+                        </span></h4><div class="field"><p>Protected attribute enable.Indicates use of bit[52] of the stage 1 translation table entry.</p><table class="valuetable"><tr><th>PnCH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Bit[52] of each stage 1 translation table entry does not indicate protected attribute.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Bit[52] of each stage 1 translation table entry indicate protected attribute.</p></td></tr></table><p>This field is <span class="arm-defined-word">RES1</span> when <a href="AArch64-tcr2_el2.html">TCR2_EL2</a>.D128 is <ins>1.</ins><del>set.</del></p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_1-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><div class="access_mechanisms"><h2>Accessing TCR2_EL2</h2><p>When <span class="xref">FEAT_VHE</span> is implemented, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H is 1, without explicit synchronization, accesses from EL2 using the register name TCR2_EL2 or TCR2_EL1 are not guaranteed to be ordered with respect to accesses using the other register name.</p><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt>, TCR2_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0010</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = TCR2_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = TCR2_EL2;
+                </p><h4 class="assembler">MSR TCR2_EL2, &lt;Xt></h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0010</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        TCR2_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    TCR2_EL2 = X[t, 64];
+                </p><h4 class="assembler">MRS &lt;Xt>, TCR2_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0010</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.TCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.TCR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV> == '111' then
+        X[t, 64] = NVMem[0x270];
+    else
+        X[t, 64] = TCR2_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        X[t, 64] = TCR2_EL2;
+    else
+        X[t, 64] = TCR2_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = TCR2_EL1;
+                </p><h4 class="assembler">MSR TCR2_EL1, &lt;Xt></h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0010</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.TCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.TCR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV> == '111' then
+        NVMem[0x270] = X[t, 64];
+    else
+        TCR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.TCR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.TCR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        TCR2_EL2 = X[t, 64];
+    else
+        TCR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    TCR2_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>01</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

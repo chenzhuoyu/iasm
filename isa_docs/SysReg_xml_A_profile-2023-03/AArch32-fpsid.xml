@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>FPSID</reg_short_name>
+        
+        <reg_long_name>Floating-Point System ID register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides top-level information about the floating-point implementation.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>This register largely duplicates information held in the <register_link state="AArch32" id="AArch32-midr.xml">MIDR</register_link>. Arm deprecates use of it.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Floating-point registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>Implemented only if the implementation includes the Advanced SIMD and floating-point functionality.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>FPSID is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Implementer</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>31:24</rel_range>
+    <field_description order="before"><para>Implementer codes are the same as those used for the <register_link state="AArch32" id="AArch32-midr.xml">MIDR</register_link>.</para>
+<para>For an implementation by Arm this field is <hexnumber>0x41</hexnumber>, the ASCII code for A.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-23_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SW</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>23</rel_range>
+    <field_description order="before">
+      <para>Software bit. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>In Armv8-A, the only permitted value is <binarynumber>0b0</binarynumber>.</para>
+<para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The implementation provides a hardware implementation of the floating-point instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The implementation supports only software emulation of the floating-point instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-22_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Subarchitecture</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>22:16</rel_range>
+    <field_description order="before">
+      <para>Subarchitecture version number. For an implementation by Arm, defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>For a subarchitecture designed by Arm the most significant bit of this field, register bit[22], is 0. Values with a most significant bit of 0 that are not listed here are reserved.</para>
+<para>When the subarchitecture designer is not Arm, the most significant bit of this field, register bit[22], must be 1. Each implementer must maintain its own list of subarchitectures it has designed, starting at subarchitecture version number <hexnumber>0x40</hexnumber>.</para>
+<para>In Armv8-A, the permitted values are <binarynumber>0b0000011</binarynumber> and <binarynumber>0b0000100</binarynumber>.</para>
+<para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000000</field_value>
+        <field_value_description>
+          <para>VFPv1 architecture with an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> subarchitecture.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0000001</field_value>
+        <field_value_description>
+          <para>VFPv2 architecture with Common VFP subarchitecture v1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0000010</field_value>
+        <field_value_description>
+          <para>VFPv3 architecture, or later, with Common VFP subarchitecture v2. The VFP architecture version is indicated by the <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link> and <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0000011</field_value>
+        <field_value_description>
+          <para>VFPv3 architecture, or later, with Null subarchitecture. The entire floating-point implementation is in hardware, and no software support code is required. The VFP architecture version is indicated by the <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link> and <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link> registers. This value can be used only by an implementation that does not support the trap enable bits in the <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0000100</field_value>
+        <field_value_description>
+          <para>VFPv3 architecture, or later, with Common VFP subarchitecture v3, and support for trap enable bits in <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>. The VFP architecture version is indicated by the <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link> and <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PartNum</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para>Part Number for the floating-point implementation, assigned by the implementer.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Variant</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Variant number. Typically, this field distinguishes between different production variants of a single product.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Revision</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Revision number for the floating-point implementation.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_24" msb="31" lsb="24"/>
+  <fieldat id="fieldset_0-23_23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_16" msb="22" lsb="16"/>
+  <fieldat id="fieldset_0-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="VMRS FPSID" type="SystemAccessor">
+            <encoding>
+            <access_instruction>VMRS{&lt;c&gt;}{&lt;q&gt;} &lt;Rt&gt;, &lt;spec_reg&gt;</access_instruction>
+                
+                <enc n="reg" v="0b0000"/>
+            </encoding>
+            <access_permission>
+                <ps name="VMRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif (ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || CPACR.cp10 == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x08);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TID0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x08);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TID0 == '1' then
+        AArch32.TakeHypTrapException(0x08);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = FPSID;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x00);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = FPSID;
+elsif PSTATE.EL == EL3 then
+    if CPACR.cp10 == '00' then
+        UNDEFINED;
+    else
+        R[t] = FPSID;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="VMSR FPSID" type="SystemAccessor">
+            <encoding>
+            <access_instruction>VMSR{&lt;c&gt;}{&lt;q&gt;} &lt;spec_reg&gt;, &lt;Rt&gt;</access_instruction>
+                
+                <enc n="reg" v="0b0000"/>
+            </encoding>
+            <access_permission>
+                <ps name="VMSR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif (ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || CPACR.cp10 == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x08);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TID0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x08);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TID0 == '1' then
+        AArch32.TakeHypTrapException(0x08);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        return;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x00);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        return;
+elsif PSTATE.EL == EL3 then
+    if CPACR.cp10 == '00' then
+        UNDEFINED;
+    else
+        return;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMCFG_MBW_WINWD</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMCFG_MBW_WINWD, MPAM Memory Bandwidth Partitioning Window Width Configuration Register</h1><p>The MPAMCFG_MBW_WINWD characteristics are:</p><h2>Purpose</h2>
+        <p>MPAMCFG_MBW_WINWD is a 32-bit register that shows and sets the value of the window width for the PARTID in <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.</p>
+
+      
+        <p>MPAMCFG_MBW_WINWD_s reads and controls the bandwidth control window width for the Secure PARTID selected by the Secure instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_WINWD_ns reads and controls the bandwidth control window width for the Non-secure PARTID selected by the Non-secure instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_WINWD_rt reads and controls the bandwidth control window width for the Root PARTID selected by the Root instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_WINWD_rl reads and controls the bandwidth control window width for the Real PARTID selected by the Realm instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.</p>
+
+      
+        <p>MPAMCFG_MBW_WINWD is read-only if <a href="ext-mpamf_mbw_idr.html">MPAMF_MBW_IDR</a>.WINDWR == 0, and the window width is set by the hardware, even if variable.</p>
+
+      
+        <p>MPAMCFG_MBW_WINWD is read/write if <a href="ext-mpamf_mbw_idr.html">MPAMF_MBW_IDR</a>.WINDWR == 1, permitting configuration of the window width for each PARTID independently on hardware that supports this functionality.</p>
+
+      
+        <p>If <a href="ext-mpamf_idr.html">MPAMF_IDR</a>.HAS_RIS is 1, the control settings accessed are those of the resource instance currently selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS and the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMCFG_MBW_WINWD is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented and MPAMF_IDR.HAS_MBW_PART == 1. Otherwise, direct accesses to MPAMCFG_MBW_WINWD are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MPAMCFG_MBW_WINWD is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-23_8">US_INT</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">US_FRAC</a></td></tr></tbody></table><h4 id="fieldset_0-31_24">Bits [31:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_8">US_INT, bits [23:8]</h4><div class="field"><p>Window width, integer microseconds.</p>
+<p>This field reads (and sets) the integer part of the window width in microseconds for the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.</p></div><h4 id="fieldset_0-7_0">US_FRAC, bits [7:0]</h4><div class="field"><p>Window width, fractional microseconds.</p>
+<p>This field reads (and sets) the fractional part of the window width in microseconds for the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.</p></div><h2>Accessing MPAMCFG_MBW_WINWD</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MPAMCFG_MBW_WINWD_s must only be accessible from the Secure MPAM feature page.
+</li><li>MPAMCFG_MBW_WINWD_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MPAMCFG_MBW_WINWD_rt must only be accessible from the Root MPAM feature page.
+</li><li>MPAMCFG_MBW_WINWD_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MPAMCFG_MBW_WINWD_s, MPAMCFG_MBW_WINWD_ns, MPAMCFG_MBW_WINWD_rt, and MPAMCFG_MBW_WINWD_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MPAMCFG_MBW_WINWD_s) accesses the window width used for Secure PARTIDs.
+</li><li>The Non-secure instance (MPAMCFG_MBW_WINWD_ns) accesses the window width used for Non-secure PARTIDs.
+</li><li>The Root instance (MPAMCFG_MBW_WINWD_rt) accesses the window width used for Root PARTIDs.
+</li><li>The Realm instance (MPAMCFG_MBW_WINWD_rl) accesses the window width used for Realm PARTIDs.
+</li></ul>
+
+      
+        <p>When RIS is implemented, loads and stores to MPAMCFG_MBW_WINWD access the window width configuration settings for the bandwidth resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS and the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When RIS is not implemented, loads and stores to MPAMCFG_MBW_WINWD access the window width configuration settings for the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When PARTID narrowing is implemented, loads and stores to MPAMCFG_MBW_WINWD access the window width configuration settings for the internal PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 1.</p>
+
+      
+        <p>When PARTID narrowing is not implemented, loads and stores to MPAMCFG_MBW_WINWD access the window width configuration settings for the request PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 0.</p>
+      <h4>MPAMCFG_MBW_WINWD can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0220</span></td><td>MPAMCFG_MBW_WINWD_s</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When MPAMF_MBW_IDR.WINDWR == 0, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When MPAMF_MBW_IDR.WINDWR == 1, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0220</span></td><td>MPAMCFG_MBW_WINWD_ns</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When MPAMF_MBW_IDR.WINDWR == 0, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When MPAMF_MBW_IDR.WINDWR == 1, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0220</span></td><td>MPAMCFG_MBW_WINWD_rt</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When FEAT_RME is implemented and MPAMF_MBW_IDR.WINDWR == 0, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When FEAT_RME is implemented and MPAMF_MBW_IDR.WINDWR == 1, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0220</span></td><td>MPAMCFG_MBW_WINWD_rl</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When FEAT_RME is implemented and MPAMF_MBW_IDR.WINDWR == 0, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When FEAT_RME is implemented and MPAMF_MBW_IDR.WINDWR == 1, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

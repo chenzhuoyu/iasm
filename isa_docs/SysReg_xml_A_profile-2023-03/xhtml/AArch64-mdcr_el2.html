@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MDCR_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MDCR_EL2, Monitor Debug Configuration Register (EL2)</h1><p>The MDCR_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides EL2 configuration options for self-hosted debug and the Performance Monitors Extension.</p>
+      <h2>Configuration</h2><p>AArch64 System register MDCR_EL2 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-hdcr.html">HDCR[31:0]</a>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>MDCR_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-63_44">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-43_43-1">EBWE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-42_42">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-41_40-1">PMEE</a></td><td class="lr" colspan="3"><a href="#fieldset_0-39_37">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-36_36-1">HPMFZS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="2"><a href="#fieldset_0-31_30-1">PMSSE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29-1">HPMFZO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28-1">MTPME</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">TDCC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">HLP</a></td><td class="lr" colspan="2"><a href="#fieldset_0-25_24-1">E2TB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">HCCD</a></td><td class="lr" colspan="3"><a href="#fieldset_0-22_20">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">TTRF</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">HPMD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">EnSPM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">TPMS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12-1">E2PB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">TDRA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">TDOSA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">TDA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">TDE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">HPME</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">TPM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">TPMCR</a></td><td class="lr" colspan="5"><a href="#fieldset_0-4_0-1">HPMN</a></td></tr></tbody></table><h4 id="fieldset_0-63_44">Bits [63:44]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-43_43-1">EBWE, bit [43]<span class="condition"><br/>When FEAT_Debugv8p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Extended Breakpoint and Watchpoint Enable. Enables use of additional breakpoints or watchpoints.</p>
+    <table class="valuetable"><tr><th>EBWE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>The Effective value of <a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.EMBWE is 0.</p>
+<p>The Effective value of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a>.BANK is zero at EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Effective values of <a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.EMBWE and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a>.BANK are not affected by this field.</p>
+        </td></tr></table><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented or is <span class="arm-defined-word">RES0</span> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> is implemented as RAZ/WI.</p>
+<p>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is 1, other than for a direct read of the register.</p>
+<p>This field is ignored by the PE and treated as zero when EL3 is implemented and <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.EBWE is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-43_43-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-42_42">Bit [42]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-41_40-1">PMEE, bits [41:40]<span class="condition"><br/>When FEAT_EBEP is implemented:
+                        </span></h4><div class="field">
+      <p>Performance Monitors Exception Enable. Controls the generation of <span class="signal">PMUIRQ</span> signal and PMU exception at EL0, EL1, and EL2.</p>
+    <table class="valuetable"><tr><th>PMEE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p><span class="signal">PMUIRQ</span> signal is enabled, and PMU exception is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p><span class="signal">PMUIRQ</span> signal and PMU exception are both controlled by <a href="AArch64-pmecr_el1.html">PMECR_EL1</a>.PMEE.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p><span class="signal">PMUIRQ</span> signal is disabled, and PMU exception is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p><span class="signal">PMUIRQ</span> signal is disabled, and PMU exception is enabled.</p>
+        </td></tr></table><p>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is <span class="binarynumber">0b01</span>, other than for a direct read of the register.</p>
+<p>This field is ignored by the PE when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.PMEE != <span class="binarynumber">0b01</span>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-41_40-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-39_37">Bits [39:37]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-36_36-1">HPMFZS, bit [36]<span class="condition"><br/>When FEAT_SPEv1p2 is implemented:
+                        </span></h4><div class="field">
+      <p>Hyp Performance Monitors Freeze-on-SPE event. Stop counters when <a href="AArch64-pmblimitr_el1.html">PMBLIMITR_EL1</a>.{PMFZ, E} == {1, 1} and <a href="AArch64-pmbsr_el1.html">PMBSR_EL1</a>.S == 1.</p>
+    <table class="valuetable"><tr><th>HPMFZS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not freeze on Statistical Profiling Buffer Management event.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affected counters do not count following a Statistical Profiling Buffer Management event.</p>
+        </td></tr></table><p>The counters affected by this field are event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n greater than or equal to MDCR_EL2.HPMN and less than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N. This applies even when EL2 is disabled in the current Security state.</p>
+<p>Other event counters, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, and, if <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are not affected by this field.</p>
+<p>If MDCR_EL2.HPMN is equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then this field has no effect.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-36_36-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-35_32">Bits [35:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_30-1">PMSSE, bits [31:30]<span class="condition"><br/>When FEAT_PMUv3_SS is implemented:
+                        </span></h4><div class="field">
+      <p>Performance Monitors Snapshot Enable. Controls the generation of Capture events.</p>
+    <table class="valuetable"><tr><th>PMSSE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Capture events are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Capture events are controlled by <a href="AArch64-pmecr_el1.html">PMECR_EL1</a>.SSE.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Capture events are enabled and prohibited.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Capture events are enabled and allowed.</p>
+        </td></tr></table>
+      <p>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is <span class="binarynumber">0b01</span>, other than for a direct read of the register.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-31_30-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_29-1">HPMFZO, bit [29]<span class="condition"><br/>When FEAT_PMUv3p7 is implemented:
+                        </span></h4><div class="field">
+      <p>Hyp Performance Monitors Freeze-on-overflow. Stop event counters on overflow.</p>
+    <table class="valuetable"><tr><th>HPMFZO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not freeze on overflow.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affected counters do not count when <a href="AArch64-pmovsclr_el0.html">PMOVSCLR_EL0</a>[(<a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N-1):MDCR_EL2.HPMN] is nonzero.</p>
+        </td></tr></table><p>The counters affected by this field are event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n greater than or equal to MDCR_EL2.HPMN and less than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N. This applies even when EL2 is disabled in the current Security state.</p>
+<p>Other event counters, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, and, if <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are not affected by this field.</p>
+<p>If MDCR_EL2.HPMN is equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then this field has no effect.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-28_28-1">MTPME, bit [28]<span class="condition"><br/>When FEAT_MTPMU is implemented and EL3 is not implemented:
+                        </span></h4><div class="field">
+      <p>Multi-threaded PMU Enable. Enables use of the <a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>.MT bits.</p>
+    <table class="valuetable"><tr><th>MTPME</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><span class="xref">FEAT_MTPMU</span> is disabled. The Effective value of <a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>.MT is zero.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>.MT bits not affected by this field.</p>
+        </td></tr></table>
+      <p>If <span class="xref">FEAT_MTPMU</span> is disabled for any other PE in the system that has the same level 1 Affinity as the PE, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the PE behaves as if this field is 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul></div><h4 id="fieldset_0-28_28-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_27-1">TDCC, bit [27]<span class="condition"><br/>When FEAT_FGT is implemented:
+                        </span></h4><div class="field">
+      <p>Trap DCC. Traps use of the Debug Comms Channel at EL1 and EL0 to EL2.</p>
+    <table class="valuetable"><tr><th>TDCC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any register accesses to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>If EL2 is implemented and enabled in the current Security state, accesses to the DCC registers at EL1 and EL0 generate a Trap exception to EL2, unless the access also generates a higher priority exception.</p>
+<p>Traps on the DCC data transfer registers are ignored when the PE is in Debug state.</p></td></tr></table><p>The DCC registers trapped by this control are:</p>
+<p>AArch64: <a href="AArch64-osdtrrx_el1.html">OSDTRRX_EL1</a>, <a href="AArch64-osdtrtx_el1.html">OSDTRTX_EL1</a>, <a href="AArch64-mdccsr_el0.html">MDCCSR_EL0</a>, <a href="AArch64-mdccint_el1.html">MDCCINT_EL1</a>, and, when the PE is in Non-debug state, <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a>, <a href="AArch64-dbgdtrrx_el0.html">DBGDTRRX_EL0</a>, and <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0</a>.</p>
+<p>AArch32: <a href="AArch32-dbgdtrrxext.html">DBGDTRRXext</a>, <a href="AArch32-dbgdtrtxext.html">DBGDTRTXext</a>, <a href="AArch32-dbgdscrint.html">DBGDSCRint</a>, <a href="AArch32-dbgdccint.html">DBGDCCINT</a>, and, when the PE is in Non-debug state, <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.</p>
+<p>The traps are reported with EC syndrome value:</p>
+<ul>
+<li><span class="hexnumber">0x05</span> for trapped AArch32 <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses with coproc == <span class="binarynumber">0b1110</span>.
+</li><li><span class="hexnumber">0x06</span> for trapped AArch32 <span class="instruction">LDC</span> to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a> and <span class="instruction">STC</span> from <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a>.
+</li><li><span class="hexnumber">0x18</span> for trapped AArch64 <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses.
+</li></ul>
+<p>When the PE is in Debug state, MDCR_EL2.TDCC does not trap any accesses to:</p>
+<p>AArch64: <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a>, <a href="AArch64-dbgdtrrx_el0.html">DBGDTRRX_EL0</a>, and <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0</a>.</p>
+<p>AArch32: <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">HLP, bit [26]<span class="condition"><br/>When FEAT_PMUv3p5 is implemented:
+                        </span></h4><div class="field">
+      <p>Hypervisor Long Event Counter Enable. Determines which event counter bit generates an overflow recorded by <a href="AArch32-pmovsr.html">PMOVSR</a>[n].</p>
+    <table class="valuetable"><tr><th>HLP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Affected counters overflow on increment that causes unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[31:0].</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affected counters overflow on increment that causes unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[63:0].</p>
+        </td></tr></table><p>The counters affected by this field are event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n greater than or equal to MDCR_EL2.HPMN and less than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N. This applies even when EL2 is disabled in the current Security state.</p>
+<p>Other event counters, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, and, if <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are not affected by this field.</p>
+<p>If MDCR_EL2.HPMN is equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then this field has no effect.</p>
+<p>For more information see the description of MDCR_EL2.HPMN.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_24-1">E2TB, bits [25:24]<span class="condition"><br/>When FEAT_TRBE is implemented:
+                        </span></h4><div class="field"><p>EL2 Trace Buffer.</p>
+<p>If EL2 is implemented and enabled in the Trace Buffer owning Security state, controls the owning translation regime.</p>
+<p>If EL2 is implemented and enabled in the current Security state, controls access to Trace Buffer control registers from EL1.</p><table class="valuetable"><tr><th>E2TB</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td><p>If EL2 is implemented and enabled in the Trace Buffer owning Security state, then the Trace Buffer owning Exception level is EL2. Otherwise, the Trace Buffer owning Exception level is EL1 and, if <span class="function">TraceBufferEnabled</span>() == TRUE, tracing is prohibited at EL2.</p>
+<p>If EL2 is implemented and enabled in the current Security state, accesses to Trace Buffer control registers at EL1 generate a Trap exception to EL2.</p></td></tr><tr><td class="bitfield">0b10</td><td><p>Trace Buffer owning Exception level is EL1. If <span class="function">TraceBufferEnabled</span>() == TRUE, then tracing is prohibited at EL2.</p>
+<p>If EL2 is implemented and enabled in the current Security state, accesses to Trace Buffer control registers at EL1 generate a Trap exception to EL2.</p></td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Trace Buffer owning Exception level is EL1. If <span class="function">TraceBufferEnabled</span>() == TRUE, then tracing is prohibited at EL2.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In AArch64 state, the instructions affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-trbbaser_el1.html">TRBBASER_EL1</a>, <a href="AArch64-trblimitr_el1.html">TRBLIMITR_EL1</a>, <a href="AArch64-trbmar_el1.html">TRBMAR_EL1</a>, <a href="AArch64-trbptr_el1.html">TRBPTR_EL1</a>, <a href="AArch64-trbsr_el1.html">TRBSR_EL1</a>, and <a href="AArch64-trbtrg_el1.html">TRBTRG_EL1</a>.
+</li><li>If <span class="xref">FEAT_TRBE_MPAM</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-trbmpam_el1.html">TRBMPAM_EL1</a>.
+</li></ul>
+<p>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</p>
+<p>Trapped instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-25_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23-1">HCCD, bit [23]<span class="condition"><br/>When FEAT_PMUv3p5 is implemented:
+                        </span></h4><div class="field">
+      <p>Hypervisor Cycle Counter Disable. Prohibits <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> from counting at EL2.</p>
+    <table class="valuetable"><tr><th>HCCD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Cycle counting by <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is not affected by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Cycle counting by <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is prohibited at EL2.</p>
+        </td></tr></table>
+      <p>This field does not affect the CPU_CYCLES event or any other event that counts cycles.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_20">Bits [22:20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19-1">TTRF, bit [19]<span class="condition"><br/>When FEAT_TRF is implemented:
+                        </span></h4><div class="field"><p>Traps use of the Trace Filter Control registers at EL1 to EL2, as follows:</p>
+<ul>
+<li>
+<p>Access to <a href="AArch64-trfcr_el1.html">TRFCR_EL1</a> is trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+
+</li><li>
+<p>Access to <a href="AArch32-trfcr.html">TRFCR</a> is trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x03</span>.</p>
+
+</li></ul><table class="valuetable"><tr><th>TTRF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses to the specified registers at EL1 are not affected by this control.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses to the specified registers at EL1 generate a trap exception to EL2 when EL2 is enabled in the current Security state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18">Bit [18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">HPMD, bit [17]<span class="condition"><br/>When FEAT_PMUv3p1 is implemented and FEAT_Debugv8p2 is implemented:
+                        </span></h4><div class="field">
+      <p>Guest Performance Monitors Disable. Controls PMU operation at EL2.</p>
+    <table class="valuetable"><tr><th>HPMD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Counters are not affected by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>Affected counters are prohibited from counting at EL2.</p>
+<p>If <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 1, then <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is disabled at EL2. Otherwise, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is not affected by this mechanism.</p></td></tr></table><p>The counters affected by this field are:</p>
+<ul>
+<li>Event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n less than MDCR_EL2.HPMN.
+</li><li>If <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, the instruction counter <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a>.
+</li><li>If <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 1, the cycle counter <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li></ul>
+<p>Other event counters are not affected by this field.</p>
+<p>When <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 0, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is not affected by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>When FEAT_PMUv3p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Guest Performance Monitors Disable. Controls PMU operation at EL2 when <span class="function">ExternalSecureNoninvasiveDebugEnabled</span>() is FALSE.</p>
+    <table class="valuetable"><tr><th>HPMD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Counters are not affected by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>If <span class="function">ExternalSecureNoninvasiveDebugEnabled</span>() is FALSE then all the following apply:</p>
+<ul>
+<li>Affected event counters are prohibited from counting at EL2.
+</li><li>If <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 1, then <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is disabled at EL2. Otherwise, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is not affected by this mechanism.
+</li></ul></td></tr></table><p>If <span class="function">ExternalSecureNoninvasiveDebugEnabled</span>() is TRUE then the event counters and <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> are not affected by this field.</p>
+<p>Otherwise, the counters affected by this field are:</p>
+<ul>
+<li>Event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n less than MDCR_EL2.HPMN.
+</li><li>If <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 1, the cycle counter, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li></ul>
+<p>Other event counters are not affected by this field. When <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 0, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is not affected by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-17_17-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16">Bit [16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15-1">EnSPM, bit [15]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Enable access to System PMU registers. When disabled, accesses to System PMU registers generate a trap to EL2.</p>
+    <table class="valuetable"><tr><th>EnSPM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses of the specified System PMU registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses of the specified System PMU registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>In AArch64 state, the instructions affected by this control are: <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-spmaccessr_el1.html">SPMACCESSR_EL1</a>, <a href="AArch64-spmcfgr_el1.html">SPMCFGR_EL1</a>, <a href="AArch64-spmcgcrn_el1.html">SPMCGCR&lt;n&gt;_EL1</a>, <a href="AArch64-spmcntenclr_el0.html">SPMCNTENCLR_EL0</a>, <a href="AArch64-spmcntenset_el0.html">SPMCNTENSET_EL0</a>, <a href="AArch64-spmcr_el0.html">SPMCR_EL0</a>, <a href="AArch64-spmdevaff_el1.html">SPMDEVAFF_EL1</a>, <a href="AArch64-spmdevarch_el1.html">SPMDEVARCH_EL1</a>, <a href="AArch64-spmevcntrn_el0.html">SPMEVCNTR&lt;n&gt;_EL0</a>, <a href="AArch64-spmevfilt2rn_el0.html">SPMEVFILT2R&lt;n&gt;_EL0</a>, <a href="AArch64-spmevfiltrn_el0.html">SPMEVFILTR&lt;n&gt;_EL0</a>, <a href="AArch64-spmevtypern_el0.html">SPMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-spmiidr_el1.html">SPMIIDR_EL1</a>, <a href="AArch64-spmintenclr_el1.html">SPMINTENCLR_EL1</a>, <a href="AArch64-spmintenset_el1.html">SPMINTENSET_EL1</a>, <a href="AArch64-spmovsclr_el0.html">SPMOVSCLR_EL0</a>, <a href="AArch64-spmovsset_el0.html">SPMOVSSET_EL0</a>, <a href="AArch64-spmscr_el1.html">SPMSCR_EL1</a>, and <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.</p>
+<p>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</p>
+<p>Trapped instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">TPMS, bit [14]<span class="condition"><br/>When FEAT_SPE is implemented:
+                        </span></h4><div class="field">
+      <p>Trap Performance Monitor Sampling. Enables a trap to EL2 on accesses of SPE registers.</p>
+    <table class="valuetable"><tr><th>TPMS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses of the specified SPE registers are not trapped by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses of the specified SPE registers at EL1 are trapped to EL2, unless the instruction generates a higher priority exception.</p>
+        </td></tr></table><p>In AArch64 state, the instructions affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmscr_el1.html">PMSCR_EL1</a>, <a href="AArch64-pmsevfr_el1.html">PMSEVFR_EL1</a>, <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>, <a href="AArch64-pmsicr_el1.html">PMSICR_EL1</a>, <a href="AArch64-pmsirr_el1.html">PMSIRR_EL1</a>, and <a href="AArch64-pmslatfr_el1.html">PMSLATFR_EL1</a>.
+</li><li><span class="instruction">MRS</span> accesses to <a href="AArch64-pmsidr_el1.html">PMSIDR_EL1</a>.
+</li><li>If <span class="xref">FEAT_SPEv1p2</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmsnevfr_el1.html">PMSNEVFR_EL1</a>.
+</li><li>If <span class="xref">FEAT_SPE_FDS</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a>.
+</li></ul>
+<p>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</p>
+<p>Trapped instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_12-1">E2PB, bits [13:12]<span class="condition"><br/>When FEAT_SPE is implemented:
+                        </span></h4><div class="field">
+      <p>EL2 Profiling Buffer. If EL2 is implemented and enabled in the Profiling Buffer owning Security state, this field controls the owning translation regime. If EL2 is implemented and enabled in the current Security state, this field controls access to Profiling Buffer control registers from EL1.</p>
+    <table class="valuetable"><tr><th>E2PB</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td><p>If EL2 is implemented and enabled in the Profiling Buffer owning Security state, the Profiling Buffer uses the EL2 or EL2&amp;0 stage 1 translation regime. Otherwise the Profiling Buffer uses the EL1&amp;0 stage 1 translation regime.</p>
+<p>If EL2 is implemented and enabled in the current Security state, accesses to Profiling Buffer control registers at EL1 generate a Trap exception to EL2.</p></td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Profiling Buffer uses the EL1&amp;0 stage 1 translation regime. If EL2 is implemented and enabled in the current Security state, accesses to Profiling Buffer control registers at EL1 generate a Trap exception to EL2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Profiling Buffer uses the EL1&amp;0 stage 1 translation regime. Accesses to Profiling Buffer control registers at EL1 are not trapped to EL2.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The Profiling Buffer control registers trapped by this control are: <a href="AArch64-pmblimitr_el1.html">PMBLIMITR_EL1</a>, <a href="AArch64-pmbptr_el1.html">PMBPTR_EL1</a>, and <a href="AArch64-pmbsr_el1.html">PMBSR_EL1</a>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11">TDRA, bit [11]</h4><div class="field"><p>Trap Debug ROM Address register access. Traps System register accesses to the Debug ROM registers to EL2 when EL2 is enabled in the current Security state as follows:</p>
+<ul>
+<li>If EL1 is using AArch64 state, accesses to <a href="AArch64-mdrar_el1.html">MDRAR_EL1</a> are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x18</span>.
+</li><li>If EL0 or EL1 is using AArch32 state, MRC or MCR accesses to the following registers are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x05</span> and MRRC or MCRR accesses are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x0C</span>:<ul>
+<li><a href="AArch32-dbgdrar.html">DBGDRAR</a>, <a href="AArch32-dbgdsar.html">DBGDSAR</a>.
+</li></ul>
+
+</li></ul><table class="valuetable"><tr><th>TDRA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>EL0 and EL1 System register accesses to the Debug ROM registers are trapped to EL2 when EL2 is enabled in the current Security state, unless it is trapped by the following:</p>
+<ul>
+<li><a href="AArch32-dbgdscrext.html">DBGDSCRext</a>.UDCCdis.
+</li><li><a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>.TDCC.
+</li></ul></td></tr></table><p>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</p>
+<ul>
+<li><a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.TDE == 1.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 1.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>EL2 does not provide traps on debug register accesses through the optional memory-mapped external debug interfaces.</p></div><p>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-1">TDOSA, bit [10]<span class="condition"><br/>When FEAT_DoubleLock is implemented:
+                        </span></h4><div class="field"><p>Trap debug OS-related register access. Traps EL1 System register accesses to the powerdown debug registers to EL2, from both Execution states as follows:</p>
+<ul>
+<li>In AArch64 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x18</span>:<ul>
+<li><a href="AArch64-oslar_el1.html">OSLAR_EL1</a>, <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>, <a href="AArch64-osdlr_el1.html">OSDLR_EL1</a>, and <a href="AArch64-dbgprcr_el1.html">DBGPRCR_EL1</a>.
+</li><li>Any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> register with similar functionality that the implementation specifies as trapped by this bit.
+</li></ul>
+
+</li><li>In AArch32 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x05</span>:<ul>
+<li><a href="AArch32-dbgoslsr.html">DBGOSLSR</a>, <a href="AArch32-dbgoslar.html">DBGOSLAR</a>, <a href="AArch32-dbgosdlr.html">DBGOSDLR</a>, and <a href="AArch32-dbgprcr.html">DBGPRCR</a>.
+</li><li>Any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> register with similar functionality that the implementation specifies as trapped by this bit.
+</li></ul>
+
+</li></ul><table class="valuetable"><tr><th>TDOSA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL1 System register accesses to the powerdown debug registers are trapped to EL2 when EL2 is enabled in the current Security state.</p>
+        </td></tr></table><div class="note"><span class="note-header">Note</span><p>These registers are not accessible at EL0.</p></div><p>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</p>
+<ul>
+<li><a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.TDE == 1.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 1.
+</li></ul>
+<p>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Trap debug OS-related register access. Traps EL1 System register accesses to the powerdown debug registers to EL2, from both Execution states as follows:</p>
+<ul>
+<li>
+<p>In AArch64 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x18</span>:</p>
+<ul>
+<li>
+<p><a href="AArch64-oslar_el1.html">OSLAR_EL1</a>, <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>, and <a href="AArch64-dbgprcr_el1.html">DBGPRCR_EL1</a>.</p>
+
+</li><li>
+<p>Any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> register with similar functionality that the implementation specifies as trapped by this bit.</p>
+
+</li></ul>
+
+</li><li>
+<p>In AArch32 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x05</span>:</p>
+<ul>
+<li>
+<p><a href="AArch32-dbgoslsr.html">DBGOSLSR</a>, <a href="AArch32-dbgoslar.html">DBGOSLAR</a>, and <a href="AArch32-dbgprcr.html">DBGPRCR</a>.</p>
+
+</li><li>
+<p>Any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> register with similar functionality that the implementation specifies as trapped by this bit.</p>
+
+</li></ul>
+
+</li></ul>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether accesses to <a href="AArch64-osdlr_el1.html">OSDLR_EL1</a> are trapped.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether accesses to <a href="AArch32-dbgosdlr.html">DBGOSDLR</a> are trapped.</p><table class="valuetable"><tr><th>TDOSA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL1 System register accesses to the powerdown debug registers are trapped to EL2 when EL2 is enabled in the current Security state.</p>
+        </td></tr></table><div class="note"><span class="note-header">Note</span><p>These registers are not accessible at EL0.</p></div><p>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</p>
+<ul>
+<li><a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.TDE == 1.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 1.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>EL2 does not provide traps on debug register accesses through the optional memory-mapped external debug interfaces.</p></div><p>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">TDA, bit [9]</h4><div class="field">
+      <p>Trap accesses of debug System registers. Enables a trap to EL2 on accesses of debug System registers.</p>
+    <table class="valuetable"><tr><th>TDA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses of the specified debug System registers are not trapped by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses of the specified debug System registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</p>
+        </td></tr></table><p>In AArch64 state, the instructions affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-dbgauthstatus_el1.html">DBGAUTHSTATUS_EL1</a>, <a href="AArch64-dbgbcrn_el1.html">DBGBCR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgbvrn_el1.html">DBGBVR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgclaimclr_el1.html">DBGCLAIMCLR_EL1</a>, <a href="AArch64-dbgclaimset_el1.html">DBGCLAIMSET_EL1</a>, <a href="AArch64-dbgwcrn_el1.html">DBGWCR&lt;n&gt;_EL1</a>, <a href="AArch64-dbgwvrn_el1.html">DBGWVR&lt;n&gt;_EL1</a>, <a href="AArch64-mdccint_el1.html">MDCCINT_EL1</a>, <a href="AArch64-mdccsr_el0.html">MDCCSR_EL0</a>, <a href="AArch64-mdscr_el1.html">MDSCR_EL1</a>, <a href="AArch64-osdtrrx_el1.html">OSDTRRX_EL1</a>, <a href="AArch64-osdtrtx_el1.html">OSDTRTX_EL1</a>, and <a href="AArch64-oseccr_el1.html">OSECCR_EL1</a>.
+</li><li>If <span class="xref">FEAT_Debugv8p9</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a>.
+</li><li>In Non-debug state, <span class="instruction">MRS</span> accesses to <a href="AArch64-dbgdtrrx_el0.html">DBGDTRRX_EL0</a> and <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a> and <span class="instruction">MSR</span> accesses to <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0</a> and <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a>.
+</li></ul>
+<p>In AArch32 state, the instructions affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses to <a href="AArch32-dbgauthstatus.html">DBGAUTHSTATUS</a>, <a href="AArch32-dbgbcrn.html">DBGBCR&lt;n&gt;</a>, <a href="AArch32-dbgbvrn.html">DBGBVR&lt;n&gt;</a>, <a href="AArch32-dbgbxvrn.html">DBGBXVR&lt;n&gt;</a>, <a href="AArch32-dbgclaimclr.html">DBGCLAIMCLR</a>, <a href="AArch32-dbgclaimset.html">DBGCLAIMSET</a>, <a href="AArch32-dbgdccint.html">DBGDCCINT</a>, <a href="AArch32-dbgdevid.html">DBGDEVID</a>, <a href="AArch32-dbgdevid1.html">DBGDEVID1</a>, <a href="AArch32-dbgdevid2.html">DBGDEVID2</a>, <a href="AArch32-dbgdidr.html">DBGDIDR</a>, <a href="AArch32-dbgdscrext.html">DBGDSCRext</a>, <a href="AArch32-dbgdscrint.html">DBGDSCRint</a>, <a href="AArch32-dbgdtrrxext.html">DBGDTRRXext</a>, <a href="AArch32-dbgdtrtxext.html">DBGDTRTXext</a>, <a href="AArch32-dbgoseccr.html">DBGOSECCR</a>, <a href="AArch32-dbgvcr.html">DBGVCR</a>, <a href="AArch32-dbgwcrn.html">DBGWCR&lt;n&gt;</a>, <a href="AArch32-dbgwfar.html">DBGWFAR</a>, and <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>.</p>
+
+</li><li>
+<p><span class="instruction">STC</span> accesses to <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and <span class="instruction">LDC</span> accesses to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.</p>
+
+</li><li>
+<p>In Non-debug state, <span class="instruction">MRC</span> accesses to <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and <span class="instruction">MCR</span> accesses to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.</p>
+
+</li></ul>
+<p>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</p>
+<p>Trapped AArch64 instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+<p>Trapped AArch32 instructions are reported using EC syndrome value <span class="hexnumber">0x05</span> for <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses, and <span class="hexnumber">0x06</span> for <span class="instruction">LDC</span> and <span class="instruction">STC</span> accesses.</p>
+<p>The following instructions are not trapped in Debug state:</p>
+<ul>
+<li>AArch64 <span class="instruction">MRS</span> accesses to <a href="AArch64-dbgdtrrx_el0.html">DBGDTRRX_EL0</a> and <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a> and <span class="instruction">MSR</span> accesses to <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0</a> and <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a>.
+</li><li>AArch32 <span class="instruction">MRC</span> accesses to <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and <span class="instruction">MCR</span> accesses to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.
+</li></ul>
+<p>If 16 or fewer breakpoints and 16 or fewer watchpoints are implemented, and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> is implemented as RAZ/WI, then it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether AArch64 accesses to <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> are trapped to EL2 when MDCR_EL2.TDA is 1.</p>
+<p>This field is ignored by the PE and treated as one when any of the following are true:</p>
+<ul>
+<li>MDCR_EL2.TDE == 1.
+</li><li><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 1.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8">TDE, bit [8]</h4><div class="field">
+      <p>Trap Debug Exceptions. Controls routing of Debug exceptions, and defines the debug target Exception level, EL<sub>D</sub>.</p>
+    <table class="valuetable"><tr><th>TDE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The debug target Exception level is EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>If EL2 is enabled for the current Effective value of <a href="AArch64-scr_el3.html">SCR_EL3</a>.NS, the debug target Exception level is EL2, otherwise the debug target Exception level is EL1.</p>
+<p>The MDCR_EL2.{TDRA, TDOSA, TDA} fields are treated as being 1 for all purposes other than returning the result of a direct read of the register.</p></td></tr></table><p>For more information, see <span class="xref">'Routing debug exceptions'</span>.</p>
+<p>This field is treated as being 1 for all purposes other than a direct read when <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7-1">HPME, bit [7]<span class="condition"><br/>When FEAT_PMUv3 is implemented:
+                        </span></h4><div class="field">
+      <p>Hyp Enable.</p>
+    <table class="valuetable"><tr><th>HPME</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Affected counters are disabled and do not count.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Affected counters are enabled by <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>.</p>
+        </td></tr></table><p>The counters affected by this field are event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> for values of n greater than or equal to MDCR_EL2.HPMN and less than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N. This applies even when EL2 is disabled in the current Security state.</p>
+<p>Other event counters, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, and, if <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are not affected by this field.</p>
+<p>If MDCR_EL2.HPMN is equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then this field has no effect.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">TPM, bit [6]<span class="condition"><br/>When FEAT_PMUv3 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap accesses of PMU registers. Enables a trap to EL2 on accesses of PMU registers.</p>
+    <table class="valuetable"><tr><th>TPM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses of the specified PMU registers are not trapped by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses of the specified PMU registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</p>
+        </td></tr></table><p>In AArch64 state, the instructions affected by this control are:</p>
+<ul>
+<li><span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmccfiltr_el0.html">PMCCFILTR_EL0</a>, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, <a href="AArch64-pmcntenclr_el0.html">PMCNTENCLR_EL0</a>, <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>, <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>, <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>, <a href="AArch64-pmevtypern_el0.html">PMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-pmintenclr_el1.html">PMINTENCLR_EL1</a>, <a href="AArch64-pmintenset_el1.html">PMINTENSET_EL1</a>, <a href="AArch64-pmovsclr_el0.html">PMOVSCLR_EL0</a>, <a href="AArch64-pmovsset_el0.html">PMOVSSET_EL0</a>, <a href="AArch64-pmselr_el0.html">PMSELR_EL0</a>, <a href="AArch64-pmswinc_el0.html">PMSWINC_EL0</a>, <a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a>, <a href="AArch64-pmxevcntr_el0.html">PMXEVCNTR_EL0</a>, and <a href="AArch64-pmxevtyper_el0.html">PMXEVTYPER_EL0</a>.
+</li><li><span class="instruction">MRS</span> accesses to <a href="AArch64-pmceid0_el0.html">PMCEID0_EL0</a> and <a href="AArch64-pmceid1_el0.html">PMCEID1_EL0</a>.
+</li><li>If <span class="xref">FEAT_PMUv3p4</span> is implemented, <span class="instruction">MRS</span> accesses to <a href="AArch64-pmmir_el1.html">PMMIR_EL1</a>.
+</li><li>If <span class="xref">FEAT_PMUv3p9</span> is implemented, <span class="instruction">MSR</span> accesses to <a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.
+</li><li>If <span class="xref">FEAT_PMUv3_ICNTR</span> is implemented, <span class="instruction">MRS</span> accesses to <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> and <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a>.
+</li><li>If FEAT_EBEP is implemented or <span class="xref">FEAT_PMUv3_SS</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmecr_el1.html">PMECR_EL1</a>.
+</li><li>If <span class="xref">FEAT_SEBEP</span> is implemented, <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-pmiar_el1.html">PMIAR_EL1</a>.
+</li></ul>
+<p>In AArch32 state, the instructions affected by this control are:</p>
+<ul>
+<li>
+<p><span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses to <a href="AArch32-pmccfiltr.html">PMCCFILTR</a>, <a href="AArch32-pmccntr.html">PMCCNTR</a>, <a href="AArch32-pmcntenclr.html">PMCNTENCLR</a>, <a href="AArch32-pmcntenset.html">PMCNTENSET</a>, <a href="AArch32-pmcr.html">PMCR</a>, <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n&gt;</a>, <a href="AArch32-pmevtypern.html">PMEVTYPER&lt;n&gt;</a>, <a href="AArch32-pmintenclr.html">PMINTENCLR</a>, <a href="AArch32-pmintenset.html">PMINTENSET</a>, <a href="AArch32-pmovsr.html">PMOVSR</a>, <a href="AArch32-pmovsset.html">PMOVSSET</a>, <a href="AArch32-pmselr.html">PMSELR</a>, <a href="AArch32-pmswinc.html">PMSWINC</a>, <a href="AArch32-pmuserenr.html">PMUSERENR</a>, <a href="AArch32-pmxevcntr.html">PMXEVCNTR</a>, and <a href="AArch32-pmxevtyper.html">PMXEVTYPER</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRC</span> accesses to <a href="AArch32-pmceid0.html">PMCEID0</a> and <a href="AArch32-pmceid1.html">PMCEID1</a>.</p>
+
+</li><li>
+<p><span class="instruction">MRRC</span> and <span class="instruction">MCRR</span> accesses to <a href="AArch32-pmccntr.html">PMCCNTR</a>.</p>
+
+</li><li>
+<p>If <span class="xref">FEAT_PMUv3p1</span> is implemented, <span class="instruction">MRC</span> accesses to <a href="AArch32-pmceid2.html">PMCEID2</a> and <a href="AArch32-pmceid3.html">PMCEID3</a>.</p>
+
+</li><li>
+<p>If <span class="xref">FEAT_PMUv3p4</span> is implemented, <span class="instruction">MRC</span> accesses to <a href="AArch32-pmmir.html">PMMIR</a>.</p>
+
+</li></ul>
+<p>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</p>
+<p>Trapped AArch64 instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+<p>Trapped AArch32 instructions are reported using EC syndrome value <span class="hexnumber">0x03</span> for <span class="instruction">MRC</span> and <span class="instruction">MCR</span> accesses, and <span class="hexnumber">0x04</span> for <span class="instruction">MRRC</span> and <span class="instruction">MCRR</span> accesses.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">TPMCR, bit [5]<span class="condition"><br/>When FEAT_PMUv3 is implemented:
+                        </span></h4><div class="field"><p>Trap <a href="AArch64-pmcr_el0.html">PMCR_EL0</a> or <a href="AArch32-pmcr.html">PMCR</a> accesses. Traps EL0 and EL1 accesses to EL2, when EL2 is enabled in the current Security state, as follows:</p>
+<ul>
+<li>
+<p>In AArch64 state, accesses to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a> are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+
+</li><li>
+<p>In AArch32 state, accesses to <a href="AArch32-pmcr.html">PMCR</a> are trapped to EL2, reported using EC syndrome value <span class="hexnumber">0x03</span>.</p>
+
+</li></ul><table class="valuetable"><tr><th>TPMCR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>EL0 and EL1 accesses to the specified registers are trapped to EL2 when EL2 is enabled in the current Security state, unless they are trapped by the following:</p>
+<ul>
+<li><a href="AArch32-pmuserenr.html">PMUSERENR</a>.EN.
+</li><li><a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a>.EN.
+</li></ul></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>EL2 does not provide traps on Performance Monitor register accesses through the optional memory-mapped external debug interface.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_0-1">HPMN, bits [4:0]<span class="condition"><br/>When FEAT_PMUv3 is implemented:
+                        </span></h4><div class="field">
+      <p>Defines the number of event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> and, if <span class="xref">FEAT_PMUv3_SS</span> is implemented, snapshot registers <a href="AArch64-pmevcntsvrn_el1.html">PMEVCNTSVR&lt;n&gt;_EL1</a>, that are accessible from EL1 and from EL0 if permitted.</p>
+    <p>MDCR_EL2.HPMN divides the event counters into a first range and a second range.</p>
+<p>If MDCR_EL2.HPMN is not 0 and is less than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then event counters [0..(MDCR_EL2.HPMN-1)] are in the first range, and the remaining event counters [MDCR_EL2.HPMN..(<a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N-1)] are in the second range.</p>
+<p>If <span class="xref">FEAT_HPMN0</span> is implemented and MDCR_EL2.HPMN is 0, then all event counters are in the second range and none are in the first range.</p>
+<p>If MDCR_EL2.HPMN is equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N, then all event counters are in the first range and none are in the second range.</p>
+<p>For an event counter <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> in the first range:</p>
+<ul>
+<li>The counter is accessible from EL1, EL2, and EL3.
+</li><li>The counter is accessible from EL0 if permitted by <a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a> and <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>, or by <a href="AArch32-pmuserenr.html">PMUSERENR</a>.
+</li><li>If <span class="xref">FEAT_PMUv3p5</span> is implemented, <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.LP or <a href="AArch32-pmcr.html">PMCR</a>.LP determines whether the counter overflow flag is set on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[31:0] or <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[63:0].
+</li><li><a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.E and <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>[n] enable the operation of the event counter.
+</li></ul>
+<p>For an event counter <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a> in the second range:</p>
+<ul>
+<li>The counter is accessible from EL2 and EL3.
+</li><li>If EL2 is disabled in the current Security state, the event counter is also accessible from EL1, and from EL0 if permitted by <a href="AArch64-pmuserenr_el0.html">PMUSERENR_EL0</a> and <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a>, or by <a href="AArch32-pmuserenr.html">PMUSERENR</a>.
+</li><li>If <span class="xref">FEAT_PMUv3p5</span> is implemented, MDCR_EL2.HLP determines whether the counter overflow flag is set on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[31:0] or <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>[63:0].
+</li><li>MDCR_EL2.HPME and <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>[n] enable the operation of the event counter.
+</li></ul>
+<p>If <span class="xref">FEAT_PMUv3_SS</span> is implemented:</p>
+<ul>
+<li>
+<p>For an event counter snapshot register <a href="AArch64-pmevcntsvrn_el1.html">PMEVCNTSVR&lt;n&gt;_EL1</a> in the first range, the register is accessible from EL1, EL2, and EL3.</p>
+
+</li><li>
+<p>For an event counter snapshot register <a href="AArch64-pmevcntsvrn_el1.html">PMEVCNTSVR&lt;n&gt;_EL1</a> in the second range, the register is accessible from EL2 and EL3. If EL2 is disabled in the current Security state, the event counter is also accessible from EL1.</p>
+
+</li></ul>
+<p>Values greater than <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N are reserved. If <span class="xref">FEAT_HPMN0</span> is not implemented then the value 0 is reserved.</p>
+<p>If this field is set to a reserved value, then the following <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> behaviors apply:</p>
+<ul>
+<li>The value returned by a direct read of MDCR_EL2.HPMN is <span class="arm-defined-word">UNKNOWN</span>.
+</li><li>Either:<ul>
+<li>An <span class="arm-defined-word">UNKNOWN</span> number of counters are reserved for EL2 and EL3 use. That is, the PE behaves as if MDCR_EL2.HPMN is set to an <span class="arm-defined-word">UNKNOWN</span> nonzero value less than or equal to <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N.
+</li><li>All counters are reserved for EL2 and EL3 use, meaning no counters are accessible from EL1 and EL0 when EL2 is enabled in the current Security state.
+</li></ul>
+
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to the value in <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N.</li></ul></div><h4 id="fieldset_0-4_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing MDCR_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MDCR_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDCR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MDCR_EL2;
+                </p><h4 class="assembler">MSR MDCR_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MDCR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MDCR_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

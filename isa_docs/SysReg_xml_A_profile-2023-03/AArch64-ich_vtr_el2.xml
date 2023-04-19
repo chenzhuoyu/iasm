@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ICH_VTR_EL2</reg_short_name>
+        
+        <reg_long_name>Interrupt Controller VGIC Type Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented)</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-ich_vtr.xml">ICH_VTR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Reports supported GIC virtualization features.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC system registers</reg_group>
+            <reg_group>GIC host interface control registers</reg_group>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If EL2 is not implemented, all bits in this register are <arm-defined-word>RES0</arm-defined-word> from EL3, except for nV4, which is <arm-defined-word>RES1</arm-defined-word> from EL3.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>This register has no effect if EL2 is not enabled in the current Security state.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ICH_VTR_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PRIbits</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>31:29</rel_range>
+    <field_description order="before"><para>Priority bits. The number of virtual priority bits implemented, minus one.</para>
+<para>An implementation must implement at least 32 levels of virtual priority (5 priority bits).</para>
+<para>This field is an alias of <register_link state="AArch64" id="AArch64-icv_ctlr_el1.xml">ICV_CTLR_EL1</register_link>.PRIbits.</para></field_description>
+  </field>
+  <field id="fieldset_0-28_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PREbits</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>28:26</rel_range>
+    <field_description order="before"><para>The number of virtual preemption bits implemented, minus one.</para>
+<para>An implementation must implement at least 32 levels of virtual preemption priority (5 preemption bits).</para>
+<para>The value of this field must be less than or equal to the value of ICH_VTR_EL2.PRIbits.</para>
+<para>The maximum value of this field is 6, indicating 7 bits of preemption.</para>
+<para>This field determines the minimum value of <register_link state="AArch64" id="AArch64-ich_vmcr_el2.xml">ICH_VMCR_EL2</register_link>.VBPR0.</para></field_description>
+  </field>
+  <field id="fieldset_0-25_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDbits</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>25:23</rel_range>
+    <field_description order="before">
+      <para>The number of virtual interrupt identifier bits supported:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field is an alias of <register_link state="AArch64" id="AArch64-icv_ctlr_el1.xml">ICV_CTLR_EL1</register_link>.IDbits.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>16 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>24 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SEIS</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>SEI Support. Indicates whether the virtual CPU interface supports generation of SEIs:</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is an alias of <register_link state="AArch64" id="AArch64-icv_ctlr_el1.xml">ICV_CTLR_EL1</register_link>.SEIS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic does not support generation of SEIs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic supports generation of SEIs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A3V</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before">
+      <para>Affinity 3 Valid. Possible values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is an alias of <register_link state="AArch64" id="AArch64-icv_ctlr_el1.xml">ICV_CTLR_EL1</register_link>.A3V.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic only supports zero values of Affinity 3 in SGI generation System registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic supports nonzero values of Affinity 3 in SGI generation System registers.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>nV4</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Direct injection of virtual interrupts not supported. Possible values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>In GICv3, the only permitted value is <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The CPU interface logic supports direct injection of virtual interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The CPU interface logic does not support direct injection of virtual interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDS</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>Separate trapping of EL1 writes to <register_link state="AArch64" id="AArch64-icv_dir_el1.xml">ICV_DIR_EL1</register_link> supported.</para>
+    </field_description>
+    <field_description order="after">
+      <para>FEAT_GICv3_TDIR implements the functionality added by the value <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Implementation does not support <register_link state="AArch64" id="AArch64-ich_hcr_el2.xml">ICH_HCR_EL2</register_link>.TDIR.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Implementation supports <register_link state="AArch64" id="AArch64-ich_hcr_el2.xml">ICH_HCR_EL2</register_link>.TDIR.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-18_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DVIM</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before">
+      <para>Masking of directly-injected virtual interrupts.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When a PE implements the Realm Management Extension, this field is RAO/WI.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Masking of Directly-injected Virtual Interrupts not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Masking of Directly-injected Virtual Interrupts is supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-17_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>17:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ListRegs</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>The number of implemented List registers, minus one. For example, a value of <binarynumber>0b01111</binarynumber> indicates that the maximum of 16 List registers are implemented.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_29" msb="31" lsb="29"/>
+  <fieldat id="fieldset_0-28_26" msb="28" lsb="26"/>
+  <fieldat id="fieldset_0-25_23" msb="25" lsb="23"/>
+  <fieldat id="fieldset_0-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_5" msb="17" lsb="5"/>
+  <fieldat id="fieldset_0-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ICH_VTR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ICH_VTR_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_SRE_EL2.SRE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ICH_VTR_EL2;
+elsif PSTATE.EL == EL3 then
+    if ICC_SRE_EL3.SRE == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ICH_VTR_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

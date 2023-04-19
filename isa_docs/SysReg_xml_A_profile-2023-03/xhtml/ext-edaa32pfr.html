@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDAA32PFR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDAA32PFR, External Debug Auxiliary Processor Feature Register</h1><p>The EDAA32PFR characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about implemented PE features.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>The register mnemonic, EDAA32PFR, is derived from previous definitions of this register that defined this register only when AArch64 was not supported.</p></div>
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>The power domain of EDAA32PFR is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><h2>Attributes</h2>
+        <p>EDAA32PFR is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_20">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-63_20">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16-1">MSA_frac</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12-1">EL3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8-1">EL2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">PMSA</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0-1">VMSA</a></td></tr></tbody></table><h4 id="fieldset_0-63_20">Bits [63:20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_16-1">MSA_frac, bits [19:16]<span class="condition"><br/>When EDAA32PFR.PMSA == 0b0000 and EDAA32PFR.VMSA == 0b1111:
+                        </span></h4><div class="field">
+      <p>Memory System Architecture fractional field. This holds the information on additional Memory System Architectures supported. Defined values are:</p>
+    <table class="valuetable"><tr><th>MSA_frac</th><th>Meaning</th></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>PMSAv8-64 supported in all translation regimes. VMSAv8-64 not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>PMSAv8-64 supported in all translation regimes. In addition to PMSAv8-64, stage 1 EL1&amp;0 translation regime also supports VMSAv8-64.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-19_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_12-1">EL3, bits [15:12]<span class="condition"><br/>When EDPFR.EL3 == 0b0000:
+                        </span></h4><div class="field">
+      <p>AArch32 EL3 Exception level handling. Defined values are:</p>
+    <table class="valuetable"><tr><th>EL3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL3 is not implemented or can be executed in AArch64 state.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EL3 can be executed in AArch32 state only.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<div class="note"><span class="note-header">Note</span><p><a href="ext-edpfr.html">EDPFR</a>.{EL1, EL0} indicate whether EL1 and EL0 can only be executed in AArch32 state.</p></div></div><h4 id="fieldset_0-15_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-11_8-1">EL2, bits [11:8]<span class="condition"><br/>When EDPFR.EL2 == 0b0000:
+                        </span></h4><div class="field">
+      <p>AArch32 EL2 Exception level handling. Defined values are:</p>
+    <table class="valuetable"><tr><th>EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL2 is not implemented or can be executed in AArch64 state.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EL2 can be executed in AArch32 state only.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<div class="note"><span class="note-header">Note</span><p><a href="ext-edpfr.html">EDPFR</a>.{EL1, EL0} indicate whether EL1 and EL0 can only be executed in AArch32 state.</p></div></div><h4 id="fieldset_0-11_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-7_4">PMSA, bits [7:4]</h4><div class="field">
+      <p>Indicates support for a 32-bit PMSA. Defined values are:</p>
+    <table class="valuetable"><tr><th>PMSA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>PMSA-32 not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>PMSAv8-32 supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-3_0-1">VMSA, bits [3:0]<span class="condition"><br/>When EDAA32PFR.PMSA != 0b0000:
+                        </span></h4><div class="field">
+      <p>Indicates support for a VMSA in addition to a 32-bit PMSA Defined values are:</p>
+    <table class="valuetable"><tr><th>VMSA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>VMSA not supported.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-3_0-2"><span class="condition"><br/>When EDAA32PFR.PMSA == 0b0000:
+                        </span></h4><div class="field">
+      <p>Defined values are:</p>
+    <table class="valuetable"><tr><th>VMSA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>VMSAv8-64 supported.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Memory system architecture described by EDAA32PFR.MSA_frac.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-3_0-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h2>Accessing EDAA32PFR</h2><h4>EDAA32PFR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0xD60</span></td><td>EDAA32PFR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered() and !DoubleLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

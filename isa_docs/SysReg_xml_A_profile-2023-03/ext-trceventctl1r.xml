@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCEVENTCTL1R</reg_short_name>
+        
+        <reg_long_name>Event Control 1 Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0x024</hexnumber></reg_offset>
+    <reg_instance>TRCEVENTCTL1R</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trceventctl1r.xml">TRCEVENTCTL1R</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the behavior of the ETEEvents that <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link> selects.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace unit registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCEVENTCTL1R is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRCEVENTCTL1R</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>31:14</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-13_13-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OE</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>ETE Trace Output Enable control.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Trace output to any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> trace output interface is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trace output to any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> trace output interface is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When TRCIDR5.OE == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-12_12-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LPOVERRIDE</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Low-power Override Mode select.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Trace unit Low-power Override Mode is not enabled. That is, the trace unit is permitted to enter low-power state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trace unit Low-power Override Mode is enabled. That is, entry to a low-power state does not affect the trace unit resources or trace generation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When TRCIDR5.LPOVERRIDE == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-12_12-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ATB</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>AMBA Trace Bus (ATB) trigger enable.</para>
+<para>If a CoreSight ATB interface is implemented then when ETEEvent 0 occurs the trace unit sets:</para>
+<list type="unordered">
+<listitem><content>ATID == <hexnumber>0x7D</hexnumber>.</content>
+</listitem><listitem><content>ATDATA to the value of <register_link state="ext" id="ext-trctraceidr.xml">TRCTRACEIDR</register_link>.</content>
+</listitem></list>
+<para>If the width of ATDATA is greater than the width of <register_link state="ext" id="ext-trctraceidr.xml">TRCTRACEIDR</register_link>.TRACEID then the trace unit zeros the upper ATDATA bits.</para>
+<para>If ETEEvent 0 is programmed to occur based on program execution, such as an Address Comparator, the ATB trigger might not be inserted into the ATB stream at the same time as any trace generated by that program execution is output by the trace unit. Typically, the generated trace might be buffered in a trace unit which means that the ATB trigger would be output before the associated trace is output.</para>
+<para>If ETEEvent 0 is asserted multiple times in close succession, the trace unit is required to generate an ATB trigger for the first assertion, but might ignore one or more of the subsequent assertions. Arm recommends that the window in which ETEEvent 0 is ignored is limited only by the time taken to output an ATB trigger.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ATB trigger is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>ATB trigger is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When TRCIDR5.ATBTRIG == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-10_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>10:4</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INSTEN[&lt;m&gt;]</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Event element control.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= the number indicated by <register_link state="ext" id="ext-trcidr0.xml">TRCIDR0</register_link>.NUMEVENT.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+      <field_array_index>
+        <field_array_start>3</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The trace unit does not generate an Event element &lt;m&gt;.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The trace unit generates an Event element &lt;m&gt;.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_14" msb="31" lsb="14"/>
+  <fieldat id="fieldset_0-13_13-1" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12-1" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11-1" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_4" msb="10" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" label="INSTEN[3]" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-3_0" label="INSTEN[2]" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-3_0" label="INSTEN[1]" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-3_0" label="INSTEN[0]" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Must be programmed.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> if the trace unit is not in the Idle state.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

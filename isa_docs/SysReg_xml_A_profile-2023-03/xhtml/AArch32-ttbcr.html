@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TTBCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TTBCR, Translation Table Base Control Register</h1><p>The TTBCR characteristics are:</p><h2>Purpose</h2>
+        <p>The control register for stage 1 of the PL1&amp;0 translation regime. Its controls include:</p>
+
+      
+        <ul>
+<li>Where the VA range is split between addresses translated using <a href="AArch32-ttbr0.html">TTBR0</a> and addresses translated using <a href="AArch32-ttbr1.html">TTBR1</a>.
+</li><li>The translation table format used by this stage of translation.
+</li></ul>
+
+      
+        <p>From Armv8.2, when the value of TTBCR.{EAE, T2E} is {1, 1}, TTBCR is used with <a href="AArch32-ttbcr2.html">TTBCR2</a>.</p>
+      <h2>Configuration</h2><p>AArch32 System register TTBCR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-tcr_el1.html">TCR_EL1[31:0]</a>.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to TTBCR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>The current translation table format determines which format of the register is used.</p>
+
+      
+        <p>Some RW fields of this register have defined reset values. These apply only if the PE resets into an Exception level that is using AArch32. If the PE resets into EL3 using AArch32 then:</p>
+
+      
+        <ul>
+<li>The EAE bit resets to 0 in both the Secure and the Non-secure instances of the register.
+</li><li>Other reset values apply only to the Secure instance of the register.
+</li></ul>
+      <h2>Attributes</h2>
+        <p>TTBCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When TTBCR.EAE == 0:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">EAE</a></td><td class="lr" colspan="25"><a href="#fieldset_0-30_6">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">PD1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">PD0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-2_0">N</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">EAE, bit [31]</h4><div class="field">
+      <p>Extended Address Enable.</p>
+    <table class="valuetable"><tr><th>EAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Use the VMSAv8-32 translation system with the Short-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-30_6">Bits [30:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5">PD1, bit [5]</h4><div class="field">
+      <p>Translation table walk disable for translations using <a href="AArch32-ttbr1.html">TTBR1</a>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <table class="valuetable"><tr><th>PD1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Perform translation table walks using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A TLB miss on an address that is translated using <a href="AArch32-ttbr1.html">TTBR1</a> generates a Translation fault. No translation table walk is performed.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_4">PD0, bit [4]</h4><div class="field">
+      <p>Translation table walk disable for translations using <a href="AArch32-ttbr0.html">TTBR0</a>. This bit controls whether a translation table walk is performed on a TLB miss for an address that is translated using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+    <table class="valuetable"><tr><th>PD0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Perform translation table walks using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A TLB miss on an address that is translated using <a href="AArch32-ttbr0.html">TTBR0</a> generates a Translation fault. No translation table walk is performed.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-3_3">Bit [3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_0">N, bits [2:0]</h4><div class="field"><p>Indicate the width of the base address held in <a href="AArch32-ttbr0.html">TTBR0</a>. In <a href="AArch32-ttbr0.html">TTBR0</a>, the base address field is bits[31:14-N]. The value of N also determines:</p>
+<ul>
+<li>Whether <a href="AArch32-ttbr0.html">TTBR0</a> or <a href="AArch32-ttbr1.html">TTBR1</a> is used as the base address for translation table walks.
+</li><li>The size of the translation table pointed to by <a href="AArch32-ttbr0.html">TTBR0</a>.
+</li></ul>
+<p>N can take any value from 0 to 7, that is, from <span class="binarynumber">0b000</span> to <span class="binarynumber">0b111</span>.</p>
+<p>When N has its reset value of 0, the translation table base is compatible with Armv5 and Armv6.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h3>When TTBCR.EAE == 1:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">EAE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-30_30">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="2"><a href="#fieldset_1-29_28">SH1</a></td><td class="lr" colspan="2"><a href="#fieldset_1-27_26">ORGN1</a></td><td class="lr" colspan="2"><a href="#fieldset_1-25_24">IRGN1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-23_23">EPD1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-22_22">A1</a></td><td class="lr" colspan="3"><a href="#fieldset_1-21_19">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_1-18_16">T1SZ</a></td><td class="lr" colspan="2"><a href="#fieldset_1-15_14">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_1-13_12">SH0</a></td><td class="lr" colspan="2"><a href="#fieldset_1-11_10">ORGN0</a></td><td class="lr" colspan="2"><a href="#fieldset_1-9_8">IRGN0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-7_7">EPD0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-6_6-1">T2E</a></td><td class="lr" colspan="3"><a href="#fieldset_1-5_3">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_1-2_0">T0SZ</a></td></tr></tbody></table><h4 id="fieldset_1-31_31">EAE, bit [31]</h4><div class="field">
+      <p>Extended Address Enable.</p>
+    <table class="valuetable"><tr><th>EAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Use the VMSAv8-32 translation system with the Long-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-30_30">IMPLEMENTATION DEFINED, bit [30]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-29_28">SH1, bits [29:28]</h4><div class="field">
+      <p>Shareability attribute for memory associated with translation table walks using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <table class="valuetable"><tr><th>SH1</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr></table>
+      <p>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-27_26">ORGN1, bits [27:26]</h4><div class="field">
+      <p>Outer cacheability attribute for memory associated with translation table walks using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <table class="valuetable"><tr><th>ORGN1</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-25_24">IRGN1, bits [25:24]</h4><div class="field">
+      <p>Inner cacheability attribute for memory associated with translation table walks using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <table class="valuetable"><tr><th>IRGN1</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-23_23">EPD1, bit [23]</h4><div class="field">
+      <p>Translation table walk disable for translations using <a href="AArch32-ttbr1.html">TTBR1</a>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <table class="valuetable"><tr><th>EPD1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Perform translation table walks using <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A TLB miss on an address that is translated using <a href="AArch32-ttbr1.html">TTBR1</a> generates a Translation fault. No translation table walk is performed.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-22_22">A1, bit [22]</h4><div class="field">
+      <p>Selects whether <a href="AArch32-ttbr0.html">TTBR0</a> or <a href="AArch32-ttbr1.html">TTBR1</a> defines the ASID.</p>
+    <table class="valuetable"><tr><th>A1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="AArch32-ttbr0.html">TTBR0</a>.ASID defines the ASID.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="AArch32-ttbr1.html">TTBR1</a>.ASID defines the ASID.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-21_19">Bits [21:19]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-18_16">T1SZ, bits [18:16]</h4><div class="field">
+      <p>See <span class="xref">'Selecting between TTBR0 and TTBR1, VMSAv8-32 Long-descriptor translation table format'</span> for how TTBCR.{T1SZ, T0SZ} determine the input address ranges and memory region sizes translated using <a href="AArch32-ttbr0.html">TTBR0</a> and <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-15_14">Bits [15:14]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-13_12">SH0, bits [13:12]</h4><div class="field">
+      <p>Shareability attribute for memory associated with translation table walks using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+    <table class="valuetable"><tr><th>SH0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Inner Shareable</p>
+        </td></tr></table>
+      <p>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-11_10">ORGN0, bits [11:10]</h4><div class="field">
+      <p>Outer cacheability attribute for memory associated with translation table walks using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+    <table class="valuetable"><tr><th>ORGN0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-9_8">IRGN0, bits [9:8]</h4><div class="field">
+      <p>Inner cacheability attribute for memory associated with translation table walks using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+    <table class="valuetable"><tr><th>IRGN0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-7_7">EPD0, bit [7]</h4><div class="field">
+      <p>Translation table walk disable for translations using <a href="AArch32-ttbr0.html">TTBR0</a>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+    <table class="valuetable"><tr><th>EPD0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Perform translation table walks using <a href="AArch32-ttbr0.html">TTBR0</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A TLB miss on an address that is translated using <a href="AArch32-ttbr0.html">TTBR0</a> generates a Translation fault. No translation table walk is performed.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-6_6-1">T2E, bit [6]<span class="condition"><br/>When FEAT_AA32HPD is implemented:
+                        </span></h4><div class="field">
+      <p>TTBCR2 Enable.</p>
+    <table class="valuetable"><tr><th>T2E</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="AArch32-ttbcr2.html">TTBCR2</a> is disabled. The contents of <a href="AArch32-ttbcr2.html">TTBCR2</a> are treated as 0 for all purposes other than reading or writing the register.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="AArch32-ttbcr2.html">TTBCR2</a> is enabled.</p>
+        </td></tr></table>
+      <p>If TTBCR.EAE==0, then the behavior is as if the bit is 0.</p>
+    </div><h4 id="fieldset_1-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-5_3">Bits [5:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-2_0">T0SZ, bits [2:0]</h4><div class="field">
+      <p>See <span class="xref">'Selecting between TTBR0 and TTBR1, VMSAv8-32 Long-descriptor translation table format'</span> for how TTBCR.{T1SZ, T0SZ} determine the input address ranges and memory region sizes translated using <a href="AArch32-ttbr0.html">TTBR0</a> and <a href="AArch32-ttbr1.html">TTBR1</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing TTBCR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0010</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR_NS;
+    else
+        R[t] = TTBCR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR_NS;
+    else
+        R[t] = TTBCR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        R[t] = TTBCR_S;
+    else
+        R[t] = TTBCR_NS;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0010</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR_NS = R[t];
+    else
+        TTBCR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR_NS = R[t];
+    else
+        TTBCR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if SCR.NS == '0' then
+            TTBCR_S = R[t];
+        else
+            TTBCR_NS = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE register_index SYSTEM 'reg_alphaindex.dtd'>
+<!--Copyright (c) 2010-2017 ARM Limited or its affiliates. All rights reserved.-->
+<!--This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by ARM and the party that ARM delivered this document to.-->
+<!--The data contained in this document is preliminary and subject to change or correction following further review.-->
+<?xml-stylesheet href="reg_alphaindex.xsl" type="text/xsl"?>
+<register_index>
+  <toptitle architecture="AArch64 Registers"/>
+  <register_links title="AArch64 System Registers">
+    <register_link heading="ACCDATA_EL1" id="ACCDATA_EL1" registerfile="AArch64-accdata_el1.xml">Accelerator Data</register_link>
+    <register_link heading="ACTLR_EL1" id="ACTLR_EL1" registerfile="AArch64-actlr_el1.xml">Auxiliary Control Register (EL1)</register_link>
+    <register_link heading="ACTLR_EL2" id="ACTLR_EL2" registerfile="AArch64-actlr_el2.xml">Auxiliary Control Register (EL2)</register_link>
+    <register_link heading="ACTLR_EL3" id="ACTLR_EL3" registerfile="AArch64-actlr_el3.xml">Auxiliary Control Register (EL3)</register_link>
+    <register_link heading="AFSR0_EL1" id="AFSR0_EL1" registerfile="AArch64-afsr0_el1.xml">Auxiliary Fault Status Register 0 (EL1)</register_link>
+    <register_link heading="AFSR0_EL2" id="AFSR0_EL2" registerfile="AArch64-afsr0_el2.xml">Auxiliary Fault Status Register 0 (EL2)</register_link>
+    <register_link heading="AFSR0_EL3" id="AFSR0_EL3" registerfile="AArch64-afsr0_el3.xml">Auxiliary Fault Status Register 0 (EL3)</register_link>
+    <register_link heading="AFSR1_EL1" id="AFSR1_EL1" registerfile="AArch64-afsr1_el1.xml">Auxiliary Fault Status Register 1 (EL1)</register_link>
+    <register_link heading="AFSR1_EL2" id="AFSR1_EL2" registerfile="AArch64-afsr1_el2.xml">Auxiliary Fault Status Register 1 (EL2)</register_link>
+    <register_link heading="AFSR1_EL3" id="AFSR1_EL3" registerfile="AArch64-afsr1_el3.xml">Auxiliary Fault Status Register 1 (EL3)</register_link>
+    <register_link heading="AIDR_EL1" id="AIDR_EL1" registerfile="AArch64-aidr_el1.xml">Auxiliary ID Register</register_link>
+    <register_link heading="ALLINT" id="ALLINT" registerfile="AArch64-allint.xml">All Interrupt Mask Bit</register_link>
+    <register_link heading="AMAIR2_EL1" id="AMAIR2_EL1" registerfile="AArch64-amair2_el1.xml">Extended Auxiliary Memory Attribute Indirection Register (EL1)</register_link>
+    <register_link heading="AMAIR2_EL2" id="AMAIR2_EL2" registerfile="AArch64-amair2_el2.xml">Extended Auxiliary Memory Attribute Indirection Register (EL2)</register_link>
+    <register_link heading="AMAIR2_EL3" id="AMAIR2_EL3" registerfile="AArch64-amair2_el3.xml">Extended Auxiliary Memory Attribute Indirection Register (EL3)</register_link>
+    <register_link heading="AMAIR_EL1" id="AMAIR_EL1" registerfile="AArch64-amair_el1.xml">Auxiliary Memory Attribute Indirection Register (EL1)</register_link>
+    <register_link heading="AMAIR_EL2" id="AMAIR_EL2" registerfile="AArch64-amair_el2.xml">Auxiliary Memory Attribute Indirection Register (EL2)</register_link>
+    <register_link heading="AMAIR_EL3" id="AMAIR_EL3" registerfile="AArch64-amair_el3.xml">Auxiliary Memory Attribute Indirection Register (EL3)</register_link>
+    <register_link heading="AMCFGR_EL0" id="AMCFGR_EL0" registerfile="AArch64-amcfgr_el0.xml">Activity Monitors Configuration Register</register_link>
+    <register_link heading="AMCG1IDR_EL0" id="AMCG1IDR_EL0" registerfile="AArch64-amcg1idr_el0.xml">Activity Monitors Counter Group 1 Identification Register</register_link>
+    <register_link heading="AMCGCR_EL0" id="AMCGCR_EL0" registerfile="AArch64-amcgcr_el0.xml">Activity Monitors Counter Group Configuration Register</register_link>
+    <register_link heading="AMCNTENCLR0_EL0" id="AMCNTENCLR0_EL0" registerfile="AArch64-amcntenclr0_el0.xml">Activity Monitors Count Enable Clear Register 0</register_link>
+    <register_link heading="AMCNTENCLR1_EL0" id="AMCNTENCLR1_EL0" registerfile="AArch64-amcntenclr1_el0.xml">Activity Monitors Count Enable Clear Register 1</register_link>
+    <register_link heading="AMCNTENSET0_EL0" id="AMCNTENSET0_EL0" registerfile="AArch64-amcntenset0_el0.xml">Activity Monitors Count Enable Set Register 0</register_link>
+    <register_link heading="AMCNTENSET1_EL0" id="AMCNTENSET1_EL0" registerfile="AArch64-amcntenset1_el0.xml">Activity Monitors Count Enable Set Register 1</register_link>
+    <register_link heading="AMCR_EL0" id="AMCR_EL0" registerfile="AArch64-amcr_el0.xml">Activity Monitors Control Register</register_link>
+    <register_link heading="AMEVCNTR0&lt;n&gt;_EL0" id="AMEVCNTR0&lt;n&gt;_EL0" registerfile="AArch64-amevcntr0n_el0.xml">Activity Monitors Event Counter Registers 0</register_link>
+    <register_link heading="AMEVCNTR1&lt;n&gt;_EL0" id="AMEVCNTR1&lt;n&gt;_EL0" registerfile="AArch64-amevcntr1n_el0.xml">Activity Monitors Event Counter Registers 1</register_link>
+    <register_link heading="AMEVCNTVOFF0&lt;n&gt;_EL2" id="AMEVCNTVOFF0&lt;n&gt;_EL2" registerfile="AArch64-amevcntvoff0n_el2.xml">Activity Monitors Event Counter Virtual Offset Registers 0</register_link>
+    <register_link heading="AMEVCNTVOFF1&lt;n&gt;_EL2" id="AMEVCNTVOFF1&lt;n&gt;_EL2" registerfile="AArch64-amevcntvoff1n_el2.xml">Activity Monitors Event Counter Virtual Offset Registers 1</register_link>
+    <register_link heading="AMEVTYPER0&lt;n&gt;_EL0" id="AMEVTYPER0&lt;n&gt;_EL0" registerfile="AArch64-amevtyper0n_el0.xml">Activity Monitors Event Type Registers 0</register_link>
+    <register_link heading="AMEVTYPER1&lt;n&gt;_EL0" id="AMEVTYPER1&lt;n&gt;_EL0" registerfile="AArch64-amevtyper1n_el0.xml">Activity Monitors Event Type Registers 1</register_link>
+    <register_link heading="AMUSERENR_EL0" id="AMUSERENR_EL0" registerfile="AArch64-amuserenr_el0.xml">Activity Monitors User Enable Register</register_link>
+    <register_link heading="APDAKeyHi_EL1" id="APDAKeyHi_EL1" registerfile="AArch64-apdakeyhi_el1.xml">Pointer Authentication Key A for Data (bits[127:64]) </register_link>
+    <register_link heading="APDAKeyLo_EL1" id="APDAKeyLo_EL1" registerfile="AArch64-apdakeylo_el1.xml">Pointer Authentication Key A for Data (bits[63:0]) </register_link>
+    <register_link heading="APDBKeyHi_EL1" id="APDBKeyHi_EL1" registerfile="AArch64-apdbkeyhi_el1.xml">Pointer Authentication Key B for Data (bits[127:64]) </register_link>
+    <register_link heading="APDBKeyLo_EL1" id="APDBKeyLo_EL1" registerfile="AArch64-apdbkeylo_el1.xml">Pointer Authentication Key B for Data (bits[63:0]) </register_link>
+    <register_link heading="APGAKeyHi_EL1" id="APGAKeyHi_EL1" registerfile="AArch64-apgakeyhi_el1.xml">Pointer Authentication Key A for Code (bits[127:64]) </register_link>
+    <register_link heading="APGAKeyLo_EL1" id="APGAKeyLo_EL1" registerfile="AArch64-apgakeylo_el1.xml">Pointer Authentication Key A for Code (bits[63:0]) </register_link>
+    <register_link heading="APIAKeyHi_EL1" id="APIAKeyHi_EL1" registerfile="AArch64-apiakeyhi_el1.xml">Pointer Authentication Key A for Instruction (bits[127:64]) </register_link>
+    <register_link heading="APIAKeyLo_EL1" id="APIAKeyLo_EL1" registerfile="AArch64-apiakeylo_el1.xml">Pointer Authentication Key A for Instruction (bits[63:0]) </register_link>
+    <register_link heading="APIBKeyHi_EL1" id="APIBKeyHi_EL1" registerfile="AArch64-apibkeyhi_el1.xml">Pointer Authentication Key B for Instruction (bits[127:64]) </register_link>
+    <register_link heading="APIBKeyLo_EL1" id="APIBKeyLo_EL1" registerfile="AArch64-apibkeylo_el1.xml">Pointer Authentication Key B for Instruction (bits[63:0]) </register_link>
+    <register_link heading="BRBCR_EL1" id="BRBCR_EL1" registerfile="AArch64-brbcr_el1.xml">Branch Record Buffer Control Register (EL1)</register_link>
+    <register_link heading="BRBCR_EL2" id="BRBCR_EL2" registerfile="AArch64-brbcr_el2.xml">Branch Record Buffer Control Register (EL2)</register_link>
+    <register_link heading="BRBFCR_EL1" id="BRBFCR_EL1" registerfile="AArch64-brbfcr_el1.xml">Branch Record Buffer Function Control Register</register_link>
+    <register_link heading="BRBIDR0_EL1" id="BRBIDR0_EL1" registerfile="AArch64-brbidr0_el1.xml">Branch Record Buffer ID0 Register</register_link>
+    <register_link heading="BRBINF&lt;n&gt;_EL1" id="BRBINF&lt;n&gt;_EL1" registerfile="AArch64-brbinfn_el1.xml">Branch Record Buffer Information Register &lt;n&gt;</register_link>
+    <register_link heading="BRBINFINJ_EL1" id="BRBINFINJ_EL1" registerfile="AArch64-brbinfinj_el1.xml">Branch Record Buffer Information Injection Register</register_link>
+    <register_link heading="BRBSRC&lt;n&gt;_EL1" id="BRBSRC&lt;n&gt;_EL1" registerfile="AArch64-brbsrcn_el1.xml">Branch Record Buffer Source Address Register &lt;n&gt;</register_link>
+    <register_link heading="BRBSRCINJ_EL1" id="BRBSRCINJ_EL1" registerfile="AArch64-brbsrcinj_el1.xml">Branch Record Buffer Source Address Injection Register</register_link>
+    <register_link heading="BRBTGT&lt;n&gt;_EL1" id="BRBTGT&lt;n&gt;_EL1" registerfile="AArch64-brbtgtn_el1.xml">Branch Record Buffer Target Address Register &lt;n&gt;</register_link>
+    <register_link heading="BRBTGTINJ_EL1" id="BRBTGTINJ_EL1" registerfile="AArch64-brbtgtinj_el1.xml">Branch Record Buffer Target Address Injection Register</register_link>
+    <register_link heading="BRBTS_EL1" id="BRBTS_EL1" registerfile="AArch64-brbts_el1.xml">Branch Record Buffer Timestamp Register</register_link>
+    <register_link heading="CCSIDR2_EL1" id="CCSIDR2_EL1" registerfile="AArch64-ccsidr2_el1.xml">Current Cache Size ID Register 2</register_link>
+    <register_link heading="CCSIDR_EL1" id="CCSIDR_EL1" registerfile="AArch64-ccsidr_el1.xml">Current Cache Size ID Register</register_link>
+    <register_link heading="CLIDR_EL1" id="CLIDR_EL1" registerfile="AArch64-clidr_el1.xml">Cache Level ID Register</register_link>
+    <register_link heading="CNTFRQ_EL0" id="CNTFRQ_EL0" registerfile="AArch64-cntfrq_el0.xml">Counter-timer Frequency Register</register_link>
+    <register_link heading="CNTHCTL_EL2" id="CNTHCTL_EL2" registerfile="AArch64-cnthctl_el2.xml">Counter-timer Hypervisor Control Register</register_link>
+    <register_link heading="CNTHPS_CTL_EL2" id="CNTHPS_CTL_EL2" registerfile="AArch64-cnthps_ctl_el2.xml">Counter-timer Secure Physical Timer Control Register (EL2)</register_link>
+    <register_link heading="CNTHPS_CVAL_EL2" id="CNTHPS_CVAL_EL2" registerfile="AArch64-cnthps_cval_el2.xml">Counter-timer Secure Physical Timer CompareValue Register (EL2)</register_link>
+    <register_link heading="CNTHPS_TVAL_EL2" id="CNTHPS_TVAL_EL2" registerfile="AArch64-cnthps_tval_el2.xml">Counter-timer Secure Physical Timer TimerValue Register (EL2)</register_link>
+    <register_link heading="CNTHP_CTL_EL2" id="CNTHP_CTL_EL2" registerfile="AArch64-cnthp_ctl_el2.xml">Counter-timer Hypervisor Physical Timer Control register</register_link>
+    <register_link heading="CNTHP_CVAL_EL2" id="CNTHP_CVAL_EL2" registerfile="AArch64-cnthp_cval_el2.xml">Counter-timer Physical Timer CompareValue register (EL2)</register_link>
+    <register_link heading="CNTHP_TVAL_EL2" id="CNTHP_TVAL_EL2" registerfile="AArch64-cnthp_tval_el2.xml">Counter-timer Physical Timer TimerValue register (EL2)</register_link>
+    <register_link heading="CNTHVS_CTL_EL2" id="CNTHVS_CTL_EL2" registerfile="AArch64-cnthvs_ctl_el2.xml">Counter-timer Secure Virtual Timer Control register (EL2)</register_link>
+    <register_link heading="CNTHVS_CVAL_EL2" id="CNTHVS_CVAL_EL2" registerfile="AArch64-cnthvs_cval_el2.xml">Counter-timer Secure Virtual Timer CompareValue register (EL2)</register_link>
+    <register_link heading="CNTHVS_TVAL_EL2" id="CNTHVS_TVAL_EL2" registerfile="AArch64-cnthvs_tval_el2.xml">Counter-timer Secure Virtual Timer TimerValue register (EL2)</register_link>
+    <register_link heading="CNTHV_CTL_EL2" id="CNTHV_CTL_EL2" registerfile="AArch64-cnthv_ctl_el2.xml">Counter-timer Virtual Timer Control register (EL2)</register_link>
+    <register_link heading="CNTHV_CVAL_EL2" id="CNTHV_CVAL_EL2" registerfile="AArch64-cnthv_cval_el2.xml">Counter-timer Virtual Timer CompareValue register (EL2)</register_link>
+    <register_link heading="CNTHV_TVAL_EL2" id="CNTHV_TVAL_EL2" registerfile="AArch64-cnthv_tval_el2.xml">Counter-timer Virtual Timer TimerValue Register (EL2)</register_link>
+    <register_link heading="CNTKCTL_EL1" id="CNTKCTL_EL1" registerfile="AArch64-cntkctl_el1.xml">Counter-timer Kernel Control Register</register_link>
+    <register_link heading="CNTPCTSS_EL0" id="CNTPCTSS_EL0" registerfile="AArch64-cntpctss_el0.xml">Counter-timer Self-Synchronized Physical Count Register</register_link>
+    <register_link heading="CNTPCT_EL0" id="CNTPCT_EL0" registerfile="AArch64-cntpct_el0.xml">Counter-timer Physical Count Register</register_link>
+    <register_link heading="CNTPOFF_EL2" id="CNTPOFF_EL2" registerfile="AArch64-cntpoff_el2.xml">Counter-timer Physical Offset Register</register_link>
+    <register_link heading="CNTPS_CTL_EL1" id="CNTPS_CTL_EL1" registerfile="AArch64-cntps_ctl_el1.xml">Counter-timer Physical Secure Timer Control Register</register_link>
+    <register_link heading="CNTPS_CVAL_EL1" id="CNTPS_CVAL_EL1" registerfile="AArch64-cntps_cval_el1.xml">Counter-timer Physical Secure Timer CompareValue Register</register_link>
+    <register_link heading="CNTPS_TVAL_EL1" id="CNTPS_TVAL_EL1" registerfile="AArch64-cntps_tval_el1.xml">Counter-timer Physical Secure Timer TimerValue register</register_link>
+    <register_link heading="CNTP_CTL_EL0" id="CNTP_CTL_EL0" registerfile="AArch64-cntp_ctl_el0.xml">Counter-timer Physical Timer Control Register</register_link>
+    <register_link heading="CNTP_CVAL_EL0" id="CNTP_CVAL_EL0" registerfile="AArch64-cntp_cval_el0.xml">Counter-timer Physical Timer CompareValue Register</register_link>
+    <register_link heading="CNTP_TVAL_EL0" id="CNTP_TVAL_EL0" registerfile="AArch64-cntp_tval_el0.xml">Counter-timer Physical Timer TimerValue Register</register_link>
+    <register_link heading="CNTVCTSS_EL0" id="CNTVCTSS_EL0" registerfile="AArch64-cntvctss_el0.xml">Counter-timer Self-Synchronized Virtual Count Register</register_link>
+    <register_link heading="CNTVCT_EL0" id="CNTVCT_EL0" registerfile="AArch64-cntvct_el0.xml">Counter-timer Virtual Count Register</register_link>
+    <register_link heading="CNTVOFF_EL2" id="CNTVOFF_EL2" registerfile="AArch64-cntvoff_el2.xml">Counter-timer Virtual Offset Register</register_link>
+    <register_link heading="CNTV_CTL_EL0" id="CNTV_CTL_EL0" registerfile="AArch64-cntv_ctl_el0.xml">Counter-timer Virtual Timer Control Register</register_link>
+    <register_link heading="CNTV_CVAL_EL0" id="CNTV_CVAL_EL0" registerfile="AArch64-cntv_cval_el0.xml">Counter-timer Virtual Timer CompareValue Register</register_link>
+    <register_link heading="CNTV_TVAL_EL0" id="CNTV_TVAL_EL0" registerfile="AArch64-cntv_tval_el0.xml">Counter-timer Virtual Timer TimerValue Register</register_link>
+    <register_link heading="CONTEXTIDR_EL1" id="CONTEXTIDR_EL1" registerfile="AArch64-contextidr_el1.xml">Context ID Register (EL1)</register_link>
+    <register_link heading="CONTEXTIDR_EL2" id="CONTEXTIDR_EL2" registerfile="AArch64-contextidr_el2.xml">Context ID Register (EL2)</register_link>
+    <register_link heading="CPACR_EL1" id="CPACR_EL1" registerfile="AArch64-cpacr_el1.xml">Architectural Feature Access Control Register</register_link>
+    <register_link heading="CPTR_EL2" id="CPTR_EL2" registerfile="AArch64-cptr_el2.xml">Architectural Feature Trap Register (EL2)</register_link>
+    <register_link heading="CPTR_EL3" id="CPTR_EL3" registerfile="AArch64-cptr_el3.xml">Architectural Feature Trap Register (EL3)</register_link>
+    <register_link heading="CSSELR_EL1" id="CSSELR_EL1" registerfile="AArch64-csselr_el1.xml">Cache Size Selection Register</register_link>
+    <register_link heading="CTR_EL0" id="CTR_EL0" registerfile="AArch64-ctr_el0.xml">Cache Type Register</register_link>
+    <register_link heading="CurrentEL" id="CurrentEL" registerfile="AArch64-currentel.xml">Current Exception Level</register_link>
+    <register_link heading="DACR32_EL2" id="DACR32_EL2" registerfile="AArch64-dacr32_el2.xml">Domain Access Control Register</register_link>
+    <register_link heading="DAIF" id="DAIF" registerfile="AArch64-daif.xml">Interrupt Mask Bits</register_link>
+    <register_link heading="DBGAUTHSTATUS_EL1" id="DBGAUTHSTATUS_EL1" registerfile="AArch64-dbgauthstatus_el1.xml">Debug Authentication Status Register</register_link>
+    <register_link heading="DBGBCR&lt;n&gt;_EL1" id="DBGBCR&lt;n&gt;_EL1" registerfile="AArch64-dbgbcrn_el1.xml">Debug Breakpoint Control Registers</register_link>
+    <register_link heading="DBGBVR&lt;n&gt;_EL1" id="DBGBVR&lt;n&gt;_EL1" registerfile="AArch64-dbgbvrn_el1.xml">Debug Breakpoint Value Registers</register_link>
+    <register_link heading="DBGCLAIMCLR_EL1" id="DBGCLAIMCLR_EL1" registerfile="AArch64-dbgclaimclr_el1.xml">Debug CLAIM Tag Clear Register</register_link>
+    <register_link heading="DBGCLAIMSET_EL1" id="DBGCLAIMSET_EL1" registerfile="AArch64-dbgclaimset_el1.xml">Debug CLAIM Tag Set Register</register_link>
+    <register_link heading="DBGDTRRX_EL0" id="DBGDTRRX_EL0" registerfile="AArch64-dbgdtrrx_el0.xml">Debug Data Transfer Register, Receive</register_link>
+    <register_link heading="DBGDTRTX_EL0" id="DBGDTRTX_EL0" registerfile="AArch64-dbgdtrtx_el0.xml">Debug Data Transfer Register, Transmit</register_link>
+    <register_link heading="DBGDTR_EL0" id="DBGDTR_EL0" registerfile="AArch64-dbgdtr_el0.xml">Debug Data Transfer Register, half-duplex</register_link>
+    <register_link heading="DBGPRCR_EL1" id="DBGPRCR_EL1" registerfile="AArch64-dbgprcr_el1.xml">Debug Power Control Register</register_link>
+    <register_link heading="DBGVCR32_EL2" id="DBGVCR32_EL2" registerfile="AArch64-dbgvcr32_el2.xml">Debug Vector Catch Register</register_link>
+    <register_link heading="DBGWCR&lt;n&gt;_EL1" id="DBGWCR&lt;n&gt;_EL1" registerfile="AArch64-dbgwcrn_el1.xml">Debug Watchpoint Control Registers</register_link>
+    <register_link heading="DBGWVR&lt;n&gt;_EL1" id="DBGWVR&lt;n&gt;_EL1" registerfile="AArch64-dbgwvrn_el1.xml">Debug Watchpoint Value Registers</register_link>
+    <register_link heading="DCZID_EL0" id="DCZID_EL0" registerfile="AArch64-dczid_el0.xml">Data Cache Zero ID Register</register_link>
+    <register_link heading="DISR_EL1" id="DISR_EL1" registerfile="AArch64-disr_el1.xml">Deferred Interrupt Status Register</register_link>
+    <register_link heading="DIT" id="DIT" registerfile="AArch64-dit.xml">Data Independent Timing</register_link>
+    <register_link heading="DLR_EL0" id="DLR_EL0" registerfile="AArch64-dlr_el0.xml">Debug Link Register</register_link>
+    <register_link heading="DSPSR_EL0" id="DSPSR_EL0" registerfile="AArch64-dspsr_el0.xml">Debug Saved Program Status Register</register_link>
+    <register_link heading="ELR_EL1" id="ELR_EL1" registerfile="AArch64-elr_el1.xml">Exception Link Register (EL1)</register_link>
+    <register_link heading="ELR_EL2" id="ELR_EL2" registerfile="AArch64-elr_el2.xml">Exception Link Register (EL2)</register_link>
+    <register_link heading="ELR_EL3" id="ELR_EL3" registerfile="AArch64-elr_el3.xml">Exception Link Register (EL3)</register_link>
+    <register_link heading="ERRIDR_EL1" id="ERRIDR_EL1" registerfile="AArch64-erridr_el1.xml">Error Record ID Register</register_link>
+    <register_link heading="ERRSELR_EL1" id="ERRSELR_EL1" registerfile="AArch64-errselr_el1.xml">Error Record Select Register</register_link>
+    <register_link heading="ERXADDR_EL1" id="ERXADDR_EL1" registerfile="AArch64-erxaddr_el1.xml">Selected Error Record Address Register</register_link>
+    <register_link heading="ERXCTLR_EL1" id="ERXCTLR_EL1" registerfile="AArch64-erxctlr_el1.xml">Selected Error Record Control Register</register_link>
+    <register_link heading="ERXFR_EL1" id="ERXFR_EL1" registerfile="AArch64-erxfr_el1.xml">Selected Error Record Feature Register</register_link>
+    <register_link heading="ERXGSR_EL1" id="ERXGSR_EL1" registerfile="AArch64-erxgsr_el1.xml">Selected Error Record Group Status Register</register_link>
+    <register_link heading="ERXMISC0_EL1" id="ERXMISC0_EL1" registerfile="AArch64-erxmisc0_el1.xml">Selected Error Record Miscellaneous Register 0</register_link>
+    <register_link heading="ERXMISC1_EL1" id="ERXMISC1_EL1" registerfile="AArch64-erxmisc1_el1.xml">Selected Error Record Miscellaneous Register 1</register_link>
+    <register_link heading="ERXMISC2_EL1" id="ERXMISC2_EL1" registerfile="AArch64-erxmisc2_el1.xml">Selected Error Record Miscellaneous Register 2</register_link>
+    <register_link heading="ERXMISC3_EL1" id="ERXMISC3_EL1" registerfile="AArch64-erxmisc3_el1.xml">Selected Error Record Miscellaneous Register 3</register_link>
+    <register_link heading="ERXPFGCDN_EL1" id="ERXPFGCDN_EL1" registerfile="AArch64-erxpfgcdn_el1.xml">Selected Pseudo-fault Generation Countdown Register</register_link>
+    <register_link heading="ERXPFGCTL_EL1" id="ERXPFGCTL_EL1" registerfile="AArch64-erxpfgctl_el1.xml">Selected Pseudo-fault Generation Control Register</register_link>
+    <register_link heading="ERXPFGF_EL1" id="ERXPFGF_EL1" registerfile="AArch64-erxpfgf_el1.xml">Selected Pseudo-fault Generation Feature Register</register_link>
+    <register_link heading="ERXSTATUS_EL1" id="ERXSTATUS_EL1" registerfile="AArch64-erxstatus_el1.xml">Selected Error Record Primary Status Register</register_link>
+    <register_link heading="ESR_EL1" id="ESR_EL1" registerfile="AArch64-esr_el1.xml">Exception Syndrome Register (EL1)</register_link>
+    <register_link heading="ESR_EL2" id="ESR_EL2" registerfile="AArch64-esr_el2.xml">Exception Syndrome Register (EL2)</register_link>
+    <register_link heading="ESR_EL3" id="ESR_EL3" registerfile="AArch64-esr_el3.xml">Exception Syndrome Register (EL3)</register_link>
+    <register_link heading="FAR_EL1" id="FAR_EL1" registerfile="AArch64-far_el1.xml">Fault Address Register (EL1)</register_link>
+    <register_link heading="FAR_EL2" id="FAR_EL2" registerfile="AArch64-far_el2.xml">Fault Address Register (EL2)</register_link>
+    <register_link heading="FAR_EL3" id="FAR_EL3" registerfile="AArch64-far_el3.xml">Fault Address Register (EL3)</register_link>
+    <register_link heading="FPCR" id="FPCR" registerfile="AArch64-fpcr.xml">Floating-point Control Register</register_link>
+    <register_link heading="FPEXC32_EL2" id="FPEXC32_EL2" registerfile="AArch64-fpexc32_el2.xml">Floating-Point Exception Control Register</register_link>
+    <register_link heading="FPSR" id="FPSR" registerfile="AArch64-fpsr.xml">Floating-point Status Register</register_link>
+    <register_link heading="GCR_EL1" id="GCR_EL1" registerfile="AArch64-gcr_el1.xml">Tag Control Register.</register_link>
+    <register_link heading="GCSCRE0_EL1" id="GCSCRE0_EL1" registerfile="AArch64-gcscre0_el1.xml">Guarded Control Stack Control (EL0)</register_link>
+    <register_link heading="GCSCR_EL1" id="GCSCR_EL1" registerfile="AArch64-gcscr_el1.xml">Guarded Control Stack Control (EL1)</register_link>
+    <register_link heading="GCSCR_EL2" id="GCSCR_EL2" registerfile="AArch64-gcscr_el2.xml">Guarded Control Stack Control (EL2)</register_link>
+    <register_link heading="GCSCR_EL3" id="GCSCR_EL3" registerfile="AArch64-gcscr_el3.xml">Guarded Control Stack Control (EL3)</register_link>
+    <register_link heading="GCSPR_EL0" id="GCSPR_EL0" registerfile="AArch64-gcspr_el0.xml">Guarded Control Stack Pointer (EL0)</register_link>
+    <register_link heading="GCSPR_EL1" id="GCSPR_EL1" registerfile="AArch64-gcspr_el1.xml">Guarded Control Stack Pointer (EL1)</register_link>
+    <register_link heading="GCSPR_EL2" id="GCSPR_EL2" registerfile="AArch64-gcspr_el2.xml">Guarded Control Stack Pointer (EL2)</register_link>
+    <register_link heading="GCSPR_EL3" id="GCSPR_EL3" registerfile="AArch64-gcspr_el3.xml">Guarded Control Stack Pointer (EL3)</register_link>
+    <register_link heading="GMID_EL1" id="GMID_EL1" registerfile="AArch64-gmid_el1.xml">Multiple tag transfer ID Register</register_link>
+    <register_link heading="GPCCR_EL3" id="GPCCR_EL3" registerfile="AArch64-gpccr_el3.xml">Granule Protection Check Control Register (EL3)</register_link>
+    <register_link heading="GPTBR_EL3" id="GPTBR_EL3" registerfile="AArch64-gptbr_el3.xml">Granule Protection Table Base Register</register_link>
+    <register_link heading="HACR_EL2" id="HACR_EL2" registerfile="AArch64-hacr_el2.xml">Hypervisor Auxiliary Control Register</register_link>
+    <register_link heading="HAFGRTR_EL2" id="HAFGRTR_EL2" registerfile="AArch64-hafgrtr_el2.xml">Hypervisor Activity Monitors Fine-Grained Read Trap Register</register_link>
+    <register_link heading="HCRX_EL2" id="HCRX_EL2" registerfile="AArch64-hcrx_el2.xml">Extended Hypervisor Configuration Register</register_link>
+    <register_link heading="HCR_EL2" id="HCR_EL2" registerfile="AArch64-hcr_el2.xml">Hypervisor Configuration Register</register_link>
+    <register_link heading="HDFGRTR2_EL2" id="HDFGRTR2_EL2" registerfile="AArch64-hdfgrtr2_el2.xml">Hypervisor Debug Fine-Grained Read Trap Register 2</register_link>
+    <register_link heading="HDFGRTR_EL2" id="HDFGRTR_EL2" registerfile="AArch64-hdfgrtr_el2.xml">Hypervisor Debug Fine-Grained Read Trap Register</register_link>
+    <register_link heading="HDFGWTR2_EL2" id="HDFGWTR2_EL2" registerfile="AArch64-hdfgwtr2_el2.xml">Hypervisor Debug Fine-Grained Write Trap Register 2</register_link>
+    <register_link heading="HDFGWTR_EL2" id="HDFGWTR_EL2" registerfile="AArch64-hdfgwtr_el2.xml">Hypervisor Debug Fine-Grained Write Trap Register</register_link>
+    <register_link heading="HFGITR2_EL2" id="HFGITR2_EL2" registerfile="AArch64-hfgitr2_el2.xml">Hypervisor Fine-Grained Instruction Trap Register 2</register_link>
+    <register_link heading="HFGITR_EL2" id="HFGITR_EL2" registerfile="AArch64-hfgitr_el2.xml">Hypervisor Fine-Grained Instruction Trap Register</register_link>
+    <register_link heading="HFGRTR2_EL2" id="HFGRTR2_EL2" registerfile="AArch64-hfgrtr2_el2.xml">Hypervisor Fine-Grained Read Trap Register 2</register_link>
+    <register_link heading="HFGRTR_EL2" id="HFGRTR_EL2" registerfile="AArch64-hfgrtr_el2.xml">Hypervisor Fine-Grained Read Trap Register</register_link>
+    <register_link heading="HFGWTR2_EL2" id="HFGWTR2_EL2" registerfile="AArch64-hfgwtr2_el2.xml">Hypervisor Fine-Grained Write Trap Register 2</register_link>
+    <register_link heading="HFGWTR_EL2" id="HFGWTR_EL2" registerfile="AArch64-hfgwtr_el2.xml">Hypervisor Fine-Grained Write Trap Register</register_link>
+    <register_link heading="HPFAR_EL2" id="HPFAR_EL2" registerfile="AArch64-hpfar_el2.xml">Hypervisor IPA Fault Address Register</register_link>
+    <register_link heading="HSTR_EL2" id="HSTR_EL2" registerfile="AArch64-hstr_el2.xml">Hypervisor System Trap Register</register_link>
+    <register_link heading="ICC_AP0R&lt;n&gt;_EL1" id="ICC_AP0R&lt;n&gt;_EL1" registerfile="AArch64-icc_ap0rn_el1.xml">Interrupt Controller Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICC_AP1R&lt;n&gt;_EL1" id="ICC_AP1R&lt;n&gt;_EL1" registerfile="AArch64-icc_ap1rn_el1.xml">Interrupt Controller Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICC_ASGI1R_EL1" id="ICC_ASGI1R_EL1" registerfile="AArch64-icc_asgi1r_el1.xml">Interrupt Controller Alias Software Generated Interrupt Group 1 Register</register_link>
+    <register_link heading="ICC_BPR0_EL1" id="ICC_BPR0_EL1" registerfile="AArch64-icc_bpr0_el1.xml">Interrupt Controller Binary Point Register 0</register_link>
+    <register_link heading="ICC_BPR1_EL1" id="ICC_BPR1_EL1" registerfile="AArch64-icc_bpr1_el1.xml">Interrupt Controller Binary Point Register 1</register_link>
+    <register_link heading="ICC_CTLR_EL1" id="ICC_CTLR_EL1" registerfile="AArch64-icc_ctlr_el1.xml">Interrupt Controller Control Register (EL1)</register_link>
+    <register_link heading="ICC_CTLR_EL3" id="ICC_CTLR_EL3" registerfile="AArch64-icc_ctlr_el3.xml">Interrupt Controller Control Register (EL3)</register_link>
+    <register_link heading="ICC_DIR_EL1" id="ICC_DIR_EL1" registerfile="AArch64-icc_dir_el1.xml">Interrupt Controller Deactivate Interrupt Register</register_link>
+    <register_link heading="ICC_EOIR0_EL1" id="ICC_EOIR0_EL1" registerfile="AArch64-icc_eoir0_el1.xml">Interrupt Controller End Of Interrupt Register 0</register_link>
+    <register_link heading="ICC_EOIR1_EL1" id="ICC_EOIR1_EL1" registerfile="AArch64-icc_eoir1_el1.xml">Interrupt Controller End Of Interrupt Register 1</register_link>
+    <register_link heading="ICC_HPPIR0_EL1" id="ICC_HPPIR0_EL1" registerfile="AArch64-icc_hppir0_el1.xml">Interrupt Controller Highest Priority Pending Interrupt Register 0</register_link>
+    <register_link heading="ICC_HPPIR1_EL1" id="ICC_HPPIR1_EL1" registerfile="AArch64-icc_hppir1_el1.xml">Interrupt Controller Highest Priority Pending Interrupt Register 1</register_link>
+    <register_link heading="ICC_IAR0_EL1" id="ICC_IAR0_EL1" registerfile="AArch64-icc_iar0_el1.xml">Interrupt Controller Interrupt Acknowledge Register 0</register_link>
+    <register_link heading="ICC_IAR1_EL1" id="ICC_IAR1_EL1" registerfile="AArch64-icc_iar1_el1.xml">Interrupt Controller Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICC_IGRPEN0_EL1" id="ICC_IGRPEN0_EL1" registerfile="AArch64-icc_igrpen0_el1.xml">Interrupt Controller Interrupt Group 0 Enable register</register_link>
+    <register_link heading="ICC_IGRPEN1_EL1" id="ICC_IGRPEN1_EL1" registerfile="AArch64-icc_igrpen1_el1.xml">Interrupt Controller Interrupt Group 1 Enable register</register_link>
+    <register_link heading="ICC_IGRPEN1_EL3" id="ICC_IGRPEN1_EL3" registerfile="AArch64-icc_igrpen1_el3.xml">Interrupt Controller Interrupt Group 1 Enable register (EL3)</register_link>
+    <register_link heading="ICC_NMIAR1_EL1" id="ICC_NMIAR1_EL1" registerfile="AArch64-icc_nmiar1_el1.xml">Interrupt Controller Non-maskable Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICC_PMR_EL1" id="ICC_PMR_EL1" registerfile="AArch64-icc_pmr_el1.xml">Interrupt Controller Interrupt Priority Mask Register</register_link>
+    <register_link heading="ICC_RPR_EL1" id="ICC_RPR_EL1" registerfile="AArch64-icc_rpr_el1.xml">Interrupt Controller Running Priority Register</register_link>
+    <register_link heading="ICC_SGI0R_EL1" id="ICC_SGI0R_EL1" registerfile="AArch64-icc_sgi0r_el1.xml">Interrupt Controller Software Generated Interrupt Group 0 Register</register_link>
+    <register_link heading="ICC_SGI1R_EL1" id="ICC_SGI1R_EL1" registerfile="AArch64-icc_sgi1r_el1.xml">Interrupt Controller Software Generated Interrupt Group 1 Register</register_link>
+    <register_link heading="ICC_SRE_EL1" id="ICC_SRE_EL1" registerfile="AArch64-icc_sre_el1.xml">Interrupt Controller System Register Enable Register (EL1)</register_link>
+    <register_link heading="ICC_SRE_EL2" id="ICC_SRE_EL2" registerfile="AArch64-icc_sre_el2.xml">Interrupt Controller System Register Enable Register (EL2)</register_link>
+    <register_link heading="ICC_SRE_EL3" id="ICC_SRE_EL3" registerfile="AArch64-icc_sre_el3.xml">Interrupt Controller System Register Enable Register (EL3)</register_link>
+    <register_link heading="ICH_AP0R&lt;n&gt;_EL2" id="ICH_AP0R&lt;n&gt;_EL2" registerfile="AArch64-ich_ap0rn_el2.xml">Interrupt Controller Hyp Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICH_AP1R&lt;n&gt;_EL2" id="ICH_AP1R&lt;n&gt;_EL2" registerfile="AArch64-ich_ap1rn_el2.xml">Interrupt Controller Hyp Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICH_EISR_EL2" id="ICH_EISR_EL2" registerfile="AArch64-ich_eisr_el2.xml">Interrupt Controller End of Interrupt Status Register</register_link>
+    <register_link heading="ICH_ELRSR_EL2" id="ICH_ELRSR_EL2" registerfile="AArch64-ich_elrsr_el2.xml">Interrupt Controller Empty List Register Status Register</register_link>
+    <register_link heading="ICH_HCR_EL2" id="ICH_HCR_EL2" registerfile="AArch64-ich_hcr_el2.xml">Interrupt Controller Hyp Control Register</register_link>
+    <register_link heading="ICH_LR&lt;n&gt;_EL2" id="ICH_LR&lt;n&gt;_EL2" registerfile="AArch64-ich_lrn_el2.xml">Interrupt Controller List Registers</register_link>
+    <register_link heading="ICH_MISR_EL2" id="ICH_MISR_EL2" registerfile="AArch64-ich_misr_el2.xml">Interrupt Controller Maintenance Interrupt State Register</register_link>
+    <register_link heading="ICH_VMCR_EL2" id="ICH_VMCR_EL2" registerfile="AArch64-ich_vmcr_el2.xml">Interrupt Controller Virtual Machine Control Register</register_link>
+    <register_link heading="ICH_VTR_EL2" id="ICH_VTR_EL2" registerfile="AArch64-ich_vtr_el2.xml">Interrupt Controller VGIC Type Register</register_link>
+    <register_link heading="ICV_AP0R&lt;n&gt;_EL1" id="ICV_AP0R&lt;n&gt;_EL1" registerfile="AArch64-icv_ap0rn_el1.xml">Interrupt Controller Virtual Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICV_AP1R&lt;n&gt;_EL1" id="ICV_AP1R&lt;n&gt;_EL1" registerfile="AArch64-icv_ap1rn_el1.xml">Interrupt Controller Virtual Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICV_BPR0_EL1" id="ICV_BPR0_EL1" registerfile="AArch64-icv_bpr0_el1.xml">Interrupt Controller Virtual Binary Point Register 0</register_link>
+    <register_link heading="ICV_BPR1_EL1" id="ICV_BPR1_EL1" registerfile="AArch64-icv_bpr1_el1.xml">Interrupt Controller Virtual Binary Point Register 1</register_link>
+    <register_link heading="ICV_CTLR_EL1" id="ICV_CTLR_EL1" registerfile="AArch64-icv_ctlr_el1.xml">Interrupt Controller Virtual Control Register</register_link>
+    <register_link heading="ICV_DIR_EL1" id="ICV_DIR_EL1" registerfile="AArch64-icv_dir_el1.xml">Interrupt Controller Deactivate Virtual Interrupt Register</register_link>
+    <register_link heading="ICV_EOIR0_EL1" id="ICV_EOIR0_EL1" registerfile="AArch64-icv_eoir0_el1.xml">Interrupt Controller Virtual End Of Interrupt Register 0</register_link>
+    <register_link heading="ICV_EOIR1_EL1" id="ICV_EOIR1_EL1" registerfile="AArch64-icv_eoir1_el1.xml">Interrupt Controller Virtual End Of Interrupt Register 1</register_link>
+    <register_link heading="ICV_HPPIR0_EL1" id="ICV_HPPIR0_EL1" registerfile="AArch64-icv_hppir0_el1.xml">Interrupt Controller Virtual Highest Priority Pending Interrupt Register 0</register_link>
+    <register_link heading="ICV_HPPIR1_EL1" id="ICV_HPPIR1_EL1" registerfile="AArch64-icv_hppir1_el1.xml">Interrupt Controller Virtual Highest Priority Pending Interrupt Register 1</register_link>
+    <register_link heading="ICV_IAR0_EL1" id="ICV_IAR0_EL1" registerfile="AArch64-icv_iar0_el1.xml">Interrupt Controller Virtual Interrupt Acknowledge Register 0</register_link>
+    <register_link heading="ICV_IAR1_EL1" id="ICV_IAR1_EL1" registerfile="AArch64-icv_iar1_el1.xml">Interrupt Controller Virtual Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICV_IGRPEN0_EL1" id="ICV_IGRPEN0_EL1" registerfile="AArch64-icv_igrpen0_el1.xml">Interrupt Controller Virtual Interrupt Group 0 Enable register</register_link>
+    <register_link heading="ICV_IGRPEN1_EL1" id="ICV_IGRPEN1_EL1" registerfile="AArch64-icv_igrpen1_el1.xml">Interrupt Controller Virtual Interrupt Group 1 Enable register</register_link>
+    <register_link heading="ICV_NMIAR1_EL1" id="ICV_NMIAR1_EL1" registerfile="AArch64-icv_nmiar1_el1.xml">Interrupt Controller Virtual Non-maskable Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICV_PMR_EL1" id="ICV_PMR_EL1" registerfile="AArch64-icv_pmr_el1.xml">Interrupt Controller Virtual Interrupt Priority Mask Register</register_link>
+    <register_link heading="ICV_RPR_EL1" id="ICV_RPR_EL1" registerfile="AArch64-icv_rpr_el1.xml">Interrupt Controller Virtual Running Priority Register</register_link>
+    <register_link heading="ID_AA64AFR0_EL1" id="ID_AA64AFR0_EL1" registerfile="AArch64-id_aa64afr0_el1.xml">AArch64 Auxiliary Feature Register 0</register_link>
+    <register_link heading="ID_AA64AFR1_EL1" id="ID_AA64AFR1_EL1" registerfile="AArch64-id_aa64afr1_el1.xml">AArch64 Auxiliary Feature Register 1</register_link>
+    <register_link heading="ID_AA64DFR0_EL1" id="ID_AA64DFR0_EL1" registerfile="AArch64-id_aa64dfr0_el1.xml">AArch64 Debug Feature Register 0</register_link>
+    <register_link heading="ID_AA64DFR1_EL1" id="ID_AA64DFR1_EL1" registerfile="AArch64-id_aa64dfr1_el1.xml">AArch64 Debug Feature Register 1</register_link>
+    <register_link heading="ID_AA64ISAR0_EL1" id="ID_AA64ISAR0_EL1" registerfile="AArch64-id_aa64isar0_el1.xml">AArch64 Instruction Set Attribute Register 0</register_link>
+    <register_link heading="ID_AA64ISAR1_EL1" id="ID_AA64ISAR1_EL1" registerfile="AArch64-id_aa64isar1_el1.xml">AArch64 Instruction Set Attribute Register 1</register_link>
+    <register_link heading="ID_AA64ISAR2_EL1" id="ID_AA64ISAR2_EL1" registerfile="AArch64-id_aa64isar2_el1.xml">AArch64 Instruction Set Attribute Register 2</register_link>
+    <register_link heading="ID_AA64MMFR0_EL1" id="ID_AA64MMFR0_EL1" registerfile="AArch64-id_aa64mmfr0_el1.xml">AArch64 Memory Model Feature Register 0</register_link>
+    <register_link heading="ID_AA64MMFR1_EL1" id="ID_AA64MMFR1_EL1" registerfile="AArch64-id_aa64mmfr1_el1.xml">AArch64 Memory Model Feature Register 1</register_link>
+    <register_link heading="ID_AA64MMFR2_EL1" id="ID_AA64MMFR2_EL1" registerfile="AArch64-id_aa64mmfr2_el1.xml">AArch64 Memory Model Feature Register 2</register_link>
+    <register_link heading="ID_AA64MMFR3_EL1" id="ID_AA64MMFR3_EL1" registerfile="AArch64-id_aa64mmfr3_el1.xml">AArch64 Memory Model Feature Register 3</register_link>
+    <register_link heading="ID_AA64MMFR4_EL1" id="ID_AA64MMFR4_EL1" registerfile="AArch64-id_aa64mmfr4_el1.xml">AArch64 Memory Model Feature Register 4</register_link>
+    <register_link heading="ID_AA64PFR0_EL1" id="ID_AA64PFR0_EL1" registerfile="AArch64-id_aa64pfr0_el1.xml">AArch64 Processor Feature Register 0</register_link>
+    <register_link heading="ID_AA64PFR1_EL1" id="ID_AA64PFR1_EL1" registerfile="AArch64-id_aa64pfr1_el1.xml">AArch64 Processor Feature Register 1</register_link>
+    <register_link heading="ID_AA64PFR2_EL1" id="ID_AA64PFR2_EL1" registerfile="AArch64-id_aa64pfr2_el1.xml">AArch64 Processor Feature Register 2</register_link>
+    <register_link heading="ID_AA64SMFR0_EL1" id="ID_AA64SMFR0_EL1" registerfile="AArch64-id_aa64smfr0_el1.xml">SME Feature ID Register 0</register_link>
+    <register_link heading="ID_AA64ZFR0_EL1" id="ID_AA64ZFR0_EL1" registerfile="AArch64-id_aa64zfr0_el1.xml">SVE Feature ID Register 0</register_link>
+    <register_link heading="ID_AFR0_EL1" id="ID_AFR0_EL1" registerfile="AArch64-id_afr0_el1.xml">AArch32 Auxiliary Feature Register 0</register_link>
+    <register_link heading="ID_DFR0_EL1" id="ID_DFR0_EL1" registerfile="AArch64-id_dfr0_el1.xml">AArch32 Debug Feature Register 0</register_link>
+    <register_link heading="ID_DFR1_EL1" id="ID_DFR1_EL1" registerfile="AArch64-id_dfr1_el1.xml">Debug Feature Register 1</register_link>
+    <register_link heading="ID_ISAR0_EL1" id="ID_ISAR0_EL1" registerfile="AArch64-id_isar0_el1.xml">AArch32 Instruction Set Attribute Register 0</register_link>
+    <register_link heading="ID_ISAR1_EL1" id="ID_ISAR1_EL1" registerfile="AArch64-id_isar1_el1.xml">AArch32 Instruction Set Attribute Register 1</register_link>
+    <register_link heading="ID_ISAR2_EL1" id="ID_ISAR2_EL1" registerfile="AArch64-id_isar2_el1.xml">AArch32 Instruction Set Attribute Register 2</register_link>
+    <register_link heading="ID_ISAR3_EL1" id="ID_ISAR3_EL1" registerfile="AArch64-id_isar3_el1.xml">AArch32 Instruction Set Attribute Register 3</register_link>
+    <register_link heading="ID_ISAR4_EL1" id="ID_ISAR4_EL1" registerfile="AArch64-id_isar4_el1.xml">AArch32 Instruction Set Attribute Register 4</register_link>
+    <register_link heading="ID_ISAR5_EL1" id="ID_ISAR5_EL1" registerfile="AArch64-id_isar5_el1.xml">AArch32 Instruction Set Attribute Register 5</register_link>
+    <register_link heading="ID_ISAR6_EL1" id="ID_ISAR6_EL1" registerfile="AArch64-id_isar6_el1.xml">AArch32 Instruction Set Attribute Register 6</register_link>
+    <register_link heading="ID_MMFR0_EL1" id="ID_MMFR0_EL1" registerfile="AArch64-id_mmfr0_el1.xml">AArch32 Memory Model Feature Register 0</register_link>
+    <register_link heading="ID_MMFR1_EL1" id="ID_MMFR1_EL1" registerfile="AArch64-id_mmfr1_el1.xml">AArch32 Memory Model Feature Register 1</register_link>
+    <register_link heading="ID_MMFR2_EL1" id="ID_MMFR2_EL1" registerfile="AArch64-id_mmfr2_el1.xml">AArch32 Memory Model Feature Register 2</register_link>
+    <register_link heading="ID_MMFR3_EL1" id="ID_MMFR3_EL1" registerfile="AArch64-id_mmfr3_el1.xml">AArch32 Memory Model Feature Register 3</register_link>
+    <register_link heading="ID_MMFR4_EL1" id="ID_MMFR4_EL1" registerfile="AArch64-id_mmfr4_el1.xml">AArch32 Memory Model Feature Register 4</register_link>
+    <register_link heading="ID_MMFR5_EL1" id="ID_MMFR5_EL1" registerfile="AArch64-id_mmfr5_el1.xml">AArch32 Memory Model Feature Register 5</register_link>
+    <register_link heading="ID_PFR0_EL1" id="ID_PFR0_EL1" registerfile="AArch64-id_pfr0_el1.xml">AArch32 Processor Feature Register 0</register_link>
+    <register_link heading="ID_PFR1_EL1" id="ID_PFR1_EL1" registerfile="AArch64-id_pfr1_el1.xml">AArch32 Processor Feature Register 1</register_link>
+    <register_link heading="ID_PFR2_EL1" id="ID_PFR2_EL1" registerfile="AArch64-id_pfr2_el1.xml">AArch32 Processor Feature Register 2</register_link>
+    <register_link heading="IFSR32_EL2" id="IFSR32_EL2" registerfile="AArch64-ifsr32_el2.xml">Instruction Fault Status Register (EL2)</register_link>
+    <register_link heading="ISR_EL1" id="ISR_EL1" registerfile="AArch64-isr_el1.xml">Interrupt Status Register</register_link>
+    <register_link heading="LORC_EL1" id="LORC_EL1" registerfile="AArch64-lorc_el1.xml">LORegion Control (EL1)</register_link>
+    <register_link heading="LOREA_EL1" id="LOREA_EL1" registerfile="AArch64-lorea_el1.xml">LORegion End Address (EL1)</register_link>
+    <register_link heading="LORID_EL1" id="LORID_EL1" registerfile="AArch64-lorid_el1.xml">LORegionID (EL1)</register_link>
+    <register_link heading="LORN_EL1" id="LORN_EL1" registerfile="AArch64-lorn_el1.xml">LORegion Number (EL1)</register_link>
+    <register_link heading="LORSA_EL1" id="LORSA_EL1" registerfile="AArch64-lorsa_el1.xml">LORegion Start Address (EL1)</register_link>
+    <register_link heading="MAIR2_EL1" id="MAIR2_EL1" registerfile="AArch64-mair2_el1.xml">Extended Memory Attribute Indirection Register (EL1)</register_link>
+    <register_link heading="MAIR2_EL2" id="MAIR2_EL2" registerfile="AArch64-mair2_el2.xml">Extended Memory Attribute Indirection Register (EL2)</register_link>
+    <register_link heading="MAIR2_EL3" id="MAIR2_EL3" registerfile="AArch64-mair2_el3.xml">Extended Memory Attribute Indirection Register (EL3)</register_link>
+    <register_link heading="MAIR_EL1" id="MAIR_EL1" registerfile="AArch64-mair_el1.xml">Memory Attribute Indirection Register (EL1)</register_link>
+    <register_link heading="MAIR_EL2" id="MAIR_EL2" registerfile="AArch64-mair_el2.xml">Memory Attribute Indirection Register (EL2)</register_link>
+    <register_link heading="MAIR_EL3" id="MAIR_EL3" registerfile="AArch64-mair_el3.xml">Memory Attribute Indirection Register (EL3)</register_link>
+    <register_link heading="MDCCINT_EL1" id="MDCCINT_EL1" registerfile="AArch64-mdccint_el1.xml">Monitor DCC Interrupt Enable Register</register_link>
+    <register_link heading="MDCCSR_EL0" id="MDCCSR_EL0" registerfile="AArch64-mdccsr_el0.xml">Monitor DCC Status Register</register_link>
+    <register_link heading="MDCR_EL2" id="MDCR_EL2" registerfile="AArch64-mdcr_el2.xml">Monitor Debug Configuration Register (EL2)</register_link>
+    <register_link heading="MDCR_EL3" id="MDCR_EL3" registerfile="AArch64-mdcr_el3.xml">Monitor Debug Configuration Register (EL3)</register_link>
+    <register_link heading="MDRAR_EL1" id="MDRAR_EL1" registerfile="AArch64-mdrar_el1.xml">Monitor Debug ROM Address Register</register_link>
+    <register_link heading="MDSCR_EL1" id="MDSCR_EL1" registerfile="AArch64-mdscr_el1.xml">Monitor Debug System Control Register</register_link>
+    <register_link heading="MDSELR_EL1" id="MDSELR_EL1" registerfile="AArch64-mdselr_el1.xml">Breakpoint and Watchpoint Selection Register</register_link>
+    <register_link heading="MECIDR_EL2" id="MECIDR_EL2" registerfile="AArch64-mecidr_el2.xml">MEC Identification Register</register_link>
+    <register_link heading="MECID_A0_EL2" id="MECID_A0_EL2" registerfile="AArch64-mecid_a0_el2.xml">Alternate MECID for EL2 and EL2&amp;0 translation regimes</register_link>
+    <register_link heading="MECID_A1_EL2" id="MECID_A1_EL2" registerfile="AArch64-mecid_a1_el2.xml">Alternate MECID for EL2&amp;0 translation regimes.</register_link>
+    <register_link heading="MECID_P0_EL2" id="MECID_P0_EL2" registerfile="AArch64-mecid_p0_el2.xml">Primary MECID for EL2 and EL2&amp;0 translation regimes</register_link>
+    <register_link heading="MECID_P1_EL2" id="MECID_P1_EL2" registerfile="AArch64-mecid_p1_el2.xml">Primary MECID for EL2&amp;0 translation regimes</register_link>
+    <register_link heading="MECID_RL_A_EL3" id="MECID_RL_A_EL3" registerfile="AArch64-mecid_rl_a_el3.xml">Realm PA space Alternate MECID for EL3 stage 1 translation regime</register_link>
+    <register_link heading="MFAR_EL3" id="MFAR_EL3" registerfile="AArch64-mfar_el3.xml">Physical Fault Address Register (EL3)</register_link>
+    <register_link heading="MIDR_EL1" id="MIDR_EL1" registerfile="AArch64-midr_el1.xml">Main ID Register</register_link>
+    <register_link heading="MPAM0_EL1" id="MPAM0_EL1" registerfile="AArch64-mpam0_el1.xml">MPAM0 Register (EL1)</register_link>
+    <register_link heading="MPAM1_EL1" id="MPAM1_EL1" registerfile="AArch64-mpam1_el1.xml">MPAM1 Register (EL1)</register_link>
+    <register_link heading="MPAM2_EL2" id="MPAM2_EL2" registerfile="AArch64-mpam2_el2.xml">MPAM2 Register (EL2)</register_link>
+    <register_link heading="MPAM3_EL3" id="MPAM3_EL3" registerfile="AArch64-mpam3_el3.xml">MPAM3 Register (EL3)</register_link>
+    <register_link heading="MPAMHCR_EL2" id="MPAMHCR_EL2" registerfile="AArch64-mpamhcr_el2.xml">MPAM Hypervisor Control Register (EL2)</register_link>
+    <register_link heading="MPAMIDR_EL1" id="MPAMIDR_EL1" registerfile="AArch64-mpamidr_el1.xml">MPAM ID Register (EL1)</register_link>
+    <register_link heading="MPAMSM_EL1" id="MPAMSM_EL1" registerfile="AArch64-mpamsm_el1.xml">MPAM Streaming Mode Register</register_link>
+    <register_link heading="MPAMVPM0_EL2" id="MPAMVPM0_EL2" registerfile="AArch64-mpamvpm0_el2.xml">MPAM Virtual PARTID Mapping Register 0</register_link>
+    <register_link heading="MPAMVPM1_EL2" id="MPAMVPM1_EL2" registerfile="AArch64-mpamvpm1_el2.xml">MPAM Virtual PARTID Mapping Register 1</register_link>
+    <register_link heading="MPAMVPM2_EL2" id="MPAMVPM2_EL2" registerfile="AArch64-mpamvpm2_el2.xml">MPAM Virtual PARTID Mapping Register 2</register_link>
+    <register_link heading="MPAMVPM3_EL2" id="MPAMVPM3_EL2" registerfile="AArch64-mpamvpm3_el2.xml">MPAM Virtual PARTID Mapping Register 3</register_link>
+    <register_link heading="MPAMVPM4_EL2" id="MPAMVPM4_EL2" registerfile="AArch64-mpamvpm4_el2.xml">MPAM Virtual PARTID Mapping Register 4</register_link>
+    <register_link heading="MPAMVPM5_EL2" id="MPAMVPM5_EL2" registerfile="AArch64-mpamvpm5_el2.xml">MPAM Virtual PARTID Mapping Register 5</register_link>
+    <register_link heading="MPAMVPM6_EL2" id="MPAMVPM6_EL2" registerfile="AArch64-mpamvpm6_el2.xml">MPAM Virtual PARTID Mapping Register 6</register_link>
+    <register_link heading="MPAMVPM7_EL2" id="MPAMVPM7_EL2" registerfile="AArch64-mpamvpm7_el2.xml">MPAM Virtual PARTID Mapping Register 7</register_link>
+    <register_link heading="MPAMVPMV_EL2" id="MPAMVPMV_EL2" registerfile="AArch64-mpamvpmv_el2.xml">MPAM Virtual Partition Mapping Valid Register</register_link>
+    <register_link heading="MPIDR_EL1" id="MPIDR_EL1" registerfile="AArch64-mpidr_el1.xml">Multiprocessor Affinity Register</register_link>
+    <register_link heading="MVFR0_EL1" id="MVFR0_EL1" registerfile="AArch64-mvfr0_el1.xml">AArch32 Media and VFP Feature Register 0</register_link>
+    <register_link heading="MVFR1_EL1" id="MVFR1_EL1" registerfile="AArch64-mvfr1_el1.xml">AArch32 Media and VFP Feature Register 1</register_link>
+    <register_link heading="MVFR2_EL1" id="MVFR2_EL1" registerfile="AArch64-mvfr2_el1.xml">AArch32 Media and VFP Feature Register 2</register_link>
+    <register_link heading="NZCV" id="NZCV" registerfile="AArch64-nzcv.xml">Condition Flags</register_link>
+    <register_link heading="OSDLR_EL1" id="OSDLR_EL1" registerfile="AArch64-osdlr_el1.xml">OS Double Lock Register</register_link>
+    <register_link heading="OSDTRRX_EL1" id="OSDTRRX_EL1" registerfile="AArch64-osdtrrx_el1.xml">OS Lock Data Transfer Register, Receive</register_link>
+    <register_link heading="OSDTRTX_EL1" id="OSDTRTX_EL1" registerfile="AArch64-osdtrtx_el1.xml">OS Lock Data Transfer Register, Transmit</register_link>
+    <register_link heading="OSECCR_EL1" id="OSECCR_EL1" registerfile="AArch64-oseccr_el1.xml">OS Lock Exception Catch Control Register</register_link>
+    <register_link heading="OSLAR_EL1" id="OSLAR_EL1" registerfile="AArch64-oslar_el1.xml">OS Lock Access Register</register_link>
+    <register_link heading="OSLSR_EL1" id="OSLSR_EL1" registerfile="AArch64-oslsr_el1.xml">OS Lock Status Register</register_link>
+    <register_link heading="PAN" id="PAN" registerfile="AArch64-pan.xml">Privileged Access Never</register_link>
+    <register_link heading="PAR_EL1" id="PAR_EL1" registerfile="AArch64-par_el1.xml">Physical Address Register</register_link>
+    <register_link heading="PFAR_EL1" id="PFAR_EL1" registerfile="AArch64-pfar_el1.xml">Physical Fault Address Register (EL1)</register_link>
+    <register_link heading="PFAR_EL2" id="PFAR_EL2" registerfile="AArch64-pfar_el2.xml">Physical Fault Address Register (EL2)</register_link>
+    <register_link heading="PIRE0_EL1" id="PIRE0_EL1" registerfile="AArch64-pire0_el1.xml">Permission Indirection Register 0 (EL1)</register_link>
+    <register_link heading="PIRE0_EL2" id="PIRE0_EL2" registerfile="AArch64-pire0_el2.xml">Permission Indirection Register 0 (EL2)</register_link>
+    <register_link heading="PIR_EL1" id="PIR_EL1" registerfile="AArch64-pir_el1.xml">Permission Indirection Register 1 (EL1)</register_link>
+    <register_link heading="PIR_EL2" id="PIR_EL2" registerfile="AArch64-pir_el2.xml">Permission Indirection Register 2 (EL2)</register_link>
+    <register_link heading="PIR_EL3" id="PIR_EL3" registerfile="AArch64-pir_el3.xml"> Permission Indirection Register 3 (EL3)</register_link>
+    <register_link heading="PM" id="PM" registerfile="AArch64-pm.xml">PMU Exception Mask</register_link>
+    <register_link heading="PMBIDR_EL1" id="PMBIDR_EL1" registerfile="AArch64-pmbidr_el1.xml">Profiling Buffer ID Register</register_link>
+    <register_link heading="PMBLIMITR_EL1" id="PMBLIMITR_EL1" registerfile="AArch64-pmblimitr_el1.xml">Profiling Buffer Limit Address Register</register_link>
+    <register_link heading="PMBPTR_EL1" id="PMBPTR_EL1" registerfile="AArch64-pmbptr_el1.xml">Profiling Buffer Write Pointer Register</register_link>
+    <register_link heading="PMBSR_EL1" id="PMBSR_EL1" registerfile="AArch64-pmbsr_el1.xml">Profiling Buffer Status/syndrome Register</register_link>
+    <register_link heading="PMCCFILTR_EL0" id="PMCCFILTR_EL0" registerfile="AArch64-pmccfiltr_el0.xml">Performance Monitors Cycle Count Filter Register</register_link>
+    <register_link heading="PMCCNTR_EL0" id="PMCCNTR_EL0" registerfile="AArch64-pmccntr_el0.xml">Performance Monitors Cycle Count Register</register_link>
+    <register_link heading="PMCCNTSVR_EL1" id="PMCCNTSVR_EL1" registerfile="AArch64-pmccntsvr_el1.xml">Performance Monitors Cycle Count Saved Value Register</register_link>
+    <register_link heading="PMCEID0_EL0" id="PMCEID0_EL0" registerfile="AArch64-pmceid0_el0.xml">Performance Monitors Common Event Identification Register 0</register_link>
+    <register_link heading="PMCEID1_EL0" id="PMCEID1_EL0" registerfile="AArch64-pmceid1_el0.xml">Performance Monitors Common Event Identification Register 1</register_link>
+    <register_link heading="PMCNTENCLR_EL0" id="PMCNTENCLR_EL0" registerfile="AArch64-pmcntenclr_el0.xml">Performance Monitors Count Enable Clear Register</register_link>
+    <register_link heading="PMCNTENSET_EL0" id="PMCNTENSET_EL0" registerfile="AArch64-pmcntenset_el0.xml">Performance Monitors Count Enable Set Register</register_link>
+    <register_link heading="PMCR_EL0" id="PMCR_EL0" registerfile="AArch64-pmcr_el0.xml">Performance Monitors Control Register</register_link>
+    <register_link heading="PMECR_EL1" id="PMECR_EL1" registerfile="AArch64-pmecr_el1.xml">Performance Monitors Extended Control Register (EL1)</register_link>
+    <register_link heading="PMEVCNTR&lt;n&gt;_EL0" id="PMEVCNTR&lt;n&gt;_EL0" registerfile="AArch64-pmevcntrn_el0.xml">Performance Monitors Event Count Registers</register_link>
+    <register_link heading="PMEVCNTSVR&lt;n&gt;_EL1" id="PMEVCNTSVR&lt;n&gt;_EL1" registerfile="AArch64-pmevcntsvrn_el1.xml">Performance Monitors Event Count Saved Value Register &lt;n&gt;</register_link>
+    <register_link heading="PMEVTYPER&lt;n&gt;_EL0" id="PMEVTYPER&lt;n&gt;_EL0" registerfile="AArch64-pmevtypern_el0.xml">Performance Monitors Event Type Registers</register_link>
+    <register_link heading="PMIAR_EL1" id="PMIAR_EL1" registerfile="AArch64-pmiar_el1.xml">Performance Monitors Instruction Address Register</register_link>
+    <register_link heading="PMICFILTR_EL0" id="PMICFILTR_EL0" registerfile="AArch64-pmicfiltr_el0.xml">Performance Monitors Instruction Counter Filter Register</register_link>
+    <register_link heading="PMICNTR_EL0" id="PMICNTR_EL0" registerfile="AArch64-pmicntr_el0.xml">Performance Monitors Instruction Counter Register</register_link>
+    <register_link heading="PMICNTSVR_EL1" id="PMICNTSVR_EL1" registerfile="AArch64-pmicntsvr_el1.xml">Performance Monitors Instruction Count Saved Value Register</register_link>
+    <register_link heading="PMINTENCLR_EL1" id="PMINTENCLR_EL1" registerfile="AArch64-pmintenclr_el1.xml">Performance Monitors Interrupt Enable Clear Register</register_link>
+    <register_link heading="PMINTENSET_EL1" id="PMINTENSET_EL1" registerfile="AArch64-pmintenset_el1.xml">Performance Monitors Interrupt Enable Set Register</register_link>
+    <register_link heading="PMMIR_EL1" id="PMMIR_EL1" registerfile="AArch64-pmmir_el1.xml">Performance Monitors Machine Identification Register</register_link>
+    <register_link heading="PMOVSCLR_EL0" id="PMOVSCLR_EL0" registerfile="AArch64-pmovsclr_el0.xml">Performance Monitors Overflow Flag Status Clear Register</register_link>
+    <register_link heading="PMOVSSET_EL0" id="PMOVSSET_EL0" registerfile="AArch64-pmovsset_el0.xml">Performance Monitors Overflow Flag Status Set Register</register_link>
+    <register_link heading="PMSCR_EL1" id="PMSCR_EL1" registerfile="AArch64-pmscr_el1.xml">Statistical Profiling Control Register (EL1)</register_link>
+    <register_link heading="PMSCR_EL2" id="PMSCR_EL2" registerfile="AArch64-pmscr_el2.xml">Statistical Profiling Control Register (EL2)</register_link>
+    <register_link heading="PMSDSFR_EL1" id="PMSDSFR_EL1" registerfile="AArch64-pmsdsfr_el1.xml">Sampling Data Source Filter Register</register_link>
+    <register_link heading="PMSELR_EL0" id="PMSELR_EL0" registerfile="AArch64-pmselr_el0.xml">Performance Monitors Event Counter Selection Register</register_link>
+    <register_link heading="PMSEVFR_EL1" id="PMSEVFR_EL1" registerfile="AArch64-pmsevfr_el1.xml">Sampling Event Filter Register</register_link>
+    <register_link heading="PMSFCR_EL1" id="PMSFCR_EL1" registerfile="AArch64-pmsfcr_el1.xml">Sampling Filter Control Register</register_link>
+    <register_link heading="PMSICR_EL1" id="PMSICR_EL1" registerfile="AArch64-pmsicr_el1.xml">Sampling Interval Counter Register</register_link>
+    <register_link heading="PMSIDR_EL1" id="PMSIDR_EL1" registerfile="AArch64-pmsidr_el1.xml">Sampling Profiling ID Register</register_link>
+    <register_link heading="PMSIRR_EL1" id="PMSIRR_EL1" registerfile="AArch64-pmsirr_el1.xml">Sampling Interval Reload Register</register_link>
+    <register_link heading="PMSLATFR_EL1" id="PMSLATFR_EL1" registerfile="AArch64-pmslatfr_el1.xml">Sampling Latency Filter Register</register_link>
+    <register_link heading="PMSNEVFR_EL1" id="PMSNEVFR_EL1" registerfile="AArch64-pmsnevfr_el1.xml">Sampling Inverted Event Filter Register</register_link>
+    <register_link heading="PMSSCR_EL1" id="PMSSCR_EL1" registerfile="AArch64-pmsscr_el1.xml">Performance Monitors Snapshot Status and Capture Register</register_link>
+    <register_link heading="PMSWINC_EL0" id="PMSWINC_EL0" registerfile="AArch64-pmswinc_el0.xml">Performance Monitors Software Increment Register</register_link>
+    <register_link heading="PMUACR_EL1" id="PMUACR_EL1" registerfile="AArch64-pmuacr_el1.xml">Performance Monitors User Access Control Register</register_link>
+    <register_link heading="PMUSERENR_EL0" id="PMUSERENR_EL0" registerfile="AArch64-pmuserenr_el0.xml">Performance Monitors User Enable Register</register_link>
+    <register_link heading="PMXEVCNTR_EL0" id="PMXEVCNTR_EL0" registerfile="AArch64-pmxevcntr_el0.xml">Performance Monitors Selected Event Count Register</register_link>
+    <register_link heading="PMXEVTYPER_EL0" id="PMXEVTYPER_EL0" registerfile="AArch64-pmxevtyper_el0.xml">Performance Monitors Selected Event Type Register</register_link>
+    <register_link heading="PMZR_EL0" id="PMZR_EL0" registerfile="AArch64-pmzr_el0.xml">Performance Monitors Zero with Mask</register_link>
+    <register_link heading="POR_EL0" id="POR_EL0" registerfile="AArch64-por_el0.xml">Permission Overlay Register 0 (EL0)</register_link>
+    <register_link heading="POR_EL1" id="POR_EL1" registerfile="AArch64-por_el1.xml">Permission Overlay Register 1 (EL1)</register_link>
+    <register_link heading="POR_EL2" id="POR_EL2" registerfile="AArch64-por_el2.xml">Permission Overlay Register 2 (EL2)</register_link>
+    <register_link heading="POR_EL3" id="POR_EL3" registerfile="AArch64-por_el3.xml">Permission Overlay Register 3 (EL3)</register_link>
+    <register_link heading="RCWMASK_EL1" id="RCWMASK_EL1" registerfile="AArch64-rcwmask_el1.xml">Read Check Write Instruction Mask (EL1)</register_link>
+    <register_link heading="RCWSMASK_EL1" id="RCWSMASK_EL1" registerfile="AArch64-rcwsmask_el1.xml">Software Read Check Write Instruction Mask (EL1)</register_link>
+    <register_link heading="REVIDR_EL1" id="REVIDR_EL1" registerfile="AArch64-revidr_el1.xml">Revision ID Register</register_link>
+    <register_link heading="RGSR_EL1" id="RGSR_EL1" registerfile="AArch64-rgsr_el1.xml">Random Allocation Tag Seed Register.</register_link>
+    <register_link heading="RMR_EL1" id="RMR_EL1" registerfile="AArch64-rmr_el1.xml">Reset Management Register (EL1)</register_link>
+    <register_link heading="RMR_EL2" id="RMR_EL2" registerfile="AArch64-rmr_el2.xml">Reset Management Register (EL2)</register_link>
+    <register_link heading="RMR_EL3" id="RMR_EL3" registerfile="AArch64-rmr_el3.xml">Reset Management Register (EL3)</register_link>
+    <register_link heading="RNDR" id="RNDR" registerfile="AArch64-rndr.xml">Random Number</register_link>
+    <register_link heading="RNDRRS" id="RNDRRS" registerfile="AArch64-rndrrs.xml">Reseeded Random Number</register_link>
+    <register_link heading="RVBAR_EL1" id="RVBAR_EL1" registerfile="AArch64-rvbar_el1.xml">Reset Vector Base Address Register (if EL2 and EL3 not implemented)</register_link>
+    <register_link heading="RVBAR_EL2" id="RVBAR_EL2" registerfile="AArch64-rvbar_el2.xml">Reset Vector Base Address Register (if EL3 not implemented)</register_link>
+    <register_link heading="RVBAR_EL3" id="RVBAR_EL3" registerfile="AArch64-rvbar_el3.xml">Reset Vector Base Address Register (if EL3 implemented)</register_link>
+    <register_link heading="S2PIR_EL2" id="S2PIR_EL2" registerfile="AArch64-s2pir_el2.xml">Stage 2 Permission Indirection Register (EL2)</register_link>
+    <register_link heading="S2POR_EL1" id="S2POR_EL1" registerfile="AArch64-s2por_el1.xml">Stage 2 Permission Overlay Register (EL1)</register_link>
+    <register_link heading="S3_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;" id="S3_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;" registerfile="AArch64-s3_op1_cn_cm_op2.xml">IMPLEMENTATION DEFINED registers</register_link>
+    <register_link heading="SCR_EL3" id="SCR_EL3" registerfile="AArch64-scr_el3.xml">Secure Configuration Register</register_link>
+    <register_link heading="SCTLR2_EL1" id="SCTLR2_EL1" registerfile="AArch64-sctlr2_el1.xml">System Control Register (EL1)</register_link>
+    <register_link heading="SCTLR2_EL2" id="SCTLR2_EL2" registerfile="AArch64-sctlr2_el2.xml">System Control Register (EL2)</register_link>
+    <register_link heading="SCTLR2_EL3" id="SCTLR2_EL3" registerfile="AArch64-sctlr2_el3.xml">System Control Register (EL3)</register_link>
+    <register_link heading="SCTLR_EL1" id="SCTLR_EL1" registerfile="AArch64-sctlr_el1.xml">System Control Register (EL1)</register_link>
+    <register_link heading="SCTLR_EL2" id="SCTLR_EL2" registerfile="AArch64-sctlr_el2.xml">System Control Register (EL2)</register_link>
+    <register_link heading="SCTLR_EL3" id="SCTLR_EL3" registerfile="AArch64-sctlr_el3.xml">System Control Register (EL3)</register_link>
+    <register_link heading="SCXTNUM_EL0" id="SCXTNUM_EL0" registerfile="AArch64-scxtnum_el0.xml">EL0 Read/Write Software Context Number</register_link>
+    <register_link heading="SCXTNUM_EL1" id="SCXTNUM_EL1" registerfile="AArch64-scxtnum_el1.xml">EL1 Read/Write Software Context Number</register_link>
+    <register_link heading="SCXTNUM_EL2" id="SCXTNUM_EL2" registerfile="AArch64-scxtnum_el2.xml">EL2 Read/Write Software Context Number</register_link>
+    <register_link heading="SCXTNUM_EL3" id="SCXTNUM_EL3" registerfile="AArch64-scxtnum_el3.xml">EL3 Read/Write Software Context Number</register_link>
+    <register_link heading="SDER32_EL2" id="SDER32_EL2" registerfile="AArch64-sder32_el2.xml">AArch32 Secure Debug Enable Register</register_link>
+    <register_link heading="SDER32_EL3" id="SDER32_EL3" registerfile="AArch64-sder32_el3.xml">AArch32 Secure Debug Enable Register</register_link>
+    <register_link heading="SMCR_EL1" id="SMCR_EL1" registerfile="AArch64-smcr_el1.xml">SME Control Register (EL1)</register_link>
+    <register_link heading="SMCR_EL2" id="SMCR_EL2" registerfile="AArch64-smcr_el2.xml">SME Control Register (EL2)</register_link>
+    <register_link heading="SMCR_EL3" id="SMCR_EL3" registerfile="AArch64-smcr_el3.xml">SME Control Register (EL3)</register_link>
+    <register_link heading="SMIDR_EL1" id="SMIDR_EL1" registerfile="AArch64-smidr_el1.xml">Streaming Mode Identification Register</register_link>
+    <register_link heading="SMPRIMAP_EL2" id="SMPRIMAP_EL2" registerfile="AArch64-smprimap_el2.xml">Streaming Mode Priority Mapping Register</register_link>
+    <register_link heading="SMPRI_EL1" id="SMPRI_EL1" registerfile="AArch64-smpri_el1.xml">Streaming Mode Priority Register</register_link>
+    <register_link heading="SPMACCESSR_EL1" id="SPMACCESSR_EL1" registerfile="AArch64-spmaccessr_el1.xml">System Performance Monitors Access Register (EL1)</register_link>
+    <register_link heading="SPMACCESSR_EL2" id="SPMACCESSR_EL2" registerfile="AArch64-spmaccessr_el2.xml">System Performance Monitors Access Register (EL2)</register_link>
+    <register_link heading="SPMACCESSR_EL3" id="SPMACCESSR_EL3" registerfile="AArch64-spmaccessr_el3.xml">System Performance Monitors Access Register (EL3)</register_link>
+    <register_link heading="SPMCFGR_EL1" id="SPMCFGR_EL1" registerfile="AArch64-spmcfgr_el1.xml">System Performance Monitors Configuration Register</register_link>
+    <register_link heading="SPMCGCR&lt;n&gt;_EL1" id="SPMCGCR&lt;n&gt;_EL1" registerfile="AArch64-spmcgcrn_el1.xml">Counter Group Configuration Register &lt;n&gt;</register_link>
+    <register_link heading="SPMCNTENCLR_EL0" id="SPMCNTENCLR_EL0" registerfile="AArch64-spmcntenclr_el0.xml">System Performance Monitors Count Enable Clear Register</register_link>
+    <register_link heading="SPMCNTENSET_EL0" id="SPMCNTENSET_EL0" registerfile="AArch64-spmcntenset_el0.xml">System Performance Monitors Count Enable Set Register</register_link>
+    <register_link heading="SPMCR_EL0" id="SPMCR_EL0" registerfile="AArch64-spmcr_el0.xml">System Performance Monitor Control Register</register_link>
+    <register_link heading="SPMDEVAFF_EL1" id="SPMDEVAFF_EL1" registerfile="AArch64-spmdevaff_el1.xml">System Performance Monitors Device Affinity Register</register_link>
+    <register_link heading="SPMDEVARCH_EL1" id="SPMDEVARCH_EL1" registerfile="AArch64-spmdevarch_el1.xml">System Performance Monitors Device Architecture Register</register_link>
+    <register_link heading="SPMEVCNTR&lt;n&gt;_EL0" id="SPMEVCNTR&lt;n&gt;_EL0" registerfile="AArch64-spmevcntrn_el0.xml">System Performance Monitors Event Count Register</register_link>
+    <register_link heading="SPMEVFILT2R&lt;n&gt;_EL0" id="SPMEVFILT2R&lt;n&gt;_EL0" registerfile="AArch64-spmevfilt2rn_el0.xml">System Performance Monitors Event Filter Control Register 2</register_link>
+    <register_link heading="SPMEVFILTR&lt;n&gt;_EL0" id="SPMEVFILTR&lt;n&gt;_EL0" registerfile="AArch64-spmevfiltrn_el0.xml">System Performance Monitors Event Filter Control Register</register_link>
+    <register_link heading="SPMEVTYPER&lt;n&gt;_EL0" id="SPMEVTYPER&lt;n&gt;_EL0" registerfile="AArch64-spmevtypern_el0.xml">System Performance Monitors Event Type Register</register_link>
+    <register_link heading="SPMIIDR_EL1" id="SPMIIDR_EL1" registerfile="AArch64-spmiidr_el1.xml">Implementation Identification Register</register_link>
+    <register_link heading="SPMINTENCLR_EL1" id="SPMINTENCLR_EL1" registerfile="AArch64-spmintenclr_el1.xml">System Performance Monitors Interrupt Enable Clear Register</register_link>
+    <register_link heading="SPMINTENSET_EL1" id="SPMINTENSET_EL1" registerfile="AArch64-spmintenset_el1.xml">System Performance Monitors Interrupt Enable Set Register</register_link>
+    <register_link heading="SPMOVSCLR_EL0" id="SPMOVSCLR_EL0" registerfile="AArch64-spmovsclr_el0.xml">System Performance Monitors Overflow Flag Status Clear Register</register_link>
+    <register_link heading="SPMOVSSET_EL0" id="SPMOVSSET_EL0" registerfile="AArch64-spmovsset_el0.xml">System Performance Monitors Overflow Flag Status Set Register</register_link>
+    <register_link heading="SPMROOTCR_EL3" id="SPMROOTCR_EL3" registerfile="AArch64-spmrootcr_el3.xml">System Performance Monitors Root and Realm Control Register</register_link>
+    <register_link heading="SPMSCR_EL1" id="SPMSCR_EL1" registerfile="AArch64-spmscr_el1.xml">System Performance Monitors Secure Control Register</register_link>
+    <register_link heading="SPMSELR_EL0" id="SPMSELR_EL0" registerfile="AArch64-spmselr_el0.xml">System Performance Monitors Select Register</register_link>
+    <register_link heading="SPSel" id="SPSel" registerfile="AArch64-spsel.xml">Stack Pointer Select</register_link>
+    <register_link heading="SPSR_abt" id="SPSR_abt" registerfile="AArch64-spsr_abt.xml">Saved Program Status Register (Abort mode)</register_link>
+    <register_link heading="SPSR_EL1" id="SPSR_EL1" registerfile="AArch64-spsr_el1.xml">Saved Program Status Register (EL1)</register_link>
+    <register_link heading="SPSR_EL2" id="SPSR_EL2" registerfile="AArch64-spsr_el2.xml">Saved Program Status Register (EL2)</register_link>
+    <register_link heading="SPSR_EL3" id="SPSR_EL3" registerfile="AArch64-spsr_el3.xml">Saved Program Status Register (EL3)</register_link>
+    <register_link heading="SPSR_fiq" id="SPSR_fiq" registerfile="AArch64-spsr_fiq.xml">Saved Program Status Register (FIQ mode)</register_link>
+    <register_link heading="SPSR_irq" id="SPSR_irq" registerfile="AArch64-spsr_irq.xml">Saved Program Status Register (IRQ mode)</register_link>
+    <register_link heading="SPSR_und" id="SPSR_und" registerfile="AArch64-spsr_und.xml">Saved Program Status Register (Undefined mode)</register_link>
+    <register_link heading="SP_EL0" id="SP_EL0" registerfile="AArch64-sp_el0.xml">Stack Pointer (EL0)</register_link>
+    <register_link heading="SP_EL1" id="SP_EL1" registerfile="AArch64-sp_el1.xml">Stack Pointer (EL1)</register_link>
+    <register_link heading="SP_EL2" id="SP_EL2" registerfile="AArch64-sp_el2.xml">Stack Pointer (EL2)</register_link>
+    <register_link heading="SP_EL3" id="SP_EL3" registerfile="AArch64-sp_el3.xml">Stack Pointer (EL3)</register_link>
+    <register_link heading="SSBS" id="SSBS" registerfile="AArch64-ssbs.xml">Speculative Store Bypass Safe</register_link>
+    <register_link heading="SVCR" id="SVCR" registerfile="AArch64-svcr.xml">Streaming Vector Control Register</register_link>
+    <register_link heading="TCO" id="TCO" registerfile="AArch64-tco.xml">Tag Check Override</register_link>
+    <register_link heading="TCR2_EL1" id="TCR2_EL1" registerfile="AArch64-tcr2_el1.xml">Extended Translation Control Register (EL1)</register_link>
+    <register_link heading="TCR2_EL2" id="TCR2_EL2" registerfile="AArch64-tcr2_el2.xml">Extended Translation Control Register (EL2)</register_link>
+    <register_link heading="TCR_EL1" id="TCR_EL1" registerfile="AArch64-tcr_el1.xml">Translation Control Register (EL1)</register_link>
+    <register_link heading="TCR_EL2" id="TCR_EL2" registerfile="AArch64-tcr_el2.xml">Translation Control Register (EL2)</register_link>
+    <register_link heading="TCR_EL3" id="TCR_EL3" registerfile="AArch64-tcr_el3.xml">Translation Control Register (EL3)</register_link>
+    <register_link heading="TFSRE0_EL1" id="TFSRE0_EL1" registerfile="AArch64-tfsre0_el1.xml">Tag Fault Status Register (EL0).</register_link>
+    <register_link heading="TFSR_EL1" id="TFSR_EL1" registerfile="AArch64-tfsr_el1.xml">Tag Fault Status Register (EL1)</register_link>
+    <register_link heading="TFSR_EL2" id="TFSR_EL2" registerfile="AArch64-tfsr_el2.xml">Tag Fault Status Register (EL2)</register_link>
+    <register_link heading="TFSR_EL3" id="TFSR_EL3" registerfile="AArch64-tfsr_el3.xml">Tag Fault Status Register (EL3)</register_link>
+    <register_link heading="TPIDR2_EL0" id="TPIDR2_EL0" registerfile="AArch64-tpidr2_el0.xml">EL0 Read/Write Software Thread ID Register 2</register_link>
+    <register_link heading="TPIDRRO_EL0" id="TPIDRRO_EL0" registerfile="AArch64-tpidrro_el0.xml">EL0 Read-Only Software Thread ID Register</register_link>
+    <register_link heading="TPIDR_EL0" id="TPIDR_EL0" registerfile="AArch64-tpidr_el0.xml">EL0 Read/Write Software Thread ID Register</register_link>
+    <register_link heading="TPIDR_EL1" id="TPIDR_EL1" registerfile="AArch64-tpidr_el1.xml">EL1 Software Thread ID Register</register_link>
+    <register_link heading="TPIDR_EL2" id="TPIDR_EL2" registerfile="AArch64-tpidr_el2.xml">EL2 Software Thread ID Register</register_link>
+    <register_link heading="TPIDR_EL3" id="TPIDR_EL3" registerfile="AArch64-tpidr_el3.xml">EL3 Software Thread ID Register</register_link>
+    <register_link heading="TRBBASER_EL1" id="TRBBASER_EL1" registerfile="AArch64-trbbaser_el1.xml">Trace Buffer Base Address Register</register_link>
+    <register_link heading="TRBIDR_EL1" id="TRBIDR_EL1" registerfile="AArch64-trbidr_el1.xml">Trace Buffer ID Register</register_link>
+    <register_link heading="TRBLIMITR_EL1" id="TRBLIMITR_EL1" registerfile="AArch64-trblimitr_el1.xml">Trace Buffer Limit Address Register</register_link>
+    <register_link heading="TRBMAR_EL1" id="TRBMAR_EL1" registerfile="AArch64-trbmar_el1.xml">Trace Buffer Memory Attribute Register</register_link>
+    <register_link heading="TRBMPAM_EL1" id="TRBMPAM_EL1" registerfile="AArch64-trbmpam_el1.xml">Trace Buffer MPAM Configuration Register</register_link>
+    <register_link heading="TRBPTR_EL1" id="TRBPTR_EL1" registerfile="AArch64-trbptr_el1.xml">Trace Buffer Write Pointer Register</register_link>
+    <register_link heading="TRBSR_EL1" id="TRBSR_EL1" registerfile="AArch64-trbsr_el1.xml">Trace Buffer Status/syndrome Register</register_link>
+    <register_link heading="TRBTRG_EL1" id="TRBTRG_EL1" registerfile="AArch64-trbtrg_el1.xml">Trace Buffer Trigger Counter Register</register_link>
+    <register_link heading="TRCACATR&lt;n&gt;" id="TRCACATR&lt;n&gt;" registerfile="AArch64-trcacatrn.xml">Address Comparator Access Type Register &lt;n&gt;</register_link>
+    <register_link heading="TRCACVR&lt;n&gt;" id="TRCACVR&lt;n&gt;" registerfile="AArch64-trcacvrn.xml">Address Comparator Value Register &lt;n&gt;</register_link>
+    <register_link heading="TRCAUTHSTATUS" id="TRCAUTHSTATUS" registerfile="AArch64-trcauthstatus.xml">Authentication Status Register</register_link>
+    <register_link heading="TRCAUXCTLR" id="TRCAUXCTLR" registerfile="AArch64-trcauxctlr.xml">Auxiliary Control Register</register_link>
+    <register_link heading="TRCBBCTLR" id="TRCBBCTLR" registerfile="AArch64-trcbbctlr.xml">Branch Broadcast Control Register</register_link>
+    <register_link heading="TRCCCCTLR" id="TRCCCCTLR" registerfile="AArch64-trcccctlr.xml">Cycle Count Control Register</register_link>
+    <register_link heading="TRCCIDCCTLR0" id="TRCCIDCCTLR0" registerfile="AArch64-trccidcctlr0.xml">Context Identifier Comparator Control Register 0</register_link>
+    <register_link heading="TRCCIDCCTLR1" id="TRCCIDCCTLR1" registerfile="AArch64-trccidcctlr1.xml">Context Identifier Comparator Control Register 1</register_link>
+    <register_link heading="TRCCIDCVR&lt;n&gt;" id="TRCCIDCVR&lt;n&gt;" registerfile="AArch64-trccidcvrn.xml">Context Identifier Comparator Value Registers &lt;n&gt;</register_link>
+    <register_link heading="TRCCLAIMCLR" id="TRCCLAIMCLR" registerfile="AArch64-trcclaimclr.xml">Claim Tag Clear Register</register_link>
+    <register_link heading="TRCCLAIMSET" id="TRCCLAIMSET" registerfile="AArch64-trcclaimset.xml">Claim Tag Set Register</register_link>
+    <register_link heading="TRCCNTCTLR&lt;n&gt;" id="TRCCNTCTLR&lt;n&gt;" registerfile="AArch64-trccntctlrn.xml">Counter Control Register &lt;n&gt;</register_link>
+    <register_link heading="TRCCNTRLDVR&lt;n&gt;" id="TRCCNTRLDVR&lt;n&gt;" registerfile="AArch64-trccntrldvrn.xml">Counter Reload Value Register &lt;n&gt;</register_link>
+    <register_link heading="TRCCNTVR&lt;n&gt;" id="TRCCNTVR&lt;n&gt;" registerfile="AArch64-trccntvrn.xml">Counter Value Register &lt;n&gt;</register_link>
+    <register_link heading="TRCCONFIGR" id="TRCCONFIGR" registerfile="AArch64-trcconfigr.xml">Trace Configuration Register</register_link>
+    <register_link heading="TRCDEVARCH" id="TRCDEVARCH" registerfile="AArch64-trcdevarch.xml">Device Architecture Register</register_link>
+    <register_link heading="TRCDEVID" id="TRCDEVID" registerfile="AArch64-trcdevid.xml">Device Configuration Register</register_link>
+    <register_link heading="TRCEVENTCTL0R" id="TRCEVENTCTL0R" registerfile="AArch64-trceventctl0r.xml">Event Control 0 Register</register_link>
+    <register_link heading="TRCEVENTCTL1R" id="TRCEVENTCTL1R" registerfile="AArch64-trceventctl1r.xml">Event Control 1 Register</register_link>
+    <register_link heading="TRCEXTINSELR&lt;n&gt;" id="TRCEXTINSELR&lt;n&gt;" registerfile="AArch64-trcextinselrn.xml">External Input Select Register &lt;n&gt;</register_link>
+    <register_link heading="TRCIDR0" id="TRCIDR0" registerfile="AArch64-trcidr0.xml">ID Register 0</register_link>
+    <register_link heading="TRCIDR1" id="TRCIDR1" registerfile="AArch64-trcidr1.xml">ID Register 1</register_link>
+    <register_link heading="TRCIDR10" id="TRCIDR10" registerfile="AArch64-trcidr10.xml">ID Register 10</register_link>
+    <register_link heading="TRCIDR11" id="TRCIDR11" registerfile="AArch64-trcidr11.xml">ID Register 11</register_link>
+    <register_link heading="TRCIDR12" id="TRCIDR12" registerfile="AArch64-trcidr12.xml">ID Register 12</register_link>
+    <register_link heading="TRCIDR13" id="TRCIDR13" registerfile="AArch64-trcidr13.xml">ID Register 13</register_link>
+    <register_link heading="TRCIDR2" id="TRCIDR2" registerfile="AArch64-trcidr2.xml">ID Register 2</register_link>
+    <register_link heading="TRCIDR3" id="TRCIDR3" registerfile="AArch64-trcidr3.xml">ID Register 3</register_link>
+    <register_link heading="TRCIDR4" id="TRCIDR4" registerfile="AArch64-trcidr4.xml">ID Register 4</register_link>
+    <register_link heading="TRCIDR5" id="TRCIDR5" registerfile="AArch64-trcidr5.xml">ID Register 5</register_link>
+    <register_link heading="TRCIDR6" id="TRCIDR6" registerfile="AArch64-trcidr6.xml">ID Register 6</register_link>
+    <register_link heading="TRCIDR7" id="TRCIDR7" registerfile="AArch64-trcidr7.xml">ID Register 7</register_link>
+    <register_link heading="TRCIDR8" id="TRCIDR8" registerfile="AArch64-trcidr8.xml">ID Register 8</register_link>
+    <register_link heading="TRCIDR9" id="TRCIDR9" registerfile="AArch64-trcidr9.xml">ID Register 9</register_link>
+    <register_link heading="TRCIMSPEC0" id="TRCIMSPEC0" registerfile="AArch64-trcimspec0.xml">IMP DEF Register 0</register_link>
+    <register_link heading="TRCIMSPEC&lt;n&gt;" id="TRCIMSPEC&lt;n&gt;" registerfile="AArch64-trcimspecn.xml">IMP DEF Register &lt;n&gt;</register_link>
+    <register_link heading="TRCITECR_EL1" id="TRCITECR_EL1" registerfile="AArch64-trcitecr_el1.xml">Instrumentation Trace Control Register (EL1)</register_link>
+    <register_link heading="TRCITECR_EL2" id="TRCITECR_EL2" registerfile="AArch64-trcitecr_el2.xml">Instrumentation Trace Control Register (EL2)</register_link>
+    <register_link heading="TRCITEEDCR" id="TRCITEEDCR" registerfile="AArch64-trciteedcr.xml">Instrumentation Trace Extension External Debug Control Register</register_link>
+    <register_link heading="TRCOSLSR" id="TRCOSLSR" registerfile="AArch64-trcoslsr.xml">Trace OS Lock Status Register</register_link>
+    <register_link heading="TRCPRGCTLR" id="TRCPRGCTLR" registerfile="AArch64-trcprgctlr.xml">Programming Control Register</register_link>
+    <register_link heading="TRCQCTLR" id="TRCQCTLR" registerfile="AArch64-trcqctlr.xml">Q Element Control Register</register_link>
+    <register_link heading="TRCRSCTLR&lt;n&gt;" id="TRCRSCTLR&lt;n&gt;" registerfile="AArch64-trcrsctlrn.xml">Resource Selection Control Register &lt;n&gt;</register_link>
+    <register_link heading="TRCRSR" id="TRCRSR" registerfile="AArch64-trcrsr.xml">Resources Status Register</register_link>
+    <register_link heading="TRCSEQEVR&lt;n&gt;" id="TRCSEQEVR&lt;n&gt;" registerfile="AArch64-trcseqevrn.xml">Sequencer State Transition Control Register &lt;n&gt;</register_link>
+    <register_link heading="TRCSEQRSTEVR" id="TRCSEQRSTEVR" registerfile="AArch64-trcseqrstevr.xml">Sequencer Reset Control Register</register_link>
+    <register_link heading="TRCSEQSTR" id="TRCSEQSTR" registerfile="AArch64-trcseqstr.xml">Sequencer State Register</register_link>
+    <register_link heading="TRCSSCCR&lt;n&gt;" id="TRCSSCCR&lt;n&gt;" registerfile="AArch64-trcssccrn.xml">Single-shot Comparator Control Register &lt;n&gt;</register_link>
+    <register_link heading="TRCSSCSR&lt;n&gt;" id="TRCSSCSR&lt;n&gt;" registerfile="AArch64-trcsscsrn.xml">Single-shot Comparator Control Status Register &lt;n&gt;</register_link>
+    <register_link heading="TRCSSPCICR&lt;n&gt;" id="TRCSSPCICR&lt;n&gt;" registerfile="AArch64-trcsspcicrn.xml">Single-shot Processing Element Comparator Input Control Register &lt;n&gt;</register_link>
+    <register_link heading="TRCSTALLCTLR" id="TRCSTALLCTLR" registerfile="AArch64-trcstallctlr.xml">Stall Control Register</register_link>
+    <register_link heading="TRCSTATR" id="TRCSTATR" registerfile="AArch64-trcstatr.xml">Trace Status Register</register_link>
+    <register_link heading="TRCSYNCPR" id="TRCSYNCPR" registerfile="AArch64-trcsyncpr.xml">Synchronization Period Register</register_link>
+    <register_link heading="TRCTRACEIDR" id="TRCTRACEIDR" registerfile="AArch64-trctraceidr.xml">Trace ID Register</register_link>
+    <register_link heading="TRCTSCTLR" id="TRCTSCTLR" registerfile="AArch64-trctsctlr.xml">Timestamp Control Register</register_link>
+    <register_link heading="TRCVICTLR" id="TRCVICTLR" registerfile="AArch64-trcvictlr.xml">ViewInst Main Control Register</register_link>
+    <register_link heading="TRCVIIECTLR" id="TRCVIIECTLR" registerfile="AArch64-trcviiectlr.xml">ViewInst Include/Exclude Control Register</register_link>
+    <register_link heading="TRCVIPCSSCTLR" id="TRCVIPCSSCTLR" registerfile="AArch64-trcvipcssctlr.xml">ViewInst Start/Stop PE Comparator Control Register</register_link>
+    <register_link heading="TRCVISSCTLR" id="TRCVISSCTLR" registerfile="AArch64-trcvissctlr.xml">ViewInst Start/Stop Control Register</register_link>
+    <register_link heading="TRCVMIDCCTLR0" id="TRCVMIDCCTLR0" registerfile="AArch64-trcvmidcctlr0.xml">Virtual Context Identifier Comparator Control Register 0</register_link>
+    <register_link heading="TRCVMIDCCTLR1" id="TRCVMIDCCTLR1" registerfile="AArch64-trcvmidcctlr1.xml">Virtual Context Identifier Comparator Control Register 1</register_link>
+    <register_link heading="TRCVMIDCVR&lt;n&gt;" id="TRCVMIDCVR&lt;n&gt;" registerfile="AArch64-trcvmidcvrn.xml">Virtual Context Identifier Comparator Value Register &lt;n&gt;</register_link>
+    <register_link heading="TRFCR_EL1" id="TRFCR_EL1" registerfile="AArch64-trfcr_el1.xml">Trace Filter Control Register (EL1)</register_link>
+    <register_link heading="TRFCR_EL2" id="TRFCR_EL2" registerfile="AArch64-trfcr_el2.xml">Trace Filter Control Register (EL2)</register_link>
+    <register_link heading="TTBR0_EL1" id="TTBR0_EL1" registerfile="AArch64-ttbr0_el1.xml">Translation Table Base Register 0 (EL1)</register_link>
+    <register_link heading="TTBR0_EL2" id="TTBR0_EL2" registerfile="AArch64-ttbr0_el2.xml">Translation Table Base Register 0 (EL2)</register_link>
+    <register_link heading="TTBR0_EL3" id="TTBR0_EL3" registerfile="AArch64-ttbr0_el3.xml">Translation Table Base Register 0 (EL3)</register_link>
+    <register_link heading="TTBR1_EL1" id="TTBR1_EL1" registerfile="AArch64-ttbr1_el1.xml">Translation Table Base Register 1 (EL1)</register_link>
+    <register_link heading="TTBR1_EL2" id="TTBR1_EL2" registerfile="AArch64-ttbr1_el2.xml">Translation Table Base Register 1 (EL2)</register_link>
+    <register_link heading="UAO" id="UAO" registerfile="AArch64-uao.xml">User Access Override</register_link>
+    <register_link heading="VBAR_EL1" id="VBAR_EL1" registerfile="AArch64-vbar_el1.xml">Vector Base Address Register (EL1)</register_link>
+    <register_link heading="VBAR_EL2" id="VBAR_EL2" registerfile="AArch64-vbar_el2.xml">Vector Base Address Register (EL2)</register_link>
+    <register_link heading="VBAR_EL3" id="VBAR_EL3" registerfile="AArch64-vbar_el3.xml">Vector Base Address Register (EL3)</register_link>
+    <register_link heading="VDISR_EL2" id="VDISR_EL2" registerfile="AArch64-vdisr_el2.xml">Virtual Deferred Interrupt Status Register</register_link>
+    <register_link heading="VMECID_A_EL2" id="VMECID_A_EL2" registerfile="AArch64-vmecid_a_el2.xml">Alternate MECID for EL1&amp;0 stage 2 translation regime</register_link>
+    <register_link heading="VMECID_P_EL2" id="VMECID_P_EL2" registerfile="AArch64-vmecid_p_el2.xml">Primary MECID for EL1&amp;0 stage 2 translation regime</register_link>
+    <register_link heading="VMPIDR_EL2" id="VMPIDR_EL2" registerfile="AArch64-vmpidr_el2.xml">Virtualization Multiprocessor ID Register</register_link>
+    <register_link heading="VNCR_EL2" id="VNCR_EL2" registerfile="AArch64-vncr_el2.xml">Virtual Nested Control Register</register_link>
+    <register_link heading="VPIDR_EL2" id="VPIDR_EL2" registerfile="AArch64-vpidr_el2.xml">Virtualization Processor ID Register</register_link>
+    <register_link heading="VSESR_EL2" id="VSESR_EL2" registerfile="AArch64-vsesr_el2.xml">Virtual SError Exception Syndrome Register</register_link>
+    <register_link heading="VSTCR_EL2" id="VSTCR_EL2" registerfile="AArch64-vstcr_el2.xml">Virtualization Secure Translation Control Register</register_link>
+    <register_link heading="VSTTBR_EL2" id="VSTTBR_EL2" registerfile="AArch64-vsttbr_el2.xml">Virtualization Secure Translation Table Base Register</register_link>
+    <register_link heading="VTCR_EL2" id="VTCR_EL2" registerfile="AArch64-vtcr_el2.xml">Virtualization Translation Control Register</register_link>
+    <register_link heading="VTTBR_EL2" id="VTTBR_EL2" registerfile="AArch64-vttbr_el2.xml">Virtualization Translation Table Base Register</register_link>
+    <register_link heading="ZCR_EL1" id="ZCR_EL1" registerfile="AArch64-zcr_el1.xml">SVE Control Register (EL1)</register_link>
+    <register_link heading="ZCR_EL2" id="ZCR_EL2" registerfile="AArch64-zcr_el2.xml">SVE Control Register (EL2)</register_link>
+    <register_link heading="ZCR_EL3" id="ZCR_EL3" registerfile="AArch64-zcr_el3.xml">SVE Control Register (EL3)</register_link>
+  </register_links>
+  <timestamp>30/03/2023 19:16</timestamp>
+</register_index>

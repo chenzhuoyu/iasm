@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICV_CTLR</reg_short_name>
+        
+        <reg_long_name>Virtual Machine Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3_LEGACY is implemented and EL2 is implemented</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Virtual CPU interface</reg_component>
+    <reg_offset><hexnumber>0x0000</hexnumber></reg_offset>
+    <reg_instance>GICV_CTLR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Non-secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the behavior of virtual interrupts.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>This register corresponds to the physical CPU interface register <register_link state="ext" id="ext-gicc_ctlr.xml">GICC_CTLR</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC virtual CPU interface registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is available when a GIC implementation supports interrupt virtualization.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICV_CTLR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>31:10</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EOImode</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Controls the behavior associated with the <register_link state="ext" id="ext-gicv_eoir.xml">GICV_EOIR</register_link>, <register_link state="ext" id="ext-gicv_aeoir.xml">GICV_AEOIR</register_link>, and <register_link state="ext" id="ext-gicv_dir.xml">GICV_DIR</register_link> registers:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Writes to <register_link state="ext" id="ext-gicv_eoir.xml">GICV_EOIR</register_link> and <register_link state="ext" id="ext-gicv_aeoir.xml">GICV_AEOIR</register_link> perform priority drop and deactivate interrupt operations simultaneously. Behavior on a write to <register_link state="ext" id="ext-gicv_dir.xml">GICV_DIR</register_link> is unpredictable.</para>
+<para>When it has completed processing the interrupt, the virtual machine writes to <register_link state="ext" id="ext-gicv_eoir.xml">GICV_EOIR</register_link> or <register_link state="ext" id="ext-gicv_aeoir.xml">GICV_AEOIR</register_link> to deactivate the interrupt. The write updates the List registers and causes the virtual CPU interface to signal the interrupt completion to the physical Distributor.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Writes to <register_link state="ext" id="ext-gicv_eoir.xml">GICV_EOIR</register_link> and <register_link state="ext" id="ext-gicv_aeoir.xml">GICV_AEOIR</register_link> perform priority drop operation only. Writes to <register_link state="ext" id="ext-gicv_dir.xml">GICV_DIR</register_link> perform deactivate interrupt operation only.</para>
+<para>When it has completed processing the interrupt, the virtual machine writes to <register_link state="ext" id="ext-gicv_dir.xml">GICV_DIR</register_link> to deactivate the interrupt. The write updates the List registers and causes the virtual CPU interface to signal the interrupt completion to the Distributor.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>8</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>8:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CBPR</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Controls whether <register_link state="ext" id="ext-gicv_bpr.xml">GICV_BPR</register_link> affects both Group 0 and Group 1 interrupts:</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Priority grouping' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_interrupt_handling_and_prioritization.fm" linkend="CJHBBBJE"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-gicv_bpr.xml">GICV_BPR</register_link> affects Group 0 virtual interrupts only. <register_link state="ext" id="ext-gicv_abpr.xml">GICV_ABPR</register_link> affects Group 1 virtual interrupts only.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-gicv_bpr.xml">GICV_BPR</register_link> affects both Group 0 and Group 1 virtual interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FIQEn</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>FIQ Enable. Controls whether Group 0 virtual interrupts are presented as virtual FIQs:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Group 0 virtual interrupts are presented as virtual IRQs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Group 0 virtual interrupts are presented as virtual FIQs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AckCtl</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before"><para>Arm deprecates use of this bit. Arm strongly recommends that software is written to operate with this bit always cleared to 0.</para>
+<para>Acknowledge control.  When the highest priority interrupt is Group 1, determines whether <register_link state="ext" id="ext-gicv_iar.xml">GICV_IAR</register_link> causes the CPU interface to acknowledge the interrupt or returns the spurious identifier 1022, and whether <register_link state="ext" id="ext-gicv_hppir.xml">GICV_HPPIR</register_link> returns the interrupt ID or the special identifier 1022.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>If the highest priority pending interrupt is Group 1, a read of <register_link state="ext" id="ext-gicv_iar.xml">GICV_IAR</register_link> or <register_link state="ext" id="ext-gicv_hppir.xml">GICV_HPPIR</register_link> returns an interrupt ID of 1022.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>If the highest priority pending interrupt is Group 1, a read of <register_link state="ext" id="ext-gicv_iar.xml">GICV_IAR</register_link> or <register_link state="ext" id="ext-gicv_hppir.xml">GICV_HPPIR</register_link> returns the interrupt ID of the corresponding interrupt.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp1</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Enables the signaling of Group 1 virtual interrupts by the virtual CPU interface to the virtual machine:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Signaling of Group 1 interrupts is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Signaling of Group 1 interrupts is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EnableGrp0</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables the signaling of Group 0 virtual interrupts by the virtual CPU interface to the virtual machine:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Signaling of Group 0 interrupts is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Signaling of Group 0 interrupts is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_10" msb="31" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_5" msb="8" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is used only when System register access is not enabled. When System register access is enabled:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>For AArch32 implementations, <register_link state="AArch32" id="AArch32-icc_ctlr.xml">ICC_CTLR</register_link> provides equivalent functionality.</content>
+</listitem><listitem><content>For AArch64 implementations, <register_link state="AArch64" id="AArch64-icc_ctlr_el1.xml">ICC_CTLR_EL1</register_link> provides equivalent functionality.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

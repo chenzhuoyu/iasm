@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>RCWMASK_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">RCWMASK_EL1, Read Check Write Instruction Mask (EL1)</h1><p>The RCWMASK_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Contains the mask used by RCW instructions.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_THE is implemented. Otherwise, direct accesses to RCWMASK_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>RCWMASK_EL1 is a 128-bit register that can also be accessed as a 64-bit value. If it is accessed as a 64-bit register, accesses read and write bits [63:0] and do not modify bits [127:64].</p>
+      <h2>Attributes</h2>
+        <p>RCWMASK_EL1 is a:</p>
+
+      
+        <ul>
+<li>128-bit register when FEAT_D128 is implemented
+</li><li>64-bit register otherwise
+</li></ul>
+      <h2>Field descriptions</h2><h3>When FEAT_D128 is implemented:</h3><table class="regdiagram"><thead><tr><td>127</td><td>126</td><td>125</td><td>124</td><td>123</td><td>122</td><td>121</td><td>120</td><td>119</td><td>118</td><td>117</td><td>116</td><td>115</td><td>114</td><td>113</td><td>112</td><td>111</td><td>110</td><td>109</td><td>108</td><td>107</td><td>106</td><td>105</td><td>104</td><td>103</td><td>102</td><td>101</td><td>100</td><td>99</td><td>98</td><td>97</td><td>96</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-127_0">Mask</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>95</td><td>94</td><td>93</td><td>92</td><td>91</td><td>90</td><td>89</td><td>88</td><td>87</td><td>86</td><td>85</td><td>84</td><td>83</td><td>82</td><td>81</td><td>80</td><td>79</td><td>78</td><td>77</td><td>76</td><td>75</td><td>74</td><td>73</td><td>72</td><td>71</td><td>70</td><td>69</td><td>68</td><td>67</td><td>66</td><td>65</td><td>64</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-127_0">Mask</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-127_0">Mask</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-127_0">Mask</a></td></tr></tbody><tr class="blank_row"/></table><h4 id="fieldset_0-127_0">Mask, bits [127:0]</h4><div class="field"><p>Mask used to decide which bit-fields are writable to the 128-bit Descriptor by RCW or RCWS Instructions.</p>
+<p>The Effective value of Mask bit RCWMASK_EL1[n] is the same as RCWMASK_EL1[n], except as follows</p>
+<ul>
+<li>
+<p>if n &gt;= 17, and n &lt;= 55, the Effective value of RCWMASK_EL1[n] is the same as RCWMASK_EL1[16].</p>
+
+</li><li>
+<p>if n is in {126:125, 120:119, 114, 107:101, 90:56, 1:0}, the Effective value of RCWSMASK_EL1[n] is 0.</p>
+
+</li></ul>
+<p>RCWMASK_EL1 register bits {126:125, 120:119, 114, 107:101, 90:17 1:0} are <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">Mask</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">Mask</a></td></tr></tbody></table><h4 id="fieldset_1-63_0">Mask, bits [63:0]</h4><div class="field"><p>Mask used to decide which bit-fields are writable to the 64-bit Descriptor by RCW or RCWS Instructions.</p>
+<p>The Effective value of Mask bit RCWMASK_EL1[n] is the same as RCWMASK_EL1[n], except as follows</p>
+<ul>
+<li>if n &gt;= 18, and n &lt;= 49, the Effective value of RCWMASK_EL1[n] is the same as RCWMASK_EL1[17].
+</li></ul>
+<p>RCWMASK_EL1 register bits {52, 49:18, 0} are <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing RCWMASK_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, RCWMASK_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1101</td><td>0b0000</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.nRCWMASK_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = RCWMASK_EL1&lt;63:0&gt;;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = RCWMASK_EL1&lt;63:0&gt;;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = RCWMASK_EL1&lt;63:0&gt;;
+                </p><h4 class="assembler">MSR RCWMASK_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1101</td><td>0b0000</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.nRCWMASK_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        RCWMASK_EL1&lt;63:0&gt; = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        RCWMASK_EL1&lt;63:0&gt; = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    RCWMASK_EL1&lt;63:0&gt; = X[t, 64];
+                </p><h4 class="assembler"><span class="condition">
+When FEAT_D128 is implemented
+            </span><br/>MRRS &lt;Xt+1&gt;, &lt;Xt&gt;, RCWMASK_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1101</td><td>0b0000</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.D128En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.nRCWMASK_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.D128En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.D128En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    else
+        (X[t + 1, 64], X[t, 64]) = (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;);
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.D128En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.D128En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    else
+        (X[t + 1, 64], X[t, 64]) = (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;);
+elsif PSTATE.EL == EL3 then
+    (X[t + 1, 64], X[t, 64]) = (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;);
+                </p><h4 class="assembler"><span class="condition">
+When FEAT_D128 is implemented
+            </span><br/>MSRR RCWMASK_EL1, &lt;Xt+1&gt;, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1101</td><td>0b0000</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.D128En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.nRCWMASK_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.D128En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.D128En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    else
+        (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;) = (X[t + 1, 64], X[t, 64]);
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.D128En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.RCWMASKEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.D128En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x14);
+    else
+        (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;) = (X[t + 1, 64], X[t, 64]);
+elsif PSTATE.EL == EL3 then
+    (RCWMASK_EL1&lt;127:64&gt;, RCWMASK_EL1&lt;63:0&gt;) = (X[t + 1, 64], X[t, 64]);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

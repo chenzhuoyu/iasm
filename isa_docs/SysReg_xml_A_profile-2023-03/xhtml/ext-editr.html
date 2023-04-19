@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDITR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDITR, External Debug Instruction Transfer Register</h1><p>The EDITR characteristics are:</p><h2>Purpose</h2>
+        <p>Used in Debug state for passing instructions to the PE for execution.</p>
+      <h2>Configuration</h2><p>EDITR is in the Core power domain.
+    </p><h2>Attributes</h2>
+        <p>EDITR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When AArch32 is supported and in AArch32 state:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-31_16">hw2</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">hw1</a></td></tr></tbody></table><h4 id="fieldset_0-31_16">hw2, bits [31:16]</h4><div class="field"><p>Second halfword of the T32 instruction to be executed on the PE. When EDITR contains a 16-bit T32 instruction, this field is ignored. For more information, see <span class="xref">'Behavior in Debug state'</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>The hw2 field is displayed on the left. This is not the usual convention for display of T32 instruction halfwords.</p></div></div><h4 id="fieldset_0-15_0">hw1, bits [15:0]</h4><div class="field"><p>First halfword of the T32 instruction to be executed on the PE.</p>
+<div class="note"><span class="note-header">Note</span><p>The hw1 field is displayed on the right. This is not the usual convention for display of T32 instruction halfwords.</p></div></div><h3>When AArch64 is supported and in AArch64 state:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-31_0">A64 instruction to be executed on the PE</a></td></tr></tbody></table><h4 id="fieldset_1-31_0">Bits [31:0]</h4><div class="field">
+      <p>A64 instruction to be executed on the PE.</p>
+    </div><h2>Accessing EDITR</h2>
+        <p>If <a href="ext-edscr.html">EDSCR</a>.ITE == 0 when the PE exits Debug state on receiving a Restart request trigger event, the behavior of any instruction issued through the ITR in Normal access mode that has not completed execution is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, and must do one of the following:</p>
+
+      
+        <ul>
+<li>It must complete execution in Debug state before the PE executes the restart sequence.
+</li><li>It must complete execution in Non-debug state before the PE executes the restart sequence.
+</li><li>It must be abandoned. This means that the instruction does not execute. Any registers or memory accessed by the instruction are left in an <span class="arm-defined-word">UNKNOWN</span> state.
+</li></ul>
+
+      
+        <p>EDITR ignores writes if the PE is in Non-debug state.</p>
+      <h4>EDITR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x084</span></td><td>EDITR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">WI</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">WO</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

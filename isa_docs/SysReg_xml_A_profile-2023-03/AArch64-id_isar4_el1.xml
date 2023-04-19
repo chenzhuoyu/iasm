@@ -1,0 +1,446 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_ISAR4_EL1</reg_short_name>
+        
+        <reg_long_name>AArch32 Instruction Set Attribute Register 4</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-id_isar4.xml">ID_ISAR4</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the instruction sets implemented by the PE in AArch32 state.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Must be interpreted with <register_link state="AArch64" id="AArch64-id_isar0_el1.xml">ID_ISAR0_EL1</register_link>, <register_link state="AArch64" id="AArch64-id_isar1_el1.xml">ID_ISAR1_EL1</register_link>, <register_link state="AArch64" id="AArch64-id_isar2_el1.xml">ID_ISAR2_EL1</register_link>, <register_link state="AArch64" id="AArch64-id_isar3_el1.xml">ID_ISAR3_EL1</register_link>, and <register_link state="AArch64" id="AArch64-id_isar5_el1.xml">ID_ISAR5_EL1</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For general information about the interpretation of the ID registers, see <xref browsertext="'Principles of the ID scheme for fields in ID registers'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABFAFHI"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_ISAR4_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When AArch32 is supported</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SWP_frac</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Indicates support for the memory system locking the bus for SWP or SWPB instructions. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved. This field is valid only if <register_link state="AArch32" id="AArch32-id_isar0.xml">ID_ISAR0</register_link>.Swap is <binarynumber>0b0000</binarynumber>.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>SWP or SWPB instructions not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>SWP or SWPB implemented but only in a uniprocessor context. SWP and SWPB do not guarantee whether memory accesses from other Requesters can come between the load memory access and the store memory access of the SWP or SWPB.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PSR_M</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>Indicates the implemented M-profile instructions to modify the PSRs. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>None implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds the M-profile forms of the CPS, MRS, and MSR instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SynchPrim_frac</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Used in conjunction with <register_link state="AArch32" id="AArch32-id_isar3.xml">ID_ISAR3</register_link>.SynchPrim to indicate the implemented Synchronization Primitive instructions. Possible values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other combinations of SynchPrim and SynchPrim_frac are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If SynchPrim == <binarynumber>0b0000</binarynumber>, no Synchronization Primitives implemented. If SynchPrim == <binarynumber>0b0001</binarynumber>, adds the LDREX and STREX instructions. If SynchPrim == <binarynumber>0b0010</binarynumber>, also adds the CLREX, LDREXB, LDREXH, STREXB, STREXH, LDREXD, and STREXD instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>If SynchPrim == <binarynumber>0b0001</binarynumber>, adds the LDREX, STREX, CLREX, LDREXB, LDREXH, STREXB, and STREXH instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Barrier</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Indicates the implemented Barrier instructions in the A32 and T32 instruction sets. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>None implemented. Barrier operations are provided only as System instructions in the (coproc==<binarynumber>0b1111</binarynumber>) encoding space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds the DMB, DSB, and ISB barrier instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SMC</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Indicates the implemented SMC instructions. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the permitted values are:</para>
+<list type="unordered">
+<listitem><content>
+<para>If EL3 is implemented and EL1 can use AArch32, the only permitted value is <binarynumber>0b0001</binarynumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>If neither EL3 nor EL2 is implemented, the only permitted value is <binarynumber>0b0000</binarynumber>.</para>
+</content>
+</listitem></list>
+<para>If EL1 cannot use AArch32, this field has the value <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>None implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds the SMC instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Writeback</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Indicates the support for Writeback addressing modes. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Basic support. Only the LDM, STM, PUSH, POP, SRS, and RFE instructions support writeback addressing modes. These instructions support all of their writeback addressing modes.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds support for all of the writeback addressing modes.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WithShifts</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Indicates the support for instructions with shifts. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0100</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Nonzero shifts supported only in MOV and shift instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds support for shifts of loads and stores over the range LSL 0-3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>As for <binarynumber>0b0001</binarynumber>, and adds support for other constant shift options, both on load/store and other instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>As for <binarynumber>0b0011</binarynumber>, and adds support for register-controlled shift options.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Unpriv</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Indicates the implemented unprivileged instructions. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8-A, the only permitted value is <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>None implemented. No T variant instructions are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Adds the LDRBT, LDRT, STRBT, and STRT instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As for <binarynumber>0b0001</binarynumber>, and adds the LDRHT, LDRSBT, LDRSHT, and STRHT instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition/>
+  <text_before_fields/>
+  <field id="fieldset_1-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When AArch32 is supported</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition/>
+  <fieldat id="fieldset_1-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_ISAR4_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_ISAR4_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_ISAR4_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_ISAR4_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_ISAR4_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

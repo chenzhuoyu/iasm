@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMPCSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMPCSR, Program Counter Sample Register</h1><p>The PMPCSR characteristics are:</p><h2>Purpose</h2>
+        <p>Holds a sampled instruction address value.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented. Otherwise, direct accesses to PMPCSR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>PMPCSR is in the Core power domain.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>Before Armv8.2, the PC Sample-based Profiling Extension can be implemented in the external debug register space, as indicated by the value of <a href="ext-eddevid.html">EDDEVID</a>.PCSample.</p></div>
+      
+        <p>Support for 64-bit atomic reads is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. If 64-bit atomic reads are implemented, a 64-bit read of PMPCSR has the same side-effect as a 32-bit read of PMCSR[31:0] followed by a 32-bit read of PMPCSR[63:32], returning the combined value. For example, if the PE is in Debug state then a 64-bit atomic read returns bits[31:0] == <span class="hexnumber">0xFFFFFFFF</span> and bits[63:32] <span class="arm-defined-word">UNKNOWN</span>.</p>
+      <h2>Attributes</h2>
+        <p>PMPCSR is a 64-bit register.</p>
+      <p>This  register is part of the <a href="pmu.html">PMU</a> block.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_63-1">NS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-62_61">EL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-60_60-1">T</a></td><td class="lr" colspan="1"><a href="#fieldset_0-59_59-1">NSE</a></td><td class="lr" colspan="3"><a href="#fieldset_0-58_56">RES0</a></td><td class="lr" colspan="24"><a href="#fieldset_0-55_32">PCSample[55:32]</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-31_0">PCSample[31:0]</a></td></tr></tbody></table><h4 id="fieldset_0-63_63-1">NS, bit [63]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with the NSE field, indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</p>
+<table class="valuetable"><thead><tr><th>NSE</th><th>NS</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>When Secure state is implemented, Secure. Otherwise reserved.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>Non-secure.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b0</span></td><td>Root.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b1</span></td><td>Realm.</td></tr></tbody></table></div><h4 id="fieldset_0-63_63-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Non-secure state sample. Indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</p>
+<p>If EL3 is not implemented, this bit indicates the Effective value of <span class="xref">SCR</span>.NS.</p><table class="valuetable"><tr><th>NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Sample is from Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Sample is from Non-secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-62_61">EL, bits [62:61]</h4><div class="field">
+      <p>Exception level status sample. Indicates the Exception level that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</p>
+    <table class="valuetable"><tr><th>EL</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Sample is from EL0.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Sample is from EL1.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Sample is from EL2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Sample is from EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-60_60-1">T, bit [60]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Transactional state of the sample. Indicates the Transactional state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</p>
+    <table class="valuetable"><tr><th>T</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Sample is from Non-transactional state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Sample is from Transactional state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-60_60-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-59_59-1">NSE, bit [59]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with the NS field, indicates the Security state that is associated with the most recent PMPCSR sample or, when it is read as a single atomic 64-bit read, the current PMPCSR sample.</p>
+<p>For a description of the values derived by evaluating NS and NSE together, see PMPCSR.NS.</p></div><h4 id="fieldset_0-59_59-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-58_56">Bits [58:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_32">PCSample[55:32], bits [55:32]</h4><div class="field">
+      <p>Bits[55:32] of the sampled instruction address value. The translation regime that PMPCSR samples can be determined from PMPCSR.{NS,EL}.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-31_0">PCSample[31:0], bits [31:0]</h4><div class="field"><p>Bits[31:0] of the sampled instruction address value.</p>
+<p>PMPCSR[31:0] reads as <span class="hexnumber">0xFFFFFFFF</span> when any of the following are true:</p>
+<ul>
+<li>The PE is in Debug state.
+</li><li>PC Sample-based profiling is prohibited.
+</li></ul>
+<p>If a branch instruction has retired since the PE left reset state, then the first read of PMPCSR[31:0] is permitted but not required to return <span class="hexnumber">0xFFFFFFFF</span>.</p>
+<p>PMPCSR[31:0] reads as an <span class="arm-defined-word">UNKNOWN</span> value when any of the following are true:</p>
+<ul>
+<li>The PE is in reset state.
+</li><li>No branch instruction has retired since the PE left reset state, Debug state, or a state where PC Sample-based Profiling is prohibited.
+</li><li>No branch instruction has retired since the last read of PMPCSR[31:0].
+</li></ul>
+<p>For the cases where a read of PMPCSR[31:0] returns <span class="hexnumber">0xFFFFFFFF</span> or an <span class="arm-defined-word">UNKNOWN</span> value, the read has the side-effect of setting PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR to <span class="arm-defined-word">UNKNOWN</span> values.</p>
+<p>Otherwise, a read of PMPCSR[31:0] returns bits [31:0] of the sampled instruction address value and has the side-effect of indirectly writing to PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR. The translation regime that PMPCSR samples can be determined from PMPCSR.{NS,EL}.</p>
+<p>For a read of PMPCSR[31:0] from the memory-mapped interface, if PMLSR.SLK == 1, meaning the <span class="arm-defined-word">OPTIONAL</span> Software Lock is locked, then the side-effect of the access does not occur and PMPCSR[63:32], PMU.PMCID1SR, PMU.PMCID2SR, and PMU.PMVIDSR are unchanged.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing PMPCSR</h2>
+        <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> extensions to external debug might make the value of this register <span class="arm-defined-word">UNKNOWN</span>, see <span class="xref">'Permitted behavior that might make the PC Sample-based profiling registers UNKNOWN'</span>.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>A 32-bit access to PMPCSR[63:32] does not update the PC sample registers. Only a 64-bit access to PMPCSR[63:0] or a 32-bit access to PMPCSR[31:0] updates the PC sample registers. This includes the value a subsequent 32-bit read of PMPCSR[63:32] will return.</p></div>
+      <p>Accesses to this register use the following encodings:</p><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT64 is implemented
+        </span><br/>[63:0] Accessible at offset 0x200 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented
+        </span><br/>[31:0] Accessible at offset 0x200 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented
+        </span><br/>[63:32] Accessible at offset 0x204 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT64 is implemented
+        </span><br/>[63:0] Accessible at offset 0x220 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented
+        </span><br/>[31:0] Accessible at offset 0x220 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented
+        </span><br/>[63:32] Accessible at offset 0x224 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

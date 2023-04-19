@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_PFR1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_PFR1, Processor Feature Register 1</h1><p>The ID_PFR1 characteristics are:</p><h2>Purpose</h2>
+        <p>Gives information about the AArch32 programmers' model.</p>
+
+      
+        <p>Must be interpreted with <a href="AArch32-id_pfr0.html">ID_PFR0</a>.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>AArch32 System register ID_PFR1 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-id_pfr1_el1.html">ID_PFR1_EL1[31:0]</a>.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to ID_PFR1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>ID_PFR1 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">GIC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">Virt_frac</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">Sec_frac</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">GenTimer</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">Virtualization</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">MProgMod</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">Security</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">ProgMod</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">GIC, bits [31:28]</h4><div class="field">
+      <p>System register GIC CPU interface. Defined values are:</p>
+    <table class="valuetable"><tr><th>GIC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>GIC CPU interface system registers not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>System register interface to versions 3.0 and 4.0 of the GIC CPU interface is supported.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>System register interface to version 4.1 of the GIC CPU interface is supported.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-27_24">Virt_frac, bits [27:24]</h4><div class="field">
+      <p>Virtualization fractional field. When the Virtualization field is <span class="binarynumber">0b0000</span>, determines the support for Virtualization Extensions. Defined values are:</p>
+    <table class="valuetable"><tr><th>Virt_frac</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Virtualization Extensions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>The following Virtualization Extensions are implemented:</p>
+<ul>
+<li>The <a href="AArch32-scr.html">SCR</a>.SIF bit, if EL3 is implemented.
+</li><li>The modifications to the <a href="AArch32-scr.html">SCR</a>.AW and <a href="AArch32-scr.html">SCR</a>.FW bits described in the Virtualization Extensions, if EL3 is implemented.
+</li><li>The MSR (banked register) and MRS (banked register) instructions.
+</li><li>The ERET instruction.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> when EL2 is implemented.
+</li><li><span class="binarynumber">0b0001</span> when EL2 is not implemented.
+</li></ul>
+<p>This field is valid only when the value of ID_PFR1.Virtualization is 0, otherwise it holds the value <span class="binarynumber">0b0000</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>The ID_ISAR registers do not identify whether the instructions added by the Virtualization Extensions are implemented.</p></div></div><h4 id="fieldset_0-23_20">Sec_frac, bits [23:20]</h4><div class="field">
+      <p>Security fractional field. When the Security field is <span class="binarynumber">0b0000</span>, determines the support for Security Extensions. Defined values are:</p>
+    <table class="valuetable"><tr><th>Sec_frac</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Security Extensions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>The following Security Extensions are implemented:</p>
+<ul>
+<li>The VBAR register.
+</li><li>The <a href="AArch32-ttbcr.html">TTBCR</a>.PD0 and <a href="AArch32-ttbcr.html">TTBCR</a>.PD1 bits.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, plus the ability to access Secure or Non-secure physical memory is supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> when EL3 is implemented.
+</li><li><span class="binarynumber">0b0001</span> or <span class="binarynumber">0b0010</span> when EL3 is not implemented.
+</li></ul>
+<p>This field is valid only when the value of ID_PFR1.Security is 0, otherwise it holds the value <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-19_16">GenTimer, bits [19:16]</h4><div class="field">
+      <p>Generic Timer support. Defined values are:</p>
+    <table class="valuetable"><tr><th>GenTimer</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Generic Timer is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Generic Timer is implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Generic Timer is implemented, and also includes support for <a href="AArch32-cnthctl.html">CNTHCTL</a>.EVNTIS and <a href="AArch32-cntkctl.html">CNTKCTL</a>.EVNTIS fields, and <a href="AArch32-cntpctss.html">CNTPCTSS</a> and <a href="AArch32-cntvctss.html">CNTVCTSS</a> counter views.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ECV</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>In Armv8.0, the only permitted value is <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.6, the only permitted value is <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-15_12">Virtualization, bits [15:12]</h4><div class="field">
+      <p>Virtualization support. Defined values are:</p>
+    <table class="valuetable"><tr><th>Virtualization</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL2, Hyp mode, and the HVC instruction not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EL2, Hyp mode, the HVC instruction, and all the features described by Virt_frac == <span class="binarynumber">0b0001</span> implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> when EL2 is not implemented.
+</li><li><span class="binarynumber">0b0001</span> when EL2 is implemented.
+</li></ul>
+<p>In an implementation that includes EL2, if EL2 cannot use AArch32 but EL1 can use AArch32 then this field has the value <span class="binarynumber">0b0001</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>The ID_ISARs do not identify whether the HVC instruction is implemented.</p></div></div><h4 id="fieldset_0-11_8">MProgMod, bits [11:8]</h4><div class="field">
+      <p>M-profile programmers' model support. Defined values are:</p>
+    <table class="valuetable"><tr><th>MProgMod</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Support for two-stack programmers' model.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-7_4">Security, bits [7:4]</h4><div class="field">
+      <p>Security support. Defined values are:</p>
+    <table class="valuetable"><tr><th>Security</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL3, Monitor mode, and the SMC instruction not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EL3, Monitor mode, the SMC instruction, and all the features described by Sec_frac == <span class="binarynumber">0b0001</span> implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, and adds the ability to set the <a href="AArch32-nsacr.html">NSACR</a>.RFR bit. Not permitted in Armv8 as the <a href="AArch32-nsacr.html">NSACR</a>.RFR bit is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> when EL3 is not implemented.
+</li><li><span class="binarynumber">0b0001</span> when EL3 is implemented.
+</li></ul>
+<p>In an implementation that includes EL3, if EL3 cannot use AArch32 but EL1 can use AArch32 then this field has the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-3_0">ProgMod, bits [3:0]</h4><div class="field">
+      <p>Support for the standard programmers' model for ARMv4 and later. Model must support User, FIQ, IRQ, Supervisor, Abort, Undefined, and System modes. Defined values are:</p>
+    <table class="valuetable"><tr><th>ProgMod</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><div class="access_mechanisms"><h2>Accessing ID_PFR1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0000</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TID3 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        R[t] = ID_PFR1;
+elsif PSTATE.EL == EL2 then
+    R[t] = ID_PFR1;
+elsif PSTATE.EL == EL3 then
+    R[t] = ID_PFR1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

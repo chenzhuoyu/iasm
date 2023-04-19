@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMF_ESR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMF_ESR, MPAM Error Status Register</h1><p>The MPAMF_ESR characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates MPAM error status for this MSC.</p>
+
+      
+        <p>MPAMF_ESR_s reports Secure MPAM errors.
+MPAMF_ESR_ns reports Non-secure MPAM errors.
+MPAMF_ESR_rt reports Root MPAM errors.
+MPAMF_ESR_rl reports Realm MPAM errors.</p>
+
+      
+        <p>Software should write this register after reading the status of an error to reset ERRCODE to <span class="hexnumber">0x0000</span> and OVRWR to 0 so that future errors are not reported with OVRWR set.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMF_ESR is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented. Otherwise, direct accesses to MPAMF_ESR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>MPAMF_ESR is 64-bit register when MPAM v0.1 or v1.1 is implemented and MPAMF_IDR.HAS_EXTD_ESR == 1.</p>
+
+      
+        <p>Otherwise, MPAMF_ESR is a 32-bit register.</p>
+
+      
+        <p>If an MSC cannot encounter any of the error conditions listed in <span class="xref">'Errors in MSCs' in Arm® Architecture Reference Manual Supplement, Memory System Resource Partitioning and Monitoring (MPAM), for Armv8-A (ARM DDI 0598)</span>, both the MPAMF_ESR and <a href="ext-mpamf_ecr.html">MPAMF_ECR</a> must be RAZ/WI.</p>
+
+      
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MPAMF_ESR is a:</p>
+
+      
+        <ul>
+<li>64-bit register when (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_IDR.HAS_EXTD_ESR == 1
+</li><li>32-bit register otherwise
+</li></ul>
+      <h2>Field descriptions</h2><h3>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_IDR.HAS_EXTD_ESR == 1:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="28"><a href="#fieldset_0-63_36">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32-1">RIS</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">OVRWR</a></td><td class="lr" colspan="3"><a href="#fieldset_0-30_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">ERRCODE</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">PMG</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">PARTID_MON</a></td></tr></tbody></table><h4 id="fieldset_0-63_36">Bits [63:36]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-35_32-1">RIS, bits [35:32]<span class="condition"><br/>When MPAMF_IDR.HAS_RIS == 1:
+                        </span></h4><div class="field">
+      <p>Resource Instance Selector. Where applicable to the ERRCODE, captures the RIS value for the error.</p>
+    </div><h4 id="fieldset_0-35_32-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">OVRWR, bit [31]</h4><div class="field"><p>Overwritten.</p>
+<p>If 0 and ERRCODE == <span class="binarynumber">0b0000</span>, no errors have occurred.</p>
+<p>If 0 and ERRCODE is nonzero, a single error has occurred and is recorded in this register.</p>
+<p>If 1 and ERRCODE is nonzero, multiple errors have occurred and this register records the most recent error.</p>
+      <p>The state where this bit is 1 and ERRCODE is zero must not be produced by hardware and is only reached when software writes this combination into this register.</p>
+    </div><h4 id="fieldset_0-30_28">Bits [30:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_24">ERRCODE, bits [27:24]</h4><div class="field">
+      <p>Error code.</p>
+    <table class="valuetable"><tr><th>ERRCODE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No error.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>PARTID_SEL_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Req_PARTID_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>MSMONCFG_ID_RANGE.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Req_PMG_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Monitor_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>intPARTID_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Unexpected_INTERNAL.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>Undefined_RIS_PART_SEL.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>RIS_No_Control.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>Undefined_RIS_MON_SEL.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>RIS_No_Monitor.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1101</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1110</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Reserved.</p>
+        </td></tr></table></div><h4 id="fieldset_0-23_16">PMG, bits [23:16]</h4><div class="field"><p>Program monitoring group.</p>
+<p>Set to the PMG on an error that captures PMG.  Otherwise, set to <span class="hexnumber">0x00</span> on an error that does not capture PMG.</p></div><h4 id="fieldset_0-15_0">PARTID_MON, bits [15:0]</h4><div class="field"><p>PARTID or monitor.</p>
+<p>Set to the PARTID on an error that captures PARTID.</p>
+<p>Set to the monitor index on an error that captures MON.</p>
+<p>On an error that captures neither PARTID nor MON, this field is set to 0.</p></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">OVRWR</a></td><td class="lr" colspan="3"><a href="#fieldset_1-30_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_1-27_24">ERRCODE</a></td><td class="lr" colspan="8"><a href="#fieldset_1-23_16">PMG</a></td><td class="lr" colspan="16"><a href="#fieldset_1-15_0">PARTID_MON</a></td></tr></tbody></table><h4 id="fieldset_1-31_31">OVRWR, bit [31]</h4><div class="field"><p>Overwritten.</p>
+<p>If 0 and ERRCODE == <span class="binarynumber">0b0000</span>, no errors have occurred.</p>
+<p>If 0 and ERRCODE is nonzero, a single error has occurred and is recorded in this register.</p>
+<p>If 1 and ERRCODE is nonzero, multiple errors have occurred and this register records the most recent error.</p>
+      <p>The state where this bit is 1 and ERRCODE is 0 must not be produced by hardware and is only reached when software writes this combination into this register.</p>
+    </div><h4 id="fieldset_1-30_28">Bits [30:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-27_24">ERRCODE, bits [27:24]</h4><div class="field">
+      <p>Error code.</p>
+    <table class="valuetable"><tr><th>ERRCODE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No error.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>PARTID_SEL_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Req_PARTID_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>MSMONCFG_ID_RANGE.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Req_PMG_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Monitor_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>intPARTID_Range.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Unexpected_INTERNAL.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1101</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1110</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Reserved.</p>
+        </td></tr></table></div><h4 id="fieldset_1-23_16">PMG, bits [23:16]</h4><div class="field"><p>Program monitoring group.</p>
+<p>Set to the PMG on an error that captures PMG. Otherwise, set to <span class="hexnumber">0x00</span> on an error that does not capture PMG.</p></div><h4 id="fieldset_1-15_0">PARTID_MON, bits [15:0]</h4><div class="field"><p>PARTID or monitor.</p>
+<p>Set to the PARTID on an error that captures PARTID.</p>
+<p>Set to the monitor index on an error that captures MON.</p>
+<p>On an error that captures neither PARTID nor MON, this field is set to <span class="hexnumber">0x0000</span>.</p></div><h2>Accessing MPAMF_ESR</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MPAMF_ESR_s must only be accessible from the Secure MPAM feature page.
+</li><li>MPAMF_ESR_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MPAMF_ESR_rt must only be accessible from the Root MPAM feature page.
+</li><li>MPAMF_ESR_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MPAMF_ESR_s, MPAMF_ESR_ns, MPAMF_ESR_rt, and MPAMF_ESR_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MPAMF_ESR_s) accesses the error status used for Secure PARTIDs.
+</li><li>The Non-secure instance (MPAMF_ESR_ns) accesses the error status used for Non-secure PARTIDs.
+</li><li>The Root instance (MPAMF_ESR_rt) accesses the error status used for Root PARTIDs.
+</li><li>The Realm instance (MPAMF_ESR_rl) accesses the error status used for Realm PARTIDs.
+</li></ul>
+      <h4>MPAMF_ESR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x00F8</span></td><td>MPAMF_ESR_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x00F8</span></td><td>MPAMF_ESR_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x00F8</span></td><td>MPAMF_ESR_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x00F8</span></td><td>MPAMF_ESR_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" encoding="UTF-8" href="iform.xsl" version="1.0"?>
+<!DOCTYPE instructionsection PUBLIC "-//ARM//DTD instructionsection //EN" "iform-p.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+
+<instructionsection id="SEV" title="SEV -- A64" type="instruction">
+  <docvars>
+    <docvar key="instr-class" value="system" />
+    <docvar key="isa" value="A64" />
+    <docvar key="mnemonic" value="SEV" />
+  </docvars>
+  <heading>SEV</heading>
+  <desc>
+    <brief>
+      <para>Send Event</para>
+    </brief>
+    <authored>
+      <para>Send Event is a hint instruction. It causes an event to be signaled to all PEs in the multiprocessor system. For more information, see <xref linkend="BEIJHBBD">Wait for Event mechanism and Send event</xref>.</para>
+    </authored>
+  </desc>
+  <alias_list howmany="0"></alias_list>
+  <classes>
+    <iclass name="System" oneof="1" id="iclass_system" no_encodings="1" isa="A64">
+      <docvars>
+        <docvar key="instr-class" value="system" />
+        <docvar key="isa" value="A64" />
+        <docvar key="mnemonic" value="SEV" />
+      </docvars>
+      <iclassintro count="1"></iclassintro>
+      <regdiagram form="32" psname="aarch64/instrs/system/hints/SEV_HI_hints" tworows="1">
+        <box hibit="31" width="10" settings="10">
+          <c>1</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="21" name="L" settings="1">
+          <c>0</c>
+        </box>
+        <box hibit="20" width="2" name="op0" settings="2">
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="18" width="3" name="op1" settings="3">
+          <c>0</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+        <box hibit="15" width="4" name="CRn" settings="4">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="11" width="4" name="CRm" usename="1" settings="4" psbits="xxxx">
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="7" width="3" name="op2" usename="1" settings="3" psbits="xxx">
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="4" width="5" name="Rt" settings="5">
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+      </regdiagram>
+      <encoding name="SEV_HI_hints" oneofinclass="1" oneof="1" label="">
+        <docvars>
+          <docvar key="instr-class" value="system" />
+          <docvar key="isa" value="A64" />
+          <docvar key="mnemonic" value="SEV" />
+        </docvars>
+        <asmtemplate><text>SEV</text></asmtemplate>
+      </encoding>
+      <ps_section howmany="1">
+        <ps name="aarch64/instrs/system/hints/SEV_HI_hints" mylink="aarch64.instrs.system.hints.SEV_HI_hints" enclabels="" sections="1" secttype="noheading">
+          <pstext mayhavelinks="1" section="Decode" rep_section="decode">// Empty.</pstext>
+        </ps>
+      </ps_section>
+    </iclass>
+  </classes>
+  <explanations scope="all"></explanations>
+  <ps_section howmany="1">
+    <ps name="aarch64/instrs/system/hints/SEV_HI_hints" mylink="execute" enclabels="" sections="1" secttype="Operation">
+      <pstext mayhavelinks="1" section="Execute" rep_section="execute"><a link="impl-shared.SendEvent.0" file="shared_pseudocode.xml" hover="function: SendEvent()">SendEvent</a>();</pstext>
+    </ps>
+  </ps_section>
+</instructionsection>

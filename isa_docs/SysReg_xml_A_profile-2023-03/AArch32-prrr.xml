@@ -1,0 +1,580 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PRRR</reg_short_name>
+        
+        <reg_long_name>Primary Region Remap Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mair_el1.xml">MAIR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is not implemented or EL3 is using AArch64</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-mair0.xml">MAIR0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is not implemented or EL3 is using AArch64</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-mair0.xml">MAIR0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>PRRR_S</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>MAIR0_S</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is using AArch32</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-mair0.xml">MAIR0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>PRRR_NS</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>MAIR0_NS</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is using AArch32</mapped_to_condition>
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the top level mapping of the TEX[0], C, and B memory region attributes.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para><register_link state="AArch32" id="AArch32-mair0.xml">MAIR0</register_link> and PRRR are the same register, with a different view depending on the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.EAE:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When it is set to 0, the register is as described in PRRR.</content>
+</listitem><listitem><content>When it is set to 1, the register is as described in <register_link state="AArch32" id="AArch32-mair0.xml">MAIR0</register_link>.</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PRRR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fields_instance>TTBCR.EAE==0</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NOS&lt;n&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>31:24</rel_range>
+    <field_description order="before">
+      <para>Not Outer Shareable. NOS&lt;n&gt; is the Outer Shareable property for memory attributes n, if the region is mapped as Normal memory that is not Inner Non-cacheable, Outer Non-cacheable, and the appropriate PRRR.{NS0, NS1} field identifies the region as shareable. n is the value of the concatenation of the {TEX[0], C, B} bits from the Translation table descriptor. The possible values of each NOS&lt;n&gt; field other than NOS6 are:</para>
+    </field_description>
+    <field_description order="after"><para>The value of this bit is ignored if the region is:</para>
+<list type="unordered">
+<listitem><content>Device memory</content>
+</listitem><listitem><content>Normal memory that is at least one of:<list type="unordered">
+<listitem><content>Inner Non-cacheable, Outer Non-cacheable.</content>
+</listitem><listitem><content>Identified by the appropriate PRRR.{NS0, NS1} field as Non-shareable.</content>
+</listitem></list>
+</content>
+</listitem></list>
+<para>The meaning of the NOS6 field is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para></field_description>
+    <field_array_indexes index_variable="n" element_size="1" range_specifier="n+24">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Memory region is Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Memory region is Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS1</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before"><para>Mapping of S = 1 attribute for Normal memory regions. This field is used in determining the Shareability of a memory region that is mapped to Normal memory and both:</para>
+<list type="unordered">
+<listitem><content>Is not Inner Non-cacheable, Outer Non-cacheable.</content>
+</listitem><listitem><content>Has the S bit in the Translation table descriptor set to 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Region is Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Region is shareable. The value of the appropriate PRRR.NOS&lt;n&gt; field determines whether the region is Inner Shareable or Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-18_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS0</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before"><para>Mapping of S = 0 attribute for Normal memory regions. This field is used in determining the Shareability of a memory region that is mapped to Normal memory and both:</para>
+<list type="unordered">
+<listitem><content>Is not Inner Non-cacheable, Outer Non-cacheable.</content>
+</listitem><listitem><content>Has the S bit in the Translation table descriptor set to 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Region is Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Region is shareable. The value of the appropriate PRRR.NOS&lt;n&gt; field determines whether the region is Inner Shareable or Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DS1</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>Mapping of S = 1 attribute for Device memory. From Armv8, all types of Device memory are Outer Shareable, and therefore this bit is <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DS0</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Mapping of S = 0 attribute for Device memory. From Armv8, all types of Device memory are Outer Shareable, and therefore this bit is <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TR&lt;n&gt;</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>TR&lt;n&gt; is the primary TEX mapping for memory attributes n, and defines the mapped memory type for a region with attributes n. n is the value of the concatenation of the {TEX[0], C, B} bits from the Translation table descriptor. The possible values for each field other than TR6 are:</para>
+    </field_description>
+    <field_description order="after"><para>The value <binarynumber>0b11</binarynumber> is reserved. The effect of programming a field to <binarynumber>0b11</binarynumber> is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>.</para>
+<para>The meaning of the TR6 field is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+<para>When <xref browsertext="FEAT_XS" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.XS"/> is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.</para></field_description>
+    <field_array_indexes index_variable="n" element_size="2" range_specifier="2n+1:2n">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE memory</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Device-nGnRE memory</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fieldat id="fieldset_0-31_24" label="NOS7" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_24" label="NOS6" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_24" label="NOS5" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_24" label="NOS4" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_24" label="NOS3" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_24" label="NOS2" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_24" label="NOS1" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_24" label="NOS0" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" label="TR7" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-15_0" label="TR6" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-15_0" label="TR5" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-15_0" label="TR4" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-15_0" label="TR3" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-15_0" label="TR2" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-15_0" label="TR1" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-15_0" label="TR0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PRRR-MAIR0" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0_NS;
+        else
+            R[t] = PRRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0;
+        else
+            R[t] = PRRR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0_NS;
+        else
+            R[t] = PRRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0;
+        else
+            R[t] = PRRR;
+elsif PSTATE.EL == EL3 then
+    if TTBCR.EAE == '1' then
+        if SCR.NS == '0' then
+            R[t] = MAIR0_S;
+        else
+            R[t] = MAIR0_NS;
+    else
+        if SCR.NS == '0' then
+            R[t] = PRRR_S;
+        else
+            R[t] = PRRR_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PRRR-MAIR0" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR0_NS = R[t];
+        else
+            PRRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR0 = R[t];
+        else
+            PRRR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR0_NS = R[t];
+        else
+            PRRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR0 = R[t];
+        else
+            PRRR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if TTBCR.EAE == '1' then
+            if SCR.NS == '0' then
+                MAIR0_S = R[t];
+            else
+                MAIR0_NS = R[t];
+        else
+            if SCR.NS == '0' then
+                PRRR_S = R[t];
+            else
+                PRRR_NS = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

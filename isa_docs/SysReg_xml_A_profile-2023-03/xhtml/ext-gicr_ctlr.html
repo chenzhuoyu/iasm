@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICR_CTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICR_CTLR, Redistributor Control Register</h1><p>The GICR_CTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls the operation of a Redistributor, and enables the signaling of LPIs by the Redistributor to the connected PE.</p>
+      <h2>Configuration</h2>
+        <p>A copy of this register is provided for each Redistributor.</p>
+      <h2>Attributes</h2>
+        <p>GICR_CTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">UWP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-30_27">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26">DPG1S</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">DPG1NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">DPG0</a></td><td class="lr" colspan="20"><a href="#fieldset_0-23_4">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">RWP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">IR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">CES</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">EnableLPIs</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">UWP, bit [31]</h4><div class="field">
+      <p>Upstream Write Pending. Read-only. Indicates whether all upstream writes have been communicated to the Distributor.</p>
+    <table class="valuetable"><tr><th>UWP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The effects of all upstream writes have been communicated to the Distributor, including any Generate SGI packets. For more information, see <span class="xref">'Generate SGI (ICC)' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Not all the effects of upstream writes, including any Generate SGI packets, have been communicated to the Distributor. For more information, see <span class="xref">'Generate SGI (ICC)' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+        </td></tr></table></div><h4 id="fieldset_0-30_27">Bits [30:27]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26">DPG1S, bit [26]</h4><div class="field">
+      <p>Disable Processor selection for Group 1 Secure interrupts. When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 1:</p>
+    <table class="valuetable"><tr><th>DPG1S</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>A Group 1 Secure SPI configured to use the 1 of N distribution model can select this PE, if the PE is not asleep and if Secure Group 1 interrupts are enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A Group 1 Secure SPI configured to use the 1 of N distribution model cannot select this PE.</p>
+        </td></tr></table><p>When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 0 this bit is RAZ/WI.</p>
+<p>When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==1, this field is RAZ/WI. In GIC implementations that support two Security states, this field is only accessible by Secure accesses, and is RAZ/WI to Non-secure accesses.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether these bits affect the selection of PEs for interrupts using the 1 of N distribution model when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.ARE_S==0.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-25_25">DPG1NS, bit [25]</h4><div class="field">
+      <p>Disable Processor selection for Group 1 Non-secure interrupts. When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 1:</p>
+    <table class="valuetable"><tr><th>DPG1NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>A Group 1 Non-secure SPI configured to use the 1 of N distribution model can select this PE, if the PE is not asleep and if Non-secure Group 1 interrupts are enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A Group 1 Non-secure SPI configured to use the 1 of N distribution model cannot select this PE.</p>
+        </td></tr></table><p>When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 0 this bit is RAZ/WI.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether these bits affect the selection of PEs for interrupts using the 1 of N distribution model when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.ARE_NS==0.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-24_24">DPG0, bit [24]</h4><div class="field">
+      <p>Disable Processor selection for Group 0 interrupts. When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 1:</p>
+    <table class="valuetable"><tr><th>DPG0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>A Group 0 SPI configured to use the 1 of N distribution model can select this PE, if the PE is not asleep and if Group 0 interrupts are enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A Group 0 SPI configured to use the 1 of N distribution model cannot select this PE.</p>
+        </td></tr></table><p>When <a href="ext-gicr_typer.html">GICR_TYPER</a>.DPGS == 0 this bit is RAZ/WI.</p>
+<p>When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS == 1, this field is always accessible. In GIC implementations that support two Security states, this field is RAZ/WI to Non-secure accesses.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether these bits affect the selection of PEs for interrupts using the 1 of N distribution model when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.ARE_S == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-23_4">Bits [23:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3">RWP, bit [3]</h4><div class="field">
+      <p>Register Write Pending.  This bit indicates whether a register write for the current Security state is in progress or not.</p>
+    <table class="valuetable"><tr><th>RWP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>The effect of all previous writes to the following registers are visible to all agents in the system:</p>
+<ul>
+<li><a href="ext-gicr_icenabler0.html">GICR_ICENABLER0</a>
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG1S
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG1NS
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG0
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>, which clears EnableLPIs from 1 to 0.
+</li><li>In FEAT_GICv4p1, <a href="ext-gicr_vpropbaser.html">GICR_VPROPBASER</a>, which clears Valid from 1 to 0.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td><p>The effect of all previous writes to the following registers are not guaranteed by the architecture to be visible to all agents in the system while the changes are still being propagated:</p>
+<ul>
+<li><a href="ext-gicr_icenabler0.html">GICR_ICENABLER0</a>
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG1S
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG1NS
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG0
+</li><li><a href="ext-gicr_ctlr.html">GICR_CTLR</a>, which clears EnableLPIs from 1 to 0.
+</li><li>In FEAT_GICv4p1, <a href="ext-gicr_vpropbaser.html">GICR_VPROPBASER</a>, which clears Valid from 1 to 0.
+</li></ul></td></tr></table></div><h4 id="fieldset_0-2_2">IR, bit [2]</h4><div class="field"><p>LPI invaldiate registers supported.</p>
+<p>This bit is read-only.</p><table class="valuetable"><tr><th>IR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This bit does not indicate whether the GICR_INVLPIR, GICR_INVALLR and GICR_SYNCR are implemented or not.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>GICR_INVLPIR, GICR_INVALLR and GICR_SYNCR are implemented.</p>
+        </td></tr></table><p>If <a href="ext-gicr_typer.html">GICR_TYPER</a>.DirectLPI is 1 or <a href="ext-gicr_typer.html">GICR_TYPER</a>.RVPEI is 1, <a href="ext-gicr_invlpir.html">GICR_INVLPIR</a>, <a href="ext-gicr_invallr.html">GICR_INVALLR</a>, and <a href="ext-gicr_syncr.html">GICR_SYNCR</a> are always implemented.</p>
+<p>Arm recommends that implementations report GICR_CTLR.IR as 1 in these cases.</p></div><h4 id="fieldset_0-1_1">CES, bit [1]</h4><div class="field"><p>Clear Enable Supported.</p>
+<p>This bit is read-only.</p><table class="valuetable"><tr><th>CES</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The IRI does not indicate whether GICR_CTLR.EnableLPIs is <span class="arm-defined-word">RES1</span> once set.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>GICR_CTLR.EnableLPIs is not <span class="arm-defined-word">RES1</span> once set.</p>
+        </td></tr></table><p>Implementing GICR_CTLR.EnableLPIs as programmable and not reporting GICR_CLTR.CES == 1 is deprecated.</p>
+<p>Implementing GICR_CTLR.EnableLPIs as <span class="arm-defined-word">RES1</span> once set is deprecated.</p>
+<p>When GICR_CLTR.CES == 0, software cannot assume that GICR_CTLR.EnableLPIs is programmable without observing the bit being cleared.</p></div><h4 id="fieldset_0-0_0">EnableLPIs, bit [0]</h4><div class="field">
+      <p>In implementations where affinity routing is enabled for the Security state:</p>
+    <table class="valuetable"><tr><th>EnableLPIs</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>LPI support is disabled. Any doorbell interrupt generated as a result of a write to a virtual LPI register must be discarded, and any ITS translation requests or commands involving LPIs in this Redistributor are ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>LPI support is enabled.</p>
+        </td></tr></table><div class="note"><span class="note-header">Note</span><p>If <a href="ext-gicr_typer.html">GICR_TYPER</a>.PLPIS == 0, this field is <span class="arm-defined-word">RES0</span>.
+If <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.ARE_NS is written from 1 to 0 when this bit is 1, behavior is an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> choice between clearing GICR_CTLR.EnableLPIs to 0 or maintaining its current value.</p></div><p>When affinity routing is not enabled for the Non-secure state, this bit is <span class="arm-defined-word">RES0</span>.</p>
+<p>When written from 0 to 1, the Redistributor loads the LPI Pending table from memory to check for any pending interrupts.</p>
+<p>After it has been written to 1, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the bit becomes <span class="arm-defined-word">RES1</span> or can be cleared by to 0.</p>
+<p>Where the bit remains programmable:</p>
+<ul>
+<li>Software must observe GICR_CTLR.RWP==0 after clearing GICR_CTLR.EnableLPIs from 1 to 0 before writing <a href="ext-gicr_pendbaser.html">GICR_PENDBASER</a> or <a href="ext-gicr_propbaser.html">GICR_PROPBASER</a>, otherwise behavior is <span class="arm-defined-word">UNPREDICTABLE</span>.
+</li><li>Software must observe GICR_CTLR.RWP==0 after clearing GICR_CTLR.EnableLPIs from 1 to 0 before setting GICR_CTLR.EnableLPIs to 1, otherwise behavior is <span class="arm-defined-word">UNPREDICTABLE</span>.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>If one or more ITS is implemented, Arm strongly recommends that all LPIs are mapped to another Redistributor before GICR_CTLR.EnableLPIs is cleared to 0.</p></div><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="text_after_fields"><p>The participation of a PE in the 1 of N distribution model for a given interrupt group is governed by the concatenation of <a href="ext-gicr_waker.html">GICR_WAKER</a>.ProcessorSleep, the appropriate <a href="ext-gicr_ctlr.html">GICR_CTLR</a>.DPG{1, 0} bit, and the PE interrupt group enable. The behavior options are:</p>
+<table class="valuetable"><thead><tr><th>PS</th><th>DPG{1S, 1NS, 0}</th><th>Enable</th><th>PE Behavior</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>The PE cannot be selected.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>The PE can be selected.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>*</td><td>The PE cannot be selected.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td>*</td><td>*</td><td>The PE cannot be selected when <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.E1NWF == 0. When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.E1NWF == 1, the mechanism by which PEs are selected is<span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</td></tr></tbody></table>
+<p>If an SPI using the 1 of N distribution model has been forwarded to the PE, and a write to GICR_CTLR occurs that changes the DPG bit for the interrupt group of the SPI, the IRI must attempt to select a different target PE for the SPI. This might have no effect on the forwarded SPI if it has already been activated.</p></div><h2>Accessing GICR_CTLR</h2><h4>GICR_CTLR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Redistributor</td><td>RD_base</td><td><span class="hexnumber">0x0000</span></td><td>GICR_CTLR</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

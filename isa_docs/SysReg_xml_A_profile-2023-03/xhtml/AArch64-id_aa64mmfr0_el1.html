@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64MMFR0_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64MMFR0_EL1, AArch64 Memory Model Feature Register 0</h1><p>The ID_AA64MMFR0_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the implemented memory model and memory management support in AArch64 state.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>There are no configuration notes.</p><h2>Attributes</h2>
+        <p>ID_AA64MMFR0_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_60">ECV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-59_56">FGT</a></td><td class="lr" colspan="8"><a href="#fieldset_0-55_48">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">ExS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">TGran4_2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">TGran64_2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">TGran16_2</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">TGran4</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">TGran64</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">TGran16</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">BigEndEL0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">SNSMem</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">BigEnd</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">ASIDBits</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">PARange</a></td></tr></tbody></table><h4 id="fieldset_0-63_60">ECV, bits [63:60]</h4><div class="field">
+      <p>Indicates presence of Enhanced Counter Virtualization. Defined values are:</p>
+    <table class="valuetable"><tr><th>ECV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Enhanced Counter Virtualization is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Enhanced Counter Virtualization is implemented. Supports <a href="AArch64-cnthctl_el2.html">CNTHCTL_EL2</a>.{EL1TVT, EL1TVCT, EL1NVPCT, EL1NVVCT, EVNTIS}, <a href="AArch64-cntkctl_el1.html">CNTKCTL_EL1</a>.EVNTIS, <a href="AArch64-cntpctss_el0.html">CNTPCTSS_EL0</a> counter views, and <a href="AArch64-cntvctss_el0.html">CNTVCTSS_EL0</a> counter views. Extends the <a href="AArch64-pmscr_el1.html">PMSCR_EL1</a>.PCT, <a href="AArch64-pmscr_el2.html">PMSCR_EL2</a>.PCT, <a href="AArch64-trfcr_el1.html">TRFCR_EL1</a>.TS, and <a href="AArch64-trfcr_el2.html">TRFCR_EL2</a>.TS fields.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As <span class="binarynumber">0b0001</span>, and also includes support for <a href="AArch64-cnthctl_el2.html">CNTHCTL_EL2</a>.ECV and <a href="AArch64-cntpoff_el2.html">CNTPOFF_EL2</a>.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ECV</span> implements the functionality identified by the values <span class="binarynumber">0b0001</span> and <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.6, the only permitted values are <span class="binarynumber">0b0001</span> and <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-59_56">FGT, bits [59:56]</h4><div class="field">
+      <p>Indicates presence of the Fine-Grained Trap controls. Defined values are:</p>
+    <table class="valuetable"><tr><th>FGT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Fine-grained trap controls are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Fine-grained trap controls are implemented. Supports:</p>
+<ul>
+<li>If EL2 is implemented, the <a href="AArch64-hafgrtr_el2.html">HAFGRTR_EL2</a>, <a href="AArch64-hdfgrtr_el2.html">HDFGRTR_EL2</a>, <a href="AArch64-hdfgwtr_el2.html">HDFGWTR_EL2</a>, <a href="AArch64-hfgrtr_el2.html">HFGRTR_EL2</a>, <a href="AArch64-hfgitr_el2.html">HFGITR_EL2</a> and <a href="AArch64-hfgwtr_el2.html">HFGWTR_EL2</a> registers, and their associated traps.
+</li><li>If EL2 is implemented, <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.TDCC.
+</li><li>If EL3 is implemented, <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.TDCC.
+</li><li>If both EL2 and EL3 are implemented, <a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As <span class="binarynumber">0b0001</span>, and also includes support for:</p>
+<ul>
+<li>If EL2 is implemented, the <a href="AArch64-hdfgrtr2_el2.html">HDFGRTR2_EL2</a>, <a href="AArch64-hdfgwtr2_el2.html">HDFGWTR2_EL2</a>, <a href="AArch64-hfgitr2_el2.html">HFGITR2_EL2</a>, <a href="AArch64-hfgrtr2_el2.html">HFGRTR2_EL2</a>, and <a href="AArch64-hfgwtr2_el2.html">HFGWTR2_EL2</a> registers, and their associated traps.
+</li><li>If both EL2 and EL3 are implemented, <a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_FGT</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_FGT2</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.6, the value <span class="binarynumber">0b0000</span> is not permitted.</p>
+<p>From Armv8.9, the value <span class="binarynumber">0b0001</span> is not permitted.</p></div><h4 id="fieldset_0-55_48">Bits [55:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_44">ExS, bits [47:44]</h4><div class="field">
+      <p>Indicates support for disabling context synchronizing exception entry and exit. Defined values are:</p>
+    <table class="valuetable"><tr><th>ExS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>All exception entries and exits are context synchronization events.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Non-context synchronizing exception entry and exit are supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ExS</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-43_40">TGran4_2, bits [43:40]</h4><div class="field">
+      <p>Indicates support for 4KB memory granule size at stage 2. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran4_2</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Support for 4KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran4 field.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>4KB granule not supported at stage 2.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>4KB granule supported at stage 2.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>4KB granule at stage 2 supports 52-bit input addresses and can describe 52-bit output addresses.</p>
+        </td><td>When FEAT_LPA2 is implemented</td></tr></table><p>All other values are reserved.</p>
+<p>The <span class="binarynumber">0b0000</span> value is deprecated.</p>
+<div class="note"><span class="note-header">Note</span><p>This field does not follow the standard ID scheme. See <span class="xref">Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes</span> for more information.</p></div></div><h4 id="fieldset_0-39_36">TGran64_2, bits [39:36]</h4><div class="field">
+      <p>Indicates support for 64KB memory granule size at stage 2. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran64_2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Support for 64KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran64 field.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>64KB granule not supported at stage 2.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>64KB granule supported at stage 2.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The <span class="binarynumber">0b0000</span> value is deprecated.</p>
+<div class="note"><span class="note-header">Note</span><p>This field does not follow the standard ID scheme. See <span class="xref">Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes</span> for more information.</p></div></div><h4 id="fieldset_0-35_32">TGran16_2, bits [35:32]</h4><div class="field">
+      <p>Indicates support for 16KB memory granule size at stage 2. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran16_2</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Support for 16KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran16 field.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>16KB granule not supported at stage 2.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>16KB granule supported at stage 2.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>16KB granule at stage 2 supports 52-bit input addresses and can describe 52-bit output addresses.</p>
+        </td><td>When FEAT_LPA2 is implemented</td></tr></table><p>All other values are reserved.</p>
+<p>The <span class="binarynumber">0b0000</span> value is deprecated.</p>
+<div class="note"><span class="note-header">Note</span><p>This field does not follow the standard ID scheme. See <span class="xref">Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes</span> for more information.</p></div></div><h4 id="fieldset_0-31_28">TGran4, bits [31:28]</h4><div class="field">
+      <p>Indicates support for 4KB memory translation granule size. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran4</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>4KB granule supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>4KB granule supports 52-bit input addresses and can describe 52-bit output addresses.</p>
+        </td><td>When FEAT_LPA2 is implemented</td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>4KB granule not supported.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-27_24">TGran64, bits [27:24]</h4><div class="field">
+      <p>Indicates support for 64KB memory translation granule size. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran64</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>64KB granule supported.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>64KB granule not supported.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-23_20">TGran16, bits [23:20]</h4><div class="field">
+      <p>Indicates support for 16KB memory translation granule size. Defined values are:</p>
+    <table class="valuetable"><tr><th>TGran16</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>16KB granule not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>16KB granule supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>16KB granule supports 52-bit input addresses and can describe 52-bit output addresses.</p>
+        </td><td>When FEAT_LPA2 is implemented</td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-19_16">BigEndEL0, bits [19:16]</h4><div class="field">
+      <p>Indicates support for mixed-endian at EL0 only. Defined values are:</p>
+    <table class="valuetable"><tr><th>BigEndEL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No mixed-endian support at EL0. The <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.E0E bit has a fixed value.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Mixed-endian support at EL0. The <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.E0E bit can be configured.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field is invalid and is <span class="arm-defined-word">RES0</span> if ID_AA64MMFR0_EL1.BigEnd is not <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-15_12">SNSMem, bits [15:12]</h4><div class="field">
+      <p>Indicates support for a distinction between Secure and Non-secure Memory. Defined values are:</p>
+    <table class="valuetable"><tr><th>SNSMem</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Does not support a distinction between Secure and Non-secure Memory.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Does support a distinction between Secure and Non-secure Memory.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>If EL3 is implemented, the value <span class="binarynumber">0b0000</span> is not permitted.</p>
+      </div>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-11_8">BigEnd, bits [11:8]</h4><div class="field">
+      <p>Indicates support for mixed-endian configuration. Defined values are:</p>
+    <table class="valuetable"><tr><th>BigEnd</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No mixed-endian support. The <span class="xref">SCTLR_ELx</span>.EE bits have a fixed value. See the BigEndEL0 field, bits[19:16], for whether EL0 supports mixed-endian.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Mixed-endian support. The <span class="xref">SCTLR_ELx</span>.EE and <a href="AArch64-sctlr_el1.html">SCTLR_EL1</a>.E0E bits can be configured.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-7_4">ASIDBits, bits [7:4]</h4><div class="field">
+      <p>Number of ASID bits. Defined values are:</p>
+    <table class="valuetable"><tr><th>ASIDBits</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>8 bits.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>16 bits.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-3_0">PARange, bits [3:0]</h4><div class="field">
+      <p>Physical Address range supported. Defined values are:</p>
+    <table class="valuetable"><tr><th>PARange</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>32 bits, 4GB.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>36 bits, 64GB.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>40 bits, 1TB.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>42 bits, 4TB.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>44 bits, 16TB.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>48 bits, 256TB.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>52 bits, 4PB.</p>
+        </td><td>When FEAT_LPA is implemented or FEAT_LPA2 is implemented</td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>56 bits, 64PB.</p>
+        </td><td>When FEAT_D128 is implemented</td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_AA64MMFR0_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64MMFR0_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0111</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64MMFR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64MMFR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64MMFR0_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

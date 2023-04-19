@@ -1,0 +1,1388 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMSEVFR_EL1</reg_short_name>
+        
+        <reg_long_name>Sampling Event Filter Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_SPE is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls sample filtering by events. The overall filter is the logical AND of these filters. For example, if PMSEVFR_EL1.E[3] and PMSEVFR_EL1.E[5] are both set to 1, only samples that have both event 3 (Level 1 unified or data cache refill) and event 5 (TLB walk) set to 1 are recorded.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Statistical Profiling Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMSEVFR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E[&lt;x&gt;]</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>63:48, 31:24, 15:12</rel_range>
+    <field_description order="before">
+      <para>E[&lt;x&gt;] is the event filter for event &lt;x&gt;. If event &lt;x&gt; is not implemented, or filtering on event &lt;x&gt; is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>63</field_msb>
+        <field_lsb>48</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>31</field_msb>
+        <field_lsb>24</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>15</field_msb>
+        <field_lsb>12</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="x">
+      <field_array_index>
+        <field_array_start>63</field_array_start>
+        <field_array_end>48</field_array_end>
+      </field_array_index>
+      <field_array_index>
+        <field_array_start>31</field_array_start>
+        <field_array_end>24</field_array_end>
+      </field_array_index>
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>12</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_name>E[&lt;x&gt;]</field_value_name>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Event &lt;x&gt; is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have event &lt;x&gt; == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-63_12-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[63]</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>51</rel_range>
+    <field_description order="before">
+      <para>E[63] is the event filter for event 63. If event 63 is not implemented, or filtering on event 63 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-62_62" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[62]</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>50</rel_range>
+    <field_description order="before">
+      <para>E[62] is the event filter for event 62. If event 62 is not implemented, or filtering on event 62 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-61_61" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[61]</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>49</rel_range>
+    <field_description order="before">
+      <para>E[61] is the event filter for event 61. If event 61 is not implemented, or filtering on event 61 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-60_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[60]</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>48</rel_range>
+    <field_description order="before">
+      <para>E[60] is the event filter for event 60. If event 60 is not implemented, or filtering on event 60 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-59_59" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[59]</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>47</rel_range>
+    <field_description order="before">
+      <para>E[59] is the event filter for event 59. If event 59 is not implemented, or filtering on event 59 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-58_58" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[58]</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>58</field_lsb>
+    <rel_range>46</rel_range>
+    <field_description order="before">
+      <para>E[58] is the event filter for event 58. If event 58 is not implemented, or filtering on event 58 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-57_57" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[57]</field_name>
+    <field_msb>57</field_msb>
+    <field_lsb>57</field_lsb>
+    <rel_range>45</rel_range>
+    <field_description order="before">
+      <para>E[57] is the event filter for event 57. If event 57 is not implemented, or filtering on event 57 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-56_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[56]</field_name>
+    <field_msb>56</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>44</rel_range>
+    <field_description order="before">
+      <para>E[56] is the event filter for event 56. If event 56 is not implemented, or filtering on event 56 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-55_55" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[55]</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>43</rel_range>
+    <field_description order="before">
+      <para>E[55] is the event filter for event 55. If event 55 is not implemented, or filtering on event 55 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-54_54" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[54]</field_name>
+    <field_msb>54</field_msb>
+    <field_lsb>54</field_lsb>
+    <rel_range>42</rel_range>
+    <field_description order="before">
+      <para>E[54] is the event filter for event 54. If event 54 is not implemented, or filtering on event 54 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-53_53" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[53]</field_name>
+    <field_msb>53</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>41</rel_range>
+    <field_description order="before">
+      <para>E[53] is the event filter for event 53. If event 53 is not implemented, or filtering on event 53 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-52_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[52]</field_name>
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>40</rel_range>
+    <field_description order="before">
+      <para>E[52] is the event filter for event 52. If event 52 is not implemented, or filtering on event 52 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-51_51" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[51]</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>51</field_lsb>
+    <rel_range>39</rel_range>
+    <field_description order="before">
+      <para>E[51] is the event filter for event 51. If event 51 is not implemented, or filtering on event 51 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-50_50" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[50]</field_name>
+    <field_msb>50</field_msb>
+    <field_lsb>50</field_lsb>
+    <rel_range>38</rel_range>
+    <field_description order="before">
+      <para>E[50] is the event filter for event 50. If event 50 is not implemented, or filtering on event 50 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-49_49" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[49]</field_name>
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>37</rel_range>
+    <field_description order="before">
+      <para>E[49] is the event filter for event 49. If event 49 is not implemented, or filtering on event 49 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-48_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[48]</field_name>
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>36</rel_range>
+    <field_description order="before">
+      <para>E[48] is the event filter for event 48. If event 48 is not implemented, or filtering on event 48 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-47_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI">
+    <field_msb>47</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>47:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-63_12-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[31]</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before">
+      <para>E[31] is the event filter for event 31. If event 31 is not implemented, or filtering on event 31 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[30]</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before">
+      <para>E[30] is the event filter for event 30. If event 30 is not implemented, or filtering on event 30 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[29]</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>E[29] is the event filter for event 29. If event 29 is not implemented, or filtering on event 29 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[28]</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>E[28] is the event filter for event 28. If event 28 is not implemented, or filtering on event 28 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[27]</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before">
+      <para>E[27] is the event filter for event 27. If event 27 is not implemented, or filtering on event 27 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[26]</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before">
+      <para>E[26] is the event filter for event 26. If event 26 is not implemented, or filtering on event 26 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[25]</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>E[25] is the event filter for event 25. If event 25 is not implemented, or filtering on event 25 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[24]</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before">
+      <para>E[24] is the event filter for event 24. If event 24 is not implemented, or filtering on event 24 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[23]</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Data snooped.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Data snooped event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Data snooped event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented and event 23 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[22]</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Recently fetched.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Recently fetched event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Recently fetched event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented and event 22 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[21]</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Cache data modified.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Cache data modified event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Cache data modified event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented and event 21 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[20]</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Level 2 data cache miss.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Level 2 data cache miss event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Level 2 data cache miss event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented and event 20 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[19]</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Level 2 data cache access.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Level 2 data cache access event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Level 2 data cache access event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented and event 19 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[18]</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Empty predicate.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Empty predicate event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Empty predicate event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p1 is implemented and FEAT_SVE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[17]</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Partial predicate.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Partial predicate event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Partial predicate event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p1 is implemented and FEAT_SVE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[16]</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Transactional</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Transactional event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Transactional event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-63_12-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[15]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>E[15] is the event filter for event 15. If event 15 is not implemented, or filtering on event 15 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[14]</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>E[14] is the event filter for event 14. If event 14 is not implemented, or filtering on event 14 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[13]</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>E[13] is the event filter for event 13. If event 13 is not implemented, or filtering on event 13 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-63_12-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>E[12]</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>E[12] is the event filter for event 12. If event 12 is not implemented, or filtering on event 12 is not supported, the corresponding bit is RAZ/WI.</para>
+    </field_description>
+    <field_description order="after"><para>An <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> event might be recorded as a multi-bit field. In this case, if the corresponding bits of PMSEVFR_EL1 define an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> filter for the event.</para>
+<para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0</para></field_description>
+  </field>
+  <field id="fieldset_0-11_11-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[11]</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Alignment.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Alignment event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Alignment event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-10_10-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[10]</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Remote access.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Remote access event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Remote access event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When (FEAT_SPEv1p4 is implemented or filtering on event 10 is optionally supported) and event 10 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-10_10-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-9_9-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[9]</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Last Level cache miss.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Last Level cache miss event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Last Level cache miss event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When (FEAT_SPEv1p4 is implemented or filtering on event 9 is optionally supported) and event 9 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-9_9-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-8_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[8]</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Last Level cache access.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Last Level cache access event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Last Level cache access event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When (FEAT_SPEv1p4 is implemented or filtering on event 8 is optionally supported) and event 8 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-8_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E[7]</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Mispredicted.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Mispredicted event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Mispredicted event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[6]</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Not taken.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Not taken event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Not taken event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E[5]</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>TLB walk.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>TLB walk event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the TLB walk event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-4_4-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[4]</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>TLB access.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>TLB access event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the TLB access event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented or filtering on event 4 is optionally supported</fields_condition>
+  </field>
+  <field id="fieldset_0-4_4-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E[3]</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>Level 1 data or unified cache refill.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Level 1 data or unified cache refill event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Level 1 data or unified cache refill event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAZ/WI">
+    <field_name>E[2]</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Level 1 data cache access.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Level 1 data cache access event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Level 1 data cache access event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p4 is implemented or filtering on event 2 is optionally supported</fields_condition>
+  </field>
+  <field id="fieldset_0-2_2-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI" reserved_type="RAZ/WI">
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-1_1-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>E[1]</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Architecturally executed.</para>
+<para>When the PE supports sampling of speculative instructions:</para></field_description>
+    <field_description order="after"><para>This bit is ignored by the PE when <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>.FE == 0.</para>
+<para>If the PE does not support the sampling of speculative instructions, or always discards the sample record for speculative instructions, this bit reads as an <arm-defined-word>UNKNOWN</arm-defined-word> value and the PE ignores its value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Architecturally executed event is ignored.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Do not record samples that have the Architecturally executed event == 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When the PE supports sampling of speculative instructions</fields_condition>
+  </field>
+  <field id="fieldset_0-1_1-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN" reserved_type="UNKNOWN">
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_48" label="E[63]" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-63_48" label="E[62]" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-63_48" label="E[61]" msb="61" lsb="61"/>
+  <fieldat id="fieldset_0-63_48" label="E[60]" msb="60" lsb="60"/>
+  <fieldat id="fieldset_0-63_48" label="E[59]" msb="59" lsb="59"/>
+  <fieldat id="fieldset_0-63_48" label="E[58]" msb="58" lsb="58"/>
+  <fieldat id="fieldset_0-63_48" label="E[57]" msb="57" lsb="57"/>
+  <fieldat id="fieldset_0-63_48" label="E[56]" msb="56" lsb="56"/>
+  <fieldat id="fieldset_0-63_48" label="E[55]" msb="55" lsb="55"/>
+  <fieldat id="fieldset_0-63_48" label="E[54]" msb="54" lsb="54"/>
+  <fieldat id="fieldset_0-63_48" label="E[53]" msb="53" lsb="53"/>
+  <fieldat id="fieldset_0-63_48" label="E[52]" msb="52" lsb="52"/>
+  <fieldat id="fieldset_0-63_48" label="E[51]" msb="51" lsb="51"/>
+  <fieldat id="fieldset_0-63_48" label="E[50]" msb="50" lsb="50"/>
+  <fieldat id="fieldset_0-63_48" label="E[49]" msb="49" lsb="49"/>
+  <fieldat id="fieldset_0-63_48" label="E[48]" msb="48" lsb="48"/>
+  <fieldat id="fieldset_0-47_32" msb="47" lsb="32"/>
+  <fieldat id="fieldset_0-63_12-31_31" label="E[31]" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-63_12-30_30" label="E[30]" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-63_12-29_29" label="E[29]" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-63_12-28_28" label="E[28]" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-63_12-27_27" label="E[27]" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-63_12-26_26" label="E[26]" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-63_12-25_25" label="E[25]" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-63_12-24_24" label="E[24]" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_22-1" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20-1" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-63_12-15_15" label="E[15]" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-63_12-14_14" label="E[14]" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-63_12-13_13" label="E[13]" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-63_12-12_12" label="E[12]" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11-1" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10-1" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9-1" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8-1" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4-1" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2-1" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1-1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS PMSEVFR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, PMSEVFR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1001"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMSEVFR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x830];
+    else
+        X[t, 64] = PMSEVFR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMSEVFR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMSEVFR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister PMSEVFR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR PMSEVFR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1001"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMSEVFR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x830] = X[t, 64];
+    else
+        PMSEVFR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMSEVFR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMSEVFR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

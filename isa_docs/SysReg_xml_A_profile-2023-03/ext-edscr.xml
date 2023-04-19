@@ -1,0 +1,1022 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>EDSCR</reg_short_name>
+        
+        <reg_long_name>External Debug Status and Control Register</reg_long_name>
+
+        <power_domain_text>EDSCR is in the Core power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0x088</hexnumber></reg_offset>
+    <reg_instance>EDSCR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mdccsr_el0.xml">MDCCSR_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>30</mapped_from_startbit>
+    <mapped_from_endbit>29</mapped_from_endbit>
+    <mapped_to_startbit>30</mapped_to_startbit>
+    <mapped_to_endbit>29</mapped_to_endbit>
+    <mapped_from_rangeset output="30:29">
+      <range>
+        <msb>30</msb>
+        <lsb>29</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="30:29">
+      <range>
+        <msb>30</msb>
+        <lsb>29</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Main control register for the debug implementation.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>EDSCR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TFO</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trace Filter Override. Overrides the Trace Filter controls allowing the external debugger to trace any visible Exception level.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list>
+<para>This bit is ignored by the PE when any of the following is true:</para>
+<list type="unordered">
+<listitem><content>ExternalSecureNoninvasiveDebugEnabled() is FALSE and the Effective value of <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.STE is 1.</content>
+</listitem><listitem><content>FEAT_RME is implemented, ExternalRealmNoninvasiveDebugEnabled() is FALSE, and the Effective value of <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.RLTE is 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Trace Filter controls are not affected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Trace Filter controls in <register_link state="AArch64" id="AArch64-trfcr_el1.xml">TRFCR_EL1</register_link> and <register_link state="AArch64" id="AArch64-trfcr_el2.xml">TRFCR_EL2</register_link> are ignored.</para>
+<para>Trace Filter controls <register_link state="AArch32" id="AArch32-trfcr.xml">TRFCR</register_link> and <register_link state="AArch32" id="AArch32-htrfcr.xml">HTRFCR</register_link> are ignored.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRF is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXfull</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>DTRRX full.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXfull</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>DTRTX full.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ITO</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>ITR overrun. Set to 0 on entry to Debug state.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXO</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before">
+      <para>DTRRX overrun.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXU</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before">
+      <para>DTRTX underrun.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PipeAdv</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>25</rel_range>
+    <field_description order="before">
+      <para>Pipeline Advance. Indicates that software execution is progressing.</para>
+    </field_description>
+    <field_description order="after"><para>The architecture does not define precisely when this field is set to 1. It requires only that this happen periodically in Non-debug state to indicate that software execution is progressing. For example, a PE might set this field to 1 each time the PE retires one or more instructions, or at periodic intervals during the progression of an instruction.</para>
+<para>When <xref browsertext="FEAT_MOPS" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_MOPS"/> is implemented, <instruction>CPY</instruction>, <instruction>CPYF</instruction>, <instruction>SET</instruction>, and <instruction>SETG</instruction> are examples of instructions that periodically make forward progress.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No progress has been made by the PE since the last time this field was cleared to zero by writing 1 to <register_link state="ext" id="ext-edrcr.xml">EDRCR</register_link>.CSPA.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Progress has been made by the PE since the last time this field was cleared to zero by writing 1 to <register_link state="ext" id="ext-edrcr.xml">EDRCR</register_link>.CSPA.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ITE</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>ITR empty.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-23_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>INTdis</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Interrupt disable. Disables taking interrupts in Non-debug state.</para>
+    </field_description>
+    <field_description order="after"><note><para>All interrupts includes virtual and SError interrupts.</para></note><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this field can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list>
+<para>The Effective value of this field is <binarynumber>0b00</binarynumber> when ExternalInvasiveDebugEnabled() is FALSE.</para>
+<para>When FEAT_RME is implemented, bit[23] of this register is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>This bit has no effect on the masking of interrupts.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description><para>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</para>
+<para>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</para>
+<para>If ExternalRootInvasiveDebugEnabled() is TRUE, then all interrupts taken to Root state are masked.</para>
+<para>If ExternalRealmInvasiveDebugEnabled() is TRUE, then all interrupts taken to Realm state are masked.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>INTdis</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Interrupt disable. Disables taking interrupts in Non-debug state.</para>
+    </field_description>
+    <field_description order="after"><note><para>All interrupts includes virtual and SError interrupts.</para></note><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this field can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list>
+<para>The Effective value of this field is <binarynumber>0b00</binarynumber> when ExternalInvasiveDebugEnabled() is FALSE.</para>
+<para>When FEAT_Debugv8p4 is implemented, bit[23] of this register is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Masking of interrupts is controlled by PSTATE and interrupt routing controls.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description><para>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</para>
+<para>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_Debugv8p4 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_22-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>INTdis</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Interrupt disable. Disables taking interrupts in Non-debug state.</para>
+    </field_description>
+    <field_description order="after"><note><para>All interrupts includes virtual and SError interrupts.</para></note><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this field can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list>
+<para>The Effective value of this field is <binarynumber>0b00</binarynumber> when ExternalInvasiveDebugEnabled() is FALSE.</para>
+<para>Support for the values <binarynumber>0b01</binarynumber> and <binarynumber>0b10</binarynumber> is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>. If these values are not supported, they are reserved. If programmed with a reserved value, the PE behaves as if INTdis has been programmed with a defined value, other than for a direct read of EDSCR, and the value returned by a read of EDSCR.INTdis is <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Masking of interrupts is controlled by PSTATE and interrupt routing controls.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure EL1 are masked.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description><para>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</para>
+<para>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure EL1 are masked.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description><para>If ExternalInvasiveDebugEnabled() is TRUE, then all interrupts taken to Non-secure state are masked.</para>
+<para>If ExternalSecureInvasiveDebugEnabled() is TRUE, then all interrupts taken to Secure state are masked.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDA</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before"><para>Traps accesses to the following debug System registers:</para>
+<list type="unordered">
+<listitem><content>
+<para>AArch64: <register_link state="AArch64" id="AArch64-dbgbcrn_el1.xml">DBGBCR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgbvrn_el1.xml">DBGBVR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgwcrn_el1.xml">DBGWCR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgwvrn_el1.xml">DBGWVR&lt;n&gt;_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>AArch32: <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgbvrn.xml">DBGBVR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgbxvrn.xml">DBGBXVR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgwcrn.xml">DBGWCR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgwvrn.xml">DBGWVR&lt;n&gt;</register_link>.</para>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to debug System registers do not generate a Software Access Debug event.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses to debug System registers generate a Software Access Debug event, if <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 0 and if halting is allowed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MA</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before"><para>Memory access mode. Controls the use of memory-access mode for accessing ITR and the DCC. This bit is ignored if in Non-debug state and set to zero on entry to Debug state.</para>
+<para>Possible values of this field are:</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Normal access mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Memory access mode.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SC2</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Sample <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>. Controls whether the PC Sample-based Profiling Extension samples <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link> or <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.VMID.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Sample <register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.VMID.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Sample <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PCSRv8 is implemented, (FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented) and FEAT_PCSRv8p2 is not implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>NS</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Non-secure status. Together with the NSE field, gives the current Security state:</para>
+<table><tgroup cols="3"><thead><row><entry>NSE</entry><entry>NS</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>When Secure state is implemented, Secure. Otherwise reserved.</entry></row><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Root.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Realm.</entry></row></tbody></tgroup></table></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>NS</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure status. In Debug state, gives the current Security state:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Non-secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SDD</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>EL3 debug disabled.</para>
+<para>On entry to Debug state:</para>
+<list type="unordered">
+<listitem><content>If entering from EL3, SDD is set to 0.</content>
+</listitem><listitem><content>Otherwise, SDD is set to the inverse of <function>ExternalRootInvasiveDebugEnabled</function><value>()</value>.</content>
+</listitem></list>
+<para>In Debug state, the value of SDD does not change, even if <function>ExternalRootInvasiveDebugEnabled</function><value>()</value> changes.</para>
+<para>In Non-debug state, SDD returns the inverse of <function>ExternalRootInvasiveDebugEnabled</function><value>()</value>.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SDD</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Secure debug disabled.</para>
+<para>On entry to Debug state:</para>
+<list type="unordered">
+<listitem><content>If entering in Secure state, SDD is set to 0.</content>
+</listitem><listitem><content>If entering in Non-secure state, SDD is set to the inverse of <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value>.</content>
+</listitem></list>
+<para>In Debug state, the value of the SDD bit does not change, even if <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value> changes.</para>
+<para>In Non-debug state:</para>
+<list type="unordered">
+<listitem><content>SDD returns the inverse of <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value>. If the authentication signals that control <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value> change, a context synchronization event is required to guarantee their effect.</content>
+</listitem><listitem><content>This bit is unaffected by the Security state of the PE.</content>
+</listitem></list>
+<para>If EL3 is not implemented and the implementation is Non-secure, this bit is <arm-defined-word>RES1</arm-defined-word>.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSE</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Together with the NS field, this field gives the current Security state.</para>
+<para>For a description of the values derived by evaluating NS and NSE together, see EDSCR.NS.</para></field_description>
+    <field_description order="after">
+      <para>In Non-debug state, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HDE</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before">
+      <para>Halting debug enable.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Halting disabled for Breakpoint, Watchpoint and Halt Instruction debug events.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Halting enabled for Breakpoint, Watchpoint and Halt Instruction debug events.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-13_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RW</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>13:10</rel_range>
+    <field_description order="before">
+      <para>Exception level Execution state status. In Debug state, each bit gives the current Execution state of each Exception level.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description><para>Any of the following:</para>
+<list type="unordered">
+<listitem><content>
+<para>The PE is in Non-debug state.</para>
+</content>
+</listitem><listitem><content>
+<para>The PE is at EL0 using AArch64.</para>
+</content>
+</listitem><listitem><content>
+<para>The PE is not at EL0, and EL1, EL2, and EL3 are using AArch64.</para>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1110</field_value>
+        <field_value_description>
+          <para>The PE is in Debug state at EL0. EL0 is using AArch32. EL1, EL2, and EL3 are using AArch64.</para>
+        </field_value_description>
+        <field_value_condition>When AArch32 is supported</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110x</field_value>
+        <field_value_description>
+          <para>The PE is in Debug state. EL0 and EL1 are using AArch32. EL2 is enabled in the current Security state and is using AArch64. If implemented, EL3 is using AArch64.</para>
+        </field_value_description>
+        <field_value_condition>When AArch32 is supported and EL2 is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10xx</field_value>
+        <field_value_description>
+          <para>The PE is in Debug state. EL0 and EL1 are using AArch32. EL2 is not implemented, disabled in the current Security state, or using AArch32. EL3 is using AArch64.</para>
+        </field_value_description>
+        <field_value_condition>When AArch32 is supported and EL3 is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0xxx</field_value>
+        <field_value_description>
+          <para>The PE is in Debug state. All Exception levels are using AArch32.</para>
+        </field_value_description>
+        <field_value_condition>When AArch32 is supported</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>RAO/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EL</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Exception level. In Debug state, gives the current Exception level of the PE.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before"><para>SError interrupt pending. In Debug state, indicates whether an SError interrupt is pending:</para>
+<list type="unordered">
+<listitem><content>If <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{AMO, TGE} = {1, 0}, EL2 is enabled in the current Security state, and the PE is executing at EL0 or EL1, a virtual SError interrupt.</content>
+</listitem><listitem><content>Otherwise, a physical SError interrupt.</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>A debugger can read EDSCR to check whether an SError interrupt is pending without having to execute further instructions. A pending SError might indicate data from target memory is corrupted.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No SError interrupt pending.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>SError interrupt pending.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When the PE is in Non-debug state</field_access_level>
+        <field_access_type>UNKNOWN/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ERR</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>Cumulative error flag. This bit is set to 1 following exceptions in Debug state and on any signaled overrun or underrun on the DTR or EDITR.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this bit can be indirectly read and written through the following System registers:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-5_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>STATUS</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Debug status flags.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values of STATUS are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000001</field_value>
+        <field_value_description>
+          <para>PE is restarting, exiting Debug state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000010</field_value>
+        <field_value_description>
+          <para>PE is in Non-debug state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000111</field_value>
+        <field_value_description>
+          <para>Breakpoint.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010011</field_value>
+        <field_value_description>
+          <para>External debug request.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011011</field_value>
+        <field_value_description>
+          <para>Halting step, normal.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011111</field_value>
+        <field_value_description>
+          <para>Halting step, exclusive.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100011</field_value>
+        <field_value_description>
+          <para>OS Unlock Catch.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100111</field_value>
+        <field_value_description>
+          <para>Reset Catch.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101011</field_value>
+        <field_value_description>
+          <para>Watchpoint.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101111</field_value>
+        <field_value_description>
+          <para>HLT instruction.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110011</field_value>
+        <field_value_description>
+          <para>Software access to debug register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110111</field_value>
+        <field_value_description>
+          <para>Exception Catch.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111011</field_value>
+        <field_value_description>
+          <para>Halting step, no syndrome.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_22-1" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15-1" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_10" msb="13" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_0" msb="5" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

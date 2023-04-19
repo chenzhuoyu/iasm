@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GPCCR_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GPCCR_EL3, Granule Protection Check Control Register (EL3)</h1><p>The GPCCR_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>The control register for Granule Protection Checks.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_RME is implemented. Otherwise, direct accesses to GPCCR_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>GPCCR_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_24">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_24">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">L0GPTSZ</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">TBGPCD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">GPCP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">GPC</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">PGS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12">SH</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">ORGN</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">IRGN</a></td><td class="lr" colspan="5"><a href="#fieldset_0-7_3">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-2_0">PPS</a></td></tr></tbody></table><h4 id="fieldset_0-63_24">Bits [63:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_20">L0GPTSZ, bits [23:20]</h4><div class="field"><p>Level 0 GPT entry size.</p>
+<p>This field advertises the number of least-significant address bits protected by each entry in the level 0 GPT.</p><table class="valuetable"><tr><th>L0GPTSZ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>30-bits. Each entry covers 1GB of address space.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>34-bits. Each entry covers 16GB of address space.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>36-bits. Each entry covers 64GB of address space.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>39-bits. Each entry covers 512GB of address space.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-19_19">Bit [19]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">TBGPCD, bit [18]<span class="condition"><br/>When FEAT_TRBE_EXT is implemented:
+                        </span></h4><div class="field">
+      <p>Trace Buffer Granule Protection Check Disabled. Controls whether the Trace Buffer Unit accepts or rejects trace when Granule Protection Checks are disabled.</p>
+    <table class="valuetable"><tr><th>TBGPCD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Trace Buffer Unit rejects trace when GPCCR_EL3.GPC is 0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Trace Buffer Unit accepts trace when GPCCR_EL3.GPC is 0.</p>
+        </td></tr></table><p>When the Trace Buffer Unit rejects trace, the trace might remain buffered by the trace unit until the Trace Buffer Unit is able to accept trace. When the Trace Buffer Unit accepts trace, the Trace Buffer Unit writes the trace to memory.</p>
+<div class="note"><span class="note-header">Note</span><p>Setting GPCCR_EL3.{TBGPCD, GPC} to {1, 0} means that the Trace Buffer Unit might write to memory without any Granule Protection Checks. The addresses that the Trace Buffer Unit writes to can be programmed by an external agent. The physical address spaces the Trace Buffer Unit can address are restricted by an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> debug authentication interface.</p><p>Setting GPCCR_EL3.{TBGPCD, GPC} to {1, 1} means that GPCCR_EL3.{TBGPCD, GPC} will become {1, 0} on a Warm reset.</p></div><p>This field is ignored by the PE and treated as one when any of the following are true:</p>
+<ul>
+<li>GPCCR_EL3.GPC == 1.
+</li><li><span class="function">ExternalRootInvasiveDebugEnabled</span>() == TRUE.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17">GPCP, bit [17]</h4><div class="field"><p>Granule Protection Check Priority.</p>
+<p>This control governs behavior of granule protection checks on fetches of stage 2 Table descriptors.</p><table class="valuetable"><tr><th>GPCP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>GPC faults are all reported with a priority that is consistent with the GPC being performed on any access to physical address space.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>A GPC fault for the fetch of a Table descriptor for a stage 2 translation table walk might not be generated or reported.</p>
+<p>All other GPC faults are reported with a priority consistent with the GPC being performed on all accesses to physical address spaces.</p></td></tr></table>
+      <p>This bit is permitted to be cached in a TLB.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16">GPC, bit [16]</h4><div class="field">
+      <p>Granule Protection Check Enable.</p>
+    <table class="valuetable"><tr><th>GPC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Granule protection checks are disabled. Accesses are not prevented by this mechanism.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All accesses to physical address spaces are subject to granule protection checks, except for fetches of GPT information and accesses governed by the GPCCR_EL3.GPCP control.</p>
+        </td></tr></table>
+      <p>If any stage of translation is enabled, this bit is permitted to be cached in a TLB.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-15_14">PGS, bits [15:14]</h4><div class="field">
+      <p>Physical Granule size.</p>
+    <table class="valuetable"><tr><th>PGS</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>4KB.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>64KB.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>16KB.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The value of this field is permitted to be cached in a TLB.</p>
+<p>Granule sizes not supported for stage 1 and not supported for stage 2, as defined in <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>, are reserved. For example, if <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>.TGran16 == <span class="binarynumber">0b0000</span> and <a href="AArch64-id_aa64mmfr0_el1.html">ID_AA64MMFR0_EL1</a>.TGran16_2 == <span class="binarynumber">0b0001</span>, then the PGS encoding <span class="binarynumber">0b10</span> is reserved.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_12">SH, bits [13:12]</h4><div class="field">
+      <p>GPT fetch Shareability attribute</p>
+    <table class="valuetable"><tr><th>SH</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Fetches of GPT information are made with the Shareability attribute that is configured in this field.</p>
+<p>If both ORGN and IRGN are configured with Non-cacheable attributes, it is invalid to configure this field to any value other than <span class="binarynumber">0b10</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_10">ORGN, bits [11:10]</h4><div class="field">
+      <p>GPT fetch Outer cacheability attribute.</p>
+    <table class="valuetable"><tr><th>ORGN</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table>
+      <p>Fetches of GPT information are made with the Outer cacheability attributes configured in this field.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_8">IRGN, bits [9:8]</h4><div class="field">
+      <p>GPT fetch Inner cacheability attribute.</p>
+    <table class="valuetable"><tr><th>IRGN</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Normal memory, Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</p>
+        </td></tr></table>
+      <p>Fetches of GPT information are made with the Inner cacheability attributes configured in this field.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_3">Bits [7:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_0">PPS, bits [2:0]</h4><div class="field"><p>Protected Physical Address Size.</p>
+<p>The size of the memory region protected by <a href="AArch64-gptbr_el3.html">GPTBR_EL3</a>, in terms of the number of least-significant address bits.</p><table class="valuetable"><tr><th>PPS</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>32 bits, 4GB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>36 bits, 64GB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>40 bits, 1TB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>42 bits, 4TB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>44 bits, 16TB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>48 bits, 256TB protected address space.</p>
+        </td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>52 bits, 4PB protected address space.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Configuration of this field to a value exceeding the implemented physical address size is invalid.</p>
+<p>The value of this field is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing GPCCR_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, GPCCR_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0010</td><td>0b0001</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = GPCCR_EL3;
+                </p><h4 class="assembler">MSR GPCCR_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0010</td><td>0b0001</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    GPCCR_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>UAO</reg_short_name>
+        
+        <reg_long_name>User Access Override</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_UAO is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Allows access to the User Access Override bit.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Process state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>UAO is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>63:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UAO</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>23</rel_range>
+    <field_description order="before">
+      <para>User Access Override.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When executed at EL3, or at EL2 with <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H == 0 or <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 0, the LDTR* and STTR* instructions behave as the equivalent <instruction>LDR*</instruction> and <instruction>STR*</instruction> instructions, regardless of the setting of the PSTATE.UAO bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The behavior of LDTR* and STTR* instructions is as defined in the base Armv8 architecture.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>When executed at the following Exception levels, LDTR* and STTR* instructions behave as the equivalent <instruction>LDR*</instruction> and <instruction>STR*</instruction> instructions:</para>
+<list type="unordered">
+<listitem><content>
+<para>EL1.</para>
+</content>
+</listitem><listitem><content>
+<para>EL2 with <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} == {1, 1}.</para>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-22_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>22:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_24" msb="63" lsb="24"/>
+  <fieldat id="fieldset_0-23_23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_0" msb="22" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>For more information about the operation of the MSR (immediate) accessor, see <xref browsertext="'MSR (immediate)'" filename="C_a64_base_instruction_descriptions.fm" linkend="A64.instructions.MSR_imm"/>.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS UAO" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, UAO</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    X[t, 64] = Zeros(40):PSTATE.UAO:Zeros(23);
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = Zeros(40):PSTATE.UAO:Zeros(23);
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = Zeros(40):PSTATE.UAO:Zeros(23);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister UAO" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR UAO, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    PSTATE.UAO = X[t, 64]&lt;23&gt;;
+elsif PSTATE.EL == EL2 then
+    PSTATE.UAO = X[t, 64]&lt;23&gt;;
+elsif PSTATE.EL == EL3 then
+    PSTATE.UAO = X[t, 64]&lt;23&gt;;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate UAO" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR UAO, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

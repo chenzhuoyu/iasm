@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" encoding="UTF-8" href="iform.xsl" version="1.0"?>
+<!DOCTYPE instructionsection PUBLIC "-//ARM//DTD instructionsection //EN" "iform-p.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+
+<instructionsection id="CSDB" title="CSDB -- A64" type="instruction">
+  <docvars>
+    <docvar key="instr-class" value="system" />
+    <docvar key="isa" value="A64" />
+    <docvar key="mnemonic" value="CSDB" />
+  </docvars>
+  <heading>CSDB</heading>
+  <desc>
+    <brief>
+      <para>Consumption of Speculative Data Barrier</para>
+    </brief>
+    <authored>
+      <para>Consumption of Speculative Data Barrier is a memory barrier that controls speculative execution and data value prediction.</para>
+      <para>No instruction other than branch instructions appearing in program order after the CSDB can be speculatively executed using the results of any:</para>
+      <list type="unordered">
+        <listitem><content>Data value predictions of any instructions.</content></listitem>
+        <listitem><content>PSTATE.{N,Z,C,V} predictions of any instructions other than conditional branch instructions appearing in program order before the CSDB that have not been architecturally resolved.</content></listitem>
+        <listitem><content>Predictions of SVE predication state for any SVE instructions.</content></listitem>
+      </list>
+      <note>
+        <para>For purposes of the definition of CSDB, PSTATE.{N,Z,C,V} is not considered a data value. This definition permits:</para>
+        <list type="unordered">
+          <listitem><content>Control flow speculation before and after the CSDB.</content></listitem>
+          <listitem><content>Speculative execution of conditional data processing instructions after the CSDB, unless they use the results of data value or PSTATE.{N,Z,C,V} predictions of instructions appearing in program order before the CSDB that have not been architecturally resolved.</content></listitem>
+        </list>
+      </note>
+    </authored>
+  </desc>
+  <alias_list howmany="0"></alias_list>
+  <classes>
+    <iclass name="System" oneof="1" id="iclass_system" no_encodings="1" isa="A64">
+      <docvars>
+        <docvar key="instr-class" value="system" />
+        <docvar key="isa" value="A64" />
+        <docvar key="mnemonic" value="CSDB" />
+      </docvars>
+      <iclassintro count="1"></iclassintro>
+      <regdiagram form="32" psname="aarch64/instrs/system/hints/CSDB_HI_hints" tworows="1">
+        <box hibit="31" width="10" settings="10">
+          <c>1</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="21" name="L" settings="1">
+          <c>0</c>
+        </box>
+        <box hibit="20" width="2" name="op0" settings="2">
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="18" width="3" name="op1" settings="3">
+          <c>0</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+        <box hibit="15" width="4" name="CRn" settings="4">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="11" width="4" name="CRm" usename="1" settings="4" psbits="xxxx">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="7" width="3" name="op2" usename="1" settings="3" psbits="xxx">
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="4" width="5" name="Rt" settings="5">
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+      </regdiagram>
+      <encoding name="CSDB_HI_hints" oneofinclass="1" oneof="1" label="">
+        <docvars>
+          <docvar key="instr-class" value="system" />
+          <docvar key="isa" value="A64" />
+          <docvar key="mnemonic" value="CSDB" />
+        </docvars>
+        <asmtemplate><text>CSDB</text></asmtemplate>
+      </encoding>
+      <ps_section howmany="1">
+        <ps name="aarch64/instrs/system/hints/CSDB_HI_hints" mylink="aarch64.instrs.system.hints.CSDB_HI_hints" enclabels="" sections="1" secttype="noheading">
+          <pstext mayhavelinks="1" section="Decode" rep_section="decode">// Empty.</pstext>
+        </ps>
+      </ps_section>
+    </iclass>
+  </classes>
+  <explanations scope="all"></explanations>
+  <ps_section howmany="1">
+    <ps name="aarch64/instrs/system/hints/CSDB_HI_hints" mylink="execute" enclabels="" sections="1" secttype="Operation">
+      <pstext mayhavelinks="1" section="Execute" rep_section="execute"><a link="impl-shared.ConsumptionOfSpeculativeDataBarrier.0" file="shared_pseudocode.xml" hover="function: ConsumptionOfSpeculativeDataBarrier()">ConsumptionOfSpeculativeDataBarrier</a>();</pstext>
+    </ps>
+  </ps_section>
+</instructionsection>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCIDR0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCIDR0, ID Register 0</h1><p>The TRCIDR0 characteristics are:</p><h2>Purpose</h2>
+        <p>Returns the tracing capabilities of the trace unit.</p>
+      <h2>Configuration</h2><p>External register TRCIDR0 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcidr0.html">TRCIDR0[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented. Otherwise, direct accesses to TRCIDR0 are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCIDR0 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">COMMTRANS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">COMMOPT</a></td><td class="lr" colspan="5"><a href="#fieldset_0-28_24">TSSIZE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">TSMARK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">ITE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-21_18">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">TRCEXDATA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-16_15">QSUPP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14">QFILT</a></td><td class="lr" colspan="2"><a href="#fieldset_0-13_12-1">CONDTYPE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10-1">NUMEVENT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">RETSTACK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">TRCCCI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">TRCCOND</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">TRCBB</a></td><td class="lr" colspan="2"><a href="#fieldset_0-4_3">TRCDATA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-2_1">INSTP0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">RES1</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">Bit [31]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30">COMMTRANS, bit [30]</h4><div class="field">
+      <p>Transaction Start element behavior.</p>
+    <table class="valuetable"><tr><th>COMMTRANS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Transaction Start elements are P0 elements.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Transaction Start elements are not P0 elements.</p>
+        </td></tr></table></div><h4 id="fieldset_0-29_29">COMMOPT, bit [29]</h4><div class="field">
+      <p>Indicates the contents and encodings of Cycle count packets.</p>
+    <table class="valuetable"><tr><th>COMMOPT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Commit mode 0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Commit mode 1.</p>
+        </td></tr></table>
+      <p>The Commit mode defines the contents and encodings of Cycle Count packets, in particular how Commit elements are indicated by these packets. See the descriptions of these packets for more details.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAO/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>TRCIDR0.TRCCCI == 1</li><li>UInt(TRCIDR8.MAXSPEC) == 0x0</li></ul></li><li>When TRCIDR0.TRCCCI == 0, access to this field
+                            is <span class="access_level">RAZ/WI</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-28_24">TSSIZE, bits [28:24]</h4><div class="field">
+      <p>Indicates that the trace unit implements Global timestamping and the size of the timestamp value.</p>
+    <table class="valuetable"><tr><th>TSSIZE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00000</td><td>
+          <p>Global timestamping not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b01000</td><td>
+          <p>Global timestamping implemented with a 64-bit timestamp value.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b01000</span>.</p></div><h4 id="fieldset_0-23_23-1">TSMARK, bit [23]<span class="condition"><br/>When FEAT_ETEv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates whether Timestamp Marker elements are generated.</p>
+    <table class="valuetable"><tr><th>TSMARK</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Timestamp Marker elements are not generated.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Timestamp Marker elements are generated.</p>
+        </td></tr></table></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">ITE, bit [22]<span class="condition"><br/>When FEAT_ETEv1p3 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates whether Instrumentation Trace is implemented.</p>
+    <table class="valuetable"><tr><th>ITE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation Trace not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation Trace implemented.</p>
+        </td></tr></table><p>This field has the value 1 if <span class="xref">FEAT_ITE</span> is implemented.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_18">Bits [21:18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">TRCEXDATA, bit [17]<span class="condition"><br/>When TRCIDR0.TRCDATA != 0b00:
+                        </span></h4><div class="field">
+      <p>Indicates if the trace unit implements tracing of data transfers for exceptions and exception returns. Data tracing is not implemented in ETE and this field is reserved for other trace architectures. Allocated in other trace architectures.</p>
+    <table class="valuetable"><tr><th>TRCEXDATA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Tracing of data transfers for exceptions and exception returns not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Tracing of data transfers for exceptions and exception returns implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_15">QSUPP, bits [16:15]</h4><div class="field">
+      <p>Indicates that the trace unit implements Q element support.</p>
+    <table class="valuetable"><tr><th>QSUPP</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Q element support is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Q element support is implemented, and only supports Q elements with instruction counts.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Q element support is implemented, and only supports Q elements without instruction counts.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td><p>Q element support is implemented, and supports:</p>
+<ul>
+<li>Q elements with instruction counts.
+</li><li>Q elements without instruction counts.
+</li></ul></td></tr></table></div><h4 id="fieldset_0-14_14">QFILT, bit [14]</h4><div class="field">
+      <p>Indicates if the trace unit implements Q element filtering.</p>
+    <table class="valuetable"><tr><th>QFILT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Q element filtering is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Q element filtering is implemented.</p>
+        </td></tr></table>
+      <p>If TRCIDR0.QSUPP == <span class="binarynumber">0b00</span> then this field is 0.</p>
+    </div><h4 id="fieldset_0-13_12-1">CONDTYPE, bits [13:12]<span class="condition"><br/>When TRCIDR0.TRCCOND == 1:
+                        </span></h4><div class="field">
+      <p>Indicates how conditional instructions are traced. Conditional instruction tracing is not implemented in ETE and this field is reserved for other trace architectures. Allocated in other trace architectures.</p>
+    <table class="valuetable"><tr><th>CONDTYPE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Conditional instructions are traced with an indication of whether they pass or fail their condition code check.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Conditional instructions are traced with an indication of the <a href="AArch32-apsr.html">APSR</a> condition flags.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-13_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_10-1">NUMEVENT, bits [11:10]<span class="condition"><br/>When TRCIDR4.NUMRSPAIR == 0b0000:
+                        </span></h4><div class="field">
+      <p>Indicates the number of ETEEvents implemented.</p>
+    <table class="valuetable"><tr><th>NUMEVENT</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>The trace unit supports 0 ETEEvents.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-11_10-2"><span class="condition"><br/>When TRCIDR4.NUMRSPAIR != 0b0000:
+                        </span></h4><div class="field">
+      <p>Indicates the number of ETEEvents implemented.</p>
+    <table class="valuetable"><tr><th>NUMEVENT</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>The trace unit supports 1 ETEEvent.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>The trace unit supports 2 ETEEvents.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>The trace unit supports 3 ETEEvents.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>The trace unit supports 4 ETEEvents.</p>
+        </td></tr></table></div><h4 id="fieldset_0-11_10-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9">RETSTACK, bit [9]</h4><div class="field">
+      <p>Indicates if the trace unit supports the return stack.</p>
+    <table class="valuetable"><tr><th>RETSTACK</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Return stack not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Return stack implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-8_8">Bit [8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7">TRCCCI, bit [7]</h4><div class="field">
+      <p>Indicates if the trace unit implements cycle counting.</p>
+    <table class="valuetable"><tr><th>TRCCCI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Cycle counting not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Cycle counting implemented.</p>
+        </td></tr></table>
+      <p>This field reads as 1.</p>
+    </div><h4 id="fieldset_0-6_6">TRCCOND, bit [6]</h4><div class="field">
+      <p>Indicates if the trace unit implements conditional instruction tracing. Conditional instruction tracing is not implemented in ETE and this field is reserved for other trace architectures.</p>
+    <table class="valuetable"><tr><th>TRCCOND</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Conditional instruction tracing not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Conditional instruction tracing implemented.</p>
+        </td></tr></table>
+      <p>This field reads as 0.</p>
+    </div><h4 id="fieldset_0-5_5">TRCBB, bit [5]</h4><div class="field">
+      <p>Indicates if the trace unit implements branch broadcasting.</p>
+    <table class="valuetable"><tr><th>TRCBB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Branch broadcasting not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Branch broadcasting implemented.</p>
+        </td></tr></table>
+      <p>This field reads as 1.</p>
+    </div><h4 id="fieldset_0-4_3">TRCDATA, bits [4:3]</h4><div class="field">
+      <p>Indicates if the trace unit implements data tracing. Data tracing is not implemented in ETE and this field is reserved for other trace architectures.</p>
+    <table class="valuetable"><tr><th>TRCDATA</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Data tracing not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Data tracing implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-2_1">INSTP0, bits [2:1]</h4><div class="field">
+      <p>Indicates if load and store instructions are P0 instructions. Load and store instructions as P0 instructions is not implemented in ETE and this field is reserved for other trace architectures.</p>
+    <table class="valuetable"><tr><th>INSTP0</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Load and store instructions are not P0 instructions.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Load and store instructions are P0 instructions.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b00</span>.</p></div><h4 id="fieldset_0-0_0">Bit [0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h2>Accessing TRCIDR0</h2><h4>TRCIDR0 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x1E0</span></td><td>TRCIDR0</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

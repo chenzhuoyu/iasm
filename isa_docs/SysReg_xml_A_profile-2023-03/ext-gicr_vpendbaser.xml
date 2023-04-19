@@ -1,0 +1,838 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICR_VPENDBASER</reg_short_name>
+        
+        <reg_long_name>Virtual Redistributor LPI Pending Table Base Address Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Redistributor</reg_component>
+    <reg_frame>VLPI_base</reg_frame>
+    <reg_offset><hexnumber>0x0078</hexnumber></reg_offset>
+    <reg_instance>GICR_VPENDBASER</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Specifies the base address of the memory that holds the virtual LPI Pending table for the currently scheduled virtual machine.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Redistributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICR_VPENDBASER is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Valid</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before">
+      <para>This bit controls whether a vPE is scheduled:</para>
+    </field_description>
+    <field_description order="after"><para>Setting GICR_VPENDBASER.Valid == 1 when the associated CPU interface does not implement FEAT_GICv4 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<note><para>Software can determine whether a PE supports FEAT_GICv3 or FEAT_GICv4 by reading <xref browsertext="ID_AA64PFR0_EL1" filename="AS_introduction.fm" linkend="CACDJAII"/>.</para></note><para>Writing a new value to any bit of GICR_VPENDBASER, other than GICR_VPENDBASER.Valid, when GICR_VPENDBASER.Valid==1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<para>Setting GICR_VPENDBASER.Valid to 1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word> if <register_link state="ext" id="ext-gicr_vpropbaser.xml">GICR_VPROPBASER</register_link>.Valid == 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual LPI Pending table is not valid. No vPE is scheduled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual LPI Pending table is valid. A vPE is scheduled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-62_62" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Doorbell</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>62</rel_range>
+    <field_description order="before">
+      <para>When GICR_VPENDBASER.Valid is written from 1 to 0, this bit controls whether a default doorbell interrupt is requested for the descheduled vPE.</para>
+    </field_description>
+    <field_description order="after"><para>When GICR_VPENDBASER.Valid is written from 1 to 0, if there are outstanding enabled pending interrupts then this bit is treated as 0.</para>
+<para>When GICR_VPENDBASER.Valid is written from 1 to 0, if GICR_VPENDBASER.PendingLast is written as 1 then this bit is treated as 0.</para>
+<para>When GICR_VPENDBASER.Valid == 1, reads return an <arm-defined-word>UNKNOWN</arm-defined-word> value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No default doorbell requested.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Default doorbell requested.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-61_61" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PendingLast</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>61</rel_range>
+    <field_description order="before"><para>Indicates whether there are pending and enabled interrupts for the last scheduled vPE.</para>
+<para>This value is set by the implementation when GICR_VPENDBASER.Valid is written from 1 to 0 and is otherwise <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_description order="after"><para>When the GICR_VPENDBASER.Valid bit is written from 0 to 1, this bit is <arm-defined-word>RES1</arm-defined-word>.</para>
+<para>When GICR_VPENDBASER.Valid is written from 1 to 0, if GICR_VPENDBASER.PendingLast is written as 1, then this bit is set to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>There are no pending and enabled interrupts for the last scheduled vPE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>There is at least one pending and enabled interrupt for the last scheduled vPE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-60_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>Dirty</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Read-only. Indicates whether a de-scheduling operation is in progress.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Writing 1 to GICR_VPENDBASER.Valid is <arm-defined-word>UNPREDICTABLE</arm-defined-word> while GICR_VPENDBASER.Dirty == 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No de-scheduling operation in progess.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>De-scheduling operation in progess.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When GICR_VPENDBASER.Valid == 0</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>Dirty</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Read-only. Reports whether the Virtual Pending table has been parsed.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Writing 0 to GICR_VPENDBASER.Valid is <arm-defined-word>UNPREDICTABLE</arm-defined-word> while GICR_VPENDBASER.Dirty == 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Parsing of the Virtual Pending Table is complete.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Parsing of the Virtual Pending Table has not completed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When GICR_VPENDBASER.Valid == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN" reserved_type="UNKNOWN">
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp0En</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>59</rel_range>
+    <field_description order="before">
+      <para>Enable virtual Group 0 interrupts.</para>
+    </field_description>
+    <field_description order="after"><para>Writing a new value to VGrp0En while <register_link state="ext" id="ext-gicr_vpendbaser.xml">GICR_VPENDBASER</register_link>.Valid==1 is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>:</para>
+<list type="unordered">
+<listitem><content>
+<para>The update is ignored.</para>
+</content>
+</listitem><listitem><content>
+<para>The update is ignored for all purposes other than a direct read of the register.</para>
+</content>
+</listitem><listitem><content>
+<para>The virtual group enable is updated.</para>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Forwarding of virtual Group 0 interrupts disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Forwarding of virtual Group 0 interrupts enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-58_58" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VGrp1En</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>58</field_lsb>
+    <rel_range>58</rel_range>
+    <field_description order="before">
+      <para>Enable virtual Group 1 interrupts.</para>
+    </field_description>
+    <field_description order="after"><para>Writing a new value to VGrp1En while <register_link state="ext" id="ext-gicr_vpendbaser.xml">GICR_VPENDBASER</register_link>.Valid==1 is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>:</para>
+<list type="unordered">
+<listitem><content>
+<para>The update is ignored.</para>
+</content>
+</listitem><listitem><content>
+<para>The update is ignored for all purposes other than a direct read of the register.</para>
+</content>
+</listitem><listitem><content>
+<para>The virtual group enable is updated.</para>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Forwarding of virtual Group 1 interrupts disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Forwarding of virtual Group 1 interrupts enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-57_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>57</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>57:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>vPEID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>When GICR_VPENDBASER.Valid == 1, ID of scheduled vPE.</para>
+    </field_description>
+    <field_description order="after"><para>When GICR_VPENDBASER.Valid == 1, if GICR_VPENDBASER.vPEID is set to a value greater than the configured vPEID width, the behavior of this field is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>:</para>
+<list type="unordered">
+<listitem><content>
+<para>GICR_VPENDBASER.vPEID is treated as having an <arm-defined-word>UNKNOWN</arm-defined-word> valid value for all purposes other than a direct read of the register.</para>
+</content>
+</listitem><listitem><content>
+<para>GICR_VPENDBASER.Valid is treated as being set to 0 for all purposes other than a direct read of the register.</para>
+</content>
+</listitem></list>
+<para>Writing a new value to vPEID while GICR_VPENDBASER.Valid == 1 is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>:</para>
+<list type="unordered">
+<listitem><content>
+<para>The update is ignored.</para>
+</content>
+</listitem><listitem><content>
+<para>The update is ignored for all purposes other than a direct read of the register.</para>
+</content>
+</listitem><listitem><content>
+<para>The new value is used.</para>
+</content>
+</listitem></list>
+<para>The size of this field is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>, and is specified by the <register_link state="ext" id="ext-gicd_typer2.xml">GICD_TYPER2</register_link>.VIL and <register_link state="ext" id="ext-gicd_typer2.xml">GICD_TYPER2</register_link>.VID fields, unimplemented bits are <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When FEAT_GICv4 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_1-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Valid</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before">
+      <para>This bit controls whether the virtual LPI Pending table is valid.</para>
+    </field_description>
+    <field_description order="after"><para>Setting GICR_VPENDBASER.Valid == 1 when the associated CPU interface does not implement FEAT_GICv4 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para>
+<note><para>Software can determine whether a PE supports FEAT_GICv3 or FEAT_GICv4 by reading <xref browsertext="ID_AA64PFR0_EL1" filename="AS_introduction.fm" linkend="CACDJAII"/>.</para></note><para>Writing a new value to any bit of GICR_VPENDBASER, other than GICR_VPENDBASER.Valid, when GICR_VPENDBASER.Valid==1 is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual LPI Pending table is not valid. No vPE is scheduled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual LPI Pending table is valid. A vPE is scheduled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-62_62" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDAI</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>62</rel_range>
+    <field_description order="before">
+      <para>Implementation Defined Area Invalid. Indicates whether the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> area in the virtual LPI Pending table is valid.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'LPI Pending tables'" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="CHDGFGBI"/> and <xref browsertext="'Virtual LPI Configuration tables and virtual LPI Pending tables' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_message_based_and_locality_specific_peripheral_interrupts.fm" linkend="CHDBCEJC"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> area is valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> area is invalid and all pending interrupt information is held in the architecturally defined part of the virtual LPI Pending table.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-61_61" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PendingLast</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>61</rel_range>
+    <field_description order="before"><para>Indicates whether there are pending and enabled interrupts for the last scheduled vPE.</para>
+<para>This value is set by the implementation when GICR_VPENDBASER.Valid has been written from 1 to 0 and is otherwise <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_description order="after">
+      <para>When the GICR_VPENDBASER.Valid bit is written from 0 to 1, this bit is <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>There are no pending and enabled interrupts for the last scheduled vPE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>There is at least one pending interrupt for the last scheduled vPE. It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this bit is set when the only pending interrupts for the last scheduled vPE are not enabled.</para>
+<para>Arm deprecates setting PendingLast to 1 when the only pending interrupts for the last scheduled virtual machine are not enabled.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-60_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>Dirty</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Indicates whether a de-scheduling operation is in progress.</para>
+<para>This field is read-only.</para></field_description>
+    <field_description order="after">
+      <para>Writing 1 to GICR_VPENDBASER.Valid is <arm-defined-word>UNPREDICTABLE</arm-defined-word> while GICR_VPENDBASER.Dirty==1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No de-scheduling operation in process.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>De-scheduling operation in process.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When GICR_VPENDBASER.Valid == 0</fields_condition>
+  </field>
+  <field id="fieldset_1-60_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>Dirty</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>This field is read-only. Reports whether the Virtual Pending table has been parsed.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Writing 1 to GICR_VPENDBASER.Valid is <arm-defined-word>UNPREDICTABLE</arm-defined-word> while GICR_VPENDBASER.Dirty == 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Parsing of the Virtual Pending Table has completed.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Parsing of the Virtual Pending Table has not completed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When GICR_VPENDBASER.Valid == 1 and GICR_TYPER.Dirty == 1</fields_condition>
+  </field>
+  <field id="fieldset_1-60_60-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>Dirty</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>This field is read-only. This fields is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_1-59_59" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>59</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-58_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OuterCache</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>58:56</rel_range>
+    <field_description order="before">
+      <para>Indicates the Outer Cacheability attributes of accesses to virtual LPI Pending tables of vPEs targeting this Redistributor.</para>
+    </field_description>
+    <field_description order="after"><para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+<para>The Cacheability, Outer Cacheability and Shareability fields are used for accesses to the virtual LPI Pending table of resident and non-resident vPEs.</para>
+<para>If the OuterCacheabilty attribute of the virtual LPI Pending tables that are associated with vPEs targeting the same Redistributor are different, behavior is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Memory type defined in InnerCache field. For Normal memory, Outer Cacheability is the same as Inner Cacheability.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-51_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Physical_Address</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>51:16</rel_range>
+    <field_description order="before"><para>Bits [51:16] of the physical address containing the virtual LPI Pending table.</para>
+<para>In implementations supporting fewer than 52 bits of physical address, unimplemented upper bits are <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Shareability</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Indicates the Shareability attributes of accesses to the virtual LPI Pending table.</para>
+    </field_description>
+    <field_description order="after"><para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+<para>The Cacheability, Outer Cacheability and Shareability fields are used for accesses to the virtual LPI Pending table of resident and non-resident vPEs.</para>
+<para>If the Shareability attribute of the virtual LPI Pending tables that are associated with vPEs targeting the same Redistributor are different, behavior is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Reserved. Treated as <binarynumber>0b00</binarynumber>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-9_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>InnerCache</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>9:7</rel_range>
+    <field_description order="before">
+      <para>Indicates the Inner Cacheability attributes of accesses to the virtual LPI Pending table.</para>
+    </field_description>
+    <field_description order="after"><para>The Cacheability, Outer Cacheability and Shareability fields are used for accesses to the virtual LPI Pending table of resident and non-resident vPEs.</para>
+<para>If the InnerCacheabilty attribute of the virtual LPI Pending tables that are associated with vPEs targeting the same Redistributor are different, behavior is <arm-defined-word>UNPREDICTABLE</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-6_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>6:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  <fieldat id="fieldset_0-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_61" msb="61" lsb="61"/>
+  <fieldat id="fieldset_0-60_60-1" msb="60" lsb="60"/>
+  <fieldat id="fieldset_0-59_59" msb="59" lsb="59"/>
+  <fieldat id="fieldset_0-58_58" msb="58" lsb="58"/>
+  <fieldat id="fieldset_0-57_16" msb="57" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_GICv4 is implemented</fields_condition>
+  <fieldat id="fieldset_1-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_1-62_62" msb="62" lsb="62"/>
+  <fieldat id="fieldset_1-61_61" msb="61" lsb="61"/>
+  <fieldat id="fieldset_1-60_60-1" msb="60" lsb="60"/>
+  <fieldat id="fieldset_1-59_59" msb="59" lsb="59"/>
+  <fieldat id="fieldset_1-58_56" msb="58" lsb="56"/>
+  <fieldat id="fieldset_1-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_1-51_16" msb="51" lsb="16"/>
+  <fieldat id="fieldset_1-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_1-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_1-9_7" msb="9" lsb="7"/>
+  <fieldat id="fieldset_1-6_0" msb="6" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>The effect of a write to this register is not guaranteed to be visible throughout the affinity hierarchy, as indicated by <register_link state="ext" id="ext-gicr_ctlr.xml">GICR_CTLR</register_link>.RWP == 0.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

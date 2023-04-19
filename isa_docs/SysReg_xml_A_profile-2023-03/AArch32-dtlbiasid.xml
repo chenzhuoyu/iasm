@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="False" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DTLBIASID</reg_short_name>
+        
+        <reg_long_name>Data TLB Invalidate by ASID match</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Invalidate all cached copies of translation table entries from data TLBs that meet the following requirements:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>The entry is a stage 1 translation table entry.</content>
+</listitem><listitem><content>The entry would be used for the specified ASID, and either:<list type="unordered">
+<listitem><content>Is from a level of lookup above the final level.</content>
+</listitem><listitem><content>Is a non-global entry from the final level of lookup.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>If EL2 is implemented and enabled in the current Security state, the entry would be used with the current VMID.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>From the entries that match these requirements, the entries that are invalidated are required for the following translation regime:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>If executed at Secure EL1 when EL3 is using AArch64, the Secure EL1&amp;0 translation regime.</content>
+</listitem><listitem><content>If executed in Secure state when EL3 is using AArch32, the Secure PL1&amp;0 translation regime.</content>
+</listitem><listitem><content>If executed in Non-secure state, the Non-secure PL1&amp;0 translation regime.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The invalidation only applies to the PE that executes this System instruction.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Arm deprecates the use of this System instruction. It is only provided for backwards compatibility with earlier versions of the Arm architecture.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>TLB maintenance instructions</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DTLBIASID is a 32-bit System instruction.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>31:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ASID</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>ASID value to match. Any TLB entries for non-global pages that match the ASID values will be affected by this System instruction.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_8" msb="31" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MCR DTLBIASID" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1000"/>
+                
+                <enc n="CRm" v="0b0110"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T8 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T8 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TTLB == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TTLB == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        if IsFeatureImplemented(FEAT_XS) &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; IsFeatureImplemented(FEAT_HCX) &amp;&amp; IsHCRXEL2Enabled() &amp;&amp; HCRX_EL2.FnXS == '1' then
+            AArch32.DTLBI_ASID(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_NSH, TLBI_ExcludeXS, R[t]);
+        else
+            AArch32.DTLBI_ASID(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_NSH, TLBI_AllAttr, R[t]);
+elsif PSTATE.EL == EL2 then
+    AArch32.DTLBI_ASID(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_NSH, TLBI_AllAttr, R[t]);
+elsif PSTATE.EL == EL3 then
+    AArch32.DTLBI_ASID(SecurityStateAtEL(EL3), Regime_EL30, VMID_NONE, Shareability_NSH, TLBI_AllAttr, R[t]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

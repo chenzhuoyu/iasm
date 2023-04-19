@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MDSCR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MDSCR_EL1, Monitor Debug System Control Register</h1><p>The MDSCR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Main control register for the debug implementation.</p>
+      <h2>Configuration</h2><p>AArch64 System register MDSCR_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-dbgdscrext.html">DBGDSCRext[31:0]</a>.</p><p>AArch64 System register MDSCR_EL1 bit [15] is architecturally mapped to AArch32 System register <a href="AArch32-dbgdscrint.html">DBGDSCRint[15]</a>.</p><p>AArch64 System register MDSCR_EL1 bit [12] is architecturally mapped to AArch32 System register <a href="AArch32-dbgdscrint.html">DBGDSCRint[12]</a>.</p><p>AArch64 System register MDSCR_EL1 bits [5:2] are architecturally mapped to AArch32 System register <a href="AArch32-dbgdscrint.html">DBGDSCRint[5:2]</a>.</p><p>AArch64 System register MDSCR_EL1 bit [40] is architecturally mapped to External register <a href="ext-edscr2.html">EDSCR2[8]</a> when FEAT_Debugv8p9 is implemented.</p><h2>Attributes</h2>
+        <p>MDSCR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="28"><a href="#fieldset_0-63_36">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-35_35-1">EHBWE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-34_34-1">EnSPM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-33_33-1">TTA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-32_32-1">EMBWE</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31-1">TFO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">RXfull</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">TXfull</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27">RXO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26">TXU</a></td><td class="lr" colspan="2"><a href="#fieldset_0-25_24">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-23_22">INTdis</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21">TDA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">SC2</a></td><td class="lr" colspan="3"><a href="#fieldset_0-18_16">RAZ/WI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15">MDE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14">HDE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13">KDE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12">TDCC</a></td><td class="lr" colspan="5"><a href="#fieldset_0-11_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">ERR</a></td><td class="lr" colspan="5"><a href="#fieldset_0-5_1">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">SS</a></td></tr></tbody></table><h4 id="fieldset_0-63_36">Bits [63:36]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-35_35-1">EHBWE, bit [35]<span class="condition"><br/>When FEAT_Debugv8p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Extended Halting Breakpoint and Watchpoint Enable. Used for save/restore of <a href="ext-edscr2.html">EDSCR2</a>.EHBWE.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 0, software must treat this field as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this field holds the value of <a href="ext-edscr2.html">EDSCR2</a>.EHBWE. Reads and writes of this field are indirect accesses to <a href="ext-edscr2.html">EDSCR2</a>.EHBWE.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented or is <span class="arm-defined-word">RES0</span> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> is implemented as RAZ/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-35_35-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-34_34-1">EnSPM, bit [34]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Enable access to System PMU registers. When disabled, accesses to System PMU registers generate a trap to EL1.</p>
+    <table class="valuetable"><tr><th>EnSPM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses of the specified System PMU registers at EL0 are trapped to EL1, unless the instruction generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses of the specified System PMU registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>In AArch64 state, the instructions affected by this control are: <span class="instruction">MRS</span> and <span class="instruction">MSR</span> accesses to <a href="AArch64-spmcntenclr_el0.html">SPMCNTENCLR_EL0</a>, <a href="AArch64-spmcntenset_el0.html">SPMCNTENSET_EL0</a>, <a href="AArch64-spmcr_el0.html">SPMCR_EL0</a>, <a href="AArch64-spmevcntrn_el0.html">SPMEVCNTR&lt;n&gt;_EL0</a>, <a href="AArch64-spmevfilt2rn_el0.html">SPMEVFILT2R&lt;n&gt;_EL0</a>, <a href="AArch64-spmevfiltrn_el0.html">SPMEVFILTR&lt;n&gt;_EL0</a>, <a href="AArch64-spmevtypern_el0.html">SPMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-spmovsclr_el0.html">SPMOVSCLR_EL0</a>, <a href="AArch64-spmovsset_el0.html">SPMOVSSET_EL0</a>, and <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.</p>
+<p>Unless the instruction generates a higher priority exception:</p>
+<ul>
+<li>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, then trapped instructions generate an exception to EL2.
+</li><li>Otherwise, trapped instructions generate an exception to EL1.
+</li></ul>
+<p>Trapped instructions are reported using EC syndrome value <span class="hexnumber">0x18</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-34_34-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-33_33-1">TTA, bit [33]<span class="condition"><br/>When FEAT_TRBE_EXT is implemented or FEAT_ETEv1p3 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap Trace Accesses. Used for save/restore of <a href="ext-edscr2.html">EDSCR2</a>.TTA.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 0, software must treat this field as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK is 1, this field holds the value of <a href="ext-edscr2.html">EDSCR2</a>.TTA. Reads and writes of this field are indirect accesses to <a href="ext-edscr2.html">EDSCR2</a>.TTA.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-33_33-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-32_32-1">EMBWE, bit [32]<span class="condition"><br/>When FEAT_Debugv8p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Extended Monitor Breakpoint and Watchpoint Enable. Enables use of additional breakpoints or watchpoints.</p>
+    <table class="valuetable"><tr><th>EMBWE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Breakpoint and Watchpoint exceptions are disabled for each breakpoint &lt;n&gt; and watchpoint &lt;n&gt;, where n is greater than or equal to 16.</p>
+<p>The Effective value of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a>.BANK is zero at EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Breakpoint and Watchpoint exceptions are not affected by this mechanism.</p>
+<p>The Effective value of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a>.BANK is not affected by this field.</p></td></tr></table><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented or is <span class="arm-defined-word">RES0</span> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> is implemented as RAZ/WI.</p>
+<p>This field is ignored by the PE and treated as zero when any of the following are true:</p>
+<ul>
+<li>EL3 is implemented and <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.EBWE is 0.
+</li><li>EL2 is implemented and enabled in the current Security state, and <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.EBWE is 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL2 is not implemented and EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-32_32-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31-1">TFO, bit [31]<span class="condition"><br/>When FEAT_TRF is implemented:
+                        </span></h4><div class="field">
+      <p>Trace Filter override. Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.TFO.</p>
+    <p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.TFO. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.TFO.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-31_31-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30">RXfull, bit [30]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.RXfull.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.RXfull. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.RXfull.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-29_29">TXfull, bit [29]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.TXfull.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.TXfull. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.TXfull.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-28_28">Bit [28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_27">RXO, bit [27]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.RXO.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.RXO. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.RXO.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, if bits [27,6] of the value written to MDSCR_EL1 are {1,0}, that is, the RXO bit is 1 and the ERR bit is 0, the PE sets <a href="ext-edscr.html">EDSCR</a>.{RXO,ERR} to <span class="arm-defined-word">UNKNOWN</span> values.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-26_26">TXU, bit [26]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.TXU.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.TXU. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.TXU.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, if bits [26,6] of the value written to MDSCR_EL1 are {1,0}, that is, the TXU bit is 1 and the ERR bit is 0, the PE sets <a href="ext-edscr.html">EDSCR</a>.{TXU,ERR} to <span class="arm-defined-word">UNKNOWN</span> values.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-25_24">Bits [25:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_22">INTdis, bits [23:22]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.INTdis.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, and software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this field holds the value of <a href="ext-edscr.html">EDSCR</a>.INTdis. Reads and writes of this field are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.INTdis.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-21_21">TDA, bit [21]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.TDA.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.TDA. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.TDA.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-20_20">Bit [20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19-1">SC2, bit [19]<span class="condition"><br/>When FEAT_PCSRv8 is implemented, FEAT_VHE is implemented and FEAT_PCSRv8p2 is not implemented:
+                        </span></h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.SC2.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.SC2. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.SC2.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_16">Bits [18:16]</h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    
+      <p>Hardware must implement this field as RAZ/WI. Software must not rely on the register reading as zero, and must use a read-modify-write sequence to write to the register.</p>
+    </div><h4 id="fieldset_0-15_15">MDE, bit [15]</h4><div class="field">
+      <p>Monitor debug events. Enable Breakpoint, Watchpoint, and Vector Catch exceptions.</p>
+    <table class="valuetable"><tr><th>MDE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Breakpoint, Watchpoint, and Vector Catch exceptions disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Breakpoint, Watchpoint, and Vector Catch exceptions enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-14_14">HDE, bit [14]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.HDE.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.HDE. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.HDE.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-13_13">KDE, bit [13]</h4><div class="field">
+      <p>Local (kernel) debug enable. If EL<sub>D</sub> is using AArch64, enable debug exceptions within EL<sub>D</sub>. Permitted values are:</p>
+    <table class="valuetable"><tr><th>KDE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Debug exceptions, other than Breakpoint Instruction exceptions, disabled within EL<sub>D</sub>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All debug exceptions enabled within EL<sub>D</sub>.</p>
+        </td></tr></table>
+      <p><span class="arm-defined-word">RES0</span> if EL<sub>D</sub> is using AArch32.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_12">TDCC, bit [12]</h4><div class="field"><p>Traps EL0 accesses to the Debug Communication Channel (DCC) registers to EL1, or to EL2 when it is implemented and enabled for the current Security state and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1, from both Execution states, as follows:</p>
+<ul>
+<li>In AArch64 state, MRS or MSR accesses to the following DCC registers are trapped, reported using EC syndrome value <span class="hexnumber">0x18</span>:<ul>
+<li><a href="AArch64-mdccsr_el0.html">MDCCSR_EL0</a>.
+</li><li>If not in Debug state, <a href="AArch64-dbgdtr_el0.html">DBGDTR_EL0</a>, <a href="AArch64-dbgdtrtx_el0.html">DBGDTRTX_EL0</a>, and <a href="AArch64-dbgdtrrx_el0.html">DBGDTRRX_EL0</a>.
+</li></ul>
+
+</li><li>In AArch32 state, MRC or MCR accesses to the following registers are trapped, reported using EC syndrome value <span class="hexnumber">0x05</span>.<ul>
+<li><a href="AArch32-dbgdscrint.html">DBGDSCRint</a>, <a href="AArch32-dbgdidr.html">DBGDIDR</a>, <a href="AArch32-dbgdsar.html">DBGDSAR</a>, <a href="AArch32-dbgdrar.html">DBGDRAR</a>.
+</li><li>If not in Debug state, <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a>, and <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.
+</li></ul>
+
+</li><li>In AArch32 state, LDC access to <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a> and STC access to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a> are trapped, reported using EC syndrome value <span class="hexnumber">0x06</span>.
+</li><li>In AArch32 state, MRRC accesses to <a href="AArch32-dbgdsar.html">DBGDSAR</a> and <a href="AArch32-dbgdrar.html">DBGDRAR</a> are trapped, reported using EC syndrome value <span class="hexnumber">0x0C</span>.
+</li></ul><table class="valuetable"><tr><th>TDCC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>EL0 using AArch64: EL0 accesses to the AArch64 DCC registers are trapped.</p>
+<p>EL0 using AArch32: EL0 accesses to the AArch32 DCC registers are trapped.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_7">Bits [11:7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6">ERR, bit [6]</h4><div class="field"><p>Used for save/restore of <a href="ext-edscr.html">EDSCR</a>.ERR.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 0, software must treat this bit as UNK/SBZP.</p>
+<p>When <a href="AArch64-oslsr_el1.html">OSLSR_EL1</a>.OSLK == 1, this bit holds the value of <a href="ext-edscr.html">EDSCR</a>.ERR. Reads and writes of this bit are indirect accesses to <a href="ext-edscr.html">EDSCR</a>.ERR.</p><p>The architected behavior of this field determines the value it returns after a reset.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLSR_EL1.OSLK == 1, access to this field
+                            is <span class="access_level">RW</span>.</li><li>When OSLSR_EL1.OSLK == 0, access to this field
+                            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-5_1">Bits [5:1]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0">SS, bit [0]</h4><div class="field">
+      <p>Software step control bit. If EL<sub>D</sub> is using AArch64, enable Software step. Permitted values are:</p>
+    <table class="valuetable"><tr><th>SS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Software step disabled</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Software step enabled.</p>
+        </td></tr></table>
+      <p><span class="arm-defined-word">RES0</span> if EL<sub>D</sub> is using AArch32.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing MDSCR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MDSCR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b000</td><td>0b0000</td><td>0b0010</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.MDSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x158];
+    else
+        X[t, 64] = MDSCR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDSCR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MDSCR_EL1;
+                </p><h4 class="assembler">MSR MDSCR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b000</td><td>0b0000</td><td>0b0010</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.MDSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x158] = X[t, 64];
+    else
+        MDSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MDSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MDSCR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

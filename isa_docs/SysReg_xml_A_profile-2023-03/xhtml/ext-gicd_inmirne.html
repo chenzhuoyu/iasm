@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICD_INMIR&lt;n&gt;E</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICD_INMIR&lt;n&gt;E, Non-maskable Interrupt Registers for Extended SPIs, x = 0 to 31, n = 0 - 31</h1><p>The GICD_INMIR&lt;n&gt;E characteristics are:</p><h2>Purpose</h2>
+        <p>Holds whether the corresponding SPI in the extended SPI range has the non-maskable property.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3p1 is implemented and FEAT_GICv3_NMI is implemented. Otherwise, direct accesses to GICD_INMIR&lt;n&gt;E are <span class="arm-defined-word">RES0</span>.</p>
+        <p>When <a href="ext-gicd_typer.html">GICD_TYPER</a>.ESPI is 0 or <a href="ext-gicd_typer.html">GICD_TYPER</a>.NMI is 0, these registers are <span class="arm-defined-word">RES0</span>.</p>
+
+      
+        <p>When <a href="ext-gicd_typer.html">GICD_TYPER</a>.ESPI is 1: the number of implemented GICD_INMIR&lt;n&gt;E registers is (<a href="ext-gicd_typer.html">GICD_TYPER</a>.ESPI_range+1). Registers are numbered from 0.</p>
+      <h2>Attributes</h2>
+        <p>GICD_INMIR&lt;n&gt;E is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI31</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI30</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI29</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI28</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI27</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI26</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI25</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI24</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI23</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI22</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI21</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI20</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI19</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI18</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI17</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI16</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">NMI0</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">NMI&lt;x&gt;, bit [x], for x = 31 to 0</h4><div class="field">
+      <p>Non-maskable property.</p>
+    <table class="valuetable"><tr><th>NMI&lt;x&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Interrupt does not have the non-maskable property.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Interrupt has the non-maskable property.</p>
+        </td></tr></table><p>If affinity routing is disabled for the Security state of an interrupt, the bit is <span class="arm-defined-word">RES0</span>.</p>
+<p>This bit is <span class="arm-defined-word">RES0</span> when the corresponding interrupt is configured as Group 0.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="text_after_fields"><p>For INTID m, when DIV and MOD are the integer division and modulo operations:</p>
+<ul>
+<li>The corresponding GICD_INMIR&lt;n&gt;E number, n, is given by n = ((m-4096) DIV 32).
+</li><li>The offset of the required GICD_INMIR&lt;n&gt;E is (<span class="hexnumber">0x3B00</span> + (4*n)).
+</li><li>The bit number in this register is ((m-4096) MOD 32).
+</li></ul></div><h2>Accessing GICD_INMIR&lt;n&gt;E</h2>
+        <p>When affinity routing is not enabled for the Security state of an interrupt in GICD_IGROUPR&lt;n&gt;E, the corresponding bit is <span class="arm-defined-word">RES0</span>.</p>
+
+      
+        <p>Bits corresponding to unimplemented interrupts are RAZ/WI.</p>
+
+      
+        <p>When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==0, bits corresponding to Group 0 and Secure Group 1 interrupts are RAZ/WI to Non-secure accesses.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>Implementations must ensure that an interrupt that is pending at the time of the write uses either the old value or the new value and must ensure that the interrupt is neither lost nor handled more than one time. The effect of the change must be visible in finite time.</p></div>
+      <h4>GICD_INMIR&lt;n&gt;E can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Distributor</td><td>Dist_base</td><td><span class="hexnumber">0x3B00</span> + (4 * n)</td><td>GICD_INMIR&lt;n&gt;E</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,624 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MPAM3_EL3</reg_short_name>
+        
+        <reg_long_name>MPAM3 Register (EL3)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_MPAM is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mpam2_el2.xml">MPAM2_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>63</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>63</mapped_to_endbit>
+    <mapped_from_rangeset output="63">
+      <range>
+        <msb>63</msb>
+        <lsb>63</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63">
+      <range>
+        <msb>63</msb>
+        <lsb>63</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL2 is implemented</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mpam1_el1.xml">MPAM1_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>63</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>63</mapped_to_endbit>
+    <mapped_from_rangeset output="63">
+      <range>
+        <msb>63</msb>
+        <lsb>63</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63">
+      <range>
+        <msb>63</msb>
+        <lsb>63</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds information to generate MPAM labels for memory requests when executing at EL3.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MPAM3_EL3 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MPAMEN</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before"><para>MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.</para>
+<para>Values of this field are:</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The default PARTID and default PMG are output in MPAM information when executing at any ELn.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>MPAM information is output based on the MPAMn_ELx register for ELn according the MPAM configuration.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-62_62" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TRAPLOWER</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>62</rel_range>
+    <field_description order="before">
+      <para>Trap direct accesses to MPAM System registers that are not <arm-defined-word>UNDEFINED</arm-defined-word> from all ELn lower than EL3.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Do not force trapping of direct accesses of MPAM System registers to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Force direct accesses of MPAM System registers to trap to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>1</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-61_61-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SDEFLT</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>SDEFLT overrides the PARTID and PMG with the default PARTID and default PMG when executing in the Secure state.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The PARTID and PMG are determined normally in the Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When executing in the Secure state, the PARTID is always PARTID 0, and the PMG is always PMG 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMIDR_EL1.HAS_SDEFLT == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-61_61-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>61</field_msb>
+    <field_lsb>61</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FORCE_NS</field_name>
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>FORCE_NS forces MPAM_NS to always be 1 in the Secure state.</para>
+    </field_description>
+    <field_description order="after">
+      <para>An implementation is permitted to have this field as RAO if the implementation does not support generating MPAM_NS as 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>MPAM_NS is 0 when executing in the Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>MPAM_NS is 1 when executing in the Secure state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_MPAMv0p1 is implemented and MPAMIDR_EL1.HAS_FORCE_NS == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-60_60-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>60</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-59_58" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>58</field_lsb>
+    <rel_range>59:58</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-57_57-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ALTSP_HEN</field_name>
+    <field_msb>57</field_msb>
+    <field_lsb>57</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hierarchical enable for alternative PARTID space controls. Alternative PARTID space controls in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link> have no effect when this field is zero.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see 'Alternative PARTID spaces and selection' in Arm® Architecture Reference Manual Supplement, Memory System Resource Partitioning and Monitoring (MPAM), for Armv8-A (ARM DDI 0598).</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Disable alternative PARTID space controls in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>. The PARTID space for PARTIDs in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>, and <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link> is selected by MPAM3_EL3.ALTSP_HFC.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Enable alternative PARTID space controls in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link> to control the PARTID space used for PARTIDs in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>, and <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented and MPAMIDR_EL1.HAS_ALTSP == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-57_57-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>57</field_msb>
+    <field_lsb>57</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-56_56-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ALTSP_HFC</field_name>
+    <field_msb>56</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hierarchical force of alternative PARTID space controls. When MPAM3_EL3.ALTSP_HEN is 0, the PARTID space for PARTIDs in <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>, and <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link> is selected by the value of this bit.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see 'Alternative PARTID spaces and selection' in Arm® Architecture Reference Manual Supplement, Memory System Resource Partitioning and Monitoring (MPAM), for Armv8-A (ARM DDI 0598).</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>When MPAM3_EL3.ALTSP_HEN is 0, the PARTID space of <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>.PARTID, <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>.PARTID and <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link>.PARTID are the primary PARTID space for the security state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When MPAM3_EL3.ALTSP_HEN is 0, the PARTID space of <register_link state="AArch64" id="AArch64-mpam2_el2.xml">MPAM2_EL2</register_link>.PARTID and <register_link state="AArch64" id="AArch64-mpam1_el1.xml">MPAM1_EL1</register_link>.PARTID and <register_link state="AArch64" id="AArch64-mpam0_el1.xml">MPAM0_EL1</register_link>.PARTID are the alternative PARTID space for the security state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented and MPAMIDR_EL1.HAS_ALTSP == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-56_56-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>56</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-55_55-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ALTSP_EL3</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Select alternative PARTID space for PARTIDs in MPAM3_EL3.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see 'Alternative PARTID spaces and selection' in Arm® Architecture Reference Manual Supplement, Memory System Resource Partitioning and Monitoring (MPAM), for Armv8-A (ARM DDI 0598).</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Selects the primary PARTID space of <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.PARTID_I and MPAM3_EL3.PARTID_D.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Selects the alternative PARTID space of <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.PARTID_I and MPAM3_EL3.PARTID_D.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm" impdef="true">
+        <field_reset_standard_text>ID</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented and MPAMIDR_EL1.HAS_ALTSP == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-55_55-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-54_53" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>54</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>54:53</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-52_52-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RT_ALTSP_NS</field_name>
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Selects whether the alternative PARTID space for the Root security state is the Secure PARTID space or the Non-secure PARTID space. <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.RT_ALTSP_NS selects the alternative PARTID space for the Root Security state when <register_link state="AArch64" id="AArch64-mpam3_el3.xml">MPAM3_EL3</register_link>.ALTSP_EL3 == 1.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has no effect except in the Root security state (EL3).</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The alternative PARTID space in the Root security state is the Secure PARTID space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The alternative PARTID space in the Root security state is the Non-secure PARTID space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm" impdef="true">
+        <field_reset_standard_text>ID</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented and MPAMIDR_EL1.HAS_ALTSP == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-52_52-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-51_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>51:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG_D</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>47:40</rel_range>
+    <field_description order="before">
+      <para>Performance monitoring group for data accesses.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-39_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG_I</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>39:32</rel_range>
+    <field_description order="before">
+      <para>Performance monitoring group for instruction accesses.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID_D</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before">
+      <para>Partition ID for data accesses, including load and store accesses, made from EL3.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID_I</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Partition ID for instruction accesses made from EL3.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_61-1" msb="61" lsb="61"/>
+  <fieldat id="fieldset_0-60_60-1" msb="60" lsb="60"/>
+  <fieldat id="fieldset_0-59_58" msb="59" lsb="58"/>
+  <fieldat id="fieldset_0-57_57-1" msb="57" lsb="57"/>
+  <fieldat id="fieldset_0-56_56-1" msb="56" lsb="56"/>
+  <fieldat id="fieldset_0-55_55-1" msb="55" lsb="55"/>
+  <fieldat id="fieldset_0-54_53" msb="54" lsb="53"/>
+  <fieldat id="fieldset_0-52_52-1" msb="52" lsb="52"/>
+  <fieldat id="fieldset_0-51_48" msb="51" lsb="48"/>
+  <fieldat id="fieldset_0-47_40" msb="47" lsb="40"/>
+  <fieldat id="fieldset_0-39_32" msb="39" lsb="32"/>
+  <fieldat id="fieldset_0-31_16" msb="31" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>None of the fields in this register are permitted to be cached in a TLB.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS MPAM3_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, MPAM3_EL3</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0101"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MPAM3_EL3;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister MPAM3_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR MPAM3_EL3, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0101"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    MPAM3_EL3 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

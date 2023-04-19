@@ -1,0 +1,473 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>VMPIDR</reg_short_name>
+        
+        <reg_long_name>Virtualization Multiprocessor ID Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL2 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+            <reg_reset_limited_to_el>EL2</reg_reset_limited_to_el>
+            <reg_reset_limited_to_el>EL3</reg_reset_limited_to_el>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-vmpidr_el2.xml">VMPIDR_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds the value of the Virtualization Multiprocessor ID. This is the value returned by Non-secure EL1 reads of <register_link state="AArch32" id="AArch32-mpidr.xml">MPIDR</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If EL2 is not implemented but EL3 is implemented, this register takes the value of the <register_link state="AArch32" id="AArch32-mpidr.xml">MPIDR</register_link>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>VMPIDR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>M</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Indicates whether this implementation includes the functionality introduced by the Armv7 Multiprocessing Extensions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This implementation does not include the Armv7 Multiprocessing Extensions functionality.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This implementation includes the Armv7 Multiprocessing Extensions functionality.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RES1</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>U</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Indicates a Uniprocessor system, as distinct from PE 0 in a multiprocessor system.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Processor is part of a multiprocessor system.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Processor is part of a uniprocessor system.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="the PE resets into EL2 or EL3">
+            <field_reset>
+              <field_reset_other_field>
+                <field_reset_other_field_regname state="AArch32">MPIDR</field_reset_other_field_regname>
+                <field_reset_other_field_fieldname>U</field_reset_other_field_fieldname>
+              </field_reset_other_field>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>29:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MT</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Indicates whether the lowest level of <xref browsertext="affinity" filename="D_the_performance_monitors_Extension.fm" linkend="BABIJFGF"/> consists of logical PEs that are implemented using a multithreading type approach. See the description of Aff0 for more information about affinity levels.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Performance of PEs at the lowest affinity level is largely independent.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Performance of PEs at the lowest affinity level is very interdependent.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="the PE resets into EL2 or EL3">
+            <field_reset>
+              <field_reset_other_field>
+                <field_reset_other_field_regname state="AArch32">MPIDR</field_reset_other_field_regname>
+                <field_reset_other_field_fieldname>MT</field_reset_other_field_fieldname>
+              </field_reset_other_field>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Aff2</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Affinity level 2. See the description of Aff0 for more information.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="the PE resets into EL2 or EL3">
+            <field_reset>
+              <field_reset_other_field>
+                <field_reset_other_field_regname state="AArch32">MPIDR</field_reset_other_field_regname>
+                <field_reset_other_field_fieldname>Aff2</field_reset_other_field_fieldname>
+              </field_reset_other_field>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Aff1</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>15:8</rel_range>
+    <field_description order="before">
+      <para>Affinity level 1. See the description of Aff0 for more information.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="the PE resets into EL2 or EL3">
+            <field_reset>
+              <field_reset_other_field>
+                <field_reset_other_field_regname state="AArch32">MPIDR</field_reset_other_field_regname>
+                <field_reset_other_field_fieldname>Aff1</field_reset_other_field_fieldname>
+              </field_reset_other_field>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Aff0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Affinity level 0. This is the <xref browsertext="affinity" filename="D_the_performance_monitors_Extension.fm" linkend="BABIJFGF"/> level that is most significant for determining PE behavior. Higher <xref browsertext="affinity" filename="D_the_performance_monitors_Extension.fm" linkend="BABIJFGF"/> levels are increasingly less significant in determining PE behavior. The assigned value of the MPIDR.{Aff2, Aff1, Aff0} or <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.{Aff3, Aff2, Aff1, Aff0} set of fields of each PE must be unique within the system as a whole.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="the PE resets into EL2 or EL3">
+            <field_reset>
+              <field_reset_other_field>
+                <field_reset_other_field_regname state="AArch32">MPIDR</field_reset_other_field_regname>
+                <field_reset_other_field_fieldname>Aff0</field_reset_other_field_fieldname>
+              </field_reset_other_field>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_25" msb="29" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_8" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC VMPIDR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    R[t] = VMPIDR;
+elsif PSTATE.EL == EL3 then
+    if !HaveEL(EL2) then
+        R[t] = MPIDR;
+    elsif SCR.NS == '0' then
+        UNDEFINED;
+    else
+        R[t] = VMPIDR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR VMPIDR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    VMPIDR = R[t];
+elsif PSTATE.EL == EL3 then
+    if !HaveEL(EL2) then
+        return;
+    elsif SCR.NS == '0' then
+        UNDEFINED;
+    else
+        VMPIDR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MRC MPIDR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T0 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) then
+        R[t] = VMPIDR_EL2&lt;31:0&gt;;
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) then
+        R[t] = VMPIDR;
+    else
+        R[t] = MPIDR;
+elsif PSTATE.EL == EL2 then
+    R[t] = MPIDR;
+elsif PSTATE.EL == EL3 then
+    R[t] = MPIDR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TLBIP RVALE3, TLBIP RVALE3NXS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TLBIP RVALE3, TLBIP RVALE3NXS, TLB Range Invalidate by VA, Last level, EL3</h1><p>The TLBIP RVALE3, TLBIP RVALE3NXS characteristics are:</p><h2>Purpose</h2>
+        <p>If EL3 is implemented, invalidates cached copies of translation table entries from TLBs that meet all the following requirements:</p>
+
+      
+        <ul>
+<li>
+<p>The entry is a 128-bit stage 1 translation table entry, from the final level of the translation table walk up to the level indicated in the TTL hint.</p>
+<p>Or the entry is 64-bit a stage 1 translation table entry, from the final level of the translation table walk, if TTL is <span class="binarynumber">0b00</span>.</p>
+
+</li><li>
+<p>The entry would be used to translate any of the VAs in the specified address range using the EL3 translation regime.</p>
+
+</li><li>
+<p>The entry is within the address range determined by the formula [BaseADDR &lt;= VA &lt; BaseADDR + ((NUM +1)*2<sup>(5*SCALE +1)</sup> * Translation_Granule_Size)].</p>
+
+</li></ul>
+
+      
+        <p>The invalidation applies to the PE that executes this System instruction.</p>
+
+      
+        <p>For 128-bit translation table entry, the range of addresses invalidated is <span class="arm-defined-word">UNPREDICTABLE</span> when Block or Page size corresponding to TTL and TG, for the translation system is not aligned.</p>
+
+      
+        <p>If <span class="xref">FEAT_XS</span> is implemented, the nXS variant of this System instruction is defined.</p>
+
+      
+        <p>Both variants perform the same invalidation, but the TLBI System instruction without the nXS qualifier waits for all memory accesses using in-scope old translation information to complete before it is considered complete.</p>
+
+      
+        <p>The TLBI System instruction with the nXS qualifier is considered complete when the subset of these memory accesses with XS attribute set to 0 are complete.</p>
+      <h2>Configuration</h2><p>This instruction is present only when FEAT_D128 is implemented. Otherwise, direct accesses to TLBIP RVALE3, TLBIP RVALE3NXS are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>TLBIP RVALE3, TLBIP RVALE3NXS is a 128-bit System instruction.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>127</td><td>126</td><td>125</td><td>124</td><td>123</td><td>122</td><td>121</td><td>120</td><td>119</td><td>118</td><td>117</td><td>116</td><td>115</td><td>114</td><td>113</td><td>112</td><td>111</td><td>110</td><td>109</td><td>108</td><td>107</td><td>106</td><td>105</td><td>104</td><td>103</td><td>102</td><td>101</td><td>100</td><td>99</td><td>98</td><td>97</td><td>96</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-127_108">RES0</a></td><td class="lr" colspan="12"><a href="#fieldset_0-107_64">BaseADDR[55:12]</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>95</td><td>94</td><td>93</td><td>92</td><td>91</td><td>90</td><td>89</td><td>88</td><td>87</td><td>86</td><td>85</td><td>84</td><td>83</td><td>82</td><td>81</td><td>80</td><td>79</td><td>78</td><td>77</td><td>76</td><td>75</td><td>74</td><td>73</td><td>72</td><td>71</td><td>70</td><td>69</td><td>68</td><td>67</td><td>66</td><td>65</td><td>64</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-107_64">BaseADDR[55:12]</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-63_48">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-47_46">TG</a></td><td class="lr" colspan="2"><a href="#fieldset_0-45_44">SCALE</a></td><td class="lr" colspan="5"><a href="#fieldset_0-43_39">NUM</a></td><td class="lr" colspan="2"><a href="#fieldset_0-38_37">TTL</a></td><td class="lr" colspan="5"><a href="#fieldset_0-36_0">RES0</a></td></tr></tbody><tr class="blank_row"/><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-36_0">RES0</a></td></tr></tbody><tr class="blank_row"/></table><h4 id="fieldset_0-127_108">Bits [127:108]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-107_64">BaseADDR[55:12], bits [107:64]</h4><div class="field">
+      <p>The starting address for the range of the maintenance instructions. This field is BaseADDR[55:12] for all translation granules.</p>
+    </div><h4 id="fieldset_0-63_48">Bits [63:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_46">TG, bits [47:46]</h4><div class="field">
+      <p>Translation granule size.</p>
+    <table class="valuetable"><tr><th>TG</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Reserved.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>4K translation granule.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>16K translation granule.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>64K translation granule.</p>
+        </td></tr></table>
+      <p>The instruction takes a translation granule size for the translations that are being invalidated. If the translations used a different translation granule size than the one being specified, then the architecture does not require that the instruction invalidates any entries.</p>
+    </div><h4 id="fieldset_0-45_44">SCALE, bits [45:44]</h4><div class="field">
+      <p>The exponent element of the calculation that is used to produce the upper range.</p>
+    </div><h4 id="fieldset_0-43_39">NUM, bits [43:39]</h4><div class="field">
+      <p>The base element of the calculation that is used to produce the upper range.</p>
+    </div><h4 id="fieldset_0-38_37">TTL, bits [38:37]</h4><div class="field"><p>TTL Level hint. The TTL hint is only guaranteed to invalidate:</p>
+<ul>
+<li>
+<p>Non-leaf-level entries in the range up to but not including the level described by the TTL hint.</p>
+
+</li><li>
+<p>Leaf-level entries in the range that match the level described by the TTL hint.</p>
+
+</li></ul><table class="valuetable"><tr><th>TTL</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>The entries in the range can be using any level for the translation table entries.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td><p>The TTL hint indicates level 1.</p>
+<p>If <span class="xref">FEAT_LPA2</span> is not implemented, when using a 16KB translation granule, this value is reserved and hardware should treat this field as <span class="binarynumber">0b00</span>.</p></td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>The TTL hint indicates level 2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>The TTL hint indicates level 3.</p>
+        </td></tr></table></div><h4 id="fieldset_0-36_0">Bits [36:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Executing TLBIP RVALE3, TLBIP RVALE3NXS</h2><p>Accesses to this instruction use the following encodings in the System instruction encoding space:</p><h4 class="assembler">TLBIP RVALE3{, &lt;Xt&gt;, &lt;Xt2&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b110</td><td>0b1000</td><td>0b0110</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    AArch64.TLBIP_RVA(SecurityStateAtEL(EL3), Regime_EL3, VMID[], Shareability_NSH, TLBILevel_Last, TLBI_AllAttr, X[t2, 64]:X[t, 64]);
+                </p><h4 class="assembler">TLBIP RVALE3NXS{, &lt;Xt&gt;, &lt;Xt2&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b110</td><td>0b1001</td><td>0b0110</td><td>0b101</td></tr></table><p class="pseudocode">
+if !IsFeatureImplemented(FEAT_XS) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    AArch64.TLBIP_RVA(SecurityStateAtEL(EL3), Regime_EL3, VMID[], Shareability_NSH, TLBILevel_Last, TLBI_ExcludeXS, X[t2, 64]:X[t, 64]);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

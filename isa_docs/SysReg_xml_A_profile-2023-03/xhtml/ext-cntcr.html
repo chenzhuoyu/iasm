@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CNTCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CNTCR, Counter Control Register</h1><p>The CNTCR characteristics are:</p><h2>Purpose</h2>
+        <p>Enables the counter, controls the counter frequency setting, and controls counter behavior during debug.</p>
+      <h2>Configuration</h2><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CNTCR is implemented in the Core power domain or in the Debug power domain.
+    </p>
+        <p>For more information, see <span class="xref">'Power and reset domains for the system level implementation of the Generic Timer'</span>.</p>
+      <h2>Attributes</h2>
+        <p>CNTCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="14"><a href="#fieldset_0-31_18">RES0</a></td><td class="lr" colspan="10"><a href="#fieldset_0-17_8">FCREQ</a></td><td class="lr" colspan="5"><a href="#fieldset_0-7_3">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">SCEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">HDBG</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">EN</a></td></tr></tbody></table><h4 id="fieldset_0-31_18">Bits [31:18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_8">FCREQ, bits [17:8]</h4><div class="field"><p>Frequency change request. Indicates the number of the entry in the Frequency modes table to select.</p>
+<p>Selecting an unimplemented entry, or an entry that contains 0, has no effect on the counter.</p>
+<p>The maximum number of entries in the Frequency modes table is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> up to a maximum of 1004 entries, see <span class="xref">'The Frequency modes table'</span>. An implementation is only required to implement an FCREQ field that can hold values from 0 to the highest supported Frequency modes table entry. Any unrequired most-significant bits of FCREQ can be implemented as <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-7_3">Bits [7:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">SCEN, bit [2]<span class="condition"><br/>When FEAT_CNTSC is implemented:
+                        </span></h4><div class="field">
+      <p>Scale Enable.</p>
+    <table class="valuetable"><tr><th>SCEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Scaling is not enabled. The counter value is incremented by <span class="hexnumber">0x1</span>.0000000 for each counter tick.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Scaling is enabled. The counter is incremented by <a href="ext-cntscr.html">CNTSCR</a>.ScaleVal for each counter tick.</p>
+        </td></tr></table><p>The SCEN bit can only be changed when the counter is disabled, when CNTCR.EN == 0.</p>
+<p>If the value of CNTCR.SCEN changes when CNTCR.EN == 1 then:</p>
+<ul>
+<li>The counter value becomes <span class="arm-defined-word">UNKNOWN</span>.
+</li><li>The counter value remains <span class="arm-defined-word">UNKNOWN</span> on future ticks of the clock.
+</li></ul>
+<p>When the <a href="ext-cntcv.html">CNTCV</a> register in the CNTControlBase frame of the memory mapped counter module is written to, the accumulated fraction information is reset to zero.</p><p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">HDBG, bit [1]</h4><div class="field">
+      <p>Halt-on-debug. Controls whether a Halt-on-debug signal halts the system counter:</p>
+    <table class="valuetable"><tr><th>HDBG</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>System counter ignores Halt-on-debug.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Asserted Halt-on-debug signal halts system counter update.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">EN, bit [0]</h4><div class="field">
+      <p>Enables the counter:</p>
+    <table class="valuetable"><tr><th>EN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>System counter disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>System counter enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h2>Accessing CNTCR</h2>
+        <p>In a system that supports Secure and Non-secure memory maps the CNTControlBase frame, that includes this register, is implemented only in the Secure memory map.</p>
+      <h4>CNTCR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>Timer</td><td>CNTControlBase</td><td><span class="hexnumber">0x000</span></td><td>CNTCR</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

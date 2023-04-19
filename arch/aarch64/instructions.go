@@ -3367,12 +3367,6 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
 //
 // ID_AA64ISAR1_EL1 .BF16 indicates whether this instruction is supported.
 //
-// NOTE: 
-//     Arm expects that the BFMMLA instruction will deliver a peak BFloat16
-//     multiply throughput that is at least as high as can be achieved using
-//     two BFDOT instructions, with a goal that it should have significantly
-//     higher throughput.
-//
 func (self *Program) BFMMLA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFMMLA", 3, asm.Operands { v0, v1, v2 })
     if isVr(v0) && vfmt(v0) == Vec4S && isVr(v1) && vfmt(v1) == Vec8H && isVr(v2) && vfmt(v2) == Vec8H {
@@ -4314,10 +4308,10 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
 //     * CASL and CASAL store to memory with release semantics.
 //     * CAS has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4381,10 +4375,10 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
 //     * CASL and CASAL store to memory with release semantics.
 //     * CAS has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4446,10 +4440,10 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
 //     * CASLB and CASALB store to memory with release semantics.
 //     * CASB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4544,10 +4538,10 @@ func (self *Program) CASAH(v0, v1, v2 interface{}) *Instruction {
 //     * CASL and CASAL store to memory with release semantics.
 //     * CAS has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4609,10 +4603,10 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
 //     * CASLB and CASALB store to memory with release semantics.
 //     * CASB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4705,10 +4699,10 @@ func (self *Program) CASALH(v0, v1, v2 interface{}) *Instruction {
 //     * CASLB and CASALB store to memory with release semantics.
 //     * CASB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4803,10 +4797,10 @@ func (self *Program) CASH(v0, v1, v2 interface{}) *Instruction {
 //     * CASL and CASAL store to memory with release semantics.
 //     * CAS has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -4868,10 +4862,10 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
 //     * CASLB and CASALB store to memory with release semantics.
 //     * CASB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // The architecture permits that the data read clears any exclusive monitors
 // associated with that location, even if the compare subsequently fails.
@@ -5492,17 +5486,21 @@ func (self *Program) CFP(v0, v1 interface{}) *Instruction {
 //
 // 1. Check feature status
 //
-//    CHKFEAT
+//    CHKFEAT X16
 //
 // Check feature status. This instruction indicates the status of features.
 //
 // If FEAT_CHK is not implemented, this instruction executes as a NOP .
 //
-func (self *Program) CHKFEAT() *Instruction {
-    p := self.alloc("CHKFEAT", 0, asm.Operands {})
-    self.Arch.Require(FEAT_CHK)
-    p.Domain = DomainSystem
-    return p.setins(hints(5, 0))
+func (self *Program) CHKFEAT(v0 interface{}) *Instruction {
+    p := self.alloc("CHKFEAT", 1, asm.Operands { v0 })
+    if v0 == X16 {
+        self.Arch.Require(FEAT_CHK)
+        p.Domain = DomainSystem
+        return p.setins(hints(5, 0))
+    }
+    p.Free()
+    panic("aarch64: invalid combination of operands for CHKFEAT")
 }
 
 // CINC instruction have 2 forms from one single category:
@@ -24124,7 +24122,7 @@ func (self *Program) DC(v0, v1 interface{}) *Instruction {
 
 // DCPS1 instruction have one single form from one single category:
 //
-// 1. Debug Change PE State to EL1.
+// 1. Debug Change PE State to EL1
 //
 //    DCPS1  {#<imm>}
 //
@@ -24176,7 +24174,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
 
 // DCPS2 instruction have one single form from one single category:
 //
-// 1. Debug Change PE State to EL2.
+// 1. Debug Change PE State to EL2
 //
 //    DCPS2  {#<imm>}
 //
@@ -24311,8 +24309,8 @@ func (self *Program) DMB(v0 interface{}) *Instruction {
     p := self.alloc("DMB", 1, asm.Operands { v0 })
     if isOption(v0) {
         p.Domain = DomainSystem
-        sa_option := v0.(BarrierOption)
-        sa_imm := uint32(sa_option)
+        sa_option := asBarrierOption(v0)
+        sa_imm := sa_option
         return p.setins(barriers(sa_imm, 5, 31))
     }
     p.Free()
@@ -24350,8 +24348,11 @@ func (self *Program) DSB(v0 interface{}) *Instruction {
     // DSB  <option>|#<imm>
     if isOption(v0) {
         p.Domain = DomainSystem
-        sa_option := v0.(BarrierOption)
-        sa_imm := uint32(sa_option)
+        sa_option := asBarrierOption(v0)
+        sa_imm := sa_option
+        if sa_imm != sa_option {
+            panic("aarch64: invalid combination of operands for DSB")
+        }
         return p.setins(barriers(sa_imm, 4, 31))
     }
     // DSB  <option>nXS
@@ -24924,7 +24925,7 @@ func (self *Program) ESB() *Instruction {
 // register, and consecutive elements are extracted from the first, then second,
 // source registers until the destination vector is filled.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.ext_doubleword_operation_for_imm3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.ext_doubleword_operation_for_imm3.svg]
 // EXT doubleword operation for Q = 0 and imm4<2:0> = 3
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -29614,6 +29615,21 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
 // two floating-point values into a vector, and writes the vector to the
 // destination SIMD&FP register.
 //
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
 // a synchronous exception being generated. For more information, see Floating-
@@ -29632,6 +29648,21 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
 // Floating-point Maximum (scalar). This instruction compares the two source
 // SIMD&FP registers, and writes the larger of the two floating-point values to the
 // destination SIMD&FP register.
+//
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either value is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either value is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both values are zeros, regardless of the sign of either zero, the
+//       result is the second value.
+//     * If either value is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second value.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
@@ -29731,9 +29762,15 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
 // two floating-point values into a vector, and writes the vector to the
 // destination SIMD&FP register.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result placed in the vector is the
-// numerical value, otherwise the result is identical to FMAX (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
@@ -29754,9 +29791,15 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
 // second source SIMD&FP register values, and writes the larger of the two
 // floating-point values to the destination SIMD&FP register.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result that is placed in the vector
-// is the numerical value, otherwise the result is identical to FMAX (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one value is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either value is a signaling NaN or if both
+//       values are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either value is a signaling NaN or if both
+//       values are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
@@ -29856,6 +29899,17 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
 // largest of the floating-point values as a scalar to the destination SIMD&FP
 // register.
 //
+// Regardless of the value of FPCR .AH, the behavior is as follows for each
+// pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
 // synchronous exception being generated. For more information, see Floating-point
@@ -29878,9 +29932,16 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
 // destination SIMD&FP register. All the values in this instruction are floating-
 // point values.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result is the numerical value,
-// otherwise the result is identical to FMAX (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows for each
+// pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30010,9 +30071,15 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
 // values as a scalar to the destination SIMD&FP register. All the values in this
 // instruction are floating-point values.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result of the comparison is the
-// numerical value, otherwise the result is identical to FMAX (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one value is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either value is a signaling NaN or if both
+//       values are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either value is a signaling NaN or if both
+//       values are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30077,6 +30144,21 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
 // two vector elements in the source SIMD&FP register and writes the largest of the
 // floating-point values as a scalar to the destination SIMD&FP register.
 //
+// When FPCR .AH is 0, the behavior is as follows for each pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows for each pairwise operation:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
 // synchronous exception being generated. For more information, see Floating-point
@@ -30097,6 +30179,21 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
 // adjacent vector elements from the concatenated vector, writes the larger of each
 // pair of values into a vector, and writes the vector to the destination SIMD&FP
 // register. All the values in this instruction are floating-point values.
+//
+// When FPCR .AH is 0, the behavior is as follows for each pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows for each pairwise operation:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30226,6 +30323,21 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
 // a scalar to the destination SIMD&FP register. All the values in this instruction
 // are floating-point values.
 //
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either value is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either value is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both values are zeros, regardless of the sign of either zero, the
+//       result is the second value.
+//     * If either value is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second value.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
 // synchronous exception being generated. For more information, see Floating-point
@@ -30290,6 +30402,21 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
 // of each of the two floating-point values into a vector, and writes the vector to
 // the destination SIMD&FP register.
 //
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
 // a synchronous exception being generated. For more information, see Floating-
@@ -30308,6 +30435,21 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
 // Floating-point Minimum (scalar). This instruction compares the first and second
 // source SIMD&FP register values, and writes the smaller of the two floating-point
 // values to the destination SIMD&FP register.
+//
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either value is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either value is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both values are zeros, regardless of the sign of either zero, the
+//       result is the second value.
+//     * If either value is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second value.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR , or
@@ -30407,9 +30549,15 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
 // two floating-point values into a vector, and writes the vector to the
 // destination SIMD&FP register.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result placed in the vector is the
-// numerical value, otherwise the result is identical to FMIN (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30430,9 +30578,15 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
 // second source SIMD&FP register values, and writes the smaller of the two
 // floating-point values to the destination SIMD&FP register.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result that is placed in the vector
-// is the numerical value, otherwise the result is identical to FMIN (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one value is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either value is a signaling NaN or if both
+//       values are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either value is a signaling NaN or if both
+//       values are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30532,6 +30686,17 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
 // smallest of the floating-point values as a scalar to the destination SIMD&FP
 // register.
 //
+// Regardless of the value of FPCR .AH, the behavior is as follows for each
+// pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
 // synchronous exception being generated. For more information, see Floating-point
@@ -30554,9 +30719,16 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
 // vector to the destination SIMD&FP register. All the values in this instruction
 // are floating-point values.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result is the numerical value,
-// otherwise the result is identical to FMIN (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows for each
+// pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one element is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either element is a signaling NaN or if both
+//       elements are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30686,9 +30858,15 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
 // values as a scalar to the destination SIMD&FP register. All the values in this
 // instruction are floating-point values.
 //
-// NaNs are handled according to the IEEE 754-2008 standard. If one vector element
-// is numeric and the other is a quiet NaN, the result of the comparison is the
-// numerical value, otherwise the result is identical to FMIN (scalar) .
+// Regardless of the value of FPCR .AH, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * If one value is numeric and the other is a quiet NaN, the result is
+//       the numeric value.
+//     * When FPCR .DN is 0, if either value is a signaling NaN or if both
+//       values are NaNs, the result is a quiet NaN.
+//     * When FPCR .DN is 1, if either value is a signaling NaN or if both
+//       values are NaNs, the result is Default NaN.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30753,6 +30931,21 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
 // two vector elements in the source SIMD&FP register and writes the smallest of
 // the floating-point values as a scalar to the destination SIMD&FP register.
 //
+// When FPCR .AH is 0, the behavior is as follows for each pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows for each pairwise operation:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
+//
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
 // synchronous exception being generated. For more information, see Floating-point
@@ -30773,6 +30966,21 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
 // adjacent vector elements from the concatenated vector, writes the smaller of
 // each pair of values into a vector, and writes the vector to the destination
 // SIMD&FP register. All the values in this instruction are floating-point values.
+//
+// When FPCR .AH is 0, the behavior is as follows for each pairwise operation:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either element is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either element is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows for each pairwise operation:
+//
+//     * If both elements are zeros, regardless of the sign of either zero, the
+//       result is the second element.
+//     * If either element is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second element.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -30901,6 +31109,21 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
 // elements in the source SIMD&FP register, and writes the smallest of the values
 // as a scalar to the destination SIMD&FP register. All the values in this
 // instruction are floating-point values.
+//
+// When FPCR .AH is 0, the behavior is as follows:
+//
+//     * Negative zero compares less than positive zero.
+//     * When FPCR .DN is 0, if either value is a NaN, the result is a quiet
+//       NaN.
+//     * When FPCR .DN is 1, if either value is a NaN, the result is Default
+//       NaN.
+//
+// When FPCR .AH is 1, the behavior is as follows:
+//
+//     * If both values are zeros, regardless of the sign of either zero, the
+//       result is the second value.
+//     * If either value is a NaN, regardless of the value of FPCR .DN, the
+//       result is the second value.
 //
 // This instruction can generate a floating-point exception. Depending on the
 // settings in FPCR , the exception results in either a flag being set in FPSR or a
@@ -35435,11 +35658,14 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isOption(vv[0])) {
         p.Domain = DomainSystem
-        sa_option := SY
+        sa_option := uint32(SY)
         if len(vv) == 1 {
-            sa_option = vv[0].(BarrierOption)
+            sa_option = asBarrierOption(vv[0])
         }
-        sa_imm := uint32(sa_option)
+        sa_imm := sa_option
+        if sa_imm != sa_option {
+            panic("aarch64: invalid combination of operands for ISB")
+        }
         return p.setins(barriers(sa_imm, 6, 31))
     }
     p.Free()
@@ -36505,7 +36731,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
 // multiple 3-element structures from memory and writes the result to the three
 // SIMD&FP registers, with de-interleaving.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.deinterleaving_an_array_of_3_element_structures.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.deinterleaving_an_array_of_3_element_structures.svg]
 // de-interleaving of a LD3.16 (multiple 3-element structures) instruction:
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -37390,10 +37616,10 @@ func (self *Program) LD64B(v0, v1 interface{}) *Instruction {
 //     * LDADDL and LDADDAL store to memory with release semantics.
 //     * LDADD has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADD", 3, asm.Operands { v0, v1, v2 })
@@ -37449,10 +37675,10 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDL and LDADDAL store to memory with release semantics.
 //     * LDADD has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDA", 3, asm.Operands { v0, v1, v2 })
@@ -37506,10 +37732,10 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLB and LDADDALB store to memory with release semantics.
 //     * LDADDB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDAB", 3, asm.Operands { v0, v1, v2 })
@@ -37546,10 +37772,10 @@ func (self *Program) LDADDAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLH and LDADDALH store to memory with release semantics.
 //     * LDADDH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDAH", 3, asm.Operands { v0, v1, v2 })
@@ -37588,10 +37814,10 @@ func (self *Program) LDADDAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDL and LDADDAL store to memory with release semantics.
 //     * LDADD has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDAL", 3, asm.Operands { v0, v1, v2 })
@@ -37645,10 +37871,10 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLB and LDADDALB store to memory with release semantics.
 //     * LDADDB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDALB", 3, asm.Operands { v0, v1, v2 })
@@ -37685,10 +37911,10 @@ func (self *Program) LDADDALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLH and LDADDALH store to memory with release semantics.
 //     * LDADDH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDALH", 3, asm.Operands { v0, v1, v2 })
@@ -37725,10 +37951,10 @@ func (self *Program) LDADDALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLB and LDADDALB store to memory with release semantics.
 //     * LDADDB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDB", 3, asm.Operands { v0, v1, v2 })
@@ -37765,10 +37991,10 @@ func (self *Program) LDADDB(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLH and LDADDALH store to memory with release semantics.
 //     * LDADDH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDH", 3, asm.Operands { v0, v1, v2 })
@@ -37807,10 +38033,10 @@ func (self *Program) LDADDH(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDL and LDADDAL store to memory with release semantics.
 //     * LDADD has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDL", 3, asm.Operands { v0, v1, v2 })
@@ -37864,10 +38090,10 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLB and LDADDALB store to memory with release semantics.
 //     * LDADDB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDLB", 3, asm.Operands { v0, v1, v2 })
@@ -37904,10 +38130,10 @@ func (self *Program) LDADDLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDADDLH and LDADDALH store to memory with release semantics.
 //     * LDADDH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDADDLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDADDLH", 3, asm.Operands { v0, v1, v2 })
@@ -38660,7 +38886,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
 // accessed as an exclusive access. This exclusive access mark is checked by Store
 // Exclusive instructions. See Synchronization and semaphores . The instruction
 // also has memory ordering semantics as described in Load-Acquire, Store-Release .
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAXR", 2, asm.Operands { v0, v1 })
@@ -38705,7 +38931,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
 // an exclusive access. This exclusive access mark is checked by Store Exclusive
 // instructions. See Synchronization and semaphores . The instruction also has
 // memory ordering semantics as described in Load-Acquire, Store-Release . For
-// information about memory accesses see Load/Store addressing modes .
+// information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDAXRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAXRB", 2, asm.Operands { v0, v1 })
@@ -38736,7 +38962,7 @@ func (self *Program) LDAXRB(v0, v1 interface{}) *Instruction {
 // accessed as an exclusive access. This exclusive access mark is checked by Store
 // Exclusive instructions. See Synchronization and semaphores . The instruction
 // also has memory ordering semantics as described in Load-Acquire, Store-Release .
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDAXRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAXRH", 2, asm.Operands { v0, v1 })
@@ -38772,10 +38998,10 @@ func (self *Program) LDAXRH(v0, v1 interface{}) *Instruction {
 //     * LDCLRL and LDCLRAL store to memory with release semantics.
 //     * LDCLR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLR", 3, asm.Operands { v0, v1, v2 })
@@ -38831,10 +39057,10 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRL and LDCLRAL store to memory with release semantics.
 //     * LDCLR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRA", 3, asm.Operands { v0, v1, v2 })
@@ -38889,10 +39115,10 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLB and LDCLRALB store to memory with release semantics.
 //     * LDCLRB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRAB", 3, asm.Operands { v0, v1, v2 })
@@ -38930,10 +39156,10 @@ func (self *Program) LDCLRAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLH and LDCLRALH store to memory with release semantics.
 //     * LDCLRH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRAH", 3, asm.Operands { v0, v1, v2 })
@@ -38972,10 +39198,10 @@ func (self *Program) LDCLRAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRL and LDCLRAL store to memory with release semantics.
 //     * LDCLR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRAL", 3, asm.Operands { v0, v1, v2 })
@@ -39030,10 +39256,10 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLB and LDCLRALB store to memory with release semantics.
 //     * LDCLRB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRALB", 3, asm.Operands { v0, v1, v2 })
@@ -39071,10 +39297,10 @@ func (self *Program) LDCLRALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLH and LDCLRALH store to memory with release semantics.
 //     * LDCLRH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRALH", 3, asm.Operands { v0, v1, v2 })
@@ -39112,10 +39338,10 @@ func (self *Program) LDCLRALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLB and LDCLRALB store to memory with release semantics.
 //     * LDCLRB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRB", 3, asm.Operands { v0, v1, v2 })
@@ -39153,10 +39379,10 @@ func (self *Program) LDCLRB(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLH and LDCLRALH store to memory with release semantics.
 //     * LDCLRH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRH", 3, asm.Operands { v0, v1, v2 })
@@ -39195,10 +39421,10 @@ func (self *Program) LDCLRH(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRL and LDCLRAL store to memory with release semantics.
 //     * LDCLR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRL", 3, asm.Operands { v0, v1, v2 })
@@ -39253,10 +39479,10 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLB and LDCLRALB store to memory with release semantics.
 //     * LDCLRB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRLB", 3, asm.Operands { v0, v1, v2 })
@@ -39294,10 +39520,10 @@ func (self *Program) LDCLRLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDCLRLH and LDCLRALH store to memory with release semantics.
 //     * LDCLRH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDCLRLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDCLRLH", 3, asm.Operands { v0, v1, v2 })
@@ -39476,10 +39702,10 @@ func (self *Program) LDCLRPL(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORL and LDEORAL store to memory with release semantics.
 //     * LDEOR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEOR", 3, asm.Operands { v0, v1, v2 })
@@ -39535,10 +39761,10 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORL and LDEORAL store to memory with release semantics.
 //     * LDEOR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORA", 3, asm.Operands { v0, v1, v2 })
@@ -39593,10 +39819,10 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLB and LDEORALB store to memory with release semantics.
 //     * LDEORB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORAB", 3, asm.Operands { v0, v1, v2 })
@@ -39634,10 +39860,10 @@ func (self *Program) LDEORAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLH and LDEORALH store to memory with release semantics.
 //     * LDEORH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORAH", 3, asm.Operands { v0, v1, v2 })
@@ -39676,10 +39902,10 @@ func (self *Program) LDEORAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORL and LDEORAL store to memory with release semantics.
 //     * LDEOR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORAL", 3, asm.Operands { v0, v1, v2 })
@@ -39734,10 +39960,10 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLB and LDEORALB store to memory with release semantics.
 //     * LDEORB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORALB", 3, asm.Operands { v0, v1, v2 })
@@ -39775,10 +40001,10 @@ func (self *Program) LDEORALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLH and LDEORALH store to memory with release semantics.
 //     * LDEORH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORALH", 3, asm.Operands { v0, v1, v2 })
@@ -39816,10 +40042,10 @@ func (self *Program) LDEORALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLB and LDEORALB store to memory with release semantics.
 //     * LDEORB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORB", 3, asm.Operands { v0, v1, v2 })
@@ -39857,10 +40083,10 @@ func (self *Program) LDEORB(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLH and LDEORALH store to memory with release semantics.
 //     * LDEORH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORH", 3, asm.Operands { v0, v1, v2 })
@@ -39899,10 +40125,10 @@ func (self *Program) LDEORH(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORL and LDEORAL store to memory with release semantics.
 //     * LDEOR has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORL", 3, asm.Operands { v0, v1, v2 })
@@ -39957,10 +40183,10 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLB and LDEORALB store to memory with release semantics.
 //     * LDEORB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORLB", 3, asm.Operands { v0, v1, v2 })
@@ -39998,10 +40224,10 @@ func (self *Program) LDEORLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDEORLH and LDEORALH store to memory with release semantics.
 //     * LDEORH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDEORLH", 3, asm.Operands { v0, v1, v2 })
@@ -41606,7 +41832,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
 //
 // Load Register Signed Halfword (register) calculates an address from a base
 // register value and an offset register value, loads a halfword from memory, sign-
-// extends it, and writes it to a register. For information about memory accesses
+// extends it, and writes it to a register. For information about memory accesses,
 // see Load/Store addressing modes .
 //
 func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
@@ -41958,10 +42184,10 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLB and LDSETALB store to memory with release semantics.
 //     * LDSETB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETAB", 3, asm.Operands { v0, v1, v2 })
@@ -41999,10 +42225,10 @@ func (self *Program) LDSETAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLH and LDSETALH store to memory with release semantics.
 //     * LDSETH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETAH", 3, asm.Operands { v0, v1, v2 })
@@ -42099,10 +42325,10 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLB and LDSETALB store to memory with release semantics.
 //     * LDSETB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETALB", 3, asm.Operands { v0, v1, v2 })
@@ -42140,10 +42366,10 @@ func (self *Program) LDSETALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLH and LDSETALH store to memory with release semantics.
 //     * LDSETH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETALH", 3, asm.Operands { v0, v1, v2 })
@@ -42181,10 +42407,10 @@ func (self *Program) LDSETALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLB and LDSETALB store to memory with release semantics.
 //     * LDSETB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETB", 3, asm.Operands { v0, v1, v2 })
@@ -42222,10 +42448,10 @@ func (self *Program) LDSETB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLH and LDSETALH store to memory with release semantics.
 //     * LDSETH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETH", 3, asm.Operands { v0, v1, v2 })
@@ -42322,10 +42548,10 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLB and LDSETALB store to memory with release semantics.
 //     * LDSETB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETLB", 3, asm.Operands { v0, v1, v2 })
@@ -42363,10 +42589,10 @@ func (self *Program) LDSETLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSETLH and LDSETALH store to memory with release semantics.
 //     * LDSETH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSETLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSETLH", 3, asm.Operands { v0, v1, v2 })
@@ -42546,10 +42772,10 @@ func (self *Program) LDSETPL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXL and LDSMAXAL store to memory with release semantics.
 //     * LDSMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAX", 3, asm.Operands { v0, v1, v2 })
@@ -42606,10 +42832,10 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXL and LDSMAXAL store to memory with release semantics.
 //     * LDSMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXA", 3, asm.Operands { v0, v1, v2 })
@@ -42664,10 +42890,10 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLB and LDSMAXALB store to memory with release semantics.
 //     * LDSMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXAB", 3, asm.Operands { v0, v1, v2 })
@@ -42705,10 +42931,10 @@ func (self *Program) LDSMAXAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLH and LDSMAXALH store to memory with release semantics.
 //     * LDSMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXAH", 3, asm.Operands { v0, v1, v2 })
@@ -42748,10 +42974,10 @@ func (self *Program) LDSMAXAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXL and LDSMAXAL store to memory with release semantics.
 //     * LDSMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXAL", 3, asm.Operands { v0, v1, v2 })
@@ -42806,10 +43032,10 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLB and LDSMAXALB store to memory with release semantics.
 //     * LDSMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXALB", 3, asm.Operands { v0, v1, v2 })
@@ -42847,10 +43073,10 @@ func (self *Program) LDSMAXALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLH and LDSMAXALH store to memory with release semantics.
 //     * LDSMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXALH", 3, asm.Operands { v0, v1, v2 })
@@ -42888,10 +43114,10 @@ func (self *Program) LDSMAXALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLB and LDSMAXALB store to memory with release semantics.
 //     * LDSMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXB", 3, asm.Operands { v0, v1, v2 })
@@ -42929,10 +43155,10 @@ func (self *Program) LDSMAXB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLH and LDSMAXALH store to memory with release semantics.
 //     * LDSMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXH", 3, asm.Operands { v0, v1, v2 })
@@ -42972,10 +43198,10 @@ func (self *Program) LDSMAXH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXL and LDSMAXAL store to memory with release semantics.
 //     * LDSMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXL", 3, asm.Operands { v0, v1, v2 })
@@ -43030,10 +43256,10 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLB and LDSMAXALB store to memory with release semantics.
 //     * LDSMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXLB", 3, asm.Operands { v0, v1, v2 })
@@ -43071,10 +43297,10 @@ func (self *Program) LDSMAXLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMAXLH and LDSMAXALH store to memory with release semantics.
 //     * LDSMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMAXLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMAXLH", 3, asm.Operands { v0, v1, v2 })
@@ -43114,10 +43340,10 @@ func (self *Program) LDSMAXLH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINL and LDSMINAL store to memory with release semantics.
 //     * LDSMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMIN", 3, asm.Operands { v0, v1, v2 })
@@ -43174,10 +43400,10 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINL and LDSMINAL store to memory with release semantics.
 //     * LDSMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINA", 3, asm.Operands { v0, v1, v2 })
@@ -43232,10 +43458,10 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLB and LDSMINALB store to memory with release semantics.
 //     * LDSMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINAB", 3, asm.Operands { v0, v1, v2 })
@@ -43273,10 +43499,10 @@ func (self *Program) LDSMINAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLH and LDSMINALH store to memory with release semantics.
 //     * LDSMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINAH", 3, asm.Operands { v0, v1, v2 })
@@ -43316,10 +43542,10 @@ func (self *Program) LDSMINAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINL and LDSMINAL store to memory with release semantics.
 //     * LDSMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINAL", 3, asm.Operands { v0, v1, v2 })
@@ -43374,10 +43600,10 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLB and LDSMINALB store to memory with release semantics.
 //     * LDSMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINALB", 3, asm.Operands { v0, v1, v2 })
@@ -43415,10 +43641,10 @@ func (self *Program) LDSMINALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLH and LDSMINALH store to memory with release semantics.
 //     * LDSMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINALH", 3, asm.Operands { v0, v1, v2 })
@@ -43456,10 +43682,10 @@ func (self *Program) LDSMINALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLB and LDSMINALB store to memory with release semantics.
 //     * LDSMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINB", 3, asm.Operands { v0, v1, v2 })
@@ -43497,10 +43723,10 @@ func (self *Program) LDSMINB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLH and LDSMINALH store to memory with release semantics.
 //     * LDSMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINH", 3, asm.Operands { v0, v1, v2 })
@@ -43540,10 +43766,10 @@ func (self *Program) LDSMINH(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINL and LDSMINAL store to memory with release semantics.
 //     * LDSMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINL", 3, asm.Operands { v0, v1, v2 })
@@ -43598,10 +43824,10 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLB and LDSMINALB store to memory with release semantics.
 //     * LDSMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINLB", 3, asm.Operands { v0, v1, v2 })
@@ -43639,10 +43865,10 @@ func (self *Program) LDSMINLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDSMINLH and LDSMINALH store to memory with release semantics.
 //     * LDSMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDSMINLH", 3, asm.Operands { v0, v1, v2 })
@@ -43920,10 +44146,10 @@ func (self *Program) LDTRSW(v0, v1 interface{}) *Instruction {
 //     * LDUMAXL and LDUMAXAL store to memory with release semantics.
 //     * LDUMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAX", 3, asm.Operands { v0, v1, v2 })
@@ -43980,10 +44206,10 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXL and LDUMAXAL store to memory with release semantics.
 //     * LDUMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXA", 3, asm.Operands { v0, v1, v2 })
@@ -44038,10 +44264,10 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLB and LDUMAXALB store to memory with release semantics.
 //     * LDUMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXAB", 3, asm.Operands { v0, v1, v2 })
@@ -44079,10 +44305,10 @@ func (self *Program) LDUMAXAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLH and LDUMAXALH store to memory with release semantics.
 //     * LDUMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXAH", 3, asm.Operands { v0, v1, v2 })
@@ -44122,10 +44348,10 @@ func (self *Program) LDUMAXAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXL and LDUMAXAL store to memory with release semantics.
 //     * LDUMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXAL", 3, asm.Operands { v0, v1, v2 })
@@ -44180,10 +44406,10 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLB and LDUMAXALB store to memory with release semantics.
 //     * LDUMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXALB", 3, asm.Operands { v0, v1, v2 })
@@ -44221,10 +44447,10 @@ func (self *Program) LDUMAXALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLH and LDUMAXALH store to memory with release semantics.
 //     * LDUMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXALH", 3, asm.Operands { v0, v1, v2 })
@@ -44262,10 +44488,10 @@ func (self *Program) LDUMAXALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLB and LDUMAXALB store to memory with release semantics.
 //     * LDUMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXB", 3, asm.Operands { v0, v1, v2 })
@@ -44303,10 +44529,10 @@ func (self *Program) LDUMAXB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLH and LDUMAXALH store to memory with release semantics.
 //     * LDUMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXH", 3, asm.Operands { v0, v1, v2 })
@@ -44346,10 +44572,10 @@ func (self *Program) LDUMAXH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXL and LDUMAXAL store to memory with release semantics.
 //     * LDUMAX has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXL", 3, asm.Operands { v0, v1, v2 })
@@ -44404,10 +44630,10 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLB and LDUMAXALB store to memory with release semantics.
 //     * LDUMAXB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXLB", 3, asm.Operands { v0, v1, v2 })
@@ -44445,10 +44671,10 @@ func (self *Program) LDUMAXLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMAXLH and LDUMAXALH store to memory with release semantics.
 //     * LDUMAXH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMAXLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMAXLH", 3, asm.Operands { v0, v1, v2 })
@@ -44488,10 +44714,10 @@ func (self *Program) LDUMAXLH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINL and LDUMINAL store to memory with release semantics.
 //     * LDUMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMIN", 3, asm.Operands { v0, v1, v2 })
@@ -44548,10 +44774,10 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINL and LDUMINAL store to memory with release semantics.
 //     * LDUMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINA", 3, asm.Operands { v0, v1, v2 })
@@ -44606,10 +44832,10 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLB and LDUMINALB store to memory with release semantics.
 //     * LDUMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINAB", 3, asm.Operands { v0, v1, v2 })
@@ -44647,10 +44873,10 @@ func (self *Program) LDUMINAB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLH and LDUMINALH store to memory with release semantics.
 //     * LDUMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINAH", 3, asm.Operands { v0, v1, v2 })
@@ -44690,10 +44916,10 @@ func (self *Program) LDUMINAH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINL and LDUMINAL store to memory with release semantics.
 //     * LDUMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINAL", 3, asm.Operands { v0, v1, v2 })
@@ -44748,10 +44974,10 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLB and LDUMINALB store to memory with release semantics.
 //     * LDUMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINALB", 3, asm.Operands { v0, v1, v2 })
@@ -44789,10 +45015,10 @@ func (self *Program) LDUMINALB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLH and LDUMINALH store to memory with release semantics.
 //     * LDUMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINALH", 3, asm.Operands { v0, v1, v2 })
@@ -44830,10 +45056,10 @@ func (self *Program) LDUMINALH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLB and LDUMINALB store to memory with release semantics.
 //     * LDUMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINB", 3, asm.Operands { v0, v1, v2 })
@@ -44871,10 +45097,10 @@ func (self *Program) LDUMINB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLH and LDUMINALH store to memory with release semantics.
 //     * LDUMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINH", 3, asm.Operands { v0, v1, v2 })
@@ -44914,10 +45140,10 @@ func (self *Program) LDUMINH(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINL and LDUMINAL store to memory with release semantics.
 //     * LDUMIN has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINL", 3, asm.Operands { v0, v1, v2 })
@@ -44972,10 +45198,10 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLB and LDUMINALB store to memory with release semantics.
 //     * LDUMINB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINLB", 3, asm.Operands { v0, v1, v2 })
@@ -45013,10 +45239,10 @@ func (self *Program) LDUMINLB(v0, v1, v2 interface{}) *Instruction {
 //     * LDUMINLH and LDUMINALH store to memory with release semantics.
 //     * LDUMINH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDUMINLH", 3, asm.Operands { v0, v1, v2 })
@@ -45338,7 +45564,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
 // memory access is atomic. The PE marks the physical address being accessed as an
 // exclusive access. This exclusive access mark is checked by Store Exclusive
 // instructions. See Synchronization and semaphores . For information about memory
-// accesses see Load/Store addressing modes .
+// accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDXR", 2, asm.Operands { v0, v1 })
@@ -45382,7 +45608,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
 // memory access is atomic. The PE marks the physical address being accessed as an
 // exclusive access. This exclusive access mark is checked by Store Exclusive
 // instructions. See Synchronization and semaphores . For information about memory
-// accesses see Load/Store addressing modes .
+// accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDXRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDXRB", 2, asm.Operands { v0, v1 })
@@ -45412,7 +45638,7 @@ func (self *Program) LDXRB(v0, v1 interface{}) *Instruction {
 // memory access is atomic. The PE marks the physical address being accessed as an
 // exclusive access. This exclusive access mark is checked by Store Exclusive
 // instructions. See Synchronization and semaphores . For information about memory
-// accesses see Load/Store addressing modes .
+// accesses, see Load/Store addressing modes .
 //
 func (self *Program) LDXRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDXRH", 2, asm.Operands { v0, v1 })
@@ -47901,10 +48127,11 @@ func (self *Program) PACDZB(v0 interface{}) *Instruction {
 //    PACGA  <Xd>, <Xn>, <Xm|SP>
 //
 // Pointer Authentication Code, using Generic key. This instruction computes the
-// pointer authentication code for an address in the first source register, using a
-// modifier in the second source register, and the Generic key. The computed
-// pointer authentication code is returned in the upper 32 bits of the destination
-// register.
+// pointer authentication code for a 64-bit value in the first source register,
+// using a modifier in the second source register, and the Generic key. The
+// computed pointer authentication code is written to the most significant 32 bits
+// of the destination register, and the least significant 32 bits of the
+// destination register are set to zero.
 //
 func (self *Program) PACGA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("PACGA", 3, asm.Operands { v0, v1, v2 })
@@ -48487,7 +48714,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>{, #<pimm>}]
     if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
-        sa_prfop := uint32(v0.(PrefetchOp))
+        sa_prfop := asBasicPrefetchOp(v0)
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_pimm := uint32(moffs(v1))
         return p.setins(ldst_pos(3, 0, 2, sa_pimm, sa_xn_sp, sa_prfop))
@@ -48495,7 +48722,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     // PRFM  (<prfop>|#<imm5>), <label>
     if isBasicPrf(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
-        sa_prfop := uint32(v0.(PrefetchOp))
+        sa_prfop := asBasicPrefetchOp(v0)
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 { return loadlit(3, 0, rel19(sa_label, pc), sa_prfop) })
     }
@@ -48509,7 +48736,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         var sa_amount uint32
         sa_extend := uint32(0b011)
-        sa_prfop := uint32(v0.(PrefetchOp))
+        sa_prfop := asBasicPrefetchOp(v0)
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_xm := uint32(midx(v1).ID())
         if isMod(mext(v1)) {
@@ -48554,7 +48781,7 @@ func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFUM", 2, asm.Operands { v0, v1 })
     if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
-        sa_prfop := uint32(v0.(PrefetchOp))
+        sa_prfop := asBasicPrefetchOp(v0)
         sa_xn_sp := uint32(mbase(v1).ID())
         sa_simm := uint32(moffs(v1))
         return p.setins(ldst_unscaled(3, 0, 2, sa_simm, sa_xn_sp, sa_prfop))
@@ -48595,25 +48822,10 @@ func (self *Program) PSB(v0 interface{}) *Instruction {
 //
 //    PSSBB
 //
-// Physical Speculative Store Bypass Barrier is a memory barrier which prevents
-// speculative loads from bypassing earlier stores to the same physical address.
-//
-// The semantics of the Physical Speculative Store Bypass Barrier are:
-//
-//     * When a load to a location appears in program order after the PSSBB,
-//       then the load does not speculatively read an entry earlier in the
-//       coherence order for that location than the entry generated by the
-//       latest store satisfying all of the following conditions:
-//
-//         * The store is to the same location as the load.
-//         * The store appears in program order before the PSSBB.
-//
-//     * When a load to a location appears in program order before the PSSBB,
-//       then the load does not speculatively read data from any store
-//       satisfying all of the following conditions:
-//
-//         * The store is to the same location as the load.
-//         * The store appears in program order after the PSSBB.
+// Physical Speculative Store Bypass Barrier is a memory barrier that prevents
+// speculative loads from bypassing earlier stores to the same physical address
+// under certain conditions. For more information and details of the semantics, see
+// Physical Speculative Store Bypass Barrier (PSSBB) .
 //
 func (self *Program) PSSBB() *Instruction {
     p := self.alloc("PSSBB", 0, asm.Operands {})
@@ -51815,7 +52027,7 @@ func (self *Program) RPRFM(v0, v1, v2 interface{}) *Instruction {
        mext(v2) == Basic {
         self.Arch.Require(FEAT_RPRFM)
         p.Domain = asm.DomainGeneric
-        sa_rprfop := v0.(RangePrefetchOp).encode()
+        sa_rprfop := asRangePrefetchOp(v0)
         sa_xm := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
         return p.setins(ldst_regoff(
@@ -57146,7 +57358,7 @@ func (self *Program) SHSUB(v0, v1, v2 interface{}) *Instruction {
 // are not inserted but retain their existing value. Bits shifted out of the left
 // of each vector element in the source register are lost.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.sli_operation_shift_by_3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.sli_operation_shift_by_3.svg]
 // shift left by 3 for an 8-bit vector element
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -62637,7 +62849,7 @@ func (self *Program) SRHADD(v0, v1, v2 interface{}) *Instruction {
 // are not inserted but retain their existing value. Bits shifted out of the right
 // of each vector element of the source register are lost.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.sri_operation_shift_by_3.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.sri_operation_shift_by_3.svg]
 // shift right by 3 for an 8-bit vector element
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -62983,28 +63195,10 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
 //
 //    SSBB
 //
-// Speculative Store Bypass Barrier is a memory barrier which prevents speculative
+// Speculative Store Bypass Barrier is a memory barrier that prevents speculative
 // loads from bypassing earlier stores to the same virtual address under certain
-// conditions.
-//
-// The semantics of the Speculative Store Bypass Barrier are:
-//
-//     * When a load to a location appears in program order after the SSBB,
-//       then the load does not speculatively read an entry earlier in the
-//       coherence order for that location than the entry generated by the
-//       latest store satisfying all of the following conditions:
-//
-//         * The store is to the same location as the load.
-//         * The store uses the same virtual address as the load.
-//         * The store appears in program order before the SSBB.
-//
-//     * When a load to a location appears in program order before the SSBB,
-//       then the load does not speculatively read data from any store
-//       satisfying all of the following conditions:
-//
-//         * The store is to the same location as the load.
-//         * The store uses the same virtual address as the load.
-//         * The store appears in program order after the SSBB.
+// conditions. For more information and details of the semantics, see Speculative
+// Store Bypass Barrier (SSBB) .
 //
 func (self *Program) SSBB() *Instruction {
     p := self.alloc("SSBB", 0, asm.Operands {})
@@ -65401,7 +65595,7 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
 //     * STADDL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADD(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADD", 2, asm.Operands { v0, v1 })
@@ -65440,7 +65634,7 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
 //     * STADDLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDB", 2, asm.Operands { v0, v1 })
@@ -65469,7 +65663,7 @@ func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
 //     * STADDLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDH", 2, asm.Operands { v0, v1 })
@@ -65499,7 +65693,7 @@ func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
 //     * STADDL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDL", 2, asm.Operands { v0, v1 })
@@ -65538,7 +65732,7 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
 //     * STADDLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLB", 2, asm.Operands { v0, v1 })
@@ -65567,7 +65761,7 @@ func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
 //     * STADDLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STADDLH", 2, asm.Operands { v0, v1 })
@@ -65598,7 +65792,7 @@ func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
 //     * STCLRL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLR", 2, asm.Operands { v0, v1 })
@@ -65637,7 +65831,7 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
 //     * STCLRLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRB", 2, asm.Operands { v0, v1 })
@@ -65666,7 +65860,7 @@ func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
 //     * STCLRLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRH", 2, asm.Operands { v0, v1 })
@@ -65697,7 +65891,7 @@ func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
 //     * STCLRL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRL", 2, asm.Operands { v0, v1 })
@@ -65736,7 +65930,7 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
 //     * STCLRLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLB", 2, asm.Operands { v0, v1 })
@@ -65765,7 +65959,7 @@ func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
 //     * STCLRLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STCLRLH", 2, asm.Operands { v0, v1 })
@@ -65795,7 +65989,7 @@ func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
 //     * STEORL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEOR", 2, asm.Operands { v0, v1 })
@@ -65834,7 +66028,7 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
 //     * STEORLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORB", 2, asm.Operands { v0, v1 })
@@ -65863,7 +66057,7 @@ func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
 //     * STEORLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORH", 2, asm.Operands { v0, v1 })
@@ -65893,7 +66087,7 @@ func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
 //     * STEORL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORL", 2, asm.Operands { v0, v1 })
@@ -65932,7 +66126,7 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
 //     * STEORLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLB", 2, asm.Operands { v0, v1 })
@@ -65961,7 +66155,7 @@ func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
 //     * STEORLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STEORLH", 2, asm.Operands { v0, v1 })
@@ -66734,7 +66928,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
 // and returns a status value of 0 if the store was successful, or of 1 if no store
 // was performed. See Synchronization and semaphores . The memory access is atomic.
 // The instruction also has memory ordering semantics as described in Load-Acquire,
-// Store-Release . For information about memory accesses see Load/Store addressing
+// Store-Release . For information about memory accesses, see Load/Store addressing
 // modes .
 //
 // For information about the constrained unpredictable behavior of this
@@ -66787,7 +66981,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
 // status value of 0 if the store was successful, or of 1 if no store was
 // performed. See Synchronization and semaphores . The memory access is atomic. The
 // instruction also has memory ordering semantics as described in Load-Acquire,
-// Store-Release . For information about memory accesses see Load/Store addressing
+// Store-Release . For information about memory accesses, see Load/Store addressing
 // modes .
 //
 // For information about the constrained unpredictable behavior of this
@@ -66824,7 +67018,7 @@ func (self *Program) STLXRB(v0, v1, v2 interface{}) *Instruction {
 // returns a status value of 0 if the store was successful, or of 1 if no store was
 // performed. See Synchronization and semaphores . The memory access is atomic. The
 // instruction also has memory ordering semantics as described in Load-Acquire,
-// Store-Release . For information about memory accesses see Load/Store addressing
+// Store-Release . For information about memory accesses, see Load/Store addressing
 // modes .
 //
 // For information about the constrained unpredictable behavior of this
@@ -67771,7 +67965,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
 //     * STSETL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSET(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSET", 2, asm.Operands { v0, v1 })
@@ -67810,7 +68004,7 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
 //     * STSETLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETB", 2, asm.Operands { v0, v1 })
@@ -67839,7 +68033,7 @@ func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
 //     * STSETLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETH", 2, asm.Operands { v0, v1 })
@@ -67869,7 +68063,7 @@ func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
 //     * STSETL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETL", 2, asm.Operands { v0, v1 })
@@ -67908,7 +68102,7 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
 //     * STSETLB stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLB", 2, asm.Operands { v0, v1 })
@@ -67937,7 +68131,7 @@ func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
 //     * STSETLH stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSETLH", 2, asm.Operands { v0, v1 })
@@ -67968,7 +68162,7 @@ func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
 //     * STSMAXL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAX", 2, asm.Operands { v0, v1 })
@@ -68007,7 +68201,7 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
 //     * STSMAXLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXB", 2, asm.Operands { v0, v1 })
@@ -68037,7 +68231,7 @@ func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
 //     * STSMAXLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXH", 2, asm.Operands { v0, v1 })
@@ -68068,7 +68262,7 @@ func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
 //     * STSMAXL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXL", 2, asm.Operands { v0, v1 })
@@ -68107,7 +68301,7 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
 //     * STSMAXLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLB", 2, asm.Operands { v0, v1 })
@@ -68137,7 +68331,7 @@ func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
 //     * STSMAXLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMAXLH", 2, asm.Operands { v0, v1 })
@@ -68168,7 +68362,7 @@ func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
 //     * STSMINL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMIN", 2, asm.Operands { v0, v1 })
@@ -68207,7 +68401,7 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
 //     * STSMINLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINB", 2, asm.Operands { v0, v1 })
@@ -68237,7 +68431,7 @@ func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
 //     * STSMINLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINH", 2, asm.Operands { v0, v1 })
@@ -68268,7 +68462,7 @@ func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
 //     * STSMINL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINL", 2, asm.Operands { v0, v1 })
@@ -68307,7 +68501,7 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
 //     * STSMINLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLB", 2, asm.Operands { v0, v1 })
@@ -68337,7 +68531,7 @@ func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
 //     * STSMINLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STSMINLH", 2, asm.Operands { v0, v1 })
@@ -68481,7 +68675,7 @@ func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
 //     * STUMAXL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAX", 2, asm.Operands { v0, v1 })
@@ -68520,7 +68714,7 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
 //     * STUMAXLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXB", 2, asm.Operands { v0, v1 })
@@ -68581,7 +68775,7 @@ func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
 //     * STUMAXL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXL", 2, asm.Operands { v0, v1 })
@@ -68620,7 +68814,7 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
 //     * STUMAXLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMAXLB", 2, asm.Operands { v0, v1 })
@@ -68681,7 +68875,7 @@ func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
 //     * STUMINL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMIN", 2, asm.Operands { v0, v1 })
@@ -68721,7 +68915,7 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
 //     * STUMINLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINB", 2, asm.Operands { v0, v1 })
@@ -68751,7 +68945,7 @@ func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
 //     * STUMINLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINH", 2, asm.Operands { v0, v1 })
@@ -68782,7 +68976,7 @@ func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
 //     * STUMINL stores to memory with release semantics, as described in Load-
 //       Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINL", 2, asm.Operands { v0, v1 })
@@ -68822,7 +69016,7 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
 //     * STUMINLB stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLB", 2, asm.Operands { v0, v1 })
@@ -68852,7 +69046,7 @@ func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
 //     * STUMINLH stores to memory with release semantics, as described in
 //       Load-Acquire, Store-Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUMINLH", 2, asm.Operands { v0, v1 })
@@ -69077,7 +69271,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
 // register to memory if the PE has exclusive access to the memory address, and
 // returns a status value of 0 if the store was successful, or of 1 if no store was
 // performed. See Synchronization and semaphores . For information about memory
-// accesses see Load/Store addressing modes .
+// accesses, see Load/Store addressing modes .
 //
 // For information about the constrained unpredictable behavior of this
 // instruction, see Architectural Constraints on UNPREDICTABLE behaviors , and
@@ -69129,7 +69323,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
 // the store was successful, or of 1 if no store was performed. See Synchronization
 // and semaphores . The memory access is atomic.
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 // For information about the constrained unpredictable behavior of this
 // instruction, see Architectural Constraints on UNPREDICTABLE behaviors , and
@@ -69165,7 +69359,7 @@ func (self *Program) STXRB(v0, v1, v2 interface{}) *Instruction {
 // 0 if the store was successful, or of 1 if no store was performed. See
 // Synchronization and semaphores . The memory access is atomic.
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STXRH", 3, asm.Operands { v0, v1, v2 })
@@ -70310,10 +70504,10 @@ func (self *Program) SVC(v0 interface{}) *Instruction {
 //     * SWPL and SWPAL store to memory with release semantics.
 //     * SWP has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWP", 3, asm.Operands { v0, v1, v2 })
@@ -70369,10 +70563,10 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
 //     * SWPL and SWPAL store to memory with release semantics.
 //     * SWP has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPA", 3, asm.Operands { v0, v1, v2 })
@@ -70426,10 +70620,10 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLB and SWPALB store to memory with release semantics.
 //     * SWPB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPAB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPAB", 3, asm.Operands { v0, v1, v2 })
@@ -70467,10 +70661,10 @@ func (self *Program) SWPAB(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLH and SWPALH store to memory with release semantics.
 //     * SWPH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPAH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPAH", 3, asm.Operands { v0, v1, v2 })
@@ -70509,10 +70703,10 @@ func (self *Program) SWPAH(v0, v1, v2 interface{}) *Instruction {
 //     * SWPL and SWPAL store to memory with release semantics.
 //     * SWP has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPAL", 3, asm.Operands { v0, v1, v2 })
@@ -70566,10 +70760,10 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLB and SWPALB store to memory with release semantics.
 //     * SWPB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPALB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPALB", 3, asm.Operands { v0, v1, v2 })
@@ -70607,10 +70801,10 @@ func (self *Program) SWPALB(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLH and SWPALH store to memory with release semantics.
 //     * SWPH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPALH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPALH", 3, asm.Operands { v0, v1, v2 })
@@ -70647,10 +70841,10 @@ func (self *Program) SWPALH(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLB and SWPALB store to memory with release semantics.
 //     * SWPB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPB", 3, asm.Operands { v0, v1, v2 })
@@ -70688,10 +70882,10 @@ func (self *Program) SWPB(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLH and SWPALH store to memory with release semantics.
 //     * SWPH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPH", 3, asm.Operands { v0, v1, v2 })
@@ -70730,10 +70924,10 @@ func (self *Program) SWPH(v0, v1, v2 interface{}) *Instruction {
 //     * SWPL and SWPAL store to memory with release semantics.
 //     * SWP has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPL", 3, asm.Operands { v0, v1, v2 })
@@ -70787,10 +70981,10 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLB and SWPALB store to memory with release semantics.
 //     * SWPB has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPLB(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPLB", 3, asm.Operands { v0, v1, v2 })
@@ -70828,10 +71022,10 @@ func (self *Program) SWPLB(v0, v1, v2 interface{}) *Instruction {
 //     * SWPLH and SWPALH store to memory with release semantics.
 //     * SWPH has neither acquire nor release semantics.
 //
-// For more information about memory ordering semantics see Load-Acquire, Store-
+// For more information about memory ordering semantics, see Load-Acquire, Store-
 // Release .
 //
-// For information about memory accesses see Load/Store addressing modes .
+// For information about memory accesses, see Load/Store addressing modes .
 //
 func (self *Program) SWPLH(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SWPLH", 3, asm.Operands { v0, v1, v2 })
@@ -71794,7 +71988,7 @@ func (self *Program) TRCIT(v0 interface{}) *Instruction {
 // NOTE: 
 //     By using this instruction with TRN2 , a 2 x 2 matrix can be transposed.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.trn1_trn2_doubleword_operation.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.trn1_trn2_doubleword_operation.svg]
 // TRN1 and TRN2 halfword operations where Q = 0
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -71849,7 +72043,7 @@ func (self *Program) TRN1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     By using this instruction with TRN1 , a 2 x 2 matrix can be transposed.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.trn1_trn2_doubleword_operation.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.trn1_trn2_doubleword_operation.svg]
 // TRN1 and TRN2 halfword operations where Q = 0
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -71894,7 +72088,8 @@ func (self *Program) TRN2(v0, v1, v2 interface{}) *Instruction {
 //    TSB CSYNC
 //
 // Trace Synchronization Barrier. This instruction is a barrier that synchronizes
-// the trace operations of instructions.
+// the trace operations of instructions, see Trace Synchronization Buffer (TSB
+// CSYNC) .
 //
 // If FEAT_TRF is not implemented, this instruction executes as a NOP .
 //
@@ -72005,7 +72200,7 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
 // successfully, the destination register is set to zero. If the transaction failed
 // or was canceled, then all state modifications that were performed
 // transactionally are discarded and the destination register is written with a
-// non-zero value that encodes the cause of the failure.
+// nonzero value that encodes the cause of the failure.
 //
 func (self *Program) TSTART(v0 interface{}) *Instruction {
     p := self.alloc("TSTART", 1, asm.Operands { v0 })
@@ -77353,7 +77548,7 @@ func (self *Program) UXTL2(v0, v1 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with UZP2 to de-interleave two vectors.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
 // UZP1 and UZP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -77407,7 +77602,7 @@ func (self *Program) UZP1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with UZP1 to de-interleave two vectors.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.uzp1_uzp2_8_operation_doubleword.svg]
 // UZP1 and UZP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -77816,7 +78011,7 @@ func (self *Program) YIELD() *Instruction {
 // NOTE: 
 //     This instruction can be used with ZIP2 to interleave two vectors.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
 // ZIP1 and ZIP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,
@@ -77870,7 +78065,7 @@ func (self *Program) ZIP1(v0, v1, v2 interface{}) *Instruction {
 // NOTE: 
 //     This instruction can be used with ZIP1 to interleave two vectors.
 //
-// [image:isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
+// [image:isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/A64.zip1_zip2_8_operation_doubleword.svg]
 // ZIP1 and ZIP2 with the arrangement specifier 8B
 //
 // Depending on the settings in the CPACR_EL1 , CPTR_EL2 , and CPTR_EL3 registers,

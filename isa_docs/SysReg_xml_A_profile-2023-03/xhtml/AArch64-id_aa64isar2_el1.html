@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64ISAR2_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64ISAR2_EL1, AArch64 Instruction Set Attribute Register 2</h1><p>The ID_AA64ISAR2_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the features and instructions implemented in AArch64 state.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2>
+        <div class="note"><span class="note-header">Note</span><p>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <span class="arm-defined-word">RES0</span> from EL1, EL2, and EL3.</p></div>
+      <h2>Attributes</h2>
+        <p>ID_AA64ISAR2_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_56">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">CSSC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">RPRFM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">PRFMSLC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">SYSINSTR_128</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">SYSREG_128</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">CLRBHB</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">PAC_frac</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">BC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">MOPS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">APA3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">GPA3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">RPRES</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">WFxT</a></td></tr></tbody></table><h4 id="fieldset_0-63_56">Bits [63:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_52">CSSC, bits [55:52]</h4><div class="field">
+      <p>Indicates support for common short sequence compression instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>CSSC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Common short sequence compression instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Common short sequence compression instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_CSSC</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv9.4, the value <span class="binarynumber">0b0000</span> is not permitted.</p></div><h4 id="fieldset_0-51_48">RPRFM, bits [51:48]</h4><div class="field">
+      <p>RPRFM hint instruction. Defined values are:</p>
+    <table class="valuetable"><tr><th>RPRFM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>RPRFM hint instruction is not implemented and is treated as a NOP.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>RPRFM hint instruction is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_RPRFM</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-47_44">Bits [47:44]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-43_40">PRFMSLC, bits [43:40]</h4><div class="field">
+      <p>Indicates whether the PRFM instructions support a system level cache option. Defined values are:</p>
+    <table class="valuetable"><tr><th>PRFMSLC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The PRFM instructions do not support the SLC target.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The PRFM instructions support the SLC target.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_PRFMSLC implements the functionality identified by <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-39_36">SYSINSTR_128, bits [39:36]</h4><div class="field">
+      <p>SYSINSTR_128. Indicates support for System instructions that can take 128-bit inputs. Defined values are:</p>
+    <table class="valuetable"><tr><th>SYSINSTR_128</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>System instructions that can take 128-bit inputs are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>System instructions that can take 128-bit inputs are supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SYSINSTR128</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-35_32">SYSREG_128, bits [35:32]</h4><div class="field">
+      <p>SYSREG_128. Indicates support for instructions to access 128-bit System Registers. Defined values are:</p>
+    <table class="valuetable"><tr><th>SYSREG_128</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Instructions to access 128-bit System Registers are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Instructions to access 128-bit System Registers are supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SYSREG128</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-31_28">CLRBHB, bits [31:28]</h4><div class="field">
+      <p>Indicates support for the CLRBHB instruction in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>CLRBHB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>CLRBHB instruction is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>CLRBHB instruction is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_CLRBHB</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.9, the value <span class="binarynumber">0b0000</span> is not permitted.</p></div><h4 id="fieldset_0-27_24">PAC_frac, bits [27:24]</h4><div class="field">
+      <p>Indicates whether the ConstPACField() function used as part of the PAC addition returns FALSE or TRUE.</p>
+    <table class="valuetable"><tr><th>PAC_frac</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>ConstPACField() returns FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>ConstPACField() returns TRUE.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_CONSTPACFIELD</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.3, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-23_20">BC, bits [23:20]</h4><div class="field">
+      <p>Indicates support for the BC instruction in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>BC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>BC instruction is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>BC instruction is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_HBC</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.8, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-19_16">MOPS, bits [19:16]</h4><div class="field">
+      <p>Indicates support for the Memory Copy and Memory Set instructions in AArch64 state.</p>
+    <table class="valuetable"><tr><th>MOPS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The Memory Copy and Memory Set instructions are not implemented in AArch64 state.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The Memory Copy and Memory Set instructions are implemented in AArch64 state with the following exception. If <span class="xref">FEAT_MTE</span> is implemented, then SETGP*, SETGM* and SETGE* instructions are also supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_MOPS</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.8, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-15_12">APA3, bits [15:12]</h4><div class="field">
+      <p>Indicates whether the QARMA3 algorithm is implemented in the PE for address authentication in AArch64 state. This applies to all Pointer Authentication instructions other than the <span class="instruction">PACGA</span> instruction. Defined values are:</p>
+    <table class="valuetable"><tr><th>APA3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is implemented, with the HaveEnhancedPAC() and HaveEnhancedPAC2() functions returning FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is implemented, with the HaveEnhancedPAC() function returning TRUE and the HaveEnhancedPAC2() function returning FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is implemented, with the HaveEnhancedPAC2() function returning TRUE, the HaveFPAC() function returning FALSE, the HaveFPACCombined() function returning FALSE, and the HaveEnhancedPAC() function returning FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is implemented, with the HaveEnhancedPAC2() function returning TRUE, the HaveFPAC() function returning TRUE, the HaveFPACCombined() function returning FALSE, and the HaveEnhancedPAC() function returning FALSE.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Address Authentication using the QARMA3 algorithm is implemented, with the HaveEnhancedPAC2() function returning TRUE, the HaveFPAC() function returning TRUE, the HaveFPACCombined() function returning TRUE, and the HaveEnhancedPAC() function returning FALSE.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_PAuth</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_EPAC</span> implements the functionality identified by <span class="binarynumber">0b0010</span>.</p>
+<p><span class="xref">FEAT_PAuth2</span> implements the functionality identified by <span class="binarynumber">0b0011</span>.</p>
+<p><span class="xref">FEAT_FPAC</span> implements the functionality identified by <span class="binarynumber">0b0100</span>.</p>
+<p><span class="xref">FEAT_FPACCOMBINE</span> implements the functionality identified by <span class="binarynumber">0b0101</span>.</p>
+<p>When this field is nonzero, <span class="xref">FEAT_PACQARMA3</span> is implemented.</p>
+<p>In Armv8.3, the permitted values are <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, <span class="binarynumber">0b0010</span>, <span class="binarynumber">0b0011</span>, <span class="binarynumber">0b0100</span>, and <span class="binarynumber">0b0101</span>.</p>
+<p>From Armv8.6, the permitted values are <span class="binarynumber">0b0011</span>, <span class="binarynumber">0b0100</span>, and <span class="binarynumber">0b0101</span>.</p>
+<p>If the value of <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.API is nonzero, or the value of <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.APA is nonzero, this field must have the value <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-11_8">GPA3, bits [11:8]</h4><div class="field">
+      <p>Indicates whether the QARMA3 algorithm is implemented in the PE for generic code authentication in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>GPA3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Generic Authentication using the QARMA3 algorithm is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Generic Authentication using the QARMA3 algorithm is implemented. This includes the <span class="instruction">PACGA</span> instruction.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_PACQARMA3</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.3, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>If the value of <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.GPI is nonzero, or the value of <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.GPA is nonzero, this field must have the value <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-7_4">RPRES, bits [7:4]</h4><div class="field">
+      <p>Indicates support for 12 bits of mantissa in reciprocal and reciprocal square root instructions in AArch64 state, when <a href="AArch64-fpcr.html">FPCR</a>.AH is 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>RPRES</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Reciprocal and reciprocal square root estimates give 8 bits of mantissa, when <a href="AArch64-fpcr.html">FPCR</a>.AH is 1.</p>
+        </td><td>When FPCR.AH == 1</td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Reciprocal and reciprocal square root estimates give 12 bits of mantissa, when <a href="AArch64-fpcr.html">FPCR</a>.AH is 1.</p>
+        </td><td>When FPCR.AH == 1</td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_RPRES</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-3_0">WFxT, bits [3:0]</h4><div class="field">
+      <p>Indicates support for the <span class="instruction">WFET</span> and <span class="instruction">WFIT</span> instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>WFxT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><span class="instruction">WFET</span> and <span class="instruction">WFIT</span> are not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p><span class="instruction">WFET</span> and <span class="instruction">WFIT</span> are supported, and the register number is reported in the ESR_ELx on exceptions.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_WFxT</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.7, the only permitted value is <span class="binarynumber">0b0010</span>.</p></div><div class="access_mechanisms"><h2>Accessing ID_AA64ISAR2_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64ISAR2_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0110</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_AA64ISAR2_EL1) || boolean IMPLEMENTATION_DEFINED "ID_AA64ISAR2_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64ISAR2_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64ISAR2_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64ISAR2_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE access_instruction_defs SYSTEM "instructions.dtd">
+
+<!--
+     ========================================================================
+     Copyright (c) 2015-2023 Arm Limited or its affiliates. All rights reserved.
+
+     This document is Non-Confidential. This document may only be used and
+     distributed in accordance with the terms of the agreement entered into
+     by Arm and the party that Arm delivered this document to.
+
+     The data contained in this document is preliminary and subject to
+     change or correction following further review.
+     ========================================================================
+-->
+
+<access_instruction_defs>
+  <access_instruction_def execution_state="AArch64" id="MRS">
+    <name>MRS</name>
+    <access_type type="read"/>
+    <access_syntax name="MRS">
+      <var n="Xt"/>
+      <var n="systemreg"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="MSR_reg">
+    <name>MSR (register)</name>
+    <access_type type="write"/>
+    <access_syntax name="MSR">
+      <var n="systemreg"/>
+      <var n="Xt"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="MSR_imm">
+    <name>MSR (immediate)</name>
+    <access_type type="modify"/>
+    <access_syntax name="MSR">
+      <var n="pstatefield"/>
+      <var n="imm" t="immediate"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="IC_SYS">
+    <name>IC</name>
+    <access_syntax name="IC">
+      <var n="ic_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="IC" variant="no_input">
+      <var n="ic_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="DC_SYS">
+    <name>DC</name>
+    <access_syntax name="DC">
+      <var n="dc_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="DC" variant="no_input">
+      <var n="dc_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="AT_SYS">
+    <name>AT</name>
+    <access_syntax name="AT">
+      <var n="at_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="AT" variant="no_input">
+      <var n="at_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="TLBI_SYS">
+    <name>TLBI</name>
+    <access_syntax name="TLBI">
+      <var n="tlbi_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="TLBI" variant="no_input">
+      <var n="tlbi_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="CFP_SYS">
+    <name>CFP</name>
+    <access_syntax name="CFP">
+      <var n="cfp_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="CFP" variant="no_input">
+      <var n="cfp_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="CPP_SYS">
+    <name>CPP</name>
+    <access_syntax name="CPP">
+      <var n="cpp_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="CPP" variant="no_input">
+      <var n="cpp_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="DVP_SYS">
+    <name>DVP</name>
+    <access_syntax name="DVP">
+      <var n="dvp_op"/>
+      <var n="Xt"/>
+    </access_syntax>
+    <access_syntax name="DVP" variant="no_input">
+      <var n="dvp_op"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="SYS">
+    <name>SYS</name>
+    <access_syntax name="SYS">
+      <var n="op1"/>
+      <var n="Cn" prefix="C"/>
+      <var n="Cm" prefix="C"/>
+      <var n="op2"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch64" id="SYSL">
+    <name>SYSL</name>
+    <access_syntax name="SYSL">
+      <var n="op1"/>
+      <var n="Cn" prefix="C"/>
+      <var n="Cm" prefix="C"/>
+      <var n="op2"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MRS_br">
+    <name>MRS (banked register)</name>
+    <access_type type="read"/>
+    <access_syntax name="MRS">
+      <var n="Rd"/>
+      <var n="banked_reg"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MSR_br">
+    <name>MSR (banked register)</name>
+    <access_type type="write"/>
+    <access_syntax name="MSR">
+      <var n="banked_reg"/>
+      <var n="Rd"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MRC">
+    <name>MRC</name>
+    <access_type type="read"/>
+    <access_syntax name="MRC">
+      <var n="syntax">
+        <var n="coproc" prefix="p"/>
+        <var n="opc1"/>
+        <var n="Rt"/>
+        <var n="CRn" prefix="c"/>
+        <var n="CRm" prefix="c"/>
+        <var n="opc2"/>
+      </var>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MCR">
+    <name>MCR</name>
+    <access_type type="write"/>
+    <access_syntax name="MCR">
+      <var n="syntax">
+        <var n="coproc" prefix="p"/>
+        <var n="opc1"/>
+        <var n="Rt"/>
+        <var n="CRn" prefix="c"/>
+        <var n="CRm" prefix="c"/>
+        <var n="opc2"/>
+      </var>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MRRC">
+    <name>MRRC</name>
+    <access_type type="read"/>
+    <access_syntax name="MRRC">
+      <var n="syntax">
+        <var n="coproc" prefix="p"/>
+        <var n="opc1"/>
+        <var n="Rt"/>
+        <var n="Rt2"/>
+        <var n="CRm" prefix="c"/>
+      </var>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="MCRR">
+    <name>MCRR</name>
+    <access_type type="write"/>
+    <access_syntax name="MCRR">
+      <var n="syntax">
+        <var n="coproc" prefix="p"/>
+        <var n="opc1"/>
+        <var n="Rt"/>
+        <var n="Rt2"/>
+        <var n="CRm" prefix="c"/>
+      </var>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="VMRS">
+    <name>VMRS</name>
+    <access_type type="read"/>
+    <access_syntax name="VMRS">
+      <var n="Rt"/>
+      <var n="spec_reg"/>
+    </access_syntax>
+  </access_instruction_def>
+  <access_instruction_def execution_state="AArch32" id="VMSR">
+    <name>VMSR</name>
+    <access_type type="write"/>
+    <access_syntax name="VMSR">
+      <var n="spec_reg"/>
+      <var n="Rt"/>
+    </access_syntax>
+  </access_instruction_def>
+</access_instruction_defs>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE register_index SYSTEM 'reg_alphaindex.dtd'>
+<!--Copyright (c) 2010-2017 ARM Limited or its affiliates. All rights reserved.-->
+<!--This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by ARM and the party that ARM delivered this document to.-->
+<!--The data contained in this document is preliminary and subject to change or correction following further review.-->
+<?xml-stylesheet href="reg_alphaindex.xsl" type="text/xsl"?>
+<register_index>
+  <toptitle architecture="AArch64 Instructions"/>
+  <register_links title="AArch64 System Instructions">
+    <register_link heading="AT S12E0R" id="AT S12E0R" registerfile="AArch64-at-s12e0r.xml">Address Translate Stages 1 and 2 EL0 Read</register_link>
+    <register_link heading="AT S12E0W" id="AT S12E0W" registerfile="AArch64-at-s12e0w.xml">Address Translate Stages 1 and 2 EL0 Write</register_link>
+    <register_link heading="AT S12E1R" id="AT S12E1R" registerfile="AArch64-at-s12e1r.xml">Address Translate Stages 1 and 2 EL1 Read</register_link>
+    <register_link heading="AT S12E1W" id="AT S12E1W" registerfile="AArch64-at-s12e1w.xml">Address Translate Stages 1 and 2 EL1 Write</register_link>
+    <register_link heading="AT S1E0R" id="AT S1E0R" registerfile="AArch64-at-s1e0r.xml">Address Translate Stage 1 EL0 Read</register_link>
+    <register_link heading="AT S1E0W" id="AT S1E0W" registerfile="AArch64-at-s1e0w.xml">Address Translate Stage 1 EL0 Write</register_link>
+    <register_link heading="AT S1E1R" id="AT S1E1R" registerfile="AArch64-at-s1e1r.xml">Address Translate Stage 1 EL1 Read</register_link>
+    <register_link heading="AT S1E1RP" id="AT S1E1RP" registerfile="AArch64-at-s1e1rp.xml">Address Translate Stage 1 EL1 Read PAN</register_link>
+    <register_link heading="AT S1E1W" id="AT S1E1W" registerfile="AArch64-at-s1e1w.xml">Address Translate Stage 1 EL1 Write</register_link>
+    <register_link heading="AT S1E1WP" id="AT S1E1WP" registerfile="AArch64-at-s1e1wp.xml">Address Translate Stage 1 EL1 Write PAN</register_link>
+    <register_link heading="AT S1E2R" id="AT S1E2R" registerfile="AArch64-at-s1e2r.xml">Address Translate Stage 1 EL2 Read</register_link>
+    <register_link heading="AT S1E2W" id="AT S1E2W" registerfile="AArch64-at-s1e2w.xml">Address Translate Stage 1 EL2 Write</register_link>
+    <register_link heading="AT S1E3R" id="AT S1E3R" registerfile="AArch64-at-s1e3r.xml">Address Translate Stage 1 EL3 Read</register_link>
+    <register_link heading="AT S1E3W" id="AT S1E3W" registerfile="AArch64-at-s1e3w.xml">Address Translate Stage 1 EL3 Write</register_link>
+    <register_link heading="BRB IALL" id="BRB IALL" registerfile="AArch64-brb-iall.xml">Invalidate the Branch Record Buffer</register_link>
+    <register_link heading="BRB INJ" id="BRB INJ" registerfile="AArch64-brb-inj.xml">Branch Record Injection into the Branch Record Buffer</register_link>
+    <register_link heading="CFP RCTX" id="CFP RCTX" registerfile="AArch64-cfp-rctx.xml">Control Flow Prediction Restriction by Context</register_link>
+    <register_link heading="COSP RCTX" id="COSP RCTX" registerfile="AArch64-cosp-rctx.xml">Clear Other Speculative Restriction by Context</register_link>
+    <register_link heading="CPP RCTX" id="CPP RCTX" registerfile="AArch64-cpp-rctx.xml">Cache Prefetch Prediction Restriction by Context</register_link>
+    <register_link heading="DC CGDSW" id="DC CGDSW" registerfile="AArch64-dc-cgdsw.xml">Clean of Data and Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC CGDVAC" id="DC CGDVAC" registerfile="AArch64-dc-cgdvac.xml">Clean of Data and Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC CGDVADP" id="DC CGDVADP" registerfile="AArch64-dc-cgdvadp.xml">Clean of Data and Allocation Tags by VA to PoDP</register_link>
+    <register_link heading="DC CGDVAP" id="DC CGDVAP" registerfile="AArch64-dc-cgdvap.xml">Clean of Data and Allocation Tags by VA to PoP</register_link>
+    <register_link heading="DC CGSW" id="DC CGSW" registerfile="AArch64-dc-cgsw.xml">Clean of Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC CGVAC" id="DC CGVAC" registerfile="AArch64-dc-cgvac.xml">Clean of Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC CGVADP" id="DC CGVADP" registerfile="AArch64-dc-cgvadp.xml">Clean of Allocation Tags by VA to PoDP</register_link>
+    <register_link heading="DC CGVAP" id="DC CGVAP" registerfile="AArch64-dc-cgvap.xml">Clean of Allocation Tags by VA to PoP</register_link>
+    <register_link heading="DC CIGDPAE" id="DC CIGDPAE" registerfile="AArch64-dc-cigdpae.xml">Clean and invalidate of data and allocation tags by PA to PoE</register_link>
+    <register_link heading="DC CIGDPAPA" id="DC CIGDPAPA" registerfile="AArch64-dc-cigdpapa.xml">Clean and Invalidate of Data and Allocation Tags by PA to PoPA</register_link>
+    <register_link heading="DC CIGDSW" id="DC CIGDSW" registerfile="AArch64-dc-cigdsw.xml">Clean and Invalidate of Data and Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC CIGDVAC" id="DC CIGDVAC" registerfile="AArch64-dc-cigdvac.xml">Clean and Invalidate of Data and Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC CIGSW" id="DC CIGSW" registerfile="AArch64-dc-cigsw.xml">Clean and Invalidate of Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC CIGVAC" id="DC CIGVAC" registerfile="AArch64-dc-cigvac.xml">Clean and Invalidate of Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC CIPAE" id="DC CIPAE" registerfile="AArch64-dc-cipae.xml">Data or unified Cache line Clean and Invalidate by PA to PoE</register_link>
+    <register_link heading="DC CIPAPA" id="DC CIPAPA" registerfile="AArch64-dc-cipapa.xml">Data or unified Cache line Clean and Invalidate by PA to PoPA</register_link>
+    <register_link heading="DC CISW" id="DC CISW" registerfile="AArch64-dc-cisw.xml">Data or unified Cache line Clean and Invalidate by Set/Way</register_link>
+    <register_link heading="DC CIVAC" id="DC CIVAC" registerfile="AArch64-dc-civac.xml">Data or unified Cache line Clean and Invalidate by VA to PoC</register_link>
+    <register_link heading="DC CSW" id="DC CSW" registerfile="AArch64-dc-csw.xml">Data or unified Cache line Clean by Set/Way</register_link>
+    <register_link heading="DC CVAC" id="DC CVAC" registerfile="AArch64-dc-cvac.xml">Data or unified Cache line Clean by VA to PoC</register_link>
+    <register_link heading="DC CVADP" id="DC CVADP" registerfile="AArch64-dc-cvadp.xml">Data or unified Cache line Clean by VA to PoDP</register_link>
+    <register_link heading="DC CVAP" id="DC CVAP" registerfile="AArch64-dc-cvap.xml">Data or unified Cache line Clean by VA to PoP</register_link>
+    <register_link heading="DC CVAU" id="DC CVAU" registerfile="AArch64-dc-cvau.xml">Data or unified Cache line Clean by VA to PoU</register_link>
+    <register_link heading="DC GVA" id="DC GVA" registerfile="AArch64-dc-gva.xml">Data Cache set Allocation Tag by VA</register_link>
+    <register_link heading="DC GZVA" id="DC GZVA" registerfile="AArch64-dc-gzva.xml">Data Cache set Allocation Tags and Zero by VA</register_link>
+    <register_link heading="DC IGDSW" id="DC IGDSW" registerfile="AArch64-dc-igdsw.xml">Invalidate of Data and Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC IGDVAC" id="DC IGDVAC" registerfile="AArch64-dc-igdvac.xml">Invalidate of Data and Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC IGSW" id="DC IGSW" registerfile="AArch64-dc-igsw.xml">Invalidate of Allocation Tags by Set/Way</register_link>
+    <register_link heading="DC IGVAC" id="DC IGVAC" registerfile="AArch64-dc-igvac.xml">Invalidate of Allocation Tags by VA to PoC</register_link>
+    <register_link heading="DC ISW" id="DC ISW" registerfile="AArch64-dc-isw.xml">Data or unified Cache line Invalidate by Set/Way</register_link>
+    <register_link heading="DC IVAC" id="DC IVAC" registerfile="AArch64-dc-ivac.xml">Data or unified Cache line Invalidate by VA to PoC</register_link>
+    <register_link heading="DC ZVA" id="DC ZVA" registerfile="AArch64-dc-zva.xml">Data Cache Zero by VA</register_link>
+    <register_link heading="DVP RCTX" id="DVP RCTX" registerfile="AArch64-dvp-rctx.xml">Data Value Prediction Restriction by Context</register_link>
+    <register_link heading="GCSPOPCX" id="GCSPOPCX" registerfile="AArch64-gcspopcx.xml">Guarded Control Stack Pop and Compare exception return record</register_link>
+    <register_link heading="GCSPOPM" id="GCSPOPM" registerfile="AArch64-gcspopm.xml">Guarded Control Stack Pop</register_link>
+    <register_link heading="GCSPOPX" id="GCSPOPX" registerfile="AArch64-gcspopx.xml">Guarded Control Stack Pop exception return record</register_link>
+    <register_link heading="GCSPUSHM" id="GCSPUSHM" registerfile="AArch64-gcspushm.xml">Guarded Control Stack Push</register_link>
+    <register_link heading="GCSPUSHX" id="GCSPUSHX" registerfile="AArch64-gcspushx.xml">Guarded Control Stack Push exception return record</register_link>
+    <register_link heading="GCSSS1" id="GCSSS1" registerfile="AArch64-gcsss1.xml">Guarded Control Stack Switch Stack 1</register_link>
+    <register_link heading="GCSSS2" id="GCSSS2" registerfile="AArch64-gcsss2.xml">Guarded Control Stack Switch Stack 2</register_link>
+    <register_link heading="IC IALLU" id="IC IALLU" registerfile="AArch64-ic-iallu.xml">Instruction Cache Invalidate All to PoU</register_link>
+    <register_link heading="IC IALLUIS" id="IC IALLUIS" registerfile="AArch64-ic-ialluis.xml">Instruction Cache Invalidate All to PoU, Inner Shareable</register_link>
+    <register_link heading="IC IVAU" id="IC IVAU" registerfile="AArch64-ic-ivau.xml">Instruction Cache line Invalidate by VA to PoU</register_link>
+    <register_link heading="SYS S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;, SYSL S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;, SYSP S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;" id="SYS S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;, SYSL S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;, SYSP S1_&lt;op1&gt;_&lt;Cn&gt;_&lt;Cm&gt;_&lt;op2&gt;" registerfile="AArch64-s1_op1_cn_cm_op2.xml">IMPLEMENTATION DEFINED maintenance instructions</register_link>
+    <register_link heading="TLBI ALLE1, TLBI ALLE1NXS" id="TLBI ALLE1, TLBI ALLE1NXS" registerfile="AArch64-tlbi-alle1.xml">TLB Invalidate All, EL1</register_link>
+    <register_link heading="TLBI ALLE1IS, TLBI ALLE1ISNXS" id="TLBI ALLE1IS, TLBI ALLE1ISNXS" registerfile="AArch64-tlbi-alle1is.xml">TLB Invalidate All, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI ALLE1OS, TLBI ALLE1OSNXS" id="TLBI ALLE1OS, TLBI ALLE1OSNXS" registerfile="AArch64-tlbi-alle1os.xml">TLB Invalidate All, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI ALLE2, TLBI ALLE2NXS" id="TLBI ALLE2, TLBI ALLE2NXS" registerfile="AArch64-tlbi-alle2.xml">TLB Invalidate All, EL2</register_link>
+    <register_link heading="TLBI ALLE2IS, TLBI ALLE2ISNXS" id="TLBI ALLE2IS, TLBI ALLE2ISNXS" registerfile="AArch64-tlbi-alle2is.xml">TLB Invalidate All, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBI ALLE2OS, TLBI ALLE2OSNXS" id="TLBI ALLE2OS, TLBI ALLE2OSNXS" registerfile="AArch64-tlbi-alle2os.xml">TLB Invalidate All, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBI ALLE3, TLBI ALLE3NXS" id="TLBI ALLE3, TLBI ALLE3NXS" registerfile="AArch64-tlbi-alle3.xml">TLB Invalidate All, EL3</register_link>
+    <register_link heading="TLBI ALLE3IS, TLBI ALLE3ISNXS" id="TLBI ALLE3IS, TLBI ALLE3ISNXS" registerfile="AArch64-tlbi-alle3is.xml">TLB Invalidate All, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBI ALLE3OS, TLBI ALLE3OSNXS" id="TLBI ALLE3OS, TLBI ALLE3OSNXS" registerfile="AArch64-tlbi-alle3os.xml">TLB Invalidate All, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBI ASIDE1, TLBI ASIDE1NXS" id="TLBI ASIDE1, TLBI ASIDE1NXS" registerfile="AArch64-tlbi-aside1.xml">TLB Invalidate by ASID, EL1</register_link>
+    <register_link heading="TLBI ASIDE1IS, TLBI ASIDE1ISNXS" id="TLBI ASIDE1IS, TLBI ASIDE1ISNXS" registerfile="AArch64-tlbi-aside1is.xml">TLB Invalidate by ASID, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI ASIDE1OS, TLBI ASIDE1OSNXS" id="TLBI ASIDE1OS, TLBI ASIDE1OSNXS" registerfile="AArch64-tlbi-aside1os.xml">TLB Invalidate by ASID, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI IPAS2E1, TLBI IPAS2E1NXS" id="TLBI IPAS2E1, TLBI IPAS2E1NXS" registerfile="AArch64-tlbi-ipas2e1.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, EL1</register_link>
+    <register_link heading="TLBI IPAS2E1IS, TLBI IPAS2E1ISNXS" id="TLBI IPAS2E1IS, TLBI IPAS2E1ISNXS" registerfile="AArch64-tlbi-ipas2e1is.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI IPAS2E1OS, TLBI IPAS2E1OSNXS" id="TLBI IPAS2E1OS, TLBI IPAS2E1OSNXS" registerfile="AArch64-tlbi-ipas2e1os.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI IPAS2LE1, TLBI IPAS2LE1NXS" id="TLBI IPAS2LE1, TLBI IPAS2LE1NXS" registerfile="AArch64-tlbi-ipas2le1.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1</register_link>
+    <register_link heading="TLBI IPAS2LE1IS, TLBI IPAS2LE1ISNXS" id="TLBI IPAS2LE1IS, TLBI IPAS2LE1ISNXS" registerfile="AArch64-tlbi-ipas2le1is.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI IPAS2LE1OS, TLBI IPAS2LE1OSNXS" id="TLBI IPAS2LE1OS, TLBI IPAS2LE1OSNXS" registerfile="AArch64-tlbi-ipas2le1os.xml">TLB Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI PAALL" id="TLBI PAALL" registerfile="AArch64-tlbi-paall.xml">TLB Invalidate GPT Information by PA, All Entries, Local</register_link>
+    <register_link heading="TLBI PAALLOS" id="TLBI PAALLOS" registerfile="AArch64-tlbi-paallos.xml">TLB Invalidate GPT Information by PA, All Entries, Outer Shareable</register_link>
+    <register_link heading="TLBI RIPAS2E1, TLBI RIPAS2E1NXS" id="TLBI RIPAS2E1, TLBI RIPAS2E1NXS" registerfile="AArch64-tlbi-ripas2e1.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1</register_link>
+    <register_link heading="TLBI RIPAS2E1IS, TLBI RIPAS2E1ISNXS" id="TLBI RIPAS2E1IS, TLBI RIPAS2E1ISNXS" registerfile="AArch64-tlbi-ripas2e1is.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RIPAS2E1OS, TLBI RIPAS2E1OSNXS" id="TLBI RIPAS2E1OS, TLBI RIPAS2E1OSNXS" registerfile="AArch64-tlbi-ripas2e1os.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RIPAS2LE1, TLBI RIPAS2LE1NXS" id="TLBI RIPAS2LE1, TLBI RIPAS2LE1NXS" registerfile="AArch64-tlbi-ripas2le1.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1</register_link>
+    <register_link heading="TLBI RIPAS2LE1IS, TLBI RIPAS2LE1ISNXS" id="TLBI RIPAS2LE1IS, TLBI RIPAS2LE1ISNXS" registerfile="AArch64-tlbi-ripas2le1is.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RIPAS2LE1OS, TLBI RIPAS2LE1OSNXS" id="TLBI RIPAS2LE1OS, TLBI RIPAS2LE1OSNXS" registerfile="AArch64-tlbi-ripas2le1os.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RPALOS" id="TLBI RPALOS" registerfile="AArch64-tlbi-rpalos.xml">TLB Range Invalidate GPT Information by PA, Last level, Outer Shareable</register_link>
+    <register_link heading="TLBI RPAOS" id="TLBI RPAOS" registerfile="AArch64-tlbi-rpaos.xml">TLB Range Invalidate GPT Information by PA, Outer Shareable</register_link>
+    <register_link heading="TLBI RVAAE1, TLBI RVAAE1NXS" id="TLBI RVAAE1, TLBI RVAAE1NXS" registerfile="AArch64-tlbi-rvaae1.xml">TLB Range Invalidate by VA, All ASID, EL1</register_link>
+    <register_link heading="TLBI RVAAE1IS, TLBI RVAAE1ISNXS" id="TLBI RVAAE1IS, TLBI RVAAE1ISNXS" registerfile="AArch64-tlbi-rvaae1is.xml">TLB Range Invalidate by VA, All ASID, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RVAAE1OS, TLBI RVAAE1OSNXS" id="TLBI RVAAE1OS, TLBI RVAAE1OSNXS" registerfile="AArch64-tlbi-rvaae1os.xml">TLB Range Invalidate by VA, All ASID, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RVAALE1, TLBI RVAALE1NXS" id="TLBI RVAALE1, TLBI RVAALE1NXS" registerfile="AArch64-tlbi-rvaale1.xml">TLB Range Invalidate by VA, All ASID, Last level, EL1</register_link>
+    <register_link heading="TLBI RVAALE1IS, TLBI RVAALE1ISNXS" id="TLBI RVAALE1IS, TLBI RVAALE1ISNXS" registerfile="AArch64-tlbi-rvaale1is.xml">TLB Range Invalidate by VA, All ASID, Last Level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RVAALE1OS, TLBI RVAALE1OSNXS" id="TLBI RVAALE1OS, TLBI RVAALE1OSNXS" registerfile="AArch64-tlbi-rvaale1os.xml">TLB Range Invalidate by VA, All ASID, Last Level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RVAE1, TLBI RVAE1NXS" id="TLBI RVAE1, TLBI RVAE1NXS" registerfile="AArch64-tlbi-rvae1.xml">TLB Range Invalidate by VA, EL1</register_link>
+    <register_link heading="TLBI RVAE1IS, TLBI RVAE1ISNXS" id="TLBI RVAE1IS, TLBI RVAE1ISNXS" registerfile="AArch64-tlbi-rvae1is.xml">TLB Range Invalidate by VA, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RVAE1OS, TLBI RVAE1OSNXS" id="TLBI RVAE1OS, TLBI RVAE1OSNXS" registerfile="AArch64-tlbi-rvae1os.xml">TLB Range Invalidate by VA, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RVAE2, TLBI RVAE2NXS" id="TLBI RVAE2, TLBI RVAE2NXS" registerfile="AArch64-tlbi-rvae2.xml">TLB Range Invalidate by VA, EL2</register_link>
+    <register_link heading="TLBI RVAE2IS, TLBI RVAE2ISNXS" id="TLBI RVAE2IS, TLBI RVAE2ISNXS" registerfile="AArch64-tlbi-rvae2is.xml">TLB Range Invalidate by VA, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBI RVAE2OS, TLBI RVAE2OSNXS" id="TLBI RVAE2OS, TLBI RVAE2OSNXS" registerfile="AArch64-tlbi-rvae2os.xml">TLB Range Invalidate by VA, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBI RVAE3, TLBI RVAE3NXS" id="TLBI RVAE3, TLBI RVAE3NXS" registerfile="AArch64-tlbi-rvae3.xml">TLB Range Invalidate by VA, EL3</register_link>
+    <register_link heading="TLBI RVAE3IS, TLBI RVAE3ISNXS" id="TLBI RVAE3IS, TLBI RVAE3ISNXS" registerfile="AArch64-tlbi-rvae3is.xml">TLB Range Invalidate by VA, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBI RVAE3OS, TLBI RVAE3OSNXS" id="TLBI RVAE3OS, TLBI RVAE3OSNXS" registerfile="AArch64-tlbi-rvae3os.xml">TLB Range Invalidate by VA, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBI RVALE1, TLBI RVALE1NXS" id="TLBI RVALE1, TLBI RVALE1NXS" registerfile="AArch64-tlbi-rvale1.xml">TLB Range Invalidate by VA, Last level, EL1</register_link>
+    <register_link heading="TLBI RVALE1IS, TLBI RVALE1ISNXS" id="TLBI RVALE1IS, TLBI RVALE1ISNXS" registerfile="AArch64-tlbi-rvale1is.xml">TLB Range Invalidate by VA, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI RVALE1OS, TLBI RVALE1OSNXS" id="TLBI RVALE1OS, TLBI RVALE1OSNXS" registerfile="AArch64-tlbi-rvale1os.xml">TLB Range Invalidate by VA, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI RVALE2, TLBI RVALE2NXS" id="TLBI RVALE2, TLBI RVALE2NXS" registerfile="AArch64-tlbi-rvale2.xml">TLB Range Invalidate by VA, Last level, EL2</register_link>
+    <register_link heading="TLBI RVALE2IS, TLBI RVALE2ISNXS" id="TLBI RVALE2IS, TLBI RVALE2ISNXS" registerfile="AArch64-tlbi-rvale2is.xml">TLB Range Invalidate by VA, Last level, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBI RVALE2OS, TLBI RVALE2OSNXS" id="TLBI RVALE2OS, TLBI RVALE2OSNXS" registerfile="AArch64-tlbi-rvale2os.xml">TLB Range Invalidate by VA, Last level, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBI RVALE3, TLBI RVALE3NXS" id="TLBI RVALE3, TLBI RVALE3NXS" registerfile="AArch64-tlbi-rvale3.xml">TLB Range Invalidate by VA, Last level, EL3</register_link>
+    <register_link heading="TLBI RVALE3IS, TLBI RVALE3ISNXS" id="TLBI RVALE3IS, TLBI RVALE3ISNXS" registerfile="AArch64-tlbi-rvale3is.xml">TLB Range Invalidate by VA, Last level, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBI RVALE3OS, TLBI RVALE3OSNXS" id="TLBI RVALE3OS, TLBI RVALE3OSNXS" registerfile="AArch64-tlbi-rvale3os.xml">TLB Range Invalidate by VA, Last level, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBI VAAE1, TLBI VAAE1NXS" id="TLBI VAAE1, TLBI VAAE1NXS" registerfile="AArch64-tlbi-vaae1.xml">TLB Invalidate by VA, All ASID, EL1</register_link>
+    <register_link heading="TLBI VAAE1IS, TLBI VAAE1ISNXS" id="TLBI VAAE1IS, TLBI VAAE1ISNXS" registerfile="AArch64-tlbi-vaae1is.xml">TLB Invalidate by VA, All ASID, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VAAE1OS, TLBI VAAE1OSNXS" id="TLBI VAAE1OS, TLBI VAAE1OSNXS" registerfile="AArch64-tlbi-vaae1os.xml">TLB Invalidate by VA, All ASID, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI VAALE1, TLBI VAALE1NXS" id="TLBI VAALE1, TLBI VAALE1NXS" registerfile="AArch64-tlbi-vaale1.xml">TLB Invalidate by VA, All ASID, Last level, EL1</register_link>
+    <register_link heading="TLBI VAALE1IS, TLBI VAALE1ISNXS" id="TLBI VAALE1IS, TLBI VAALE1ISNXS" registerfile="AArch64-tlbi-vaale1is.xml">TLB Invalidate by VA, All ASID, Last Level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VAALE1OS, TLBI VAALE1OSNXS" id="TLBI VAALE1OS, TLBI VAALE1OSNXS" registerfile="AArch64-tlbi-vaale1os.xml">TLB Invalidate by VA, All ASID, Last Level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI VAE1, TLBI VAE1NXS" id="TLBI VAE1, TLBI VAE1NXS" registerfile="AArch64-tlbi-vae1.xml">TLB Invalidate by VA, EL1</register_link>
+    <register_link heading="TLBI VAE1IS, TLBI VAE1ISNXS" id="TLBI VAE1IS, TLBI VAE1ISNXS" registerfile="AArch64-tlbi-vae1is.xml">TLB Invalidate by VA, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VAE1OS, TLBI VAE1OSNXS" id="TLBI VAE1OS, TLBI VAE1OSNXS" registerfile="AArch64-tlbi-vae1os.xml">TLB Invalidate by VA, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI VAE2, TLBI VAE2NXS" id="TLBI VAE2, TLBI VAE2NXS" registerfile="AArch64-tlbi-vae2.xml">TLB Invalidate by VA, EL2</register_link>
+    <register_link heading="TLBI VAE2IS, TLBI VAE2ISNXS" id="TLBI VAE2IS, TLBI VAE2ISNXS" registerfile="AArch64-tlbi-vae2is.xml">TLB Invalidate by VA, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBI VAE2OS, TLBI VAE2OSNXS" id="TLBI VAE2OS, TLBI VAE2OSNXS" registerfile="AArch64-tlbi-vae2os.xml">TLB Invalidate by VA, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBI VAE3, TLBI VAE3NXS" id="TLBI VAE3, TLBI VAE3NXS" registerfile="AArch64-tlbi-vae3.xml">TLB Invalidate by VA, EL3</register_link>
+    <register_link heading="TLBI VAE3IS, TLBI VAE3ISNXS" id="TLBI VAE3IS, TLBI VAE3ISNXS" registerfile="AArch64-tlbi-vae3is.xml">TLB Invalidate by VA, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBI VAE3OS, TLBI VAE3OSNXS" id="TLBI VAE3OS, TLBI VAE3OSNXS" registerfile="AArch64-tlbi-vae3os.xml">TLB Invalidate by VA, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBI VALE1, TLBI VALE1NXS" id="TLBI VALE1, TLBI VALE1NXS" registerfile="AArch64-tlbi-vale1.xml">TLB Invalidate by VA, Last level, EL1</register_link>
+    <register_link heading="TLBI VALE1IS, TLBI VALE1ISNXS" id="TLBI VALE1IS, TLBI VALE1ISNXS" registerfile="AArch64-tlbi-vale1is.xml">TLB Invalidate by VA, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VALE1OS, TLBI VALE1OSNXS" id="TLBI VALE1OS, TLBI VALE1OSNXS" registerfile="AArch64-tlbi-vale1os.xml">TLB Invalidate by VA, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI VALE2, TLBI VALE2NXS" id="TLBI VALE2, TLBI VALE2NXS" registerfile="AArch64-tlbi-vale2.xml">TLB Invalidate by VA, Last level, EL2</register_link>
+    <register_link heading="TLBI VALE2IS, TLBI VALE2ISNXS" id="TLBI VALE2IS, TLBI VALE2ISNXS" registerfile="AArch64-tlbi-vale2is.xml">TLB Invalidate by VA, Last level, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBI VALE2OS, TLBI VALE2OSNXS" id="TLBI VALE2OS, TLBI VALE2OSNXS" registerfile="AArch64-tlbi-vale2os.xml">TLB Invalidate by VA, Last level, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBI VALE3, TLBI VALE3NXS" id="TLBI VALE3, TLBI VALE3NXS" registerfile="AArch64-tlbi-vale3.xml">TLB Invalidate by VA, Last level, EL3</register_link>
+    <register_link heading="TLBI VALE3IS, TLBI VALE3ISNXS" id="TLBI VALE3IS, TLBI VALE3ISNXS" registerfile="AArch64-tlbi-vale3is.xml">TLB Invalidate by VA, Last level, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBI VALE3OS, TLBI VALE3OSNXS" id="TLBI VALE3OS, TLBI VALE3OSNXS" registerfile="AArch64-tlbi-vale3os.xml">TLB Invalidate by VA, Last level, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBI VMALLE1, TLBI VMALLE1NXS" id="TLBI VMALLE1, TLBI VMALLE1NXS" registerfile="AArch64-tlbi-vmalle1.xml">TLB Invalidate by VMID, All at stage 1, EL1</register_link>
+    <register_link heading="TLBI VMALLE1IS, TLBI VMALLE1ISNXS" id="TLBI VMALLE1IS, TLBI VMALLE1ISNXS" registerfile="AArch64-tlbi-vmalle1is.xml">TLB Invalidate by VMID, All at stage 1, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VMALLE1OS, TLBI VMALLE1OSNXS" id="TLBI VMALLE1OS, TLBI VMALLE1OSNXS" registerfile="AArch64-tlbi-vmalle1os.xml">TLB Invalidate by VMID, All at stage 1, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBI VMALLS12E1, TLBI VMALLS12E1NXS" id="TLBI VMALLS12E1, TLBI VMALLS12E1NXS" registerfile="AArch64-tlbi-vmalls12e1.xml">TLB Invalidate by VMID, All at Stage 1 and 2, EL1</register_link>
+    <register_link heading="TLBI VMALLS12E1IS, TLBI VMALLS12E1ISNXS" id="TLBI VMALLS12E1IS, TLBI VMALLS12E1ISNXS" registerfile="AArch64-tlbi-vmalls12e1is.xml">TLB Invalidate by VMID, All at Stage 1 and 2, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS" id="TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS" registerfile="AArch64-tlbi-vmalls12e1os.xml">TLB Invalidate by VMID, All at Stage 1 and 2, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP IPAS2E1, TLBIP IPAS2E1NXS" id="TLBIP IPAS2E1, TLBIP IPAS2E1NXS" registerfile="AArch64-tlbip-ipas2e1.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, EL1</register_link>
+    <register_link heading="TLBIP IPAS2E1IS, TLBIP IPAS2E1ISNXS" id="TLBIP IPAS2E1IS, TLBIP IPAS2E1ISNXS" registerfile="AArch64-tlbip-ipas2e1is.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP IPAS2E1OS, TLBIP IPAS2E1OSNXS" id="TLBIP IPAS2E1OS, TLBIP IPAS2E1OSNXS" registerfile="AArch64-tlbip-ipas2e1os.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP IPAS2LE1, TLBIP IPAS2LE1NXS" id="TLBIP IPAS2LE1, TLBIP IPAS2LE1NXS" registerfile="AArch64-tlbip-ipas2le1.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, Last level, EL1</register_link>
+    <register_link heading="TLBIP IPAS2LE1IS, TLBIP IPAS2LE1ISNXS" id="TLBIP IPAS2LE1IS, TLBIP IPAS2LE1ISNXS" registerfile="AArch64-tlbip-ipas2le1is.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP IPAS2LE1OS, TLBIP IPAS2LE1OSNXS" id="TLBIP IPAS2LE1OS, TLBIP IPAS2LE1OSNXS" registerfile="AArch64-tlbip-ipas2le1os.xml">TLB Invalidate Pair by Intermediate Physical Address, Stage 2, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RIPAS2E1, TLBIP RIPAS2E1NXS" id="TLBIP RIPAS2E1, TLBIP RIPAS2E1NXS" registerfile="AArch64-tlbip-ripas2e1.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1</register_link>
+    <register_link heading="TLBIP RIPAS2E1IS, TLBIP RIPAS2E1ISNXS" id="TLBIP RIPAS2E1IS, TLBIP RIPAS2E1ISNXS" registerfile="AArch64-tlbip-ripas2e1is.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RIPAS2E1OS, TLBIP RIPAS2E1OSNXS" id="TLBIP RIPAS2E1OS, TLBIP RIPAS2E1OSNXS" registerfile="AArch64-tlbip-ripas2e1os.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RIPAS2LE1, TLBIP RIPAS2LE1NXS" id="TLBIP RIPAS2LE1, TLBIP RIPAS2LE1NXS" registerfile="AArch64-tlbip-ripas2le1.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1</register_link>
+    <register_link heading="TLBIP RIPAS2LE1IS, TLBIP RIPAS2LE1ISNXS" id="TLBIP RIPAS2LE1IS, TLBIP RIPAS2LE1ISNXS" registerfile="AArch64-tlbip-ripas2le1is.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RIPAS2LE1OS, TLBIP RIPAS2LE1OSNXS" id="TLBIP RIPAS2LE1OS, TLBIP RIPAS2LE1OSNXS" registerfile="AArch64-tlbip-ripas2le1os.xml">TLB Range Invalidate by Intermediate Physical Address, Stage 2, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVAAE1, TLBIP RVAAE1NXS" id="TLBIP RVAAE1, TLBIP RVAAE1NXS" registerfile="AArch64-tlbip-rvaae1.xml">TLB Range Invalidate by VA, All ASID, EL1</register_link>
+    <register_link heading="TLBIP RVAAE1IS, TLBIP RVAAE1ISNXS" id="TLBIP RVAAE1IS, TLBIP RVAAE1ISNXS" registerfile="AArch64-tlbip-rvaae1is.xml">TLB Range Invalidate by VA, All ASID, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVAAE1OS, TLBIP RVAAE1OSNXS" id="TLBIP RVAAE1OS, TLBIP RVAAE1OSNXS" registerfile="AArch64-tlbip-rvaae1os.xml">TLB Range Invalidate by VA, All ASID, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVAALE1, TLBIP RVAALE1NXS" id="TLBIP RVAALE1, TLBIP RVAALE1NXS" registerfile="AArch64-tlbip-rvaale1.xml">TLB Range Invalidate by VA, All ASID, Last level, EL1</register_link>
+    <register_link heading="TLBIP RVAALE1IS, TLBIP RVAALE1ISNXS" id="TLBIP RVAALE1IS, TLBIP RVAALE1ISNXS" registerfile="AArch64-tlbip-rvaale1is.xml">TLB Range Invalidate by VA, All ASID, Last Level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVAALE1OS, TLBIP RVAALE1OSNXS" id="TLBIP RVAALE1OS, TLBIP RVAALE1OSNXS" registerfile="AArch64-tlbip-rvaale1os.xml">TLB Range Invalidate by VA, All ASID, Last Level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVAE1, TLBIP RVAE1NXS" id="TLBIP RVAE1, TLBIP RVAE1NXS" registerfile="AArch64-tlbip-rvae1.xml">TLB Range Invalidate by VA, EL1</register_link>
+    <register_link heading="TLBIP RVAE1IS, TLBIP RVAE1ISNXS" id="TLBIP RVAE1IS, TLBIP RVAE1ISNXS" registerfile="AArch64-tlbip-rvae1is.xml">TLB Range Invalidate by VA, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVAE1OS, TLBIP RVAE1OSNXS" id="TLBIP RVAE1OS, TLBIP RVAE1OSNXS" registerfile="AArch64-tlbip-rvae1os.xml">TLB Range Invalidate by VA, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVAE2, TLBIP RVAE2NXS" id="TLBIP RVAE2, TLBIP RVAE2NXS" registerfile="AArch64-tlbip-rvae2.xml">TLB Range Invalidate by VA, EL2</register_link>
+    <register_link heading="TLBIP RVAE2IS, TLBIP RVAE2ISNXS" id="TLBIP RVAE2IS, TLBIP RVAE2ISNXS" registerfile="AArch64-tlbip-rvae2is.xml">TLB Range Invalidate by VA, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVAE2OS, TLBIP RVAE2OSNXS" id="TLBIP RVAE2OS, TLBIP RVAE2OSNXS" registerfile="AArch64-tlbip-rvae2os.xml">TLB Range Invalidate by VA, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVAE3, TLBIP RVAE3NXS" id="TLBIP RVAE3, TLBIP RVAE3NXS" registerfile="AArch64-tlbip-rvae3.xml">TLB Range Invalidate by VA, EL3</register_link>
+    <register_link heading="TLBIP RVAE3IS, TLBIP RVAE3ISNXS" id="TLBIP RVAE3IS, TLBIP RVAE3ISNXS" registerfile="AArch64-tlbip-rvae3is.xml">TLB Range Invalidate by VA, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVAE3OS, TLBIP RVAE3OSNXS" id="TLBIP RVAE3OS, TLBIP RVAE3OSNXS" registerfile="AArch64-tlbip-rvae3os.xml">TLB Range Invalidate by VA, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVALE1, TLBIP RVALE1NXS" id="TLBIP RVALE1, TLBIP RVALE1NXS" registerfile="AArch64-tlbip-rvale1.xml">TLB Range Invalidate by VA, Last level, EL1</register_link>
+    <register_link heading="TLBIP RVALE1IS, TLBIP RVALE1ISNXS" id="TLBIP RVALE1IS, TLBIP RVALE1ISNXS" registerfile="AArch64-tlbip-rvale1is.xml">TLB Range Invalidate by VA, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVALE1OS, TLBIP RVALE1OSNXS" id="TLBIP RVALE1OS, TLBIP RVALE1OSNXS" registerfile="AArch64-tlbip-rvale1os.xml">TLB Range Invalidate by VA, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVALE2, TLBIP RVALE2NXS" id="TLBIP RVALE2, TLBIP RVALE2NXS" registerfile="AArch64-tlbip-rvale2.xml">TLB Range Invalidate by VA, Last level, EL2</register_link>
+    <register_link heading="TLBIP RVALE2IS, TLBIP RVALE2ISNXS" id="TLBIP RVALE2IS, TLBIP RVALE2ISNXS" registerfile="AArch64-tlbip-rvale2is.xml">TLB Range Invalidate by VA, Last level, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVALE2OS, TLBIP RVALE2OSNXS" id="TLBIP RVALE2OS, TLBIP RVALE2OSNXS" registerfile="AArch64-tlbip-rvale2os.xml">TLB Range Invalidate by VA, Last level, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBIP RVALE3, TLBIP RVALE3NXS" id="TLBIP RVALE3, TLBIP RVALE3NXS" registerfile="AArch64-tlbip-rvale3.xml">TLB Range Invalidate by VA, Last level, EL3</register_link>
+    <register_link heading="TLBIP RVALE3IS, TLBIP RVALE3ISNXS" id="TLBIP RVALE3IS, TLBIP RVALE3ISNXS" registerfile="AArch64-tlbip-rvale3is.xml">TLB Range Invalidate by VA, Last level, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBIP RVALE3OS, TLBIP RVALE3OSNXS" id="TLBIP RVALE3OS, TLBIP RVALE3OSNXS" registerfile="AArch64-tlbip-rvale3os.xml">TLB Range Invalidate by VA, Last level, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBIP VAAE1, TLBIP VAAE1NXS" id="TLBIP VAAE1, TLBIP VAAE1NXS" registerfile="AArch64-tlbip-vaae1.xml">TLB Invalidate Pair by VA, All ASID, EL1</register_link>
+    <register_link heading="TLBIP VAAE1IS, TLBIP VAAE1ISNXS" id="TLBIP VAAE1IS, TLBIP VAAE1ISNXS" registerfile="AArch64-tlbip-vaae1is.xml">TLB Invalidate Pair by VA, All ASID, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP VAAE1OS, TLBIP VAAE1OSNXS" id="TLBIP VAAE1OS, TLBIP VAAE1OSNXS" registerfile="AArch64-tlbip-vaae1os.xml">TLB Invalidate Pair by VA, All ASID, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP VAALE1, TLBIP VAALE1NXS" id="TLBIP VAALE1, TLBIP VAALE1NXS" registerfile="AArch64-tlbip-vaale1.xml">TLB Invalidate Pair by VA, All ASID, Last level, EL1</register_link>
+    <register_link heading="TLBIP VAALE1IS, TLBIP VAALE1ISNXS" id="TLBIP VAALE1IS, TLBIP VAALE1ISNXS" registerfile="AArch64-tlbip-vaale1is.xml">TLB Invalidate Pair by VA, All ASID, Last Level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP VAALE1OS, TLBIP VAALE1OSNXS" id="TLBIP VAALE1OS, TLBIP VAALE1OSNXS" registerfile="AArch64-tlbip-vaale1os.xml">TLB Invalidate Pair by VA, All ASID, Last Level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP VAE1, TLBIP VAE1NXS" id="TLBIP VAE1, TLBIP VAE1NXS" registerfile="AArch64-tlbip-vae1.xml">TLB Invalidate Pair by VA, EL1</register_link>
+    <register_link heading="TLBIP VAE1IS, TLBIP VAE1ISNXS" id="TLBIP VAE1IS, TLBIP VAE1ISNXS" registerfile="AArch64-tlbip-vae1is.xml">TLB Invalidate Pair by VA, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP VAE1OS, TLBIP VAE1OSNXS" id="TLBIP VAE1OS, TLBIP VAE1OSNXS" registerfile="AArch64-tlbip-vae1os.xml">TLB Invalidate Pair by VA, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP VAE2, TLBIP VAE2NXS" id="TLBIP VAE2, TLBIP VAE2NXS" registerfile="AArch64-tlbip-vae2.xml">TLB Invalidate Pair by VA, EL2</register_link>
+    <register_link heading="TLBIP VAE2IS, TLBIP VAE2ISNXS" id="TLBIP VAE2IS, TLBIP VAE2ISNXS" registerfile="AArch64-tlbip-vae2is.xml">TLB Invalidate Pair by VA, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBIP VAE2OS, TLBIP VAE2OSNXS" id="TLBIP VAE2OS, TLBIP VAE2OSNXS" registerfile="AArch64-tlbip-vae2os.xml">TLB Invalidate Pair by VA, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBIP VAE3, TLBIP VAE3NXS" id="TLBIP VAE3, TLBIP VAE3NXS" registerfile="AArch64-tlbip-vae3.xml">TLB Invalidate Pair by VA, EL3</register_link>
+    <register_link heading="TLBIP VAE3IS, TLBIP VAE3ISNXS" id="TLBIP VAE3IS, TLBIP VAE3ISNXS" registerfile="AArch64-tlbip-vae3is.xml">TLB Invalidate Pair by VA, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBIP VAE3OS, TLBIP VAE3OSNXS" id="TLBIP VAE3OS, TLBIP VAE3OSNXS" registerfile="AArch64-tlbip-vae3os.xml">TLB Invalidate Pair by VA, EL3, Outer Shareable</register_link>
+    <register_link heading="TLBIP VALE1, TLBIP VALE1NXS" id="TLBIP VALE1, TLBIP VALE1NXS" registerfile="AArch64-tlbip-vale1.xml">TLB Invalidate Pair by VA, Last level, EL1</register_link>
+    <register_link heading="TLBIP VALE1IS, TLBIP VALE1ISNXS" id="TLBIP VALE1IS, TLBIP VALE1ISNXS" registerfile="AArch64-tlbip-vale1is.xml">TLB Invalidate Pair by VA, Last level, EL1, Inner Shareable</register_link>
+    <register_link heading="TLBIP VALE1OS, TLBIP VALE1OSNXS" id="TLBIP VALE1OS, TLBIP VALE1OSNXS" registerfile="AArch64-tlbip-vale1os.xml">TLB Invalidate Pair by VA, Last level, EL1, Outer Shareable</register_link>
+    <register_link heading="TLBIP VALE2, TLBIP VALE2NXS" id="TLBIP VALE2, TLBIP VALE2NXS" registerfile="AArch64-tlbip-vale2.xml">TLB Invalidate Pair by VA, Last level, EL2</register_link>
+    <register_link heading="TLBIP VALE2IS, TLBIP VALE2ISNXS" id="TLBIP VALE2IS, TLBIP VALE2ISNXS" registerfile="AArch64-tlbip-vale2is.xml">TLB Invalidate Pair by VA, Last level, EL2, Inner Shareable</register_link>
+    <register_link heading="TLBIP VALE2OS, TLBIP VALE2OSNXS" id="TLBIP VALE2OS, TLBIP VALE2OSNXS" registerfile="AArch64-tlbip-vale2os.xml">TLB Invalidate Pair by VA, Last level, EL2, Outer Shareable</register_link>
+    <register_link heading="TLBIP VALE3, TLBIP VALE3NXS" id="TLBIP VALE3, TLBIP VALE3NXS" registerfile="AArch64-tlbip-vale3.xml">TLB Invalidate Pair by VA, Last level, EL3</register_link>
+    <register_link heading="TLBIP VALE3IS, TLBIP VALE3ISNXS" id="TLBIP VALE3IS, TLBIP VALE3ISNXS" registerfile="AArch64-tlbip-vale3is.xml">TLB Invalidate Pair by VA, Last level, EL3, Inner Shareable</register_link>
+    <register_link heading="TLBIP VALE3OS, TLBIP VALE3OSNXS" id="TLBIP VALE3OS, TLBIP VALE3OSNXS" registerfile="AArch64-tlbip-vale3os.xml">TLB Invalidate Pair by VA, Last level, EL3, Outer Shareable</register_link>
+    <register_link heading="TRCIT" id="TRCIT" registerfile="AArch64-trcit.xml">Trace Instrumentation</register_link>
+  </register_links>
+  <timestamp>30/03/2023 19:16</timestamp>
+</register_index>

@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HDFGWTR2_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HDFGWTR2_EL2, Hypervisor Debug Fine-Grained Write Trap Register 2</h1><p>The HDFGWTR2_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides controls for traps of <span class="instruction">MSR</span> and <span class="instruction">MCR</span> writes of debug, trace, PMU, and Statistical Profiling System registers.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_FGT2 is implemented. Otherwise, direct accesses to HDFGWTR2_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>HDFGWTR2_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_23">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="9"><a href="#fieldset_0-63_23">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">nTRBMPAM_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">nPMZR_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">nTRCITECR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">nPMSDSFR_EL1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-18_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">nSPMSCR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15-1">nSPMACCESSR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">nSPMCR_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">nSPMOVS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">nSPMINTEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">nSPMCNTEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">nSPMSELR_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">nSPMEVTYPERn_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">nSPMEVCNTRn_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">nPMSSCR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">nMDSELR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">nPMUACR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">nPMICFILTR_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">nPMICNTR_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">nPMIAR_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">nPMECR_EL1</a></td></tr></tbody></table><h4 id="fieldset_0-63_23">Bits [63:23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">nTRBMPAM_EL1, bit [22]<span class="condition"><br/>When FEAT_TRBE_MPAM is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-trbmpam_el1.html">TRBMPAM_EL1</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nTRBMPAM_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes of <a href="AArch64-trbmpam_el1.html">TRBMPAM_EL1</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-trbmpam_el1.html">TRBMPAM_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">nPMZR_EL0, bit [21]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMZR_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmzr_el0.html">PMZR_EL0</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20-1">nTRCITECR_EL1, bit [20]<span class="condition"><br/>When FEAT_ITE is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-trcitecr_el1.html">TRCITECR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nTRCITECR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-trcitecr_el1.html">TRCITECR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-trcitecr_el1.html">TRCITECR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19-1">nPMSDSFR_EL1, bit [19]<span class="condition"><br/>When FEAT_SPE_FDS is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMSDSFR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_17">Bits [18:17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">nSPMSCR_EL1, bit [16]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-spmscr_el1.html">SPMSCR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nSPMSCR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-spmscr_el1.html">SPMSCR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-spmscr_el1.html">SPMSCR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_15-1">nSPMACCESSR_EL1, bit [15]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-spmaccessr_el1.html">SPMACCESSR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nSPMACCESSR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-spmaccessr_el1.html">SPMACCESSR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-spmaccessr_el1.html">SPMACCESSR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-15_15-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">nSPMCR_EL0, bit [14]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-spmcr_el0.html">SPMCR_EL0</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nSPMCR_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes of <a href="AArch64-spmcr_el0.html">SPMCR_EL0</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-spmcr_el0.html">SPMCR_EL0</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">nSPMOVS, bit [13]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field"><p>Trap <span class="instruction">MSR</span> writes of multiple System registers. Enables a trap on <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2:</p>
+<ul>
+<li><a href="AArch64-spmovsclr_el0.html">SPMOVSCLR_EL0</a>.
+</li><li><a href="AArch64-spmovsset_el0.html">SPMOVSSET_EL0</a>.
+</li></ul><table class="valuetable"><tr><th>nSPMOVS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of the specified System registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">nSPMINTEN, bit [12]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field"><p>Trap <span class="instruction">MSR</span> writes of multiple System registers. Enables a trap on <span class="instruction">MSR</span> writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2:</p>
+<ul>
+<li><a href="AArch64-spmintenclr_el1.html">SPMINTENCLR_EL1</a>.
+</li><li><a href="AArch64-spmintenset_el1.html">SPMINTENSET_EL1</a>.
+</li></ul><table class="valuetable"><tr><th>nSPMINTEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes at EL1 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of the specified System registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">nSPMCNTEN, bit [11]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field"><p>Trap <span class="instruction">MSR</span> writes of multiple System registers. Enables a trap on <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2:</p>
+<ul>
+<li><a href="AArch64-spmcntenclr_el0.html">SPMCNTENCLR_EL0</a>.
+</li><li><a href="AArch64-spmcntenset_el0.html">SPMCNTENSET_EL0</a>.
+</li></ul><table class="valuetable"><tr><th>nSPMCNTEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of the specified System registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">nSPMSELR_EL0, bit [10]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nSPMSELR_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes of <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">nSPMEVTYPERn_EL0, bit [9]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field"><p>Trap <span class="instruction">MSR</span> writes of multiple System registers. Enables a trap on <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2:</p>
+<ul>
+<li><a href="AArch64-spmevtypern_el0.html">SPMEVTYPER&lt;n&gt;_EL0</a>.
+</li><li><a href="AArch64-spmevfiltrn_el0.html">SPMEVFILTR&lt;n&gt;_EL0</a>.
+</li><li><a href="AArch64-spmevfilt2rn_el0.html">SPMEVFILT2R&lt;n&gt;_EL0</a>.
+</li></ul><table class="valuetable"><tr><th>nSPMEVTYPERn_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of the specified System registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>Regardless of the value of this field, if event counter n is not implemented, a write of <a href="AArch64-spmevtypern_el0.html">SPMEVTYPER&lt;n&gt;_EL0</a>, <a href="AArch64-spmevfiltrn_el0.html">SPMEVFILTR&lt;n&gt;_EL0</a>, or <a href="AArch64-spmevfilt2rn_el0.html">SPMEVFILT2R&lt;n&gt;_EL0</a> is <span class="arm-defined-word">UNDEFINED</span>.</p>
+<p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">nSPMEVCNTRn_EL0, bit [8]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of multiple System registers. Enables a trap on <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2: <a href="AArch64-spmevcntrn_el0.html">SPMEVCNTR&lt;n&gt;_EL0</a>.</p>
+    <table class="valuetable"><tr><th>nSPMEVCNTRn_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then <span class="instruction">MSR</span> writes at EL1 and EL0 using AArch64 of any of the specified System registers are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of the specified System registers are not trapped by this mechanism.</p>
+        </td></tr></table><p>Regardless of the value of this field, if event counter n is not implemented, a write of <a href="AArch64-spmevcntrn_el0.html">SPMEVCNTR&lt;n&gt;_EL0</a> is <span class="arm-defined-word">UNDEFINED</span>.</p>
+<p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7-1">nPMSSCR_EL1, bit [7]<span class="condition"><br/>When FEAT_PMUv3_SS is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmsscr_el1.html">PMSSCR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMSSCR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmsscr_el1.html">PMSSCR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmsscr_el1.html">PMSSCR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6">Bit [6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">nMDSELR_EL1, bit [5]<span class="condition"><br/>When FEAT_Debugv8p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nMDSELR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented or is <span class="arm-defined-word">RES0</span> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <a href="AArch64-mdselr_el1.html">MDSELR_EL1</a> is implemented as RAZ/WI.</p>
+<p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">nPMUACR_EL1, bit [4]<span class="condition"><br/>When FEAT_PMUv3p9 is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMUACR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmuacr_el1.html">PMUACR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">nPMICFILTR_EL0, bit [3]<span class="condition"><br/>When FEAT_PMUv3_ICNTR is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMICFILTR_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then:</p>
+<ul>
+<li><span class="instruction">MSR</span> writes of <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.
+</li><li><a href="AArch64-pmcntenclr_el0.html">PMCNTENCLR_EL0</a>.F0, <a href="AArch64-pmcntenset_el0.html">PMCNTENSET_EL0</a>.F0, <a href="AArch64-pmovsclr_el0.html">PMOVSCLR_EL0</a>.F0, and <a href="AArch64-pmovsset_el0.html">PMOVSSET_EL0</a>.F0 ignore writes at EL1 and EL0.
+</li><li><a href="AArch64-pmintenclr_el1.html">PMINTENCLR_EL1</a>.F0 and <a href="AArch64-pmintenset_el1.html">PMINTENSET_EL1</a>.F0 ignore writes at EL1.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmicfiltr_el0.html">PMICFILTR_EL0</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">nPMICNTR_EL0, bit [2]<span class="condition"><br/>When FEAT_PMUv3_ICNTR is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> at EL1 and EL0 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMICNTR_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EL2 is implemented and enabled in the current Security state, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H, TGE} != {1, 1}, then:</p>
+<ul>
+<li><span class="instruction">MSR</span> writes of <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.
+</li><li><a href="AArch64-pmzr_el0.html">PMZR_EL0</a>.F0 ignores writes at EL1 and EL0.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">nPMIAR_EL1, bit [1]<span class="condition"><br/>When FEAT_SEBEP is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmiar_el1.html">PMIAR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMIAR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmiar_el1.html">PMIAR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmiar_el1.html">PMIAR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0-1">nPMECR_EL1, bit [0]<span class="condition"><br/>When FEAT_EBEP is implemented or FEAT_PMUv3_SS is implemented:
+                        </span></h4><div class="field">
+      <p>Trap <span class="instruction">MSR</span> writes of <a href="AArch64-pmecr_el1.html">PMECR_EL1</a> at EL1 using AArch64 to EL2.</p>
+    <table class="valuetable"><tr><th>nPMECR_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If EL2 is implemented and enabled in the current Security state, then <span class="instruction">MSR</span> writes of <a href="AArch64-pmecr_el1.html">PMECR_EL1</a> at EL1 using AArch64 are trapped to EL2 and reported with EC syndrome value <span class="hexnumber">0x18</span>, unless the write generates a higher priority exception.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><span class="instruction">MSR</span> writes of <a href="AArch64-pmecr_el1.html">PMECR_EL1</a> are not trapped by this mechanism.</p>
+        </td></tr></table><p>This field is ignored by the PE and treated as zero when all of the following are true:</p>
+<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul>
+            <li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li>
+          
+            <li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li>
+          </ul></li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing HDFGWTR2_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, HDFGWTR2_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0011</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x1B0];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = HDFGWTR2_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = HDFGWTR2_EL2;
+                </p><h4 class="assembler">MSR HDFGWTR2_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0011</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x1B0] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        HDFGWTR2_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    HDFGWTR2_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

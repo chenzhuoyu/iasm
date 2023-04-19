@@ -1,0 +1,594 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_AA64PFR1_EL1</reg_short_name>
+        
+        <reg_long_name>AArch64 Processor Feature Register 1</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Reserved for future expansion of information about implemented PE features in AArch64 state.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For general information about the interpretation of the ID registers, see <xref browsertext="'Principles of the ID scheme for fields in ID registers'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABFAFHI"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_AA64PFR1_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PFAR</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>63:60</rel_range>
+    <field_description order="before">
+      <para>Support for physical fault address registers, <xref browsertext="FEAT_PFAR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PFAR"/>. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_PFAR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PFAR"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><xref browsertext="FEAT_PFAR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PFAR"/> is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><xref browsertext="FEAT_PFAR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PFAR"/> is implemented. Includes support for the PFAR_ELx and, if EL3 is implemented, <register_link state="AArch64" id="AArch64-mfar_el3.xml">MFAR_EL3</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-59_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DF2</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>59:56</rel_range>
+    <field_description order="before">
+      <para>Support for error exception routing extensions, <xref browsertext="FEAT_DoubleFault2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_DoubleFault2"/>. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_DoubleFault2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_DoubleFault2"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description><para><xref browsertext="FEAT_DoubleFault2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_DoubleFault2"/> is not implemented.</para>
+<note><para>This does not mean that <xref browsertext="FEAT_DoubleFault" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.DFE"/>, as identified by <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.RAS &gt;= <binarynumber>0b0010</binarynumber>, is not implemented.</para></note></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para><xref browsertext="FEAT_DoubleFault2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_DoubleFault2"/> is implemented. As <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.RAS == <binarynumber>0b0010</binarynumber>, and also includes support for routing error exceptions:</para>
+<list type="unordered">
+<listitem><content>Traps for masked error exceptions, <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.TMEA and <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.TMEA.</content>
+</listitem><listitem><content>Additional controls for masking SError interrupts, <register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link>.NMEA, and <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link>.NMEA.</content>
+</listitem><listitem><content>Additional controls for taking external aborts to the SError interrupt vector, <register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link>.EASE and <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link>.EASE.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MTEX</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Additional tag checking modes for MTE. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><note><para>ID_AA64PFR1_EL1.MTE identifies Memory Tagging when Address tagging is enabled.</para><para>ID_AA64PFR1_EL1.MTE_frac identifies whether or not Asynchronous Faulting and asymmetric Tag Check Fault handling are supported, in conjunction with the value of ID_AA64PFR1_EL1.MTE. Support for Asynchronous Faulting and asymmetric Tag Check Fault handling applies to all tag checking modes, including those introduced by ID_AA64PFR1_EL1.MTEX.</para></note><para>All other values are reserved.</para>
+<para>This field is valid only if ID_AA64PFR1_EL1.MTE &gt;= <binarynumber>0b0010</binarynumber>.</para>
+<para>FEAT_MTE4 implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.9, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Support for Memory Tagging when Address tagging is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para>As <binarynumber>0b0000</binarynumber>, and the following additional modes are supported:</para>
+<list type="unordered">
+<listitem><content>Canonical Tag checking, identified as FEAT_MTE_CANONICAL_TAGS.</content>
+</listitem><listitem><content>Memory tagging with Address tagging disabled, identified as FEAT_MTE_NO_ADDRESS_TAGS.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-51_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>THE</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>51:48</rel_range>
+    <field_description order="before">
+      <para>Support for Translation Hardening Extension. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_THE" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_THE"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Translation Hardening Extension is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para>The RCW and RCWS instructions, their associated registers and traps are supported.</para>
+<para>If EL2 is implemented, the AssuredOnly check, TopLevel check, and their associated controls are implemented.</para>
+<para>If EL2 and FEAT_GCS are implemented, <register_link state="AArch64" id="AArch64-vtcr_el2.xml">VTCR_EL2</register_link>.GCSH is implemented.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GCS</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before">
+      <para>Support for Guarded Control Stack. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>FEAT_GCS implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Guarded Control Stack is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Guarded Control Stack is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MTE_frac</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Support for Asynchronous Faulting and asymmetric Tag Check Fault handling. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field is valid only if ID_AA64PFR1_EL1.MTE &gt;= <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description><para>Asynchronous Faulting is supported.</para>
+<para>If ID_AA64PFR1_EL1.MTE &gt;= <binarynumber>0b0011</binarynumber>, asymmetric Tag Check Fault handling is supported.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description><para>Asynchronous Faulting is not supported.</para>
+<para>If ID_AA64PFR1_EL1.MTE &gt;= <binarynumber>0b0011</binarynumber>, asymmetric Tag Check Fault handling is not supported.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-39_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NMI</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>39:36</rel_range>
+    <field_description order="before">
+      <para>Non-maskable Interrupt. Indicates support for Non-maskable interrupts. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_NMI" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_NMI"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.8, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><xref browsertext="SCTLR_ELx" filename="appx_registers_index.fm" linkend="SCTLR_ELx"/>.{SPINTMASK, NMI} and PSTATE.ALLINT with its associated instructions are not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><xref browsertext="SCTLR_ELx" filename="appx_registers_index.fm" linkend="SCTLR_ELx"/>.{SPINTMASK, NMI} and PSTATE.ALLINT with its associated instructions are supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-35_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CSV2_frac</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>35:32</rel_range>
+    <field_description order="before">
+      <para>CSV2 fractional field. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_CSV2_1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p1"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_CSV2_1p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p2"/> implements the functionality identified by the value <binarynumber>0b0010</binarynumber>.</para>
+<para>From Armv8.0, the permitted values are <binarynumber>0b0000</binarynumber>, <binarynumber>0b0001</binarynumber>, and <binarynumber>0b0010</binarynumber>.</para>
+<para>The values <binarynumber>0b0001</binarynumber> and <binarynumber>0b0010</binarynumber> are permitted only when <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.CSV2 is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description><para>Either <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.CSV2 is not <binarynumber>0b0001</binarynumber>, or the implementation does not disclose whether <xref browsertext="FEAT_CSV2_1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p1"/> is implemented.</para>
+<para><xref browsertext="FEAT_CSV2_1p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p2"/> is not implemented.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><xref browsertext="FEAT_CSV2_1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p1"/> is implemented, but <xref browsertext="FEAT_CSV2_1p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p2"/> is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para><xref browsertext="FEAT_CSV2_1p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.CSV2.1p2"/> is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RNDR_trap</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Random Number trap to EL3 field. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>FEAT_RNG_TRAP implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Trapping of <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> and <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link> to EL3 is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para>Trapping of <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> and <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link> to EL3 is supported.</para>
+<para><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.TRNDR is present.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SME</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>Scalable Matrix Extension. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>FEAT_SME implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>FEAT_SME2 implements the functionality identified by the value <binarynumber>0b0010</binarynumber>.</para>
+<para>From Armv9.2, the permitted values are <binarynumber>0b0000</binarynumber>, <binarynumber>0b0001</binarynumber>, and <binarynumber>0b0010</binarynumber>.</para>
+<para>If implemented, refer to <register_link state="AArch64" id="AArch64-id_aa64smfr0_el1.xml">ID_AA64SMFR0_EL1</register_link> and <register_link state="AArch64" id="AArch64-id_aa64zfr0_el1.xml">ID_AA64ZFR0_EL1</register_link> for information about which SME and SVE instructions are available.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>SME architectural state and programmers' model are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>SME architectural state and programmers' model are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0001</binarynumber>, plus the SME2 ZT0 register.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MPAM_frac</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before"><para>Indicates the minor version number of support for the MPAM Extension.</para>
+<para>Defined values are:</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>When combined with the major version number from <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.MPAM, The combined "major.minor" version is:</para>
+<table><tgroup cols="3"><thead><row><entry>MPAM Extension version</entry><entry>MPAM</entry><entry>MPAM_frac</entry></row></thead><tbody><row><entry>Not implemented.</entry><entry><binarynumber>0b0000</binarynumber></entry><entry><binarynumber>0b0000</binarynumber></entry></row><row><entry>v0.1 is implemented.</entry><entry><binarynumber>0b0000</binarynumber></entry><entry><binarynumber>0b0001</binarynumber></entry></row><row><entry>v1.0 is implemented.</entry><entry><binarynumber>0b0001</binarynumber></entry><entry><binarynumber>0b0000</binarynumber></entry></row><row><entry>v1.1 is implemented.</entry><entry><binarynumber>0b0001</binarynumber></entry><entry><binarynumber>0b0001</binarynumber></entry></row></tbody></tgroup></table>
+<para>For more information, see <xref browsertext="'The Memory Partitioning and Monitoring (MPAM) Extension'" filename="A_armv8_architecture_extensions.fm" linkend="MPAM_Extension"/>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The minor version number of the MPAM extension is 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The minor version number of the MPAM extension is 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RAS_frac</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>RAS Extension fractional field. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_RASv1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.RAS"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>This field is valid only if <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.RAS == <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>If <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.RAS == <binarynumber>0b0001</binarynumber>, RAS Extension implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para>If <register_link state="AArch64" id="AArch64-id_aa64pfr0_el1.xml">ID_AA64PFR0_EL1</register_link>.RAS == <binarynumber>0b0001</binarynumber>, as <binarynumber>0b0000</binarynumber> and adds support for:</para>
+<list type="unordered">
+<listitem><content>Additional ERXMISC&lt;m&gt;_EL1 System registers.</content>
+</listitem><listitem><content>Additional System registers <register_link state="AArch64" id="AArch64-erxpfgcdn_el1.xml">ERXPFGCDN_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxpfgctl_el1.xml">ERXPFGCTL_EL1</register_link>, and <register_link state="AArch64" id="AArch64-erxpfgf_el1.xml">ERXPFGF_EL1</register_link>, and the <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FIEN and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.FIEN trap controls, to support the optional RAS Common Fault Injection Model Extension.</content>
+</listitem></list>
+<para>Error records accessed through System registers conform to RAS System Architecture v1.1, which includes simplifications to <register_link state="ext" id="ext-errnstatus.xml">ERR&lt;n&gt;STATUS</register_link>, and support for the optional RAS Timestamp and RAS Common Fault Injection Model Extensions.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MTE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Support for the Memory Tagging Extension. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_MTE" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.MemTag"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_MTE2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_MTE2"/> implements the functionality identified by the value <binarynumber>0b0010</binarynumber>.</para>
+<para><xref browsertext="FEAT_MTE3" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_MTE3"/> implements the functionality identified by the value <binarynumber>0b0011</binarynumber>.</para>
+<para>In Armv8.5, the permitted values are <binarynumber>0b0000</binarynumber>, <binarynumber>0b0001</binarynumber>, <binarynumber>0b0010</binarynumber>, and <binarynumber>0b0011</binarynumber>.</para>
+<para>For an implementation with FEAT_MTE_PERM or FEAT_MTE4, if Asynchronous Faulting and asymmetric Tag Check Fault handling are implemented, this field identifies as FEAT_MTE3, otherwise FEAT_MTE2.</para>
+<para>If FEAT_MTE_ASYM_FAULT is not implemented, the value <binarynumber>0b0011</binarynumber> is not permitted.</para>
+<para>From Armv8.9, ID_AA64PFR1_EL1.MTEX indicates the additional functionality in the Memory Tagging Extension.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Memory Tagging Extension is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Instruction-only Memory Tagging Extension is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para>Full Memory Tagging Extension is implemented.</para>
+<para>Support for Asynchronous Faulting is defined by ID_AA64PFR1_EL1.MTE_frac</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description><para>Memory Tagging Extension is implemented with support for asymmetric Tag Check Fault handling.</para>
+<para>Support for Asynchronous Faulting and asymmetric Tag Check Fault handling is defined by ID_AA64PFR1_EL1.MTE_frac.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SSBS</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Speculative Store Bypassing controls in AArch64 state. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_SSBS" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.SSBS"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_SSBS2" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.SSBS2"/> implements the functionality identified by the value <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>AArch64 provides no mechanism to control the use of Speculative Store Bypassing.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>AArch64 provides the PSTATE.SSBS mechanism to mark regions that are Speculative Store Bypass Safe.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0001</binarynumber>, and adds the MSR and MRS instructions to directly read and write the PSTATE.SSBS field.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BT</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Branch Target Identification mechanism support in AArch64 state. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_BTI" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.BTI"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.5, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The Branch Target Identification mechanism is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The Branch Target Identification mechanism is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_60" msb="63" lsb="60"/>
+  <fieldat id="fieldset_0-59_56" msb="59" lsb="56"/>
+  <fieldat id="fieldset_0-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_0-51_48" msb="51" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_36" msb="39" lsb="36"/>
+  <fieldat id="fieldset_0-35_32" msb="35" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_AA64PFR1_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_AA64PFR1_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64PFR1_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64PFR1_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64PFR1_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

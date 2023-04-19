@@ -1,0 +1,795 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MSMON_CFG_MBWU_CTL</reg_short_name>
+        
+        <reg_long_name>MPAM Memory System Monitor Configure Memory Bandwidth Usage Monitor Control Register</reg_long_name>
+
+        <power_domain_text>The power domain of MSMON_CFG_MBWU_CTL is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MSMON == 1 and MPAMF_MSMON_IDR.MSMON_MBWU == 1</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0828</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_CTL_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0828</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_CTL_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0828</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_CTL_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0828</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_CTL_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the MBWU monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MSMON_CFG_MBWU_CTL_s controls the Secure memory bandwidth usage monitor instance selected by the Secure instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_MBWU_CTL_ns controls Non-secure memory bandwidth usage monitor instance selected by the Non-secure instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_MBWU_CTL_rt controls the monitor configuration for the Root PARTID selected by the Root instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_MBWU_CTL_rl controls the monitor configuration for the Realm PARTID selected by the Realm instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, the monitor instance configuration accessed is for the resource instance currently selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.RIS and the monitor instance of that resource instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MSMON_CFG_MBWU_CTL is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EN</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Enabled.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The monitor instance is disabled and must not collect any information.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The monitor instance is enabled to collect information according to the configuration of the instance.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-30_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CAPT_EVNT</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>30:28</rel_range>
+    <field_description order="before"><para>Capture event selector.</para>
+<para>When the selected capture event occurs, <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> of the monitor instance is copied to <register_link state="ext" id="ext-msmon_mbwu_capture.xml">MSMON_MBWU_CAPTURE</register_link> of the same instance. If the long counter is also implemented, <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> is also copied to <register_link state="ext" id="ext-msmon_mbwu_l_capture.xml">MSMON_MBWU_L_CAPTURE</register_link>.</para>
+<para>Select the event that triggers capture from the following:</para></field_description>
+    <field_description order="after">
+      <para>The values marked as optional indicate capture event sources that can be omitted in an implementation. Those values representing non-implemented event sources must not trigger a capture event.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>No capture event is triggered.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>External capture event 1 (optional, but recommended)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>External capture event 2 (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>External capture event 3 (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>External capture event 4 (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>External capture event 5 (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>External capture event 6 (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Capture occurs when a <register_link state="ext" id="ext-msmon_capt_evnt.xml">MSMON_CAPT_EVNT</register_link> register in this MSC is written and causes a capture event for the Security state of this monitor. (optional)</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When MPAMF_MBWUMON_IDR.HAS_CAPTURE == 0</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CAPT_RESET</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Reset <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE after capture.</para>
+<para>Controls whether the VALUE field of the monitor instance is reset to zero immediately after being copied to the corresponding capture register.</para></field_description>
+    <field_description order="after">
+      <para>This control bit affects both <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> and <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> in implementations that include <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE field of the monitor instance is not reset on capture.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE field of the monitor instance is reset on capture.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When MPAMF_MBWUMON_IDR.HAS_CAPTURE == 0</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OFLOW_STATUS</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before"><para>Overflow status.</para>
+<para>Indicates whether the value of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> has overflowed.</para></field_description>
+    <field_description order="after"><para>Overflow status for <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE is reported in <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.OFLOW_STATUS_L.</para>
+<para>If <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.HAS_CEVNT_OFLW is 1 or <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.HAS_OFLOW_LNKG is 1, then a store to <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> when this field is 1 resets this field to 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE has not overflowed.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE has overflowed at least once since this bit was last written to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OFLOW_INTR</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>25</rel_range>
+    <field_description order="before">
+      <para>Enable interrupt on overflow of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Interrupt enable for overflow of <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE is controlled by MSMON_CFG_MBWU_CTL.OFLOW_INTR_L.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No interrupt is signaled on an overflow of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>An implementation-specific interrupt is signaled on an overflow of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When MSMON_CFG_MBWU_CTL.OFLOW_INTR == 0</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OFLOW_FRZ</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before"><para>Freeze monitor instance on overflow.</para>
+<para>Controls whether <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE field of the monitor instance freezes on an overflow.</para></field_description>
+    <field_description order="after"><para>When a <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE of a monitor instance is frozen it does not change until <register_link state="ext" id="ext-msmon_csu.xml">MSMON_CSU</register_link> register for that instance has been written. If the monitor implements both <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> and <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> registers, both are frozen. A write to a frozen register unfreezes the count for just that register.</para>
+<para>This control bit affects both <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> and <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> in implementations that include <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE field of the monitor instance wraps on overflow.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE field of the monitor instance freezes on overflow. If the increment that caused the overflow was 1, the frozen value is the post-increment value of 0. If the increment that caused the overflow was larger than 1, the frozen value of the monitor might be 0 or a larger value less than the final increment.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OFLOW_CAPT</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Capture Monitor on Overflow.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit does not control whether MSMON_MBWU_L is captured on an overflow or overflow linkage event. See <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.OFLOW_CAPT_L.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Monitor register <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> is not captured on an overflow or when affected by an overflow linkage event.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Monitor register <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link> is captured and the <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.{NRDY, VALUE} fields are copied to the monitor instance's <register_link state="ext" id="ext-msmon_mbwu_capture.xml">MSMON_MBWU_CAPTURE</register_link> register on an overflow or when affected by an overflow linkage event. The monitor instance treats an overflow of this monitor instance as a private capture event. If MSMON_CFG_MBWU_CTL.CEVNT_OFLW is 1, this monitor instance also treats an overflow linkage event as a capture event.</para>
+<para>If OFLOW_FRZ is 1, the monitor does not continue to count after the overflow or overflow linkage event. If CAPT_RESET is 1, the monitor instance resets to 0.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_MBWUMON_IDR.HAS_OFLOW_CAPT == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SUBTYPE</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>22:20</rel_range>
+    <field_description order="before"><para>Subtype. Type of bandwidth counted by this monitor.</para>
+<para>This field is not currently used for MBWU monitors, but reserved for future use.</para>
+<para>This field is RAZ/WI.</para></field_description>
+  </field>
+  <field id="fieldset_0-19_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SCLEN</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>19</rel_range>
+    <field_description order="before"><para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE Scaling Enable.</para>
+<para>Enables scaling of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE by <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.SCALE.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE has bytes counted by the monitor instance.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE has bytes counted by the monitor instance, shifted right by <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.SCALE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>CEVNT_OFLW</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Capture Event performs overflow behavior.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>On a capture event matching the CAPT_EVNT field the capture behaviors are performed.</para>
+<para>The NRDY and VALUE fields are transferred to the monitor instance's capture register.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>On a capture event matching the CAPT_EVNT field the monitor instance treats a capture event as an overflow and the overflow behaviors are performed.</para>
+<para>The behavior is controlled by the MSMON_CFG_MBWU_CTL.{OFLOW_FRZ, OFLOW_CAPT, OFLOW_CAPT_L, CAPT_RESET} fields. The MSMON_CFG_MBWU_CTL.{OFLOW_STATUS, OFLOW_STATUS_L} fields are set for this monitor instance.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_MBWUMON_IDR.HAS_CEVNT_OFLW == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MATCH_PMG</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17</rel_range>
+    <field_description order="before"><para>Match PMG.</para>
+<para>Controls whether the monitor instance only counts data transferred with PMG matching <register_link state="ext" id="ext-msmon_cfg_mbwu_flt.xml">MSMON_CFG_MBWU_FLT</register_link>.PMG.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The monitor instance counts data transferred with any PMG value.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The monitor instance only counts data transferred with the PMG value matching <register_link state="ext" id="ext-msmon_cfg_mbwu_flt.xml">MSMON_CFG_MBWU_FLT</register_link>.PMG.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MATCH_PARTID</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before"><para>Match PARTID.</para>
+<para>Controls whether the monitor instance counts only data transferred with PARTID matching <register_link state="ext" id="ext-msmon_cfg_mbwu_flt.xml">MSMON_CFG_MBWU_FLT</register_link>.PARTID.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The monitor instance counts data transferred with any PARTID value.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The monitor instance only counts data transferred with the PARTID value matching <register_link state="ext" id="ext-msmon_cfg_mbwu_flt.xml">MSMON_CFG_MBWU_FLT</register_link>.PARTID.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OFLOW_STATUS_L</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Overflow Status of <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE of the monitor instance.</para>
+<para>Indicates whether <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE has overflowed.</para></field_description>
+    <field_description order="after"><para>If <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.HAS_LONG == 0, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>Overflow status of <register_link state="ext" id="ext-msmon_mbwu.xml">MSMON_MBWU</register_link>.VALUE is reported in MSMON_CFG_MBWU_CTL.OFLOW_STATUS.</para>
+<para>If <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.HAS_CEVNT_OFLW is 1 or <register_link state="ext" id="ext-mpamf_mbwumon_idr.xml">MPAMF_MBWUMON_IDR</register_link>.HAS_OFLOW_LNKG is 1, then a store to <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> when this field is 1 resets this field to 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE has not overflowed.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE has overflowed at least once since this bit was last written to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OFLOW_INTR_L</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Overflow Interrupt for <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.</para>
+<para>Controls whether an MPAM overflow interrupt is generated when <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE overflows.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>No interrupt is signaled on an overflow of <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>An implementation-specific interrupt is signaled on overflow of <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link>.VALUE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When MSMON_CFG_MBWU_CTL.OFLOW_INTR_L == 0</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_MBWUMON_IDR.HAS_LONG == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OFLOW_CAPT_L</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Capture Long Monitor on Overflow.</para>
+<para>Controls whether <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> is copied to <register_link state="ext" id="ext-msmon_mbwu_l_capture.xml">MSMON_MBWU_L_CAPTURE</register_link> on an overflow or an overflow linkage event.</para></field_description>
+    <field_description order="after"><para>If this bit is 1, this monitor instance treats an overflow of this monitor instance as a private capture event.</para>
+<para>If this bit is 1, this monitor instance also treats overflow linkage events for which it qualifies as a private capture event.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Monitor register <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> is not captured on an overflow or when affected by an overflow linkage event.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Monitor register <register_link state="ext" id="ext-msmon_mbwu_l.xml">MSMON_MBWU_L</register_link> is captured on an overflow or when affected by an overflow linkage event. If OFLOW_FRZ is 1, the monitor does not continue to count after the overflow or overflow linkage event. If CAPT_RESET is 1, the monitor instance resets to 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented), MPAMF_MBWUMON_IDR.HAS_LONG == 1 and MPAMF_MBWUMON_IDR.HAS_OFLOW_CAPT == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-12_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>12</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>12:11</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-10_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>OFLOW_LNKG</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before"><para>Overflow linkage event.</para>
+<para>Controls signaling of a capture event on overflow of this monitor instance.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Overflow of the monitor instance only affects this monitor instance.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 4.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 5.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Overflow of this monitor instance signals Capture Event 6.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Reserved.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_MBWUMON_IDR.HAS_OFLOW_LNKG == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-10_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TYPE</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before"><para>Monitor Type Code. The MBWU monitor is TYPE = <hexnumber>0x42</hexnumber>.</para>
+<para>TYPE is a read-only constant indicating the type of the monitor.</para></field_description>
+    <field_description order="after">
+      <para>Reads as <hexnumber>0x42</hexnumber>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_28" msb="30" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_20" msb="22" lsb="20"/>
+  <fieldat id="fieldset_0-19_19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15-1" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14-1" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13-1" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_11" msb="12" lsb="11"/>
+  <fieldat id="fieldset_0-10_8-1" msb="10" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MSMON_CFG_MBWU_CTL_s must only be accessible from the Secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_CTL_ns must only be accessible from the Non-secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_CTL_rt must only be accessible from the Root MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_CTL_rl must only be accessible from the Realm MPAM feature page.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MSMON_CFG_MBWU_CTL_s, MSMON_CFG_MBWU_CTL_ns, MSMON_CFG_MBWU_CTL_rt, and MSMON_CFG_MBWU_CTL_rl must be separate registers:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The Secure instance (MSMON_CFG_MBWU_CTL_s) accesses the memory bandwidth usage monitor controls used for Secure PARTIDs.</content>
+</listitem><listitem><content>The Non-secure instance (MSMON_CFG_MBWU_CTL_ns) accesses the memory bandwidth usage monitor controls used for Non-secure PARTIDs.</content>
+</listitem><listitem><content>The Root instance (MSMON_CFG_MBWU_CTL_rt) accesses the memory bandwidth usage monitor controls used for Root PARTIDs.</content>
+</listitem><listitem><content>The Realm instance (MSMON_CFG_MBWU_CTL_rl) accesses the memory bandwidth usage monitor controls used for Realm PARTIDs.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is implemented, loads and stores to MSMON_CFG_MBWU_CTL access the  monitor configuration settings for the bandwidth resource instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.RIS and the memory bandwidth usage monitor instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is not implemented, loads and stores to MSMON_CFG_MBWU_CTL access the  monitor configuration settings for the memory bandwidth usage monitor instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -93,3 +93,33 @@ func asLSLShift(v interface{}, n uint64) uint32 {
     sh, _ := asUint64(v)
     return uint32((-sh % n) << 6 | (n - sh - 1))
 }
+
+func asBarrierOption(v interface{}) uint32 {
+    if x, ok := v.(BarrierOption); ok {
+        return uint32(x)
+    } else if iv, ok := asUint64(v); ok && iv &^ 0x0f == 0 {
+        return uint32(iv)
+    } else {
+        panic("aarch64: not a valid barrier option")
+    }
+}
+
+func asBasicPrefetchOp(v interface{}) uint32 {
+    if op, ok := v.(PrefetchOp); ok {
+        return uint32(op)
+    } else if iv, ok := asUint64(v); ok && iv &^ 0x1f == 0 {
+        return uint32(iv)
+    } else {
+        panic("aarch64: not a valid basic prefetch op")
+    }
+}
+
+func asRangePrefetchOp(v interface{}) uint32 {
+    if op, ok := v.(RangePrefetchOp); ok {
+        return op.encode()
+    } else if iv, ok := asUint64(v); ok && iv &^ 0x3f == 0 {
+        return RangePrefetchOp(iv).encode()
+    } else {
+        panic("aarch64: not a valid range prefetch op")
+    }
+}

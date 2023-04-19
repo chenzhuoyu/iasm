@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICR_SETLPIR</reg_short_name>
+        
+        <reg_long_name>Set LPI Pending Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Redistributor</reg_component>
+    <reg_frame>RD_base</reg_frame>
+    <reg_offset><hexnumber>0x0040</hexnumber></reg_offset>
+    <reg_instance>GICR_SETLPIR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Generates an LPI by setting the pending state of the specified LPI.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Redistributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>A copy of this register is provided for each Redistributor.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICR_SETLPIR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When GICR_TYPER.DirectLPI == 1</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>pINTID</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>The INTID of the physical LPI to be generated.</para>
+<note><para>The size of this field is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>, and is specified by the <register_link state="ext" id="ext-gicd_typer.xml">GICD_TYPER</register_link>.IDbits field. Unimplemented bits are <arm-defined-word>RES0</arm-defined-word>.</para></note></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When GICR_TYPER.DirectLPI == 0</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_1-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When GICR_TYPER.DirectLPI == 1</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When GICR_TYPER.DirectLPI == 0</fields_condition>
+  <fieldat id="fieldset_1-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>When written with a 32-bit write the data is zero-extended to 64 bits.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>This register is mandatory in an implementation that supports LPIs and does not include an ITS. The functionality is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> in an implementation that does include an ITS. </para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes to this register have no effect if either:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The pINTID field corresponds to an LPI that is already pending.</content>
+</listitem><listitem><content>The pINTID field corresponds to an unimplemented LPI.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-gicr_ctlr.xml">GICR_CTLR</register_link>.EnableLPIs == 0.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

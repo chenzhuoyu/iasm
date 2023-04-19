@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICD_TYPER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICD_TYPER, Interrupt Controller Type Register</h1><p>The GICD_TYPER characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about what features the GIC implementation supports. It indicates:</p>
+
+      
+        <ul>
+<li>Whether the GIC implementation supports two Security states.
+</li><li>The maximum number of INTIDs that the GIC implementation supports.
+</li><li>The number of PEs that can be used as interrupt targets.
+</li></ul>
+      <h2>Configuration</h2>
+        <p>This register is available in all configurations of the GIC. When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS==0, this register is Common.</p>
+      <h2>Attributes</h2>
+        <p>GICD_TYPER is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="5"><a href="#fieldset_0-31_27-1">ESPI_range</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26">RSS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">No1N</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">A3V</a></td><td class="lr" colspan="5"><a href="#fieldset_0-23_19">IDbits</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">DVIS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">LPIS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">MBIS</a></td><td class="lr" colspan="5"><a href="#fieldset_0-15_11">num_LPIs</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">SecurityExtn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">NMI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">ESPI</a></td><td class="lr" colspan="3"><a href="#fieldset_0-7_5">CPUNumber</a></td><td class="lr" colspan="5"><a href="#fieldset_0-4_0">ITLinesNumber</a></td></tr></tbody></table><h4 id="fieldset_0-31_27-1">ESPI_range, bits [31:27]<span class="condition"><br/>When GICD_TYPER.ESPI == 1:
+                        </span></h4><div class="field">
+      <p>Indicates the maximum INTID in the Extended SPI range.</p>
+    <p>Maximum Extended SPI INTID is (32*(ESPI_range + 1) + 4095).</p>
+<p>The ESPI_range field only indicates the maximum number of SPIs that the GIC implementation might support. This value determines the number of instances of the following interrupt registers:</p>
+<ul>
+<li><a href="ext-gicd_igrouprne.html">GICD_IGROUPR&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_isenablerne.html">GICD_ISENABLER&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_icenablerne.html">GICD_ICENABLER&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_ispendrne.html">GICD_ISPENDR&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_icpendrne.html">GICD_ICPENDR&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_isactiverne.html">GICD_ISACTIVER&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_icactiverne.html">GICD_ICACTIVER&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_ipriorityrne.html">GICD_IPRIORITYR&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_icfgrne.html">GICD_ICFGR&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_irouterne.html">GICD_IROUTER&lt;n&gt;E</a>.
+</li><li><a href="ext-gicd_igrpmodrne.html">GICD_IGRPMODR&lt;n&gt;E</a>.
+</li></ul>
+<p>The GIC architecture does not require a GIC implementation to support a continuous range of SPI interrupt IDs. Software must check which SPI INTIDs are supported, up to the maximum value indicated by GICD_TYPER.ESPI_range.</p></div><h4 id="fieldset_0-31_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26">RSS, bit [26]</h4><div class="field">
+      <p>Range Selector Support.</p>
+    <table class="valuetable"><tr><th>RSS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The IRI supports targeted SGIs with affinity level 0 values of 0 - 15.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The IRI supports targeted SGIs with affinity level 0 values of 0 - 255.</p>
+        </td></tr></table></div><h4 id="fieldset_0-25_25">No1N, bit [25]</h4><div class="field">
+      <p>Indicates whether 1 of N SPI interrupts are supported.</p>
+    <table class="valuetable"><tr><th>No1N</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>1 of N SPI interrupts are supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>1 of N SPI interrupts are not supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-24_24">A3V, bit [24]</h4><div class="field">
+      <p>Affinity 3 valid. Indicates whether the Distributor supports nonzero values of Affinity level 3.</p>
+    <table class="valuetable"><tr><th>A3V</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Distributor only supports zero values of Affinity level 3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Distributor supports nonzero values of Affinity level 3.</p>
+        </td></tr></table></div><h4 id="fieldset_0-23_19">IDbits, bits [23:19]</h4><div class="field">
+      <p>The number of interrupt identifier bits supported, minus one.</p>
+    </div><h4 id="fieldset_0-18_18-1">DVIS, bit [18]<span class="condition"><br/>When FEAT_GICv4 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates whether the implementation supports Direct Virtual LPI injection.</p>
+    <table class="valuetable"><tr><th>DVIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The implementation does not support Direct Virtual LPI injection.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports Direct Virtual LPI injection.</p>
+        </td></tr></table></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17">LPIS, bit [17]</h4><div class="field">
+      <p>Indicates whether the implementation supports LPIs.</p>
+    <table class="valuetable"><tr><th>LPIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The implementation does not support LPIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports LPIs.</p>
+        </td></tr></table></div><h4 id="fieldset_0-16_16">MBIS, bit [16]</h4><div class="field">
+      <p>Indicates whether the implementation supports message-based interrupts by writing to Distributor registers.</p>
+    <table class="valuetable"><tr><th>MBIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>The implementation does not support message-based interrupts by writing to Distributor registers.</p>
+<p>The <a href="ext-gicd_clrspi_nsr.html">GICD_CLRSPI_NSR</a>, <a href="ext-gicd_setspi_nsr.html">GICD_SETSPI_NSR</a>, <a href="ext-gicd_clrspi_sr.html">GICD_CLRSPI_SR</a>, and <a href="ext-gicd_setspi_sr.html">GICD_SETSPI_SR</a> registers are reserved.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The implementation supports message-based interrupts by writing to the <a href="ext-gicd_clrspi_nsr.html">GICD_CLRSPI_NSR</a>, <a href="ext-gicd_setspi_nsr.html">GICD_SETSPI_NSR</a>, <a href="ext-gicd_clrspi_sr.html">GICD_CLRSPI_SR</a>, or <a href="ext-gicd_setspi_sr.html">GICD_SETSPI_SR</a> registers.</p>
+        </td></tr></table></div><h4 id="fieldset_0-15_11">num_LPIs, bits [15:11]</h4><div class="field"><p>Number of supported LPIs.</p>
+<ul>
+<li>
+<p><span class="binarynumber">0b00000</span> Number of LPIs as indicated by GICD_TYPER.IDbits.</p>
+
+</li><li>
+<p>All other values Number of LPIs supported is 2<sup>(num_LPIs+1)</sup>.</p>
+<ul>
+<li>
+<p>Available LPI INTIDs are 8192..(8192 + 2<sup>(num_LPIs+1)</sup> - 1).</p>
+
+</li><li>
+<p>This field cannot indicate a maximum LPI INTID greater than that indicated by GICD_TYPER.IDbits.</p>
+
+</li></ul>
+
+</li></ul>
+<p>When the supported INTID width is less than 14 bits, this field is <span class="arm-defined-word">RES0</span> and no LPIs are supported.</p></div><h4 id="fieldset_0-10_10">SecurityExtn, bit [10]</h4><div class="field"><p>Indicates whether the GIC implementation supports two Security states:</p>
+<p>When <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS == 1, this field is RAZ.</p><table class="valuetable"><tr><th>SecurityExtn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The GIC implementation supports only a single Security state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The GIC implementation supports two Security states.</p>
+        </td></tr></table></div><h4 id="fieldset_0-9_9">NMI, bit [9]</h4><div class="field">
+      <p>Non-maskable Interrupts.</p>
+    <table class="valuetable"><tr><th>NMI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-maskable interrupt property not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-maskable interrupt property is supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-8_8">ESPI, bit [8]</h4><div class="field">
+      <p>Extended SPI.</p>
+    <table class="valuetable"><tr><th>ESPI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Extended SPI range not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Extended SPI range implemented.</p>
+        </td></tr></table></div><h4 id="fieldset_0-7_5">CPUNumber, bits [7:5]</h4><div class="field"><p>Reports the number of PEs that can be used when affinity routing is not enabled, minus 1.</p>
+<p>These PEs must be numbered contiguously from zero, but the relationship between this number and the affinity hierarchy from <span class="xref">MPIDR</span> is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>. If the implementation does not support ARE being zero, this field is 000.</p></div><h4 id="fieldset_0-4_0">ITLinesNumber, bits [4:0]</h4><div class="field"><p>For the INTID range 32 to 1019, indicates the maximum SPI supported.</p>
+<p>If the value of this field is N, the maximum SPI INTID is 32(N+1) minus 1. For example, 00011 specifies that the maximum SPI INTID in is 127.</p>
+<p>Regardless of the range of INTIDs defined by this field, interrupt IDs 1020-1023 are reserved for special purposes.</p>
+<p>A value of 0 indicates no SPIs are support.</p></div><div class="text_after_fields"><p>The ITLinesNumber field only indicates the maximum number of SPIs that the GIC implementation might support. This value determines the number of instances of the following interrupt registers:</p>
+<ul>
+<li><a href="ext-gicd_igrouprn.html">GICD_IGROUPR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_isenablern.html">GICD_ISENABLER&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_icenablern.html">GICD_ICENABLER&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_ispendrn.html">GICD_ISPENDR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_icpendrn.html">GICD_ICPENDR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_isactivern.html">GICD_ISACTIVER&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_icactivern.html">GICD_ICACTIVER&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_ipriorityrn.html">GICD_IPRIORITYR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_itargetsrn.html">GICD_ITARGETSR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_icfgrn.html">GICD_ICFGR&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_iroutern.html">GICD_IROUTER&lt;n&gt;</a>.
+</li><li><a href="ext-gicd_igrpmodrn.html">GICD_IGRPMODR&lt;n&gt;</a>.
+</li></ul>
+<p>The GIC architecture does not require a GIC implementation to support a continuous range of SPI interrupt IDs. Software must check which SPI INTIDs are supported, up to the maximum value indicated by GICD_TYPER.ITLinesNumber.</p></div><h2>Accessing GICD_TYPER</h2><h4>GICD_TYPER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Distributor</td><td>Dist_base</td><td><span class="hexnumber">0x0004</span></td><td>GICD_TYPER</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

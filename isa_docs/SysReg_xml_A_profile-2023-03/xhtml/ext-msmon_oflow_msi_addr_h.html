@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MSMON_OFLOW_MSI_ADDR_H</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MSMON_OFLOW_MSI_ADDR_H, MPAM Monitor Overflow MSI Write High-part Address Register</h1><p>The MSMON_OFLOW_MSI_ADDR_H characteristics are:</p><h2>Purpose</h2>
+        <p>MSMON_OFLOW_MSI_ADDR_H is a 32-bit read/write register for the high part of the MPAM monitor overflow MSI address.</p>
+
+      
+        <p>MSMON_OFLOW_MSI_ADDR_H_s is the high part of the MSI write address for monitor overflow interrupts from Secure monitor instances.
+MSMON_OFLOW_MSI_ADDR_H_ns is the high part of the MSI write address for monitor overflow interrupts from Non-secure monitor instances.
+MSMON_OFLOW_MSI_ADDR_H_rt is the high part of the MSI write address for monitor overflow interrupts from Root monitor instances.
+MSMON_OFLOW_MSI_ADDR_H_rl is the high part of the MSI write address for monitor overflow interrupts from Realm monitor instances.</p>
+      <h2>Configuration</h2><p>The power domain of MSMON_OFLOW_MSI_ADDR_H is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAMv1p1 is implemented and MPAMF_MSMON_IDR.HAS_OFLW_MSI == 1. Otherwise, direct accesses to MSMON_OFLOW_MSI_ADDR_H are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-msmon_oflow_msi_addr_l.html">MSMON_OFLOW_MSI_ADDR_L</a>, <a href="ext-msmon_oflow_msi_addr_h.html">MSMON_OFLOW_MSI_ADDR_H</a>, <a href="ext-msmon_oflow_msi_attr.html">MSMON_OFLOW_MSI_ATTR</a>, <a href="ext-msmon_oflow_msi_data.html">MSMON_OFLOW_MSI_DATA</a>, and <a href="ext-msmon_oflow_msi_mpam.html">MSMON_OFLOW_MSI_MPAM</a> must all be implemented to support MSI writes for monitor overflow interrupts.</p>
+
+      
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MSMON_OFLOW_MSI_ADDR_H is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-31_20">RES0</a></td><td class="lr" colspan="20"><a href="#fieldset_0-19_0">MSI_ADDR_H</a></td></tr></tbody></table><h4 id="fieldset_0-31_20">Bits [31:20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_0">MSI_ADDR_H, bits [19:0]</h4><div class="field">
+      <p>MSI write address bits[51:32].</p>
+    </div><h2>Accessing MSMON_OFLOW_MSI_ADDR_H</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MSMON_OFLW_MSI_ADDR_H_s must only be accessible from the Secure MPAM feature page.
+</li><li>MSMON_OFLW_MSI_ADDR_H_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MSMON_OFLW_MSI_ADDR_H_rt must only be accessible from the Root MPAM feature page.
+</li><li>MSMON_OFLW_MSI_ADDR_H_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MSMON_OFLW_MSI_ADDR_H_s, MSMON_OFLW_MSI_ADDR_H_ns, MSMON_OFLW_MSI_ADDR_H_rt, and MSMON_OFLW_MSI_ADDR_H_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MSMON_OFLW_MSI_ADDR_H_s) accesses the high part of the monitor overflow MSI write address of Secure monitors.
+</li><li>The Non-secure instance (MSMON_OFLW_MSI_ADDR_H_ns) accesses the high part of the monitor overflow MSI write address of Non-secure monitors.
+</li><li>The Root instance (MSMON_OFLW_MSI_ADDR_H_rt) accesses the high part of the monitor overflow MSI write address of Root monitors.
+</li><li>The Realm instance (MSMON_OFLW_MSI_ADDR_H_rl) accesses the high part of the monitor overflow MSI write address of Realm monitors.
+</li></ul>
+      <h4>MSMON_OFLOW_MSI_ADDR_H can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x08E4</span></td><td>MSMON_OFLW_MSI_ADDR_H_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x08E4</span></td><td>MSMON_OFLW_MSI_ADDR_H_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x08E4</span></td><td>MSMON_OFLW_MSI_ADDR_H_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x08E4</span></td><td>MSMON_OFLW_MSI_ADDR_H_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

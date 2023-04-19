@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MFAR_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MFAR_EL3, Physical Fault Address Register (EL3)</h1><p>The MFAR_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Records the faulting physical address for a Granule Protection Check, synchronous External Abort, or SError exception taken to EL3.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_PFAR is implemented or FEAT_RME is implemented. Otherwise, direct accesses to MFAR_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>MFAR_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When FEAT_RME is implemented and the exception is a GPC exception:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_63">NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-62_62">NSE</a></td><td class="lr" colspan="6"><a href="#fieldset_0-61_56">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52-1">FPA[55:52]</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48-1">FPA[51:48]</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_12">FPA</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-47_12">FPA</a></td><td class="lr" colspan="12"><a href="#fieldset_0-11_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_63">NS, bit [63]</h4><div class="field"><p>Together with MFAR_EL3.NSE, reports the physical address space of the access that triggered the exception.</p>
+<table class="valuetable"><thead><tr><th>NSE</th><th>NS</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>When Secure state is implemented, Secure. Otherwise reserved.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>Non-secure.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b0</span></td><td>Root.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b1</span></td><td>Realm.</td></tr></tbody></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-62_62">NSE, bit [62]</h4><div class="field"><p>Together with MFAR_EL3.NS, reports the physical address space of the access that triggered the exception.</p>
+<p>For a description of the values derived by evaluating NS and NSE together, see MFAR_EL3.NS.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-61_56">Bits [61:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_52-1">FPA[55:52], bits [55:52]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field">
+      <p>When FEAT_D128 is implemented, extension to MFAR_EL3.FPA[47:12].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-55_52-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-51_48-1">FPA[51:48], bits [51:48]<span class="condition"><br/>When FEAT_LPA is implemented:
+                        </span></h4><div class="field">
+      <p>When FEAT_LPA is implemented, extension to MFAR_EL3.FPA[47:12].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-51_48-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_12">FPA, bits [47:12]</h4><div class="field">
+      <p>Bits [47:12] of the Faulting Physical Address.</p>
+    
+      <p>For implementations with fewer than 48 physical address bits, the corresponding upper bits in this field are <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_0">Bits [11:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When FEAT_PFAR is implemented and the exception is a synchronous External Abort or SError exception:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-63_63-1">NS</a></td><td class="lr" colspan="1"><a href="#fieldset_1-62_62-1">NSE</a></td><td class="lr" colspan="6"><a href="#fieldset_1-61_56">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_1-55_52-1">PA[55:52]</a></td><td class="lr" colspan="4"><a href="#fieldset_1-51_48-1">PA[51:48]</a></td><td class="lr" colspan="16"><a href="#fieldset_1-47_0">PA</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-47_0">PA</a></td></tr></tbody></table><h4 id="fieldset_1-63_63-1">NS, bit [63]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with MFAR_EL3.NSE, reports the physical address space of the access that triggered the exception.</p>
+<table class="valuetable"><thead><tr><th>NSE</th><th>NS</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>When Secure state is implemented, Secure. Otherwise reserved.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>Non-secure.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b0</span></td><td>Root.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b1</span></td><td>Realm.</td></tr></tbody></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-63_63-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Non-secure. Reports the physical address space of the access that triggered the exception.</p>
+    <table class="valuetable"><tr><th>NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Secure physical address space.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure physical address space.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-62_62-1">NSE, bit [62]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with MFAR_EL3.NS, reports the physical address space of the access that triggered the exception.</p>
+<p>For a description of the values derived by evaluating NS and NSE together, see MFAR_EL3.NS.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-62_62-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-61_56">Bits [61:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-55_52-1">PA[55:52], bits [55:52]<span class="condition"><br/>When FEAT_D128 is implemented:
+                        </span></h4><div class="field">
+      <p>When FEAT_D128 is implemented, extension to MFAR_EL3.PA[47:0].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-55_52-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-51_48-1">PA[51:48], bits [51:48]<span class="condition"><br/>When FEAT_LPA is implemented:
+                        </span></h4><div class="field">
+      <p>When FEAT_LPA is implemented, extension to MFAR_EL3.PA[47:0].</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-51_48-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-47_0">PA, bits [47:0]</h4><div class="field">
+      <p>Physical Address. Bits [47:0] of the aborting physical address.</p>
+    <p>For implementations with fewer than 48 physical address bits, the corresponding upper bits in this field are <span class="arm-defined-word">RES0</span>.</p>
+<p>The recorded address can be any address within the same naturally-aligned fault granule as the faulting physical address, where the size of the fault granule is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and no larger than the larger than:</p>
+<ul>
+<li>The size of the range of values permitted to be recorded in <a href="AArch64-far_el3.html">FAR_EL3</a>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing MFAR_EL3</h2>
+        <p>MFAR_EL3 is not valid and reads <span class="arm-defined-word">UNKNOWN</span> if <a href="AArch64-esr_el3.html">ESR_EL3</a>.EC is recorded indicating an Abort or SError exception and <a href="AArch64-esr_el3.html">ESR_EL3</a>.PFV is recorded as 0.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MFAR_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0110</td><td>0b0000</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MFAR_EL3;
+                </p><h4 class="assembler">MSR MFAR_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0110</td><td>0b0000</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    MFAR_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

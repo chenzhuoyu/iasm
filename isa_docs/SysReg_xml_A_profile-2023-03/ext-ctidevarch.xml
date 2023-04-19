@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CTIDEVARCH</reg_short_name>
+        
+        <reg_long_name>CTI Device Architecture register</reg_long_name>
+
+        <power_domain_text>CTIDEVARCH is in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>CTI</reg_component>
+    <reg_offset><hexnumber>0xFBC</hexnumber></reg_offset>
+    <reg_instance>CTIDEVARCH</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Identifies the programmers' model architecture of the CTI component.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Cross-Trigger Interface registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If the CTI is CTIv1, this register is <arm-defined-word>OPTIONAL</arm-defined-word>. If the CTI is CTIv2, this register is mandatory.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Arm recommends that the CTI is CTIv2.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>In an Armv8.5 compliant implementation, the CTI must be CTIv2.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>If this register is not implemented, <register_link state="ext" id="ext-ctidevaff0.xml">CTIDEVAFF0</register_link> and <register_link state="ext" id="ext-ctidevaff1.xml">CTIDEVAFF1</register_link> are also not implemented.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CTIDEVARCH is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARCHITECT</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>31:21</rel_range>
+    <field_description order="before"><para>Defines the architecture of the component. For CTI, this is Arm Limited.</para>
+<para>Bits [31:28] are the JEP106 continuation code, <hexnumber>0x4</hexnumber>.</para>
+<para>Bits [27:21] are the JEP106 ID code, <hexnumber>0x3B</hexnumber>.</para></field_description>
+    <field_description order="after">
+      <para>Reads as <binarynumber>0b01000111011</binarynumber>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PRESENT</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Indicates that the DEVARCH is present.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Reads as <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-19_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>REVISION</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before"><para>Revision.</para>
+<para>Defines the architecture revision of the component.</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>First revision.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0000</binarynumber>, and also adds support for <register_link state="ext" id="ext-ctidevctl.xml">CTIDEVCTL</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_DoPD is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>REVISION</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before"><para>Revision.</para>
+<para>Defines the architecture revision of the component.</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>Reads as <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ARCHID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before"><para>Defines this part to be an Armv8 debug component. For architectures defined by Arm this is further subdivided.</para>
+<para>For CTI:</para>
+<list type="unordered">
+<listitem><content>Bits [15:12] are the architecture version, <hexnumber>0x1</hexnumber>.</content>
+</listitem><listitem><content>Bits [11:0] are the architecture part number, <hexnumber>0xA14</hexnumber>.</content>
+</listitem></list>
+<para>This corresponds to CTI architecture version CTIv2.</para></field_description>
+    <field_description order="after">
+      <para>Reads as <hexnumber>0x1A14</hexnumber>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_21" msb="31" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_16-1" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

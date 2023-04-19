@@ -1,0 +1,747 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMEVTYPER&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Performance Monitors Event Type Registers</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported and FEAT_PMUv3 is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>30</reg_array_end>
+         </reg_array>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="pmu.pmevtypern_el0.xml">PMU.PMEVTYPER&lt;n&gt;_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+    <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Configures event counter n, where n is 0 to 30.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMEVTYPER&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>P</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>EL1 filtering. Controls counting events in EL1.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If Secure and Non-secure states are implemented, then counting events in Non-secure EL1 is further controlled by PMEVTYPER&lt;n&gt;.NSK.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of events.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Events in EL1 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>U</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>User filtering. Controls counting events in EL0.</para>
+<para>If Secure and Non-secure states are implemented, then counting in Non-secure EL0 is further controlled by the PMCCFILTR.NSU field.</para>
+<para>If <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, then counting in Realm EL0 is further controlled by the PMEVTYPER&lt;n&gt;.RLU bit.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of events.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Events in EL0 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSK</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure EL1 filtering. Controls counting events in Non-secure EL1. If PMEVTYPER&lt;n&gt;.NSK is not equal to PMEVTYPER&lt;n&gt;.P, then events in Non-secure EL1 are not counted. Otherwise, PMEVTYPER&lt;n&gt;.NSK has no effect on filtering of events in Non-secure EL1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When PMEVTYPER&lt;n&gt;.P == 0, this field has no effect on filtering of events.</para>
+<para>When PMEVTYPER&lt;n&gt;.P == 1, events in Non-secure EL1 are not counted.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>When PMEVTYPER&lt;n&gt;.P == 0, events in Non-secure EL1 are not counted.</para>
+<para>When PMEVTYPER&lt;n&gt;.P == 1, this field has no effect on filtering of events.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSU</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure EL0 filtering. Controls counting events in Non-secure EL0. If PMEVTYPER&lt;n&gt;.NSU is not equal to PMEVTYPER&lt;n&gt;.U, then events in Non-secure EL0 are not counted. Otherwise, PMEVTYPER&lt;n&gt;.NSU has no effect on filtering of events in Non-secure EL0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When PMEVTYPER&lt;n&gt;.U == 0, this field has no effect on filtering of events.</para>
+<para>When PMEVTYPER&lt;n&gt;.U == 1, events in Non-secure EL0 are not counted.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>When PMEVTYPER&lt;n&gt;.U == 0, events in Non-secure EL0 are not counted.</para>
+<para>When PMEVTYPER&lt;n&gt;.U == 1, this field has no effect on filtering of events.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSH</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>EL2 filtering. Controls counting events in EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Events in EL2 are not counted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This field has no effect on filtering of events.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-25_25-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MT</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Multithreading.</para>
+    </field_description>
+    <field_description order="after"><para>From Armv8.6, the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> multi-threaded PMU extension is not permitted, meaning if <xref browsertext="FEAT_MTPMU" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.MTPMU"/> is not implemented, this field is <arm-defined-word>RES0</arm-defined-word>. See <register_link state="AArch32" id="AArch32-id_dfr1.xml">ID_DFR1</register_link>.MTPMU.</para>
+<para>This field is ignored by the PE and treated as zero when <xref browsertext="FEAT_MTPMU" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.MTPMU"/> is implemented and Disabled.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Count events only on controlling PE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Count events from any PE with the same affinity at level 1 and above as this PE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_MTPMU is implemented or an IMPLEMENTATION DEFINED multi-threaded PMU extension is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-25_25-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-24_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>24:22</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RLU</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Realm EL0  (unprivileged) filtering bit. Controls counting in Realm EL0.</para>
+<para>If the value of this bit is equal to the value of the PMEVTYPER&lt;n&gt;.U bit, events in Realm EL0 are counted.</para>
+<para>Otherwise, events in Realm EL0 are not counted.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>20:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_10-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>evtCount[15:10]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Extension to evtCount[9:0]. For more information, see evtCount[9:0].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_10-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>5:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-9_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>evtCount[9:0]</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>9:0</rel_range>
+    <field_description order="before"><para>Event to count.</para>
+<para>The event number of the event that is counted by event counter <register_link state="AArch32" id="AArch32-pmevcntrn.xml">PMEVCNTR&lt;n&gt;</register_link>.</para>
+<para>The ranges of event numbers allocated to each type of event are shown in <xref browsertext="'Allocation of the PMU event number space'" filename="D_the_performance_monitors_extension.fm" linkend="CACBHBFJ"/>.</para>
+<para>If <xref browsertext="FEAT_PMUv3p8" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3p8"/> is implemented and PMEVTYPER&lt;n&gt;.evtCount is programmed to an event that is reserved or not supported by the PE, no events are counted and the value returned by a direct or external read of the PMEVTYPER&lt;n&gt;.evtCount field is the value written to the field.</para>
+<note><para>Arm recommends this behavior for all implementations of <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/>.</para></note><para>Otherwise, if PMEVTYPER&lt;n&gt;.evtCount is programmed to an event that is reserved or not supported by the PE, the behavior depends on the value written:</para>
+<list type="unordered">
+<listitem><content>For the range <hexnumber>0x0000</hexnumber> to <hexnumber>0x003F</hexnumber>, no events are counted and the value returned by a direct or external read of the PMEVTYPER&lt;n&gt;.evtCount field is the value written to the field.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.PMU"/> is implemented, for the range <hexnumber>0x4000</hexnumber> to <hexnumber>0x403F</hexnumber>, no events are counted and the value returned by a direct or external read of the PMEVTYPER&lt;n&gt;.evtCount field is the value written to the field.</content>
+</listitem><listitem><content>For other values, it is <arm-defined-word>UNPREDICTABLE</arm-defined-word> what event, if any, is counted and the value returned by a direct or external read of the PMEVTYPER&lt;n&gt;.evtCount field is <arm-defined-word>UNKNOWN</arm-defined-word>.</content>
+</listitem></list>
+<note><para><arm-defined-word>UNPREDICTABLE</arm-defined-word> means the event must not expose privileged information.</para></note></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27-1" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25-1" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_22" msb="24" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_16" msb="20" lsb="16"/>
+  <fieldat id="fieldset_0-15_10-1" msb="15" lsb="10"/>
+  <fieldat id="fieldset_0-9_0" msb="9" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="30"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>PMEVTYPER&lt;n&gt; can also be accessed by using <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link> with <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL set to n.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If <xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> is implemented and &lt;n&gt; is greater than or equal to the number of accessible event counters, then the behavior of permitted reads and writes of <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link> is as follows:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>If &lt;n&gt; is an unimplemented event counter, the access is <arm-defined-word>UNDEFINED</arm-defined-word>.</content>
+</listitem><listitem><content>Otherwise, the access is trapped to EL2.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If <xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> is not implemented and &lt;n&gt; is greater than or equal to the number of accessible event counters, then reads and writes of <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link> are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>, and the following behaviors are permitted:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Accesses to the register are <arm-defined-word>UNDEFINED</arm-defined-word>.</content>
+</listitem><listitem><content>Accesses to the register behave as RAZ/WI.</content>
+</listitem><listitem><content>Accesses to the register execute as a <instruction>NOP</instruction>.</content>
+</listitem><listitem><content>Accesses to the register behave as if &lt;n&gt; is an <arm-defined-word>UNKNOWN</arm-defined-word> value less-than-or-equal-to the index of the highest accessible event counter.</content>
+</listitem><listitem><content>If EL2 is implemented and enabled in the current Security state, and &lt;n&gt; is less than the number of implemented event counters, accesses from EL1 or permitted accesses from EL0 are trapped to EL2.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMEVTYPER&lt;n&gt; reads-as-zero and ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.UEN == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.P&lt;n&gt; == 0.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMEVTYPER&lt;n&gt; ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.{UEN,ER} == {1,1}.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <note><para>In EL0, an access is permitted if it is enabled by <register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>.EN or <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.{UEN,EN}.</para><para>If EL2 is implemented and enabled in the current Security state, at EL0 and EL1:</para><list type="unordered"><listitem><content>If EL2 is using AArch32, <register_link state="AArch32" id="AArch32-hdcr.xml">HDCR</register_link>.HPMN identifies the number of accessible event counters.</content></listitem><listitem><content>If EL2 is using AArch64, <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMN identifies the number of accessible event counters.</content></listitem></list><para>Otherwise, the number of accessible event counters is the number of implemented event counters. For more information, see <register_link state="AArch32" id="AArch32-hdcr.xml">HDCR</register_link>.HPMN and <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMN.</para></note>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PMEVTYPER&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-30</acc_array_range>
+                </acc_array>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b11:m[4:3]"/>
+                
+                <enc n="opc2" v="m[2:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;1:0&gt;:opc2&lt;2:0&gt;);
+
+if m &gt;= NUM_PMU_COUNTERS then
+    if IsFeatureImplemented(FEAT_FGT) then
+        UNDEFINED;
+    else
+        ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+elsif PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMEVTYPERn_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; m &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL1) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMEVTYPER[m];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; m &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL2) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMEVTYPER[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMEVTYPER[m];
+elsif PSTATE.EL == EL3 then
+    R[t] = PMEVTYPER[m];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PMEVTYPER&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-30</acc_array_range>
+                </acc_array>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1110"/>
+                
+                <enc n="CRm" v="0b11:m[4:3]"/>
+                
+                <enc n="opc2" v="m[2:0]"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;1:0&gt;:opc2&lt;2:0&gt;);
+
+if m &gt;= NUM_PMU_COUNTERS then
+    if IsFeatureImplemented(FEAT_FGT) then
+        UNDEFINED;
+    else
+        ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+elsif PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMEVTYPERn_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; m &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL1) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMEVTYPER[m] = R[t];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; m &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL2) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMEVTYPER[m] = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMEVTYPER[m] = R[t];
+elsif PSTATE.EL == EL3 then
+    PMEVTYPER[m] = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

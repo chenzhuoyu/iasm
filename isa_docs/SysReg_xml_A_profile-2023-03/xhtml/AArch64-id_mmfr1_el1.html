@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_MMFR1_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_MMFR1_EL1, AArch32 Memory Model Feature Register 1</h1><p>The ID_MMFR1_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the implemented memory model and memory management support in AArch32 state.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>AArch64 System register ID_MMFR1_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-id_mmfr1.html">ID_MMFR1[31:0]</a>.</p><h2>Attributes</h2>
+        <p>ID_MMFR1_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When AArch32 is supported:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">BPred</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">L1TstCln</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">L1Uni</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">L1Hvd</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">L1UniSW</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">L1HvdSW</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">L1UniVA</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">L1HvdVA</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_28">BPred, bits [31:28]</h4><div class="field">
+      <p>Branch Predictor. Indicates branch predictor management requirements. Defined values are:</p>
+    <table class="valuetable"><tr><th>BPred</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No branch predictor, or no MMU present. Implies a fixed MPU configuration.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Branch predictor requires flushing on:</p>
+<ul>
+<li>Enabling or disabling a stage of address translation.
+</li><li>Writing new data to instruction locations.
+</li><li>Writing new mappings to the translation tables.
+</li><li>Changes to the <a href="AArch32-ttbr0.html">TTBR0</a>, <a href="AArch32-ttbr1.html">TTBR1</a>, or <a href="AArch32-ttbcr.html">TTBCR</a> registers.
+</li><li>Changes to the ContextID or ASID, or to the FCSE ProcessID if this is supported.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>Branch predictor requires flushing on:</p>
+<ul>
+<li>Enabling or disabling a stage of address translation.
+</li><li>Writing new data to instruction locations.
+</li><li>Writing new mappings to the translation tables.
+</li><li>Any change to the <a href="AArch32-ttbr0.html">TTBR0</a>, <a href="AArch32-ttbr1.html">TTBR1</a>, or <a href="AArch32-ttbcr.html">TTBCR</a> registers without a change to the corresponding ContextID or ASID, or FCSE ProcessID if this is supported.
+</li></ul></td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Branch predictor requires flushing only on writing new data to instruction locations.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>For execution correctness, branch predictor requires no flushing at any time.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0010</span>, <span class="binarynumber">0b0011</span>, and <span class="binarynumber">0b0100</span>. For values other than <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0100</span> the Arm Architecture Reference Manual, or the product documentation, might give more information about the required maintenance.</p></div><h4 id="fieldset_0-27_24">L1TstCln, bits [27:24]</h4><div class="field">
+      <p>Level 1 cache Test and Clean. Indicates the supported Level 1 data cache test and clean operations, for Harvard or unified cache implementations. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1TstCln</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported Level 1 data cache test and clean operations are:</p>
+<ul>
+<li>Test and clean data cache.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Test, clean, and invalidate data cache.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-23_20">L1Uni, bits [23:20]</h4><div class="field">
+      <p>Level 1 Unified cache. Indicates the supported entire Level 1 cache maintenance operations for a unified cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1Uni</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported entire Level 1 cache operations are:</p>
+<ul>
+<li>Invalidate cache, including branch predictor if appropriate.
+</li><li>Invalidate branch predictor, if appropriate.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Clean cache, using a recursive model that uses the cache dirty status bit.
+</li><li>Clean and invalidate cache, using a recursive model that uses the cache dirty status bit.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-19_16">L1Hvd, bits [19:16]</h4><div class="field">
+      <p>Level 1 Harvard cache. Indicates the supported entire Level 1 cache maintenance operations for a Harvard cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1Hvd</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported entire Level 1 cache operations are:</p>
+<ul>
+<li>Invalidate instruction cache, including branch predictor if appropriate.
+</li><li>Invalidate branch predictor, if appropriate.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Invalidate data cache.
+</li><li>Invalidate data cache and instruction cache, including branch predictor if appropriate.
+</li></ul></td></tr><tr><td class="bitfield">0b0011</td><td><p>As for <span class="binarynumber">0b0010</span>, and adds:</p>
+<ul>
+<li>Clean data cache, using a recursive model that uses the cache dirty status bit.
+</li><li>Clean and invalidate data cache, using a recursive model that uses the cache dirty status bit.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-15_12">L1UniSW, bits [15:12]</h4><div class="field">
+      <p>Level 1 Unified cache by Set/Way. Indicates the supported Level 1 cache line maintenance operations by set/way, for a unified cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1UniSW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported Level 1 unified cache line maintenance operations by set/way are:</p>
+<ul>
+<li>Clean cache line by set/way.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Clean and invalidate cache line by set/way.
+</li></ul></td></tr><tr><td class="bitfield">0b0011</td><td><p>As for <span class="binarynumber">0b0010</span>, and adds:</p>
+<ul>
+<li>Invalidate cache line by set/way.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-11_8">L1HvdSW, bits [11:8]</h4><div class="field">
+      <p>Level 1 Harvard cache by Set/Way. Indicates the supported Level 1 cache line maintenance operations by set/way, for a Harvard cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1HvdSW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported Level 1 Harvard cache line maintenance operations by set/way are:</p>
+<ul>
+<li>Clean data cache line by set/way.
+</li><li>Clean and invalidate data cache line by set/way.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Invalidate data cache line by set/way.
+</li></ul></td></tr><tr><td class="bitfield">0b0011</td><td><p>As for <span class="binarynumber">0b0010</span>, and adds:</p>
+<ul>
+<li>Invalidate instruction cache line by set/way.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-7_4">L1UniVA, bits [7:4]</h4><div class="field">
+      <p>Level 1 Unified cache by Virtual Address. Indicates the supported Level 1 cache line maintenance operations by VA, for a unified cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1UniVA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported Level 1 unified cache line maintenance operations by VA are:</p>
+<ul>
+<li>Clean cache line by VA.
+</li><li>Invalidate cache line by VA.
+</li><li>Clean and invalidate cache line by VA.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Invalidate branch predictor by VA, if branch predictor is implemented.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-3_0">L1HvdVA, bits [3:0]</h4><div class="field">
+      <p>Level 1 Harvard cache by Virtual Address. Indicates the supported Level 1 cache line maintenance operations by VA, for a Harvard cache implementation. Defined values are:</p>
+    <table class="valuetable"><tr><th>L1HvdVA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td><p>Supported Level 1 Harvard cache line maintenance operations by VA are:</p>
+<ul>
+<li>Clean data cache line by VA.
+</li><li>Invalidate data cache line by VA.
+</li><li>Clean and invalidate data cache line by VA.
+</li><li>Clean instruction cache line by VA.
+</li></ul></td></tr><tr><td class="bitfield">0b0010</td><td><p>As for <span class="binarynumber">0b0001</span>, and adds:</p>
+<ul>
+<li>Invalidate branch predictor by VA, if branch predictor is implemented.
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr></tbody></table><h4 id="fieldset_1-63_0">Bits [63:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">UNKNOWN</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_MMFR1_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_MMFR1_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0001</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_MMFR1_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_MMFR1_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_MMFR1_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

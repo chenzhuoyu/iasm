@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>SCTLR2_EL2</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SCTLR2_EL2, System Control Register (EL2)</h1><p>The SCTLR2_EL2 characteristics are:</p><h2>Purpose</h2><p>Provides top level control of the system, including its memory system, at EL2.</p><p>When <span class="xref">FEAT_VHE</span> is implemented and the value of <a href="AArch64-hcr_el2.html">HCR_EL2</a>.{E2H,TGE} is {1,1}, these controls also apply to execution at EL0.</p><h2>Configuration</h2><p>This register is present only when FEAT_SCTLR2 is implemented. Otherwise, direct accesses to SCTLR2_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p><p>This register has no effect if EL2 is not enabled in the current Security state.</p><h2>Attributes</h2><p>SCTLR2_EL2 is a 64-bit register.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_7">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="25"><a href="#fieldset_0-63_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">EnIDCP128</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">EASE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">EnANERR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">EnADERR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">NMEA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">EMEC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_7">Bits [63:7]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-6_6-1">EnIDCP128, bit [6]<span class="condition"><br/>When FEAT_SYSREG128 is implemented:
+                        </span></h4><div class="field"><p>Enables access to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> 128-bit System registers.</p><table class="valuetable"><tr><th>EnIDCP128</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Accesses at EL0 to <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> 128-bit System registers are trapped to EL2 using an ESR_EL2.EC value of <span class="hexnumber">0x14</span>, unless the access generates a higher priority exception.</p><p>Disables the functionality of the 128-bit <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> System registers that are accessible at EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>No accesses are trapped by this control.</p></td></tr></table><p>This field is ignored by the PE and treated as zero when any of the following are true:</p><ul><li><p><a href="AArch64-scr_el3.html">SCR_EL3</a>.SCTLR2En == 0.</p></li><li><p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H == 0.</p></li><li><p><a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE == 0.</p></li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-5_5-1">EASE, bit [5]<span class="condition"><br/>When FEAT_DoubleFault2 is implemented:
+                        </span></h4><div class="field"><p>External Aborts to SError interrupt exception vector.</p><table class="valuetable"><tr><th>EASE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Synchronous External Abort exceptions taken to EL2 are taken to the appropriate synchronous exception vector offset from <a href="AArch64-vbar_el2.html">VBAR_EL2</a>.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Synchronous External Abort exceptions taken to EL2 are taken to the appropriate SError exception vector offset from <a href="AArch64-vbar_el2.html">VBAR_EL2</a>.</p></td></tr></table><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.SCTLR2En == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-4_4-1">EnANERR, bit [4]<span class="condition"><br/>When FEAT_ANERR is implemented:
+                        </span></h4><div class="field"><p>Enable Asynchronous Normal Read Error.</p><table class="valuetable"><tr><th>EnANERR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>External abort on Normal memory reads generate synchronous Data Abort exceptions in the EL2 and EL2&amp;0 translation regimes.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>External abort on Normal memory reads generate synchronous Data Abort or asynchronous SError exceptions in the EL2 and EL2&amp;0 translation regimes.</p></td></tr></table><p>It is implementation-specific whether this field applies to memory reads generated by each of the following:</p><ul><li><del>SVE register loads.
+</del></li><li><ins>SVE</ins><del>FP&amp;SIMD</del> register <ins>loads, when</ins><del>loads.</del> <span class="xref"><ins>FEAT_SME</ins></span><ins> is implemented and the PE is in Streaming SVE mode.
+</ins></li><li>SME register loads.
+</li><li>LD&lt;op>, SWP and CAS{P} Atomic instructions that return a value to the PE.
+</li><li>ST64BV{0} instructions that return a value to the PE.
+</li><li>RCW instructions that return a value to the PE.
+</li></ul><p>Setting this field to 0 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Normal memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</p><p>Setting this field to 0 might have a performance impact for Normal memory reads.</p><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.SCTLR2En == 0.</p><p><ins>Otherwise, this field is ignored by the PE and treated as one when all of the following are true:</ins></p><ul><li><span class="xref"><ins>FEAT_ADERR</ins></span><ins> is implemented.
+</ins></li><li><a href="AArch64-id_aa64mmfr3_el1.html"><ins>ID_AA64MMFR3_EL1</ins></a><ins>.ANERR reads as </ins><span class="binarynumber"><ins>0b0010</ins></span><ins>.
+</ins></li><li><ins>SCTLR2_EL2.EnADERR is 1.
+</ins></li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-3_3-1">EnADERR, bit [3]<span class="condition"><br/>When FEAT_ADERR is implemented:
+                        </span></h4><div class="field"><p>Enable Asynchronous Device Read Error.</p><table class="valuetable"><tr><th>EnADERR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>External abort on Device memory reads generate synchronous Data Abort exceptions in the EL2 and EL2&amp;0 translation regimes.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>External abort on Device memory reads generate synchronous Data Abort or asynchronous SError exceptions in the EL2 and EL2&amp;0 translation regimes.</p></td></tr></table><p>It is implementation-specific whether this field applies to memory reads generated by each of the following:</p><ul><li>FP&amp;SIMD register loads.
+</li><li>SVE register loads.
+</li><li>SME register loads.
+</li><li>LD&lt;op>, SWP and CAS{P} Atomic instructions that return a value to the PE.
+</li><li>ST64BV{0} instructions that return a value to the PE.
+</li><li>RCW instructions that return a value to the PE.
+</li></ul><p>Setting this field to 0 does not guarantee that the PE is able to take a synchronous Data Abort exception for an External abort on a Device memory read in every case. There might be implementation-specific circumstances when an error on a load cannot be taken synchronously. These circumstances should be rare enough that treating such occurrences as fatal does not cause a significant increase in failure rate.</p><p>Setting this field to 0 might have a performance impact for Device memory reads.</p><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.SCTLR2En == 0.</p><p><ins>Otherwise, this field is ignored by the PE and treated as one when all of the following are true:</ins></p><ul><li><span class="xref"><ins>FEAT_ANERR</ins></span><ins> is implemented.
+</ins></li><li><a href="AArch64-id_aa64mmfr3_el1.html"><ins>ID_AA64MMFR3_EL1</ins></a><ins>.ADERR reads as </ins><span class="binarynumber"><ins>0b0010</ins></span><ins>.
+</ins></li><li><ins>SCTLR2_EL2.EnANERR is 1.
+</ins></li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-2_2-1">NMEA, bit [2]<span class="condition"><br/>When FEAT_DoubleFault2 is implemented:
+                        </span></h4><div class="field"><p>Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL2.</p><table class="valuetable"><tr><th>NMEA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>SError exceptions are not taken at EL2 if PSTATE.A == 1, unless routed to a higher Exception level.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>SError exceptions are taken at EL2 regardless of the value of PSTATE.A, unless routed to a higher Exception level.</p></td></tr></table><p>This field is ignored by the PE and treated as zero when <a href="AArch64-scr_el3.html">SCR_EL3</a>.SCTLR2En == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-1_1-1">EMEC, bit [1]<span class="condition"><br/>When FEAT_MEC is implemented:
+                        </span></h4><div class="field"><p>Enables MEC for the Realm physical address space at EL2.</p><table class="valuetable"><tr><th>EMEC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>MEC is not enabled for the Realm physical address space at EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>MEC is enabled for the Realm physical address space at EL2.</p></td></tr></table><p>This bit is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset:<ul><li>When EL3 is not implemented,
+            this field resets to
+            <span class="binarynumber">0</span>.
+</li><li>Otherwise,
+            this field resets to
+            an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-0_0">Bit [0]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><div class="access_mechanisms"><h2>Accessing SCTLR2_EL2</h2><p>When <span class="xref">FEAT_VHE</span> is implemented, and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H is 1, without explicit synchronization, accesses from EL2 using the register name SCTLR2_EL2 or SCTLR2_EL1 are not guaranteed to be ordered with respect to accesses using the other register name.</p><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt>, SCTLR2_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SCTLR2_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SCTLR2_EL2;
+                </p><h4 class="assembler">MSR SCTLR2_EL2, &lt;Xt></h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SCTLR2_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    SCTLR2_EL2 = X[t, 64];
+                </p><h4 class="assembler">MRS &lt;Xt>, SCTLR2_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0001</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.SCTLR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.SCTLR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV> == '111' then
+        X[t, 64] = NVMem[0x278];
+    else
+        X[t, 64] = SCTLR2_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        X[t, 64] = SCTLR2_EL2;
+    else
+        X[t, 64] = SCTLR2_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SCTLR2_EL1;
+                </p><h4 class="assembler">MSR SCTLR2_EL1, &lt;Xt></h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0001</td><td>0b0000</td><td>0b011</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.SCTLR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.SCTLR2En == '0') then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV> == '111' then
+        NVMem[0x278] = X[t, 64];
+    else
+        SCTLR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.SCTLR2En == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        SCTLR2_EL2 = X[t, 64];
+    else
+        SCTLR2_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    SCTLR2_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>07</ins><del>02</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

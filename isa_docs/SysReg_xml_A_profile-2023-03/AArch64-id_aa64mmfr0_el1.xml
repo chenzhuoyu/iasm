@@ -1,0 +1,637 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_AA64MMFR0_EL1</reg_short_name>
+        
+        <reg_long_name>AArch64 Memory Model Feature Register 0</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the implemented memory model and memory management support in AArch64 state.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For general information about the interpretation of the ID registers, see <xref browsertext="'Principles of the ID scheme for fields in ID registers'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABFAFHI"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_AA64MMFR0_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ECV</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>63:60</rel_range>
+    <field_description order="before">
+      <para>Indicates presence of Enhanced Counter Virtualization. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_ECV" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.ECV"/> implements the functionality identified by the values <binarynumber>0b0001</binarynumber> and <binarynumber>0b0010</binarynumber>.</para>
+<para>From Armv8.6, the only permitted values are <binarynumber>0b0001</binarynumber> and <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Enhanced Counter Virtualization is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Enhanced Counter Virtualization is implemented. Supports <register_link state="AArch64" id="AArch64-cnthctl_el2.xml">CNTHCTL_EL2</register_link>.{EL1TVT, EL1TVCT, EL1NVPCT, EL1NVVCT, EVNTIS}, <register_link state="AArch64" id="AArch64-cntkctl_el1.xml">CNTKCTL_EL1</register_link>.EVNTIS, <register_link state="AArch64" id="AArch64-cntpctss_el0.xml">CNTPCTSS_EL0</register_link> counter views, and <register_link state="AArch64" id="AArch64-cntvctss_el0.xml">CNTVCTSS_EL0</register_link> counter views. Extends the <register_link state="AArch64" id="AArch64-pmscr_el1.xml">PMSCR_EL1</register_link>.PCT, <register_link state="AArch64" id="AArch64-pmscr_el2.xml">PMSCR_EL2</register_link>.PCT, <register_link state="AArch64" id="AArch64-trfcr_el1.xml">TRFCR_EL1</register_link>.TS, and <register_link state="AArch64" id="AArch64-trfcr_el2.xml">TRFCR_EL2</register_link>.TS fields.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0001</binarynumber>, and also includes support for <register_link state="AArch64" id="AArch64-cnthctl_el2.xml">CNTHCTL_EL2</register_link>.ECV and <register_link state="AArch64" id="AArch64-cntpoff_el2.xml">CNTPOFF_EL2</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-59_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FGT</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>59:56</rel_range>
+    <field_description order="before">
+      <para>Indicates presence of the Fine-Grained Trap controls. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_FGT2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_FGT2"/> implements the functionality identified by the value <binarynumber>0b0010</binarynumber>.</para>
+<para>From Armv8.6, the value <binarynumber>0b0000</binarynumber> is not permitted.</para>
+<para>From Armv8.9, the value <binarynumber>0b0001</binarynumber> is not permitted.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Fine-grained trap controls are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description><para>Fine-grained trap controls are implemented. Supports:</para>
+<list type="unordered">
+<listitem><content>If EL2 is implemented, the <register_link state="AArch64" id="AArch64-hafgrtr_el2.xml">HAFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgrtr_el2.xml">HDFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr_el2.xml">HDFGWTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr_el2.xml">HFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr_el2.xml">HFGITR_EL2</register_link> and <register_link state="AArch64" id="AArch64-hfgwtr_el2.xml">HFGWTR_EL2</register_link> registers, and their associated traps.</content>
+</listitem><listitem><content>If EL2 is implemented, <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.TDCC.</content>
+</listitem><listitem><content>If EL3 is implemented, <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.TDCC.</content>
+</listitem><listitem><content>If both EL2 and EL3 are implemented, <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description><para>As <binarynumber>0b0001</binarynumber>, and also includes support for:</para>
+<list type="unordered">
+<listitem><content>If EL2 is implemented, the <register_link state="AArch64" id="AArch64-hdfgrtr2_el2.xml">HDFGRTR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr2_el2.xml">HDFGWTR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr2_el2.xml">HFGITR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr2_el2.xml">HFGRTR2_EL2</register_link>, and <register_link state="AArch64" id="AArch64-hfgwtr2_el2.xml">HFGWTR2_EL2</register_link> registers, and their associated traps.</content>
+</listitem><listitem><content>If both EL2 and EL3 are implemented, <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn2.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-55_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>55:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ExS</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before">
+      <para>Indicates support for disabling context synchronizing exception entry and exit. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_ExS" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.CSEH"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>All exception entries and exits are context synchronization events.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Non-context synchronizing exception entry and exit are supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran4_2</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 4KB memory granule size at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The <binarynumber>0b0000</binarynumber> value is deprecated.</para>
+<note><para>This field does not follow the standard ID scheme. See <xref browsertext="Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes" filename="D_aarch64_system_register_descriptions.fm" linkend="BABJBIFAI1"/> for more information.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Support for 4KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran4 field.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>4KB granule not supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>4KB granule supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>4KB granule at stage 2 supports 52-bit input addresses and can describe 52-bit output addresses.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-39_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran64_2</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>39:36</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 64KB memory granule size at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The <binarynumber>0b0000</binarynumber> value is deprecated.</para>
+<note><para>This field does not follow the standard ID scheme. See <xref browsertext="Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes" filename="D_aarch64_system_register_descriptions.fm" linkend="BABJBIFAI1"/> for more information.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Support for 64KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran64 field.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>64KB granule not supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>64KB granule supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-35_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran16_2</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>35:32</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 16KB memory granule size at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The <binarynumber>0b0000</binarynumber> value is deprecated.</para>
+<note><para>This field does not follow the standard ID scheme. See <xref browsertext="Alternative ID scheme used for ID_AA64MMFR0_EL1 stage 2 granule sizes" filename="D_aarch64_system_register_descriptions.fm" linkend="BABJBIFAI1"/> for more information.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Support for 16KB granule at stage 2 is identified in the ID_AA64MMFR0_EL1.TGran16 field.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>16KB granule not supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>16KB granule supported at stage 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>16KB granule at stage 2 supports 52-bit input addresses and can describe 52-bit output addresses.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran4</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 4KB memory translation granule size. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>4KB granule supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>4KB granule supports 52-bit input addresses and can describe 52-bit output addresses.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description>
+          <para>4KB granule not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran64</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 64KB memory translation granule size. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>64KB granule supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description>
+          <para>64KB granule not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TGran16</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Indicates support for 16KB memory translation granule size. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>16KB granule not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>16KB granule supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>16KB granule supports 52-bit input addresses and can describe 52-bit output addresses.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_LPA2 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BigEndEL0</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Indicates support for mixed-endian at EL0 only. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field is invalid and is <arm-defined-word>RES0</arm-defined-word> if ID_AA64MMFR0_EL1.BigEnd is not <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>No mixed-endian support at EL0. The <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.E0E bit has a fixed value.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Mixed-endian support at EL0. The <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.E0E bit can be configured.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SNSMem</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Indicates support for a distinction between Secure and Non-secure Memory. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>If EL3 is implemented, the value <binarynumber>0b0000</binarynumber> is not permitted.</para>
+      </note>
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Does not support a distinction between Secure and Non-secure Memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Does support a distinction between Secure and Non-secure Memory.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BigEnd</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Indicates support for mixed-endian configuration. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>No mixed-endian support. The <xref browsertext="SCTLR_ELx" filename="appx_registers_index.fm" linkend="SCTLR_ELx"/>.EE bits have a fixed value. See the BigEndEL0 field, bits[19:16], for whether EL0 supports mixed-endian.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Mixed-endian support. The <xref browsertext="SCTLR_ELx" filename="appx_registers_index.fm" linkend="SCTLR_ELx"/>.EE and <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.E0E bits can be configured.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ASIDBits</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Number of ASID bits. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>8 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>16 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARange</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Physical Address range supported. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>32 bits, 4GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>36 bits, 64GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>40 bits, 1TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>42 bits, 4TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>44 bits, 16TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>48 bits, 256TB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>52 bits, 4PB.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_LPA is implemented or FEAT_LPA2 is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description>
+          <para>56 bits, 64PB.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_D128 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_60" msb="63" lsb="60"/>
+  <fieldat id="fieldset_0-59_56" msb="59" lsb="56"/>
+  <fieldat id="fieldset_0-55_48" msb="55" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_36" msb="39" lsb="36"/>
+  <fieldat id="fieldset_0-35_32" msb="35" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_AA64MMFR0_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_AA64MMFR0_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64MMFR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64MMFR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64MMFR0_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

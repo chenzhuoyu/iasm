@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMMIR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMMIR, Performance Monitors Machine Identification Register</h1><p>The PMMIR characteristics are:</p><h2>Purpose</h2>
+        <p>Describes Performance Monitors parameters specific to the implementation.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_PMUv3_EXT is implemented and FEAT_PMUv3p4 is implemented. Otherwise, direct accesses to PMMIR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>PMMIR is in the Core power domain.</p>
+      <h2>Attributes</h2>
+        <p>PMMIR is a:</p>
+
+      
+        <ul>
+<li>64-bit register when FEAT_PMUv3_EXT64 is implemented
+</li><li>32-bit register otherwise
+</li></ul>
+      <p>This  register is part of the <a href="pmu.html">PMU</a> block.</p><h2>Field descriptions</h2><h3>When FEAT_PMUv3_EXT64 is implemented:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_28">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">EDGE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">THWIDTH</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">BUS_WIDTH</a></td><td class="lr" colspan="8"><a href="#fieldset_0-15_8">BUS_SLOTS</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">SLOTS</a></td></tr></tbody></table><h4 id="fieldset_0-63_28">Bits [63:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_24">EDGE, bits [27:24]</h4><div class="field">
+      <p>PMU event edge detection. Indicates implementation of the <span class="xref">FEAT_PMUv3_EDGE</span> feature.</p>
+    <table class="valuetable"><tr><th>EDGE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><span class="xref">FEAT_PMUv3_EDGE</span> is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><span class="xref">FEAT_PMUv3_EDGE</span> is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-23_20">THWIDTH, bits [23:20]</h4><div class="field">
+      <p>PMU.PMEVTYPER&lt;n&gt;_EL0.TH width. Indicates implementation of the <span class="xref">FEAT_PMUv3_TH</span> feature, and, if implemented, the size of the PMU.PMEVTYPER&lt;n&gt;_EL0.TH field.</p>
+    <table class="valuetable"><tr><th>THWIDTH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><span class="xref">FEAT_PMUv3_TH</span> is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>1 bit. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:1] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>2 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:2] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>3 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:3] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>4 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:4] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>5 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:5] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>6 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:6] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>7 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:7] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>8 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:8] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>9 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:9] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>10 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:10] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>11 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11] is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>12 bits.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <span class="xref">FEAT_PMUv3_TH</span> is not implemented, this field is zero.</p>
+<p>Otherwise, the largest value that can be written to PMU.PMEVTYPER&lt;n&gt;_EL0.TH is 2<sup>(PMMIR.THWIDTH)</sup> minus one.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-19_16">BUS_WIDTH, bits [19:16]</h4><div class="field">
+      <p>Bus width. Indicates the number of bytes each BUS_ACCESS event relates to. Encoded as Log<sub>2</sub>(number of bytes), plus one.</p>
+    <table class="valuetable"><tr><th>BUS_WIDTH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The information is not available.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Four bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>8 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>16 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>32 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>64 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>128 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>256 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>512 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>1024 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>2048 bytes.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Each transfer is up to this number of bytes. An access might be smaller than the bus width.</p>
+<p>When this field is nonzero, each access counted by BUS_ACCESS is at most BUS_WIDTH bytes. An implementation might treat a wide bus as multiple narrower buses, such that a wide access on the bus increments the BUS_ACCESS counter by more than one.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-15_8">BUS_SLOTS, bits [15:8]</h4><div class="field">
+      <p>Bus count. The largest value by which the BUS_ACCESS event might increment in a single BUS_CYCLES cycle.</p>
+    <p>When this field is nonzero, the largest value by which the BUS_ACCESS event might increment in a single BUS_CYCLES cycle is BUS_SLOTS.</p>
+<p>If the bus count information is not available, this field will read as zero.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-7_0">SLOTS, bits [7:0]</h4><div class="field">
+      <p>Operation width. The largest value by which the STALL_SLOT event might increment in a single cycle. If the STALL_SLOT event is not implemented, this field might read as zero.</p>
+    
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_1-31_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_1-27_24">EDGE</a></td><td class="lr" colspan="4"><a href="#fieldset_1-23_20">THWIDTH</a></td><td class="lr" colspan="4"><a href="#fieldset_1-19_16">BUS_WIDTH</a></td><td class="lr" colspan="8"><a href="#fieldset_1-15_8">BUS_SLOTS</a></td><td class="lr" colspan="8"><a href="#fieldset_1-7_0">SLOTS</a></td></tr></tbody></table><h4 id="fieldset_1-31_28">Bits [31:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-27_24">EDGE, bits [27:24]</h4><div class="field">
+      <p>PMU event edge detection. Indicates implementation of the <span class="xref">FEAT_PMUv3_EDGE</span> feature.</p>
+    <table class="valuetable"><tr><th>EDGE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><span class="xref">FEAT_PMUv3_EDGE</span> is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><span class="xref">FEAT_PMUv3_EDGE</span> is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_1-23_20">THWIDTH, bits [23:20]</h4><div class="field">
+      <p>PMU.PMEVTYPER&lt;n&gt;_EL0.TH width. Indicates implementation of the <span class="xref">FEAT_PMUv3_TH</span> feature, and, if implemented, the size of the PMU.PMEVTYPER&lt;n&gt;_EL0.TH field.</p>
+    <table class="valuetable"><tr><th>THWIDTH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p><span class="xref">FEAT_PMUv3_TH</span> is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>1 bit. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:1] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>2 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:2] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>3 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:3] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>4 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:4] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>5 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:5] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>6 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:6] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>7 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:7] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>8 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:8] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>9 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:9] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>10 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11:10] are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>11 bits. PMU.PMEVTYPER&lt;n&gt;_EL0.TH[11] is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>12 bits.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <span class="xref">FEAT_PMUv3_TH</span> is not implemented, this field is zero.</p>
+<p>Otherwise, the largest value that can be written to PMU.PMEVTYPER&lt;n&gt;_EL0.TH is 2<sup>(PMMIR.THWIDTH)</sup> minus one.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_1-19_16">BUS_WIDTH, bits [19:16]</h4><div class="field">
+      <p>Bus width. Indicates the number of bytes each BUS_ACCESS event relates to. Encoded as Log<sub>2</sub>(number of bytes), plus one.</p>
+    <table class="valuetable"><tr><th>BUS_WIDTH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The information is not available.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Four bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>8 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>16 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>32 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>64 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>128 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>256 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>512 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>1024 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>2048 bytes.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Each transfer is up to this number of bytes. An access might be smaller than the bus width.</p>
+<p>When this field is nonzero, each access counted by BUS_ACCESS is at most BUS_WIDTH bytes. An implementation might treat a wide bus as multiple narrower buses, such that a wide access on the bus increments the BUS_ACCESS counter by more than one.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_1-15_8">BUS_SLOTS, bits [15:8]</h4><div class="field">
+      <p>Bus count. The largest value by which the BUS_ACCESS event might increment in a single BUS_CYCLES cycle.</p>
+    <p>When this field is nonzero, the largest value by which the BUS_ACCESS event might increment in a single BUS_CYCLES cycle is BUS_SLOTS.</p>
+<p>If the bus count information is not available, this field will read as zero.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_1-7_0">SLOTS, bits [7:0]</h4><div class="field">
+      <p>Operation width. The largest value by which the STALL_SLOT event might increment in a single cycle. If the STALL_SLOT event is not implemented, this field might read as zero.</p>
+    
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><div class="access_mechanisms"><h2>Accessing PMMIR</h2>
+        <p>If the Core power domain is off or in a low-power state, access on this interface returns an Error.</p>
+      <p>Accesses to this register use the following encodings:</p><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT64 is implemented or FEAT_PMUv3p9 is implemented
+        </span><br/>[63:0] Accessible at offset 0xE40 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalPMUAccess(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented
+        </span><br/>[31:0] Accessible at offset 0xE40 from PMU</h4><ul><li>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalPMUAccess(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

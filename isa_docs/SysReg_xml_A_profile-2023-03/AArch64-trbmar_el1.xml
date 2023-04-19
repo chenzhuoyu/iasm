@@ -1,0 +1,764 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBMAR_EL1</reg_short_name>
+        
+        <reg_long_name>Trace Buffer Memory Attribute Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_TRBE is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-trbmar_el1.xml">TRBMAR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when FEAT_TRBE_EXT is implemented</mapped_to_condition>
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls Trace Buffer Unit accesses to memory.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If the trace buffer pointers specify virtual addresses, the address properties are defined by the translation tables and this register is ignored.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBMAR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>TRBMAR_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>63:12</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-11_10-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PAS</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Physical address specifier. Defines the PAS attribute for memory addressed by the buffer in External mode.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If the Trace Buffer Unit is using external mode and either TRBMAR_EL1.PAS is set to a reserved value, or the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> authentication interface prohibits invasive debug of the Security state corresponding to the physical address space selected by TRBMAR_EL1.PAS, then when the Trace Buffer Unit receives trace data from the trace unit, it does not write the trace data to memory and generates a trace buffer management event. That is, if any of the following apply:</para>
+<list type="unordered">
+<listitem><content><function>ExternalInvasiveDebugEnabled</function><value>()</value> == FALSE.</content>
+</listitem><listitem><content>Secure state is implemented, <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value> == FALSE, and TRBMAR_EL1.PAS is <binarynumber>0b00</binarynumber>.</content>
+</listitem><listitem><content><xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, <function>ExternalRootInvasiveDebugEnabled</function><value>()</value> == FALSE, and TRBMAR_EL1.PAS is <binarynumber>0b10</binarynumber>.</content>
+</listitem><listitem><content><xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, <function>ExternalRealmInvasiveDebugEnabled</function><value>()</value> == FALSE, and TRBMAR_EL1.PAS is <binarynumber>0b11</binarynumber>.</content>
+</listitem></list>
+<para>This field is ignored by the PE when <function>SelfHostedTraceEnabled</function><value>()</value> == TRUE.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Secure.</para>
+        </field_value_description>
+        <field_value_condition>When Secure state is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Non-secure.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Root.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Realm.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRBE_EXT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-11_10-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Trace buffer shareability domain. Defines the shareability domain for Normal memory used by the trace buffer.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>This field is ignored when TRBMAR_EL1.Attr specifies any of the following memory types:</para>
+<list type="unordered">
+<listitem><content>Any Device memory type.</content>
+</listitem><listitem><content>Normal memory, Inner Non-cacheable, Outer Non-cacheable.</content>
+</listitem></list>
+<para>All Device and Normal Inner Non-cacheable Outer Non-cacheable memory regions are always treated as Outer Shareable.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is not implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Attr</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x40</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable, Outer Non-cacheable with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0xA0</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-through Cacheable, Outer Write-through Cacheable, Non-transient, Read-Allocate with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0xF0</field_value>
+        <field_value_description>
+          <para>Tagged Normal memory, Outer Write-Back Non-transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_MTE2 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is not implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When TRBMAR_EL1.Attr == 0bxxxx0000</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Attr</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Trace buffer memory attributes. Defines the Device memory attributes for memory addressed by the trace buffer.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x04</field_value>
+        <field_value_description>
+          <para>Device-nGnRE memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x08</field_value>
+        <field_value_description>
+          <para>Device-nGRE memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0C</field_value>
+        <field_value_description>
+          <para>Device-GRE memory.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x01</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE memory with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x05</field_value>
+        <field_value_description>
+          <para>Device-nGnRE memory with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x09</field_value>
+        <field_value_description>
+          <para>Device-nGRE memory with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x0D</field_value>
+        <field_value_description>
+          <para>Device-GRE memory with the XS attribute set to 0.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_XS is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is not implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When TRBMAR_EL1.Attr == 0b0000xxxx and TRBMAR_EL1.Attr != 0b00000000</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Attr</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the Outer and Inner cacheability attributes, for memory addressed by the trace buffer.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0001xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1000xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Non-transient, No allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1001xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Non-transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1010xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Non-transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1011xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Non-transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1100xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Non-transient, No allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1101xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Non-transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1110xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Non-transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111xxxx</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Non-transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0001</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0010</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0011</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0100</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0101</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0110</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx0111</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1000</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Non-transient, No allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1001</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Non-transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1010</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Non-transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1011</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Non-transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1100</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Non-transient, No allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1101</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Non-transient, Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1110</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Non-transient, Read-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1111</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Non-transient, Read-allocate Write-allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="FEAT_TRBE_EXT is not implemented">
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When TRBMAR_EL1.Attr != 0bxxxx0000 and TRBMAR_EL1.Attr != 0b0000xxxx</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_12" msb="63" lsb="12"/>
+  <fieldat id="fieldset_0-11_10-1" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-7_0-1" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>The PE might ignore a write to TRBMAR_EL1 if any of the following apply:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.E == <binarynumber>0b1</binarynumber>, and either <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is not implemented or the Trace Buffer Unit is using Self-hosted mode.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.XE == <binarynumber>0b1</binarynumber>, <xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> is implemented, and the Trace Buffer Unit is using External mode.</para>
+</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS TRBMAR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, TRBMAR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.TRBMAR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBMAR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBMAR_EL1;
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRBMAR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister TRBMAR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR TRBMAR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1011"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.TRBMAR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.E2TB == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBMAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSTB[0] == '0' || MDCR_EL3.NSTB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSTBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBMAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        TRBMAR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

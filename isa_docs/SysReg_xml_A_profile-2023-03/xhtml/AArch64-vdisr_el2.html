@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>VDISR_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">VDISR_EL2, Virtual Deferred Interrupt Status Register</h1><p>The VDISR_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Records that a virtual SError interrupt has been consumed by an <span class="instruction">ESB</span> instruction executed at EL1.</p>
+
+      
+        <p>An indirect write to VDISR_EL2 made by an <span class="instruction">ESB</span> instruction does not require an explicit synchronization operation for the value written to be observed by a direct read of one of the following registers occurring in program order after the <span class="instruction">ESB</span> instruction:</p>
+
+      
+        <ul>
+<li><a href="AArch64-disr_el1.html">DISR_EL1</a>.
+</li><li><a href="AArch32-disr.html">DISR</a>.
+</li></ul>
+      <h2>Configuration</h2><p>AArch64 System register VDISR_EL2 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-vdisr.html">VDISR[31:0]</a>.</p><p>This register is present only when FEAT_RAS is implemented. Otherwise, direct accesses to VDISR_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>VDISR_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When EL1 is using AArch64:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">A</a></td><td class="lr" colspan="6"><a href="#fieldset_0-30_25">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">IDS</a></td><td class="lr" colspan="24"><a href="#fieldset_0-23_0">ISS</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_25">Bits [30:25]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-24_24">IDS, bit [24]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.IDS.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_0">ISS, bits [23:0]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.ISS.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When EL1 is using AArch32 and VDISR_EL2.LPAE == 0:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">A</a></td><td class="lr" colspan="15"><a href="#fieldset_1-30_16">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_1-15_14">AET</a></td><td class="lr" colspan="1"><a href="#fieldset_1-13_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-12_12">ExT</a></td><td class="lr" colspan="1"><a href="#fieldset_1-11_11">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-10_10">FS[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_1-9_9">LPAE</a></td><td class="lr" colspan="5"><a href="#fieldset_1-8_4">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_1-3_0">FS[3:0]</a></td></tr></tbody></table><h4 id="fieldset_1-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-30_16">Bits [30:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-15_14">AET, bits [15:14]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.AET.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-13_13">Bit [13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-12_12">ExT, bit [12]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.ExT.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-11_11">Bit [11]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-10_10">FS, bits [10, 3:0]</h4><div class="field">
+      <p>Fault status code. Set to <span class="binarynumber">0b10110</span> when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p>
+    <table class="valuetable"><tr><th>FS</th><th>Meaning</th></tr><tr><td class="bitfield">0b10110</td><td>
+          <p>Asynchronous SError interrupt.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The FS field is split as follows:</p>
+<ul>
+<li>FS[4] is VDISR_EL2[10].
+</li><li>FS[3:0] is VDISR_EL2[3:0].
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-9_9">LPAE, bit [9]</h4><div class="field"><p>Format.</p>
+<p>Set to <a href="AArch32-ttbcr.html">TTBCR</a>.EAE when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p><table class="valuetable"><tr><th>LPAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Using the Short-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-8_4">Bits [8:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When EL1 is using AArch32 and VDISR_EL2.LPAE == 1:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_2-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_2-31_31">A</a></td><td class="lr" colspan="15"><a href="#fieldset_2-30_16">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_2-15_14">AET</a></td><td class="lr" colspan="1"><a href="#fieldset_2-13_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-12_12">ExT</a></td><td class="lr" colspan="2"><a href="#fieldset_2-11_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-9_9">LPAE</a></td><td class="lr" colspan="3"><a href="#fieldset_2-8_6">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_2-5_0">STATUS</a></td></tr></tbody></table><h4 id="fieldset_2-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-30_16">Bits [30:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-15_14">AET, bits [15:14]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.AET.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-13_13">Bit [13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-12_12">ExT, bit [12]</h4><div class="field">
+      <p>The value copied from <a href="AArch64-vsesr_el2.html">VSESR_EL2</a>.ExT.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-11_10">Bits [11:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-9_9">LPAE, bit [9]</h4><div class="field"><p>Format.</p>
+<p>Set to <a href="AArch32-ttbcr.html">TTBCR</a>.EAE when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p><table class="valuetable"><tr><th>LPAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Using the Long-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-8_6">Bits [8:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-5_0">STATUS, bits [5:0]</h4><div class="field">
+      <p>Fault status code. Set to <span class="binarynumber">0b010001</span> when an <span class="instruction">ESB</span> instruction defers a virtual SError interrupt.</p>
+    <table class="valuetable"><tr><th>STATUS</th><th>Meaning</th></tr><tr><td class="bitfield">0b010001</td><td>
+          <p>Asynchronous SError interrupt.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing VDISR_EL2</h2>
+        <p>An indirect write to VDISR_EL2 made by an <span class="instruction">ESB</span> instruction does not require an explicit synchronization operation for the value that is written to be observed by a direct read of one of the following registers occurring in program order after the <span class="instruction">ESB</span> instruction:</p>
+
+      
+        <ul>
+<li><a href="AArch64-disr_el1.html">DISR_EL1</a>.
+</li><li><a href="AArch32-disr.html">DISR</a>.
+</li></ul>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, VDISR_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x500];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = VDISR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = VDISR_EL2;
+                </p><h4 class="assembler">MSR VDISR_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x500] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    VDISR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    VDISR_EL2 = X[t, 64];
+                </p><h4 class="assembler">MRS &lt;Xt&gt;, DISR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.AMO == '1' then
+        X[t, 64] = VDISR_EL2;
+    elsif HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = DISR_EL1;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = DISR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = DISR_EL1;
+                </p><h4 class="assembler">MSR DISR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.AMO == '1' then
+        VDISR_EL2 = X[t, 64];
+    elsif HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    else
+        DISR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    else
+        DISR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    DISR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

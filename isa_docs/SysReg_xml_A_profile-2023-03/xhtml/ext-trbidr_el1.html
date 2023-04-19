@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRBIDR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRBIDR_EL1, Trace Buffer ID Register</h1><p>The TRBIDR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Describes constraints on using the Trace Buffer Unit to an external debugger.</p>
+      <h2>Configuration</h2><p>External register TRBIDR_EL1 bits [63:0] are architecturally mapped to AArch64 System register <a href="AArch64-trbidr_el1.html">TRBIDR_EL1[63:0]</a>.</p><p>TRBIDR_EL1 is in the Core power domain.
+    </p><p>This register is present only when FEAT_TRBE_EXT is implemented. Otherwise, direct accesses to TRBIDR_EL1 are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRBIDR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_12">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-63_12">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8-1">EA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">F</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">P</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">Align</a></td></tr></tbody></table><h4 id="fieldset_0-63_12">Bits [63:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_8-1">EA, bits [11:8]<span class="condition"><br/>From Armv9.3:
+                        </span></h4><div class="field">
+      <p>External Abort handling. Describes how the PE manages External aborts on writes made by the Trace Buffer Unit to the trace buffer.</p>
+    <table class="valuetable"><tr><th>EA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The PE ignores External aborts on writes made by the Trace Buffer Unit.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The External abort generates an asynchronous SError exception at the PE.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-11_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_6">Bits [7:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5">F, bit [5]</h4><div class="field">
+      <p>Flag updates. Describes how address translations performed by the Trace Buffer Unit manage the Access flag and dirty state.</p>
+    <table class="valuetable"><tr><th>F</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Hardware management of the Access flag and dirty state for accesses made by the Trace Buffer Unit is always disabled for all translation stages.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Hardware management of the Access flag and dirty state for accesses made by the Trace Buffer Unit is controlled in the same way as explicit memory accesses in the trace buffer owning translation regime.</p>
+        </td></tr></table><div class="note"><span class="note-header">Note</span><p>If hardware management of the Access flag is disabled for a stage of translation, an access to a Page or Block with the Access flag bit not set in the descriptor will generate an Access Flag fault.</p><p>If hardware management of the dirty state is disabled for a stage of translation, an access to a Page or Block will ignore the Dirty Bit Modifier in the descriptor and might generate a Permission fault, depending on the values of the access permission bits in the descriptor.</p></div><p>From Armv9.3, the value <span class="binarynumber">0b0</span> is not permitted.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-4_4">P, bit [4]</h4><div class="field">
+      <p>This field reads as an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    </div><h4 id="fieldset_0-3_0">Align, bits [3:0]</h4><div class="field">
+      <p>Defines the minimum alignment constraint for writes to <a href="ext-trbptr_el1.html">TRBPTR_EL1</a> and <a href="ext-trbtrg_el1.html">TRBTRG_EL1</a>.</p>
+    <table class="valuetable"><tr><th>Align</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Byte.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Halfword.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Word.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Doubleword.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>16 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>32 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>64 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>128 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>256 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>512 bytes.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>1KB.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>2KB.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing TRBIDR_EL1</h2><h4>TRBIDR_EL1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>TRBE</td><td><span class="hexnumber">0x030</span></td><td>TRBIDR_EL1</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalTraceBufferAccess(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICD_ICPENDR&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Interrupt Clear-Pending Registers</reg_long_name>
+
+
+
+      
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>31</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>Dist_base</reg_frame>
+    <reg_offset><hexnumber>0x0280</hexnumber> + (4 * n)</reg_offset>
+    <reg_instance>GICD_ICPENDR&lt;n&gt;</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Removes the pending state from the corresponding interrupt.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>These registers are available in all GIC configurations. If <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS==0, these registers are Common.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>The number of implemented <register_link state="ext" id="ext-gicd_icpendrn.xml">GICD_ICPENDR&lt;n&gt;</register_link> registers is (<register_link state="ext" id="ext-gicd_typer.xml">GICD_TYPER</register_link>.ITLinesNumber+1). Registers are numbered from 0.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>GICD_ICPENDR0 is Banked for each connected PE with <register_link state="ext" id="ext-gicr_typer.xml">GICR_TYPER</register_link>.Processor_Number &lt; 8.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Accessing GICD_ICPENDR0 from a PE with <register_link state="ext" id="ext-gicr_typer.xml">GICR_TYPER</register_link>.Processor_Number &gt; 7 is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>Register is RAZ/WI.</content>
+</listitem><listitem><content>An <arm-defined-word>UNKNOWN</arm-defined-word> banked copy of the register is accessed.</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICD_ICPENDR&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Clear_pending_bit&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>For SPIs and PPIs, removes the pending state from interrupt number 32n + x. Reads and writes have the following behavior:</para>
+    </field_description>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="x">
+      <field_array_index>
+        <field_array_start>31</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>If read, indicates that the corresponding interrupt is not pending on any PE.</para>
+<para>If written, has no effect.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If read, indicates that the corresponding interrupt is pending, or active and pending.</para>
+<para>If written, changes the state of the corresponding interrupt from pending to inactive, or from active and pending to active. This has no effect in the following cases:</para>
+<list type="unordered">
+<listitem><content>If the interrupt is an SGI. In this case, the write is ignored. The pending state of an SGI can be cleared using <register_link state="ext" id="ext-gicd_cpendsgirn.xml">GICD_CPENDSGIR&lt;n&gt;</register_link>.</content>
+</listitem><listitem><content>If the interrupt is not pending and is not active and pending.</content>
+</listitem><listitem><content>If the interrupt is a level-sensitive interrupt that is pending or active and pending for a reason other than a write to <register_link state="ext" id="ext-gicd_ispendrn.xml">GICD_ISPENDR&lt;n&gt;</register_link>. In this case, if the interrupt signal continues to be asserted, the interrupt remains pending or active and pending.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields><para>For INTID m, when DIV and MOD are the integer division and modulo operations:</para>
+<list type="unordered">
+<listitem><content>The corresponding GICD_ICPENDR&lt;n&gt; number, n, is given by n = m DIV 32.</content>
+</listitem><listitem><content>The offset of the required GICD_ICPENDR is (<hexnumber>0x200</hexnumber> + (4*n)).</content>
+</listitem><listitem><content>The bit number of the required group modifier bit in this register is m MOD 32.</content>
+</listitem></list></text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit19" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit17" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-31_0" label="Clear_pending_bit0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="31"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Clear-pending bits for SGIs are RO/WI.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When affinity routing is enabled for the Security state of an interrupt:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Bits corresponding to SGIs and PPIs are RAZ/WI, and equivalent functionality for SGIs and PPIs is provided by <register_link state="ext" id="ext-gicr_icpendr0.xml">GICR_ICPENDR0</register_link>.</content>
+</listitem><listitem><content>Bits corresponding to Group 0 and Group 1 Secure interrupts can only be cleared by Secure accesses.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Bits corresponding to unimplemented interrupts are RAZ/WI.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS==0, unless the <register_link state="ext" id="ext-gicd_nsacrn.xml">GICD_NSACR&lt;n&gt;</register_link> registers permit Non-secure software to control Group 0 and Secure Group 1 interrupts, any bits that correspond to Group 0 or Secure Group 1 interrupts are accessible only by Secure accesses and are RAZ/WI to Non-secure accesses.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

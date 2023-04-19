@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MSMON_CFG_MBWU_FLT</reg_short_name>
+        
+        <reg_long_name>MPAM Memory System Monitor Configure Memory Bandwidth Usage Monitor Filter Register</reg_long_name>
+
+        <power_domain_text>The power domain of MSMON_CFG_MBWU_FLT is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MSMON == 1 and MPAMF_MSMON_IDR.MSMON_MBWU == 1</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_s</reg_frame>
+    <reg_offset><hexnumber>0x0820</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_FLT_s</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_ns</reg_frame>
+    <reg_offset><hexnumber>0x0820</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_FLT_ns</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rt</reg_frame>
+    <reg_offset><hexnumber>0x0820</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_FLT_rt</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>MPAM</reg_component>
+    <reg_frame>MPAMF_BASE_rl</reg_frame>
+    <reg_offset><hexnumber>0x0820</hexnumber></reg_offset>
+    <reg_instance>MSMON_CFG_MBWU_FLT_rl</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When FEAT_RME is implemented</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls PARTID and PMG to measure or count in the MBWU monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>MSMON_CFG_MBWU_FLT_s sets filter conditions for the Secure memory bandwidth usage monitor instance selected by the Secure instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_MBWU_CTL_ns sets filter conditions for the Non-secure memory bandwidth usage monitor instance selected by the Non-secure instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_CSU_FLT_rt sets the filter conditions for the Root PARTID selected by the Root instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.
+MSMON_CFG_CSU_FLT_rl sets the filter conditions for the Realm PARTID selected by the Realm instance of <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <register_link state="ext" id="ext-mpamf_idr.xml">MPAMF_IDR</register_link>.HAS_RIS is 1, the monitor instance filter configuration accessed is for the resource instance currently selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.RIS and the monitor instance of that resource instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Memory Partitioning and Monitoring registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The power and reset domain of each MSC component is specific to that component.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MSMON_CFG_MBWU_FLT is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented</fields_condition>
+  <text_before_fields>
+    <para>RW filtering.</para>
+  </text_before_fields>
+  <field id="fieldset_0-31_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RWBW</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Read/write bandwidth filter. Configures the selected monitor instance to count all bandwidth, only read bandwidth or only write bandwidth.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Monitor instance counts read bandwidth and write bandwidth.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Monitor instance counts write bandwidth only.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Monitor instance counts read bandwidth only.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Reserved.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When MPAMF_MBWUMON_IDR.HAS_RWBW == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-31_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>29:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before"><para>Performance monitoring group to filter memory bandwidth usage monitoring.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PMG == 0, this field is not used to match memory bandwidth to a PMG and the contents of this field is ignored.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PMG == 1, the monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link> measures or counts memory bandwidth labeled with PMG equal to this field.</para></field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before"><para>Partition ID to filter memory bandwidth usage monitoring.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PARTID == 0, this field is not used to match memory bandwidth to a PARTID and the contents of this field is ignored.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PARTID == 1, the monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link> measures or counts memory bandwidth labeled with PARTID equal to this field.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition/>
+  <text_before_fields/>
+  <field id="fieldset_1-31_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>31:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before"><para>Performance monitoring group to filter memory bandwidth usage monitoring.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PMG == 0, this field is not used to match memory bandwidth to a PMG and the contents of this field is ignored.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PMG == 1, the monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link> measures or counts memory bandwidth labeled with PMG equal to this field.</para></field_description>
+  </field>
+  <field id="fieldset_1-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before"><para>Partition ID to filter memory bandwidth usage monitoring.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PARTID == 0, this field is not used to match memory bandwidth to a PARTID and the contents of this field is ignored.</para>
+<para>If <register_link state="ext" id="ext-msmon_cfg_mbwu_ctl.xml">MSMON_CFG_MBWU_CTL</register_link>.MATCH_PARTID == 1, the monitor selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link> measures or counts memory bandwidth labeled with PARTID equal to this field.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented</fields_condition>
+  <fieldat id="fieldset_0-31_30-1" msb="31" lsb="30"/>
+  <fieldat id="fieldset_0-29_24" msb="29" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition/>
+  <fieldat id="fieldset_1-31_24" msb="31" lsb="24"/>
+  <fieldat id="fieldset_1-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_1-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is within the MPAM feature page memory frames.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>MSMON_CFG_MBWU_FLT_s must only be accessible from the Secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_FLT_ns must only be accessible from the Non-secure MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_FLT_rt must only be accessible from the Root MPAM feature page.</content>
+</listitem><listitem><content>MSMON_CFG_MBWU_FLT_rl must only be accessible from the Realm MPAM feature page.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>MSMON_CFG_MBWU_FLT_s, MSMON_CFG_MBWU_FLT_ns, MSMON_CFG_MBWU_FLT_rt, and MSMON_CFG_MBWU_FLT_rl must be separate registers:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The Secure instance (MSMON_CFG_MBWU_FLT_s) accesses the PARTID and PMG matching for a memory bandwidth usage monitor used for Secure PARTIDs.</content>
+</listitem><listitem><content>The Non-secure instance (MSMON_CFG_MBWU_FLT_ns) accesses the PARTID and PMG matching for a memory bandwidth usage monitor used for Non-secure PARTIDs.</content>
+</listitem><listitem><content>The Root instance (MSMON_CFG_MBWU_FLT_rt) accesses the PARTID and PMG matching for a memory bandwidth usage monitor used for Root PARTIDs.</content>
+</listitem><listitem><content>The Realm instance (MSMON_CFG_MBWU_FLT_rl) accesses the PARTID and PMG matching for a memory bandwidth usage monitor used for Realm PARTIDs.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is implemented, loads and stores to MSMON_CFG_MBWU_FLT access the  monitor configuration settings for the bandwidth resource instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.RIS and the memory bandwidth usage monitor instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When RIS is not implemented, loads and stores to MSMON_CFG_MBWU_FLT access the  monitor configuration settings for the memory bandwidth usage monitor instance selected by <register_link state="ext" id="ext-msmon_cfg_mon_sel.xml">MSMON_CFG_MON_SEL</register_link>.MON_SEL.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

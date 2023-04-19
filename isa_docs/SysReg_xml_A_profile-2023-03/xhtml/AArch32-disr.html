@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>DISR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">DISR, Deferred Interrupt Status Register</h1><p>The DISR characteristics are:</p><h2>Purpose</h2>
+        <p>Records that an SError interrupt has been consumed by an <span class="instruction">ESB</span> instruction.</p>
+      <h2>Configuration</h2><p>AArch32 System register DISR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-disr_el1.html">DISR_EL1[31:0]</a> when the highest implemented Exception level is using AArch64.</p><p>This register is present only when FEAT_RAS is implemented. Otherwise, direct accesses to DISR are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>DISR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When the ESB instruction is executed at EL2:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">A</a></td><td class="lr" colspan="19"><a href="#fieldset_0-30_12">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">AET</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">EA</a></td><td class="lr" colspan="3"><a href="#fieldset_0-8_6">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_0-5_0">DFSC</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers an asynchronous SError interrupt. If the implementation does not include any sources of SError interrupt that can be synchronized by an Error Synchronization Barrier, then this bit is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_12">Bits [30:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_10">AET, bits [11:10]</h4><div class="field">
+      <p>Asynchronous Error Type. See the description of <a href="AArch32-hsr.html">HSR</a>.AET for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">EA, bit [9]</h4><div class="field">
+      <p>External abort Type. See the description of <a href="AArch32-hsr.html">HSR</a>.EA for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_6">Bits [8:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_0">DFSC, bits [5:0]</h4><div class="field">
+      <p>Fault Status Code. See the description of <a href="AArch32-hsr.html">HSR</a>.DFSC for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When the ESB instruction is executed at EL0 or EL1 and where TTBCR.EAE == 0:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">A</a></td><td class="lr" colspan="15"><a href="#fieldset_1-30_16">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_1-15_14">AET</a></td><td class="lr" colspan="1"><a href="#fieldset_1-13_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-12_12">ExT</a></td><td class="lr" colspan="1"><a href="#fieldset_1-11_11">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-10_10">FS[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_1-9_9">LPAE</a></td><td class="lr" colspan="5"><a href="#fieldset_1-8_4">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_1-3_0">FS[3:0]</a></td></tr></tbody></table><h4 id="fieldset_1-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers an asynchronous SError interrupt. If the implementation does not include any sources of SError interrupt that can be synchronized by an Error Synchronization Barrier, then this bit is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-30_16">Bits [30:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-15_14">AET, bits [15:14]</h4><div class="field">
+      <p>Asynchronous Error Type. See the description of <a href="AArch32-dfsr.html">DFSR</a>.AET for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-13_13">Bit [13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-12_12">ExT, bit [12]</h4><div class="field">
+      <p>External abort Type. See the description of <a href="AArch32-dfsr.html">DFSR</a>.ExT for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-11_11">Bit [11]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-10_10">FS, bits [10, 3:0]</h4><div class="field">
+      <p>Fault Status Code. See the description of <a href="AArch32-dfsr.html">DFSR</a>.FS for an SError interrupt.</p>
+    <p>The FS field is split as follows:</p>
+<ul>
+<li>FS[4] is DISR[10].
+</li><li>FS[3:0] is DISR[3:0].
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-9_9">LPAE, bit [9]</h4><div class="field">
+      <p>Format.</p>
+    <table class="valuetable"><tr><th>LPAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Using the Short-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-8_4">Bits [8:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h3>When the ESB instruction is executed at EL0 or EL1 and where TTBCR.EAE == 1:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_2-31_31">A</a></td><td class="lr" colspan="15"><a href="#fieldset_2-30_16">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_2-15_14">AET</a></td><td class="lr" colspan="1"><a href="#fieldset_2-13_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-12_12">ExT</a></td><td class="lr" colspan="2"><a href="#fieldset_2-11_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-9_9">LPAE</a></td><td class="lr" colspan="3"><a href="#fieldset_2-8_6">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_2-5_0">STATUS</a></td></tr></tbody></table><h4 id="fieldset_2-31_31">A, bit [31]</h4><div class="field">
+      <p>Set to 1 when an <span class="instruction">ESB</span> instruction defers an asynchronous SError interrupt. If the implementation does not include any sources of SError interrupt that can be synchronized by an Error Synchronization Barrier, then this bit is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-30_16">Bits [30:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-15_14">AET, bits [15:14]</h4><div class="field">
+      <p>Asynchronous Error Type. See the description of <a href="AArch32-dfsr.html">DFSR</a>.AET for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-13_13">Bit [13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-12_12">ExT, bit [12]</h4><div class="field">
+      <p>External abort Type. See the description of <a href="AArch32-dfsr.html">DFSR</a>.ExT for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-11_10">Bits [11:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-9_9">LPAE, bit [9]</h4><div class="field">
+      <p>Format.</p>
+    <table class="valuetable"><tr><th>LPAE</th><th>Meaning</th></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Using the Long-descriptor translation table format.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-8_6">Bits [8:6]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-5_0">STATUS, bits [5:0]</h4><div class="field">
+      <p>Fault Status Code. See the description of <a href="AArch32-dfsr.html">DFSR</a>.FS for an SError interrupt.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing DISR</h2>
+        <p>An indirect write to DISR made by an <span class="instruction">ESB</span> instruction does not require an explicit synchronization operation for the value that is written to be observed by a direct read of DISR occurring in program order after the <span class="instruction">ESB</span> instruction.</p>
+
+      
+        <p>DISR is RAZ/WI if EL3 is implemented, the PE is in Non-debug state, and any of the following apply:</p>
+
+      
+        <ul>
+<li>EL3 is using AArch64, <a href="AArch64-scr_el3.html">SCR_EL3</a>.EA == 1, and any of the following apply:<ul>
+<li>The PE is executing at EL2.
+</li><li>The PE is executing at EL1 and ((<a href="AArch64-scr_el3.html">SCR_EL3</a>.NS == 0 &amp;&amp; <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2 == 0) || <a href="AArch64-hcr_el2.html">HCR_EL2</a>.AMO == 0).
+</li></ul>
+
+</li><li>EL3 is using AArch32, <a href="AArch32-scr.html">SCR</a>.EA == 1, and any of the following apply:<ul>
+<li>The PE is executing at EL2.
+</li><li>The PE is executing at EL1 and (<a href="AArch32-scr.html">SCR</a>.NS == 0 || <a href="AArch32-hcr.html">HCR</a>.AMO == 0).
+</li></ul>
+
+</li></ul>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.AMO == '1' then
+        R[t] = VDISR_EL2&lt;31:0&gt;;
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.AMO == '1' then
+        R[t] = VDISR;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        R[t] = Zeros(32);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR.EA == '1' then
+        R[t] = Zeros(32);
+    else
+        R[t] = DISR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        R[t] = Zeros(32);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR.EA == '1' then
+        R[t] = Zeros(32);
+    else
+        R[t] = DISR;
+elsif PSTATE.EL == EL3 then
+    R[t] = DISR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1100</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.AMO == '1' then
+        VDISR_EL2 = R[t];
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.AMO == '1' then
+        VDISR = R[t];
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR.EA == '1' then
+        return;
+    else
+        DISR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR_EL3.EA == '1' then
+        return;
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) &amp;&amp; !Halted() &amp;&amp; SCR.EA == '1' then
+        return;
+    else
+        DISR = R[t];
+elsif PSTATE.EL == EL3 then
+    DISR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

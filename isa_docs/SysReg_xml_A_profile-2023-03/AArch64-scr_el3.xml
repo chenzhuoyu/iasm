@@ -1,0 +1,2320 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SCR_EL3</reg_short_name>
+        
+        <reg_long_name>Secure Configuration Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Defines the configuration of the current Security state. It specifies:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>The Security state of EL0, EL1, and EL2. The Security state is Secure, Non-secure, or Realm.</content>
+</listitem><listitem><content>The Execution state at lower Exception levels.</content>
+</listitem><listitem><content>Whether IRQ, FIQ, SError interrupts, and External abort exceptions are taken to EL3.</content>
+</listitem><listitem><content>Whether various operations are trapped to EL3.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Security registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SCR_EL3 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-62_62-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSE</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>This field, evaluated with SCR_EL3.NS, selects the Security state of EL2 and lower Exception levels.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For a description of the values derived by evaluating NS and NSE together, see SCR_EL3.NS.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-62_62-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NSE</field_name>
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>, and the Effective value of this bit is <binarynumber>0b0</binarynumber>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-61_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>61</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>61:60</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-59_59-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FGTEn2</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Fine-Grained Traps Enable 2.</para>
+<para>When EL2 is implemented, enables the traps to EL2 controlled by <register_link state="AArch64" id="AArch64-hdfgrtr2_el2.xml">HDFGRTR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr2_el2.xml">HDFGWTR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr2_el2.xml">HFGITR2_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr2_el2.xml">HFGRTR2_EL2</register_link>, and <register_link state="AArch64" id="AArch64-hfgwtr2_el2.xml">HFGWTR2_EL2</register_link>, and controls access to those registers.</para></field_description>
+    <field_description order="after">
+      <para>Traps caused by accesses to the fine-grained trap registers are reported using an <register_link state="AArch64" id="AArch64-esr_elx.xml">ESR_ELx</register_link>.EC value of <hexnumber>0x18</hexnumber> and its associated ISS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL2 accesses to the specified registers are trapped to EL3. The values in these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL2 accesses to the specified registers are not trapped to EL3 by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_FGT2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-59_59-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-58_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>58</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>58:56</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-55_55-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnIDCP128</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> 128-bit System registers.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Accesses at EL2, EL1, EL0 to <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> 128-bit System registers are trapped to EL3 using an ESR_EL3.EC value of <hexnumber>0x14</hexnumber>, unless the access generates a higher priority exception.</para>
+<para>Disables the functionality of the 128-bit <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> System registers that are accessible at EL3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>No accesses are trapped by this control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SYSREG128 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-55_55-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-54_54" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>54</field_msb>
+    <field_lsb>54</field_lsb>
+    <rel_range>54</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-53_53-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PFAREn</field_name>
+    <field_msb>53</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable access to Physical Fault Address Registers. When disabled, accesses to Physical Fault Address Registers generate a trap to EL3.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are: <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pfar_el1.xml">PFAR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pfar_el2.xml">PFAR_EL2</register_link>, and PFAR_EL12.</para>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL3.</para>
+<para>Trapped instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified Physical Fault Address Registers at EL2 and EL1 are trapped to EL3, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified Physical Fault Address Registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PFAR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-53_53-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>53</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-52_52-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TWERR</field_name>
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap writes of error record registers. Enables a trap to EL3 on writes of error record registers.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are: <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxaddr_el1.xml">ERXADDR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxctlr_el1.xml">ERXCTLR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc0_el1.xml">ERXMISC0_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc1_el1.xml">ERXMISC1_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc2_el1.xml">ERXMISC2_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc3_el1.xml">ERXMISC3_EL1</register_link>, and <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link>.</para>
+<para>In AArch32 state, the instructions affected by this control are: <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-errselr.xml">ERRSELR</register_link>, <register_link state="AArch32" id="AArch32-erxaddr.xml">ERXADDR</register_link>, <register_link state="AArch32" id="AArch32-erxaddr2.xml">ERXADDR2</register_link>, <register_link state="AArch32" id="AArch32-erxctlr.xml">ERXCTLR</register_link>, <register_link state="AArch32" id="AArch32-erxctlr2.xml">ERXCTLR2</register_link>, <register_link state="AArch32" id="AArch32-erxmisc0.xml">ERXMISC0</register_link>, <register_link state="AArch32" id="AArch32-erxmisc1.xml">ERXMISC1</register_link>, <register_link state="AArch32" id="AArch32-erxmisc2.xml">ERXMISC2</register_link>, <register_link state="AArch32" id="AArch32-erxmisc3.xml">ERXMISC3</register_link>, <register_link state="AArch32" id="AArch32-erxmisc4.xml">ERXMISC4</register_link>, <register_link state="AArch32" id="AArch32-erxmisc5.xml">ERXMISC5</register_link>, <register_link state="AArch32" id="AArch32-erxmisc6.xml">ERXMISC6</register_link>, <register_link state="AArch32" id="AArch32-erxmisc7.xml">ERXMISC7</register_link>, and <register_link state="AArch32" id="AArch32-erxstatus.xml">ERXSTATUS</register_link>.</para>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL3.</para>
+<para>Trapped AArch64 instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+<para>Trapped AArch32 instructions are reported using EC syndrome value <hexnumber>0x03</hexnumber>.</para>
+<para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Writes of the specified error record registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Writes of the specified error record registers at EL2 and EL1 are trapped to EL3, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RASv2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-52_52-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-51_51-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TMEA</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>51</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap Masked External Aborts. Controls whether a masked error exception at a lower Exception level is taken to EL3.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Synchronous External Abort exceptions and SError exceptions at EL2, EL1, and EL0 are unaffected by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Synchronous External Abort exceptions when PSTATE.A is 1 and masked SError exceptions at EL2, EL1, and EL0 are taken to EL3, unless routed to another Exception level by a higher priority control.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleFault2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-51_51-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>51</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-50_50" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>50</field_msb>
+    <field_lsb>50</field_lsb>
+    <rel_range>50</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_49-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MECEn</field_name>
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Enables access to the following EL2 MECID registers, from EL2:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-mecid_p0_el2.xml">MECID_P0_EL2</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-mecid_a0_el2.xml">MECID_A0_EL2</register_link></para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-mecid_p1_el2.xml">MECID_P1_EL2</register_link></para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-mecid_a1_el2.xml">MECID_A1_EL2</register_link></para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-vmecid_p_el2.xml">VMECID_P_EL2</register_link></para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-vmecid_a_el2.xml">VMECID_A_EL2</register_link></para>
+</content>
+</listitem></list>
+<para>Accesses to these registers are trapped and reported using an ESR_EL3.EC value of <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses from EL2 to a listed MECID register are trapped to EL3. The value of a listed EL2 MECID register is treated as 0 for all purposes other than direct reads or writes to the register from EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_MEC is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-49_49-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>GPF</field_name>
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Controls the reporting of Granule protection faults at EL0, EL1 and EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause exceptions to be routed from EL0, EL1 or EL2 to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>GPFs at EL0, EL1 and EL2 are routed to EL3 and reported as Granule Protection Check exceptions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-47_47-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>D128En</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>128-bit System Register trap control. Enables access to 128-bit System Registers via <instruction>MRRS</instruction>, <instruction>MSRR</instruction> instructions.</para>
+<list type="unordered">
+<listitem><content>
+<para>MRRS and MSRR accesses from EL1 and EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x14</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-ttbr0_el1.xml">TTBR0_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-ttbr1_el1.xml">TTBR1_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-rcwmask_el1.xml">RCWMASK_EL1</register_link>, <register_link state="AArch64" id="AArch64-rcwsmask_el1.xml">RCWSMASK_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-par_el1.xml">PAR_EL1</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>MRRS and MSRR accesses from EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x14</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-ttbr1_el2.xml">TTBR1_EL2</register_link> and accesses using the register name TTBR1_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-ttbr0_el2.xml">TTBR0_EL2</register_link> and accesses using the register name TTBR0_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-vttbr_el2.xml">VTTBR_EL2</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>Traps are not taken if there is a higher priority exception generated by the access.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to the specificed registers are disabled, and trapped to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_D128 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-47_47-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-46_46-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AIEn</field_name>
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>MAIR2_ELx, AMAIR2_ELx Register access trap control.</para>
+<list type="unordered">
+<listitem><content>
+<para>Accesses from EL1 and EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-amair2_el1.xml">AMAIR2_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-mair2_el1.xml">MAIR2_EL1</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>Accesses from EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-amair2_el2.xml">AMAIR2_EL2</register_link> and accesses using the register name AMAIR2_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-mair2_el2.xml">MAIR2_EL2</register_link> and accesses using the register name MAIR2_EL12.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>Traps are not taken if there is a higher priority exception generated by the access.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to the specificed registers are disabled, and trapped to EL3. The values in these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AIE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-46_46-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-45_45-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PIEn</field_name>
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Permission Indirection, Overlay Register access trap control. Enables access to Permission Indirection and Overlay registers.</para>
+<list type="unordered">
+<listitem><content>
+<para>Accesses from EL0, EL1 and EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>Accesses from EL1 and EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-pire0_el1.xml">PIRE0_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-pir_el1.xml">PIR_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-por_el1.xml">POR_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-s2por_el1.xml">S2POR_EL1</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>Accesses from EL2 using AArch64 to the following registers are trapped and reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-pire0_el2.xml">PIRE0_EL2</register_link> and accesses using the register name PIRE0_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-pir_el2.xml">PIR_EL2</register_link> and accesses using the register name PIR_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-por_el2.xml">POR_EL2</register_link> and accesses using the register name POR_EL12.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-s2pir_el2.xml">S2PIR_EL2</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <para>Traps are not taken if there is a higher priority exception generated by the access.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0, EL1 and EL2 accesses to the specificed registers are disabled, and trapped to EL3. The values in these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1PIE is implemented, or FEAT_S2PIE is implemented, or FEAT_S1POE is implemented or FEAT_S2POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-45_45-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-44_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SCTLR2En</field_name>
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>SCTLR2_ELx register trap control. Enables access to <register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link> and <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link> registers.</para>
+    </field_description>
+    <field_description order="after"><para>Traps are reported using an <register_link state="AArch64" id="AArch64-esr_el3.xml">ESR_EL3</register_link>.EC value of <hexnumber>0x18</hexnumber>.</para>
+<para>Traps are not taken if there is a higher priority exception generated by the access.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to <register_link state="AArch64" id="AArch64-sctlr2_el1.xml">SCTLR2_EL1</register_link> and <register_link state="AArch64" id="AArch64-sctlr2_el2.xml">SCTLR2_EL2</register_link> registers are disabled, and trapped to EL3. The values in these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SCTLR2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-44_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-43_43-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TCR2En</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>TCR2_ELx register trap control. Enables access to <register_link state="AArch64" id="AArch64-tcr2_el1.xml">TCR2_EL1</register_link> and <register_link state="AArch64" id="AArch64-tcr2_el2.xml">TCR2_EL2</register_link> registers.</para>
+    </field_description>
+    <field_description order="after"><para>Traps are reported using an <register_link state="AArch64" id="AArch64-esr_el3.xml">ESR_EL3</register_link>.EC value of <hexnumber>0x18</hexnumber>.</para>
+<para>Traps are not taken if there is a higher priority exception generated by the access.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to <register_link state="AArch64" id="AArch64-tcr2_el1.xml">TCR2_EL1</register_link> and <register_link state="AArch64" id="AArch64-tcr2_el2.xml">TCR2_EL2</register_link> registers are disabled, and trapped to EL3. The values in these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TCR2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-43_43-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-42_42-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>RCWMASKEn</field_name>
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>RCW and RCWS Mask register trap control. Enables access to <register_link state="AArch64" id="AArch64-rcwmask_el1.xml">RCWMASK_EL1</register_link>, <register_link state="AArch64" id="AArch64-rcwsmask_el1.xml">RCWSMASK_EL1</register_link>.</para>
+    </field_description>
+    <field_description order="after"><para>Traps for <instruction>MRS</instruction>, <instruction>MSR</instruction> access are reported using an <register_link state="AArch64" id="AArch64-esr_el3.xml">ESR_EL3</register_link>.EC value of <hexnumber>0x18</hexnumber>.</para>
+<para>Traps for <instruction>MRRS</instruction>, <instruction>MSRR</instruction> acceess are reported using an <register_link state="AArch64" id="AArch64-esr_el3.xml">ESR_EL3</register_link>.EC value of <hexnumber>0x14</hexnumber>.</para>
+<para>Traps are not taken if there is a higher priority exception generated by the access.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to <register_link state="AArch64" id="AArch64-rcwmask_el1.xml">RCWMASK_EL1</register_link> and <register_link state="AArch64" id="AArch64-rcwsmask_el1.xml">RCWSMASK_EL1</register_link> registers are disabled, and trapped to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_THE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-42_42-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-41_41-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnTP2</field_name>
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Traps instructions executed at EL2, EL1, and EL0 that access <register_link state="AArch64" id="AArch64-tpidr2_el0.xml">TPIDR2_EL0</register_link> to EL3. The exception is reported using ESR_ELx.EC value <hexnumber>0x18</hexnumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL2, EL1, and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause execution of any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-41_41-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-40_40-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TRNDR</field_name>
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Controls trapping of reads of <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> and <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link>. The exception is reported using ESR_ELx.EC value <hexnumber>0x18</hexnumber>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When FEAT_RNG is not implemented, Arm recommends that SCR_EL3.TRNDR is initialized before entering Exception levels below EL3 and not subsequently changed.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>This control does not cause <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> and <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link> to be trapped.</para>
+<para>When FEAT_RNG is implemented:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-id_aa64isar0_el1.xml">ID_AA64ISAR0_EL1</register_link>.RNDR returns the value <binarynumber>0b0001</binarynumber>.</content>
+</listitem></list>
+<para>When FEAT_RNG is not implemented:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-id_aa64isar0_el1.xml">ID_AA64ISAR0_EL1</register_link>.RNDR returns the value <binarynumber>0b0000</binarynumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>MRS reads of <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> and <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link> are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para><register_link state="AArch64" id="AArch64-id_aa64isar0_el1.xml">ID_AA64ISAR0_EL1</register_link>.RNDR returns the value <binarynumber>0b0001</binarynumber>.</para>
+<para>Any attempt to read <register_link state="AArch64" id="AArch64-rndr.xml">RNDR</register_link> or <register_link state="AArch64" id="AArch64-rndrrs.xml">RNDRRS</register_link> is trapped to EL3.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RNG_TRAP is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-40_40-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-39_39-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>GCSEn</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Guarded control stack enable. Controls access to the Guarded Control Stack registers from EL2, EL1, and EL0, and controls whether the Guarded Control Stack is enabled.</para>
+    </field_description>
+    <field_description order="after"><para>The Guarded Control Stack registers trapped by this control are: <register_link state="AArch64" id="AArch64-gcscre0_el1.xml">GCSCRE0_EL1</register_link>, <register_link state="AArch64" id="AArch64-gcscr_el1.xml">GCSCR_EL1</register_link>, <register_link state="AArch64" id="AArch64-gcscr_el2.xml">GCSCR_EL2</register_link>, GCSCR_EL12, <register_link state="AArch64" id="AArch64-gcspr_el0.xml">GCSPR_EL0</register_link>, <register_link state="AArch64" id="AArch64-gcspr_el1.xml">GCSPR_EL1</register_link>, <register_link state="AArch64" id="AArch64-gcspr_el2.xml">GCSPR_EL2</register_link>, and GCSPR_EL12.</para>
+<para>Traps are reported using an <register_link state="AArch64" id="AArch64-esr_el3.xml">ESR_EL3</register_link>.EC value of <hexnumber>0x18</hexnumber>.</para>
+<para>Traps are not taken if there is a higher priority exception generated by the access.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Trap read and write accesses to all Guarded Control Stack registers to EL3. All Guarded Control Stack behavior is disabled at EL2, EL1, and EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped, and does not disable Guarded Control Stack behavior at EL2, EL1, or EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_GCS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-39_39-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-38_38-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HXEn</field_name>
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to the <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link> register at EL2 from EL3.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses at EL2 to <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link> are trapped to EL3. Indirect reads of <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link> return 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_HCX is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-38_38-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-37_37-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ADEn</field_name>
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to the <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> register at EL1 and EL2.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If the <register_link state="AArch64" id="AArch64-hfgwtr_el2.xml">HFGWTR_EL2</register_link>.nACCDATA_EL1 or <register_link state="AArch64" id="AArch64-hfgrtr_el2.xml">HFGRTR_EL2</register_link>.nACCDATA_EL1 traps are enabled, they take priority over this trap.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> at EL1 and EL2 are trapped to EL3, unless the accesses are trapped to EL2 by the EL2 fine-grained trap.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause accesses to <register_link state="AArch64" id="AArch64-accdata_el1.xml">ACCDATA_EL1</register_link> to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LS64_ACCDATA is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-37_37-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-36_36-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnAS0</field_name>
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Traps execution of an ST64BV0 instruction at EL0, EL1, or EL2 to EL3.</para>
+    </field_description>
+    <field_description order="after">
+      <para>A trap of an ST64BV0 instruction is reported using an ESR_ELx.EC value of <hexnumber>0x0A</hexnumber>, with an ISS code of <hexnumber>0x0000001</hexnumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>EL0 execution of an ST64BV0 instruction is trapped to EL3, unless it is trapped to EL1 by <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.EnAS0, or to EL2 by either <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnAS0 or <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.EnAS0.</para>
+<para>EL1 execution of an ST64BV0 instruction is trapped to EL3, unless it is trapped to EL2 by <register_link state="AArch64" id="AArch64-hcrx_el2.xml">HCRX_EL2</register_link>.EnAS0.</para>
+<para>EL2 execution of an ST64BV0 instruction is trapped to EL3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LS64_ACCDATA is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-36_36-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-35_35-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AMVOFFEN</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Activity Monitors Virtual Offsets Enable.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to <register_link state="AArch64" id="AArch64-amevcntvoff0n_el2.xml">AMEVCNTVOFF0&lt;n&gt;_EL2</register_link> and <register_link state="AArch64" id="AArch64-amevcntvoff1n_el2.xml">AMEVCNTVOFF1&lt;n&gt;_EL2</register_link> at EL2 are trapped to EL3. Indirect reads of the virtual offset registers are zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses to <register_link state="AArch64" id="AArch64-amevcntvoff0n_el2.xml">AMEVCNTVOFF0&lt;n&gt;_EL2</register_link> and <register_link state="AArch64" id="AArch64-amevcntvoff1n_el2.xml">AMEVCNTVOFF1&lt;n&gt;_EL2</register_link> are not affected by this field.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AMUv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-35_35-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TME</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to the TSTART, TCOMMIT, TTEST and TCANCEL instructions at EL0, EL1 and EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL0, EL1 and EL2 accesses to TSTART, TCOMMIT, TTEST and TCANCEL instructions are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instruction to be <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-33_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TWEDEL</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>TWE Delay. A 4-bit unsigned number that, when SCR_EL3.TWEDEn is 1, encodes the minimum delay in taking a trap of WFE* caused by SCR_EL3.TWE as 2<sup>(TWEDEL + 8)</sup> cycles.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TWED is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-33_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>33</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TWEDEn</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>TWE Delay Enable. Enables a configurable delayed trap of the WFE* instruction caused by SCR_EL3.TWE.</para>
+<para>Traps are reported using an ESR_ELx.EC value of <hexnumber>0x01</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The delay for taking the trap is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The delay for taking the trap is at least the number of cycles defined in SCR_EL3.TWEDEL.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TWED is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ECVEn</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>ECV Enable. Enables access to the <register_link state="AArch64" id="AArch64-cntpoff_el2.xml">CNTPOFF_EL2</register_link> register.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL2 accesses to <register_link state="AArch64" id="AArch64-cntpoff_el2.xml">CNTPOFF_EL2</register_link> are trapped to EL3, and the value of <register_link state="AArch64" id="AArch64-cntpoff_el2.xml">CNTPOFF_EL2</register_link> is treated as 0 for all purposes other than direct reads or writes to the register from EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL2 accesses to <register_link state="AArch64" id="AArch64-cntpoff_el2.xml">CNTPOFF_EL2</register_link> are not trapped to EL3 by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_ECV is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FGTEn</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Fine-Grained Traps Enable. When EL2 is implemented, enables the traps to EL2 controlled by <register_link state="AArch64" id="AArch64-hafgrtr_el2.xml">HAFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgrtr_el2.xml">HDFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr_el2.xml">HDFGWTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr_el2.xml">HFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr_el2.xml">HFGITR_EL2</register_link>, and <register_link state="AArch64" id="AArch64-hfgwtr_el2.xml">HFGWTR_EL2</register_link>, and controls access to those registers.</para>
+<note><para>If EL2 is not implemented but EL3 is implemented, <xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> implements the <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.TDCC traps.</para></note></field_description>
+    <field_description order="after">
+      <para>Traps caused by accesses to the fine-grained trap registers are reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber> and its associated ISS.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>EL2 accesses to <register_link state="AArch64" id="AArch64-hafgrtr_el2.xml">HAFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgrtr_el2.xml">HDFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr_el2.xml">HDFGWTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr_el2.xml">HFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr_el2.xml">HFGITR_EL2</register_link> and <register_link state="AArch64" id="AArch64-hfgwtr_el2.xml">HFGWTR_EL2</register_link> registers are trapped to EL3, and the traps to EL2 controlled by those registers are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL2 accesses to <register_link state="AArch64" id="AArch64-hafgrtr_el2.xml">HAFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgrtr_el2.xml">HDFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hdfgwtr_el2.xml">HDFGWTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgrtr_el2.xml">HFGRTR_EL2</register_link>, <register_link state="AArch64" id="AArch64-hfgitr_el2.xml">HFGITR_EL2</register_link> and <register_link state="AArch64" id="AArch64-hfgwtr_el2.xml">HFGWTR_EL2</register_link> registers are not trapped to EL3 by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_FGT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ATA</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Allocation Tag Access. Controls access to Allocation Tags, System registers for Memory tagging, and prevention of Tag checking, at EL2, EL1 and EL0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Access to Allocation Tags is prevented at EL2, EL1, and EL0.</para>
+<para>Accesses at EL1 and EL2 to <register_link state="AArch64" id="AArch64-gcr_el1.xml">GCR_EL1</register_link>, <register_link state="AArch64" id="AArch64-rgsr_el1.xml">RGSR_EL1</register_link>, <register_link state="AArch64" id="AArch64-tfsr_el1.xml">TFSR_EL1</register_link>, <register_link state="AArch64" id="AArch64-tfsr_el2.xml">TFSR_EL2</register_link> or <register_link state="AArch64" id="AArch64-tfsre0_el1.xml">TFSRE0_EL1</register_link> that are not <arm-defined-word>UNDEFINED</arm-defined-word> or trapped to a lower Exception level are trapped to EL3.</para>
+<para>Accesses at EL2 using MRS or MSR with the register name TFSR_EL12 that are not <arm-defined-word>UNDEFINED</arm-defined-word> are trapped to EL3.</para>
+<para>Memory accesses at EL2, EL1, and EL0 are not subject to a Tag Check operation.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>This control does not prevent access to Allocation Tags at EL2, EL1, and EL0.</para>
+<para>This control does not prevent Tag checking at EL2, EL1, and EL0.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_MTE2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-25_25-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnSCXT</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enables access to the <register_link state="AArch64" id="AArch64-scxtnum_el2.xml">SCXTNUM_EL2</register_link>, <register_link state="AArch64" id="AArch64-scxtnum_el1.xml">SCXTNUM_EL1</register_link>, and <register_link state="AArch64" id="AArch64-scxtnum_el0.xml">SCXTNUM_EL0</register_link> registers.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses at EL0, EL1 and EL2 to <register_link state="AArch64" id="AArch64-scxtnum_el0.xml">SCXTNUM_EL0</register_link>, <register_link state="AArch64" id="AArch64-scxtnum_el1.xml">SCXTNUM_EL1</register_link>, or <register_link state="AArch64" id="AArch64-scxtnum_el2.xml">SCXTNUM_EL2</register_link> registers are trapped to EL3 if they are not trapped by a higher priority exception, and the values of these registers are treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any accesses to be trapped, or register values to be treated as 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_CSV2_2 is implemented or FEAT_CSV2_1p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-25_25-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-24_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>24:22</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FIEN</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Fault Injection enable. Trap accesses to the registers <register_link state="AArch64" id="AArch64-erxpfgcdn_el1.xml">ERXPFGCDN_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxpfgctl_el1.xml">ERXPFGCTL_EL1</register_link>, and <register_link state="AArch64" id="AArch64-erxpfgf_el1.xml">ERXPFGF_EL1</register_link> from EL1 and EL2 to EL3, reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>.</para>
+    </field_description>
+    <field_description order="after"><para>If EL3 is not implemented, the Effective value of SCR_EL3.FIEN is <binarynumber>0b1</binarynumber>.</para>
+<para>If <register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero, meaning no error records are implemented, or no error record accessible using System registers is owned by a node that implements the RAS Common Fault Injection Model Extension, then this bit might be <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to the specified registers from EL1 and EL2 generate a Trap exception to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RASv1p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NMEA</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL3.</para>
+    </field_description>
+    <field_description order="after"><para>This field is ignored by the PE and treated as zero when all of the following are true:</para>
+<list type="unordered">
+<listitem><content><xref browsertext="FEAT_DoubleFault2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_DoubleFault2"/> is not implemented.</content>
+</listitem><listitem><content>SCR_EL3.EA == 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>SError exceptions are not taken at EL3 if PSTATE.A == 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>SError exceptions are taken at EL3 regardless of the value of PSTATE.A.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleFault is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EASE</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>External aborts to SError interrupt vector.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Synchronous External abort exceptions taken to EL3 are taken to the appropriate synchronous exception vector offset from <register_link state="AArch64" id="AArch64-vbar_el3.xml">VBAR_EL3</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Synchronous External abort exceptions taken to EL3 are taken to the appropriate SError interrupt vector offset from <register_link state="AArch64" id="AArch64-vbar_el3.xml">VBAR_EL3</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleFault is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EEL2</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Secure EL2 Enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the value of this bit is 1, then:</para>
+<list type="unordered">
+<listitem><content>
+<para>When SCR_EL3.NS == 0, the SCR_EL3.RW bit is treated as 1 for all purposes other than reading or writing the register.</para>
+</content>
+</listitem><listitem><content>
+<para>If Secure EL1 is using AArch32, then any of the following operations, executed in Secure EL1, is trapped to Secure EL2, using the EC value of <register_link state="AArch64" id="AArch64-esr_el2.xml">ESR_EL2</register_link>.EC== <hexnumber>0x3</hexnumber> :</para>
+<list type="unordered">
+<listitem><content>A read or write of the <register_link state="AArch32" id="AArch32-scr.xml">SCR</register_link>.</content>
+</listitem><listitem><content>A read or write of the <register_link state="AArch32" id="AArch32-nsacr.xml">NSACR</register_link>.</content>
+</listitem><listitem><content>A read or write of the <register_link state="AArch32" id="AArch32-mvbar.xml">MVBAR</register_link>.</content>
+</listitem><listitem><content>A read or write of the <register_link state="AArch32" id="AArch32-sdcr.xml">SDCR</register_link>.</content>
+</listitem><listitem><content>Execution of an ATS12NSO** instruction.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>If Secure EL1 is using AArch32, then any of the following operations, executed in Secure EL1, is trapped to Secure EL2 using the EC value of <register_link state="AArch64" id="AArch64-esr_el2.xml">ESR_EL2</register_link>.EC== <hexnumber>0x0</hexnumber> :</para>
+<list type="unordered">
+<listitem><content>Execution of an SRS instruction that uses R13_mon.</content>
+</listitem><listitem><content>Execution of an MRS (Banked register) or MSR (Banked register) instruction that would access <register_link state="AArch32" id="AArch32-spsr_mon.xml">SPSR_mon</register_link>, R13_mon, or R14_mon.</content>
+</listitem></list>
+</content>
+</listitem></list>
+<note><para>If the Effective value of SCR_EL3.EEL2 is 0, then these operations executed in Secure EL1 using AArch32 are trapped to EL3.</para></note><para>A Secure only implementation that does not implement EL3 but implements EL2, behaves as if SCR_EL3.EEL2 == 1.</para>
+<para>This bit is permitted to be cached in a TLB.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>All behaviors associated with Secure EL2 are disabled. All registers, including timer registers, defined by <xref browsertext="FEAT_SEL2" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.SecEL2"/> are <arm-defined-word>UNDEFINED</arm-defined-word>, and those timers are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All behaviors associated with Secure EL2 are enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SEL2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>API</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Controls the use of the following instructions related to Pointer Authentication. Traps are reported using an ESR_ELx.EC value of <hexnumber>0x09</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>PACGA, which is always enabled.</content>
+</listitem><listitem><content>AUTDA, AUTDB, AUTDZA, AUTDZB, AUTIA, AUTIA1716, AUTIASP, AUTIAZ, AUTIB, AUTIB1716, AUTIBSP, AUTIBZ, AUTIZA, AUTIZB, PACDA, PACDB, PACDZA, PACDZB, PACIA, PACIA1716, PACIASP, PACIAZ, PACIB, PACIB1716, PACIBSP, PACIBZ, PACIZA, PACIZB, RETAA, RETAB, BRAA, BRAB, BLRAA, BLRAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ, ERETAA, ERETAB, LDRAA and LDRAB when:<list type="unordered">
+<listitem><content>In EL0, when <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 0 or <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H == 0, and the associated <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In EL0, when <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1 and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H == 1, and the associated <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In EL1, when the associated <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In EL2, when the associated <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>An instruction is trapped only if Pointer Authentication is enabled for that instruction, for more information, see <xref browsertext="'PAC generation and verification keys'" filename="D_the_aarch64_virtual_memory_system_architecture.fm" linkend="MDSec.PAC_generation_and_verification_keys"/>.</para>
+<note><para>If <xref browsertext="FEAT_PAuth" filename="A_armv8_architecture_extensions.fm" linkend="v8.3.TPAuth"/> is implemented but EL3 is not implemented, the system behaves as if this bit is 1.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The use of any instruction related to pointer authentication in any Exception level except EL3 when the instructions are enabled are trapped to EL3 unless they are trapped to EL2 as a result of the <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.API bit.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SEL2 is implemented and FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>API</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Controls the use of instructions related to Pointer Authentication:</para>
+<list type="unordered">
+<listitem><content>PACGA.</content>
+</listitem><listitem><content>AUTDA, AUTDB, AUTDZA, AUTDZB, AUTIA, AUTIA1716, AUTIASP, AUTIAZ, AUTIB, AUTIB1716, AUTIBSP, AUTIBZ, AUTIZA, AUTIZB, PACDA, PACDB, PACDZA, PACDZB, PACIA, PACIA1716, PACIASP, PACIAZ, PACIB, PACIB1716, PACIBSP, PACIBZ, PACIZA, PACIZ, RETAA, RETAB, BRAA, BRAB, BLRAA, BLRAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ, ERETAA, ERETAB, LDRAA and LDRAB when:<list type="unordered">
+<listitem><content>In Non-secure EL0, when <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 0 or <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H == 0, and the associated <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.En&lt;N&gt;&lt;M&gt;== 1.</content>
+</listitem><listitem><content>In Non-secure EL0, when <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1 and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H == 1, and the associated <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In Secure EL0, when the associated <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In Secure or Non-secure EL1, when the associated <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem><listitem><content>In EL2, when the associated <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.En&lt;N&gt;&lt;M&gt; == 1.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <note>
+        <para>If <xref browsertext="FEAT_PAuth" filename="A_armv8_architecture_extensions.fm" linkend="v8.3.TPAuth"/> is implemented but EL3 is not implemented, the system behaves as if this bit is 1.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The use of any instruction related to pointer authentication in any Exception level except EL3 when the instructions are enabled are trapped to EL3 unless they are trapped to EL2 as a result of the <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.API bit.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SEL2 is not implemented and FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>APK</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap registers holding "key" values for Pointer Authentication. Traps accesses to the following registers, using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>, from EL1 or EL2 to EL3 unless they are trapped to EL2 as a result of the HCR_EL2.APK bit or other traps:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-apiakeylo_el1.xml">APIAKeyLo_EL1</register_link>, <register_link state="AArch64" id="AArch64-apiakeyhi_el1.xml">APIAKeyHi_EL1</register_link>, <register_link state="AArch64" id="AArch64-apibkeylo_el1.xml">APIBKeyLo_EL1</register_link>, <register_link state="AArch64" id="AArch64-apibkeyhi_el1.xml">APIBKeyHi_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-apdakeylo_el1.xml">APDAKeyLo_EL1</register_link>, <register_link state="AArch64" id="AArch64-apdakeyhi_el1.xml">APDAKeyHi_EL1</register_link>, <register_link state="AArch64" id="AArch64-apdbkeylo_el1.xml">APDBKeyLo_EL1</register_link>, <register_link state="AArch64" id="AArch64-apdbkeyhi_el1.xml">APDBKeyHi_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><register_link state="AArch64" id="AArch64-apgakeylo_el1.xml">APGAKeyLo_EL1</register_link>, and <register_link state="AArch64" id="AArch64-apgakeyhi_el1.xml">APGAKeyHi_EL1</register_link>.</para>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>For more information, see <xref browsertext="'PAC generation and verification keys'" filename="D_the_aarch64_virtual_memory_system_architecture.fm" linkend="MDSec.PAC_generation_and_verification_keys"/>.</para>
+<note><para>If <xref browsertext="FEAT_PAuth" filename="A_armv8_architecture_extensions.fm" linkend="v8.3.TPAuth"/> is implemented but EL3 is not implemented, the system behaves as if this bit is 1.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Access to the registers holding "key" values for pointer authentication from EL1 or EL2 are trapped to EL3 unless they are trapped to EL2 as a result of the <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.APK bit or other traps.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PAuth is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TERR</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap accesses of error record registers. Enables a trap to EL3 on accesses of error record registers.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxaddr_el1.xml">ERXADDR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxctlr_el1.xml">ERXCTLR_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc0_el1.xml">ERXMISC0_EL1</register_link>, <register_link state="AArch64" id="AArch64-erxmisc1_el1.xml">ERXMISC1_EL1</register_link>, and <register_link state="AArch64" id="AArch64-erxstatus_el1.xml">ERXSTATUS_EL1</register_link>.</content>
+</listitem><listitem><content><instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link> and <register_link state="AArch64" id="AArch64-erxfr_el1.xml">ERXFR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_RASv1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.RAS"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-erxmisc2_el1.xml">ERXMISC2_EL1</register_link> and <register_link state="AArch64" id="AArch64-erxmisc3_el1.xml">ERXMISC3_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_RASv2" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_RASv2"/> is implemented, <instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-erxgsr_el1.xml">ERXGSR_EL1</register_link>.</content>
+</listitem></list>
+<para>In AArch32 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content>
+<para><instruction>MRC</instruction> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-errselr.xml">ERRSELR</register_link>, <register_link state="AArch32" id="AArch32-erxaddr.xml">ERXADDR</register_link>, <register_link state="AArch32" id="AArch32-erxaddr2.xml">ERXADDR2</register_link>, <register_link state="AArch32" id="AArch32-erxctlr.xml">ERXCTLR</register_link>, <register_link state="AArch32" id="AArch32-erxctlr2.xml">ERXCTLR2</register_link>, <register_link state="AArch32" id="AArch32-erxmisc0.xml">ERXMISC0</register_link>, <register_link state="AArch32" id="AArch32-erxmisc1.xml">ERXMISC1</register_link>, <register_link state="AArch32" id="AArch32-erxmisc2.xml">ERXMISC2</register_link>, <register_link state="AArch32" id="AArch32-erxmisc3.xml">ERXMISC3</register_link>, and <register_link state="AArch32" id="AArch32-erxstatus.xml">ERXSTATUS</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-erridr.xml">ERRIDR</register_link>, <register_link state="AArch32" id="AArch32-erxfr.xml">ERXFR</register_link>, and <register_link state="AArch32" id="AArch32-erxfr2.xml">ERXFR2</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_RASv1p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.RAS"/> is implemented, <instruction>MRC</instruction> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-erxmisc4.xml">ERXMISC4</register_link>, <register_link state="AArch32" id="AArch32-erxmisc5.xml">ERXMISC5</register_link>, <register_link state="AArch32" id="AArch32-erxmisc6.xml">ERXMISC6</register_link>, and <register_link state="AArch32" id="AArch32-erxmisc7.xml">ERXMISC7</register_link>.</para>
+</content>
+</listitem></list>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL3.</para>
+<para>Trapped AArch64 instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+<para>Trapped AArch32 instructions are reported using EC syndrome value <hexnumber>0x03</hexnumber>.</para>
+<para>Accessing this field has the following behavior:</para>
+<list type="unordered">
+<listitem><content>This field is permitted to be <arm-defined-word>RES0</arm-defined-word> if all of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-errselr_el1.xml">ERRSELR_EL1</register_link> and all ERX* registers are implemented as <arm-defined-word>UNDEFINED</arm-defined-word> or RAZ/WI.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-erridr_el1.xml">ERRIDR_EL1</register_link>.NUM is zero.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified error record registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified error record registers at EL2 and EL1 are trapped to EL3, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TLOR</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap LOR registers. Traps accesses to the <register_link state="AArch64" id="AArch64-lorsa_el1.xml">LORSA_EL1</register_link>, <register_link state="AArch64" id="AArch64-lorea_el1.xml">LOREA_EL1</register_link>, <register_link state="AArch64" id="AArch64-lorn_el1.xml">LORN_EL1</register_link>, <register_link state="AArch64" id="AArch64-lorc_el1.xml">LORC_EL1</register_link>, and <register_link state="AArch64" id="AArch64-lorid_el1.xml">LORID_EL1</register_link> registers from EL1 and EL2 to EL3, unless the access has been trapped to EL2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL1 and EL2 accesses to the LOR registers that are not <arm-defined-word>UNDEFINED</arm-defined-word> are trapped to EL3, unless it is trapped <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TLOR.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_LOR is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TWE</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before"><para>Traps EL2, EL1, and EL0 execution of WFE instructions to EL3, from any Security state and both Execution states, reported using an ESR_ELx.EC value of <hexnumber>0x01</hexnumber>.</para>
+<para>When <xref browsertext="FEAT_WFxT" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.WFxT"/> is implemented, this trap also applies to the WFET instruction.</para></field_description>
+    <field_description order="after"><para>In AArch32 state, the attempted execution of a conditional WFE instruction is only trapped if the instruction passes its condition code check.</para>
+<note><para>Since a WFE or WFI can complete at any time, even without a Wakeup event, the traps on WFE of WFI are not guaranteed to be taken, even if the WFE or WFI is executed when there is no Wakeup event. The only guarantee is that if the instruction does not complete in finite time in the absence of a Wakeup event, the trap will be taken.</para></note><para>For more information about when WFE instructions can cause the PE to enter a low-power state, see <xref browsertext="'Wait for Event mechanism and Send event'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIJHBBD"/>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Any attempt to execute a WFE instruction at any Exception level lower than EL3 is trapped to EL3, if the instruction would otherwise have caused the PE to enter a low-power state and it is not trapped by <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.nTWE, <register_link state="AArch32" id="AArch32-hcr.xml">HCR</register_link>.TWE, <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.nTWE, <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.nTWE, or <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TWE.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TWI</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before"><para>Traps EL2, EL1, and EL0 execution of WFI instructions to EL3, from any Security state and both Execution states, reported using an ESR_ELx.EC value of <hexnumber>0x01</hexnumber>.</para>
+<para>When <xref browsertext="FEAT_WFxT" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.WFxT"/> is implemented, this trap also applies to the WFIT instruction.</para></field_description>
+    <field_description order="after"><para>In AArch32 state, the attempted execution of a conditional WFI instruction is only trapped if the instruction passes its condition code check.</para>
+<note><para>Since a WFE or WFI can complete at any time, even without a Wakeup event, the traps on WFE of WFI are not guaranteed to be taken, even if the WFE or WFI is executed when there is no Wakeup event. The only guarantee is that if the instruction does not complete in finite time in the absence of a Wakeup event, the trap will be taken.</para></note><para>For more information about when WFI instructions can cause the PE to enter a low-power state, see <xref browsertext="'Wait for Interrupt'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIJBEJD"/>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Any attempt to execute a WFI instruction at any Exception level lower than EL3 is trapped to EL3, if the instruction would otherwise have caused the PE to enter a low-power state and it is not trapped by <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.nTWI, <register_link state="AArch32" id="AArch32-hcr.xml">HCR</register_link>.TWI, <register_link state="AArch64" id="AArch64-sctlr_el1.xml">SCTLR_EL1</register_link>.nTWI, <register_link state="AArch64" id="AArch64-sctlr_el2.xml">SCTLR_EL2</register_link>.nTWI, or <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TWI.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ST</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Traps Secure EL1 accesses to the Counter-timer Physical Secure timer registers to EL3, from AArch64 state only, reported using an ESR_ELx.EC value of <hexnumber>0x18</hexnumber>.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>Accesses to the Counter-timer Physical Secure timer registers are always enabled at EL3. These registers are not accessible at EL0.</para>
+      </note>
+      <para>When <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented and Secure state is not implemented, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure EL1 using AArch64 accesses to the <register_link state="AArch64" id="AArch64-cntps_tval_el1.xml">CNTPS_TVAL_EL1</register_link>, <register_link state="AArch64" id="AArch64-cntps_ctl_el1.xml">CNTPS_CTL_EL1</register_link>, and <register_link state="AArch64" id="AArch64-cntps_cval_el1.xml">CNTPS_CVAL_EL1</register_link> are trapped to EL3 when Secure EL2 is disabled. If Secure EL2 is enabled, the behavior is as if the value of this field was <binarynumber>0b1</binarynumber>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RAO/WI">
+    <field_name>RW</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Execution state control for lower Exception levels.</para>
+    </field_description>
+    <field_description order="after"><para>If AArch32 state is supported by the implementation at EL1, SCR_EL3.NS == 1 and AArch32 state is not supported by the implementation at EL2, the Effective value of this bit is 1.</para>
+<para>If AArch32 state is supported by the implementation at EL1, <xref browsertext="FEAT_SEL2" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.SecEL2"/> is implemented and SCR_EL3.{EEL2, NS} == {1, 0}, the Effective value of this bit is 1.</para>
+<para>This bit is permitted to be cached in a TLB.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Lower levels are all AArch32.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The next lower level is AArch64.</para>
+<para>If EL2 is present:</para>
+<list type="unordered">
+<listitem><content>
+<para>EL2 is AArch64.</para>
+</content>
+</listitem><listitem><content>
+<para>EL2 controls EL1 and EL0 behaviors.</para>
+</content>
+</listitem></list>
+<para>If EL2 is not present:</para>
+<list type="unordered">
+<listitem><content>
+<para>EL1 is AArch64.</para>
+</content>
+</listitem><listitem><content>
+<para>EL0 is determined by the Execution state described in the current process state when executing at EL0.</para>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When EL1 is capable of using AArch32 or EL2 is capable of using AArch32</fields_condition>
+  </field>
+  <field id="fieldset_0-10_10-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAO/WI" reserved_type="RAO/WI">
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAO/WI.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SIF</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Secure instruction fetch. When the PE is in Secure state, this bit disables instruction execution from memory marked in the first stage of translation as being Non-secure.</para>
+    </field_description>
+    <field_description order="after"><para>When <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented and Secure state is not implemented, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>When <xref browsertext="FEAT_PAN3" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.PAN3"/> is implemented, it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether SCR_EL3.SIF is also used to determine instruction access permission for the purpose of PAN.</para>
+<para>This bit is permitted to be cached in a TLB.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Secure state instruction execution from memory marked in the first stage of translation as being Non-secure is permitted.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Secure state instruction execution from memory marked in the first stage of translation as being Non-secure is not permitted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HCE</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>Hypervisor Call instruction enable. Enables HVC instructions at EL3 and, if EL2 is enabled in the current Security state, at EL2 and EL1, in both Execution states, reported using an ESR_ELx.EC value of <hexnumber>0x00</hexnumber>.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>HVC instructions are always <arm-defined-word>UNDEFINED</arm-defined-word> at EL0 and, if Secure EL2 is disabled, at Secure EL1. Any resulting exception is taken from the current Exception level to the current Exception level.</para>
+      </note>
+      <para>If EL2 is not implemented, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>HVC instructions are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>HVC instructions are enabled at EL3, EL2, and EL1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SMD</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Secure Monitor Call disable. Disables <instruction>SMC</instruction> instructions at EL1 and above, from any Security state and both Execution states, reported using an ESR_ELx.EC value of <hexnumber>0x00</hexnumber>.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para><instruction>SMC</instruction> instructions are always <arm-defined-word>UNDEFINED</arm-defined-word> at EL0. Any resulting exception is taken from the current Exception level to the current Exception level.</para>
+        <para>If <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TSC or <register_link state="AArch32" id="AArch32-hcr.xml">HCR</register_link>.TSC traps attempted EL1 execution of <instruction>SMC</instruction> instructions to EL2, that trap has priority over this disable.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>SMC</instruction> instructions are enabled at EL3, EL2 and EL1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><instruction>SMC</instruction> instructions are <arm-defined-word>UNDEFINED</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-5_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES1">
+    <field_msb>5</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>5:4</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EA</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>External Abort and SError interrupt routing.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Asynchronous exception routing'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIDHDHF"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When executing at Exception levels below EL3, External aborts and SError interrupts are not taken to EL3.</para>
+<para>In addition, when executing at EL3:</para>
+<list type="unordered">
+<listitem><content>
+<para>SError interrupts are not taken.</para>
+</content>
+</listitem><listitem><content>
+<para>External aborts are taken to EL3.</para>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When executing at any Exception level, External aborts and SError interrupts are taken to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FIQ</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>Physical FIQ Routing.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Asynchronous exception routing'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIDHDHF"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When executing at Exception levels below EL3, physical FIQ interrupts are not taken to EL3.</para>
+<para>When executing at EL3, physical FIQ interrupts are not taken.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When executing at any Exception level, physical FIQ interrupts are taken to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRQ</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Physical IRQ Routing.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Asynchronous exception routing'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIDHDHF"/>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>When executing at Exception levels below EL3, physical IRQ interrupts are not taken to EL3.</para>
+<para>When executing at EL3, physical IRQ interrupts are not taken.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>When executing at any Exception level, physical IRQ interrupts are taken to EL3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>NS</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure bit. This field is used in combination with SCR_EL3.NSE to select the Security state of EL2 and lower Exception levels.</para>
+    </field_description>
+    <field_description order="after"><table><tgroup cols="3"><thead><row><entry>NSE</entry><entry>NS</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Secure.</entry></row><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Reserved.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Realm.</entry></row></tbody></tgroup></table>
+<para>When Secure state is not implemented, SCR_EL3.NS is <arm-defined-word>RES1</arm-defined-word> and its effective value is 1.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-0_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>NS</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Non-secure bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Indicates that EL0 and EL1 are in Secure state.</para>
+<para>When <xref browsertext="FEAT_SEL2" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.SecEL2"/> is implemented and SCR_EL3.EEL2 == 1, then EL2 is using AArch64 and in Secure state.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Indicates that Exception levels lower than EL3 are in Non-secure state, so memory accesses from those Exception levels cannot access Secure memory.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62-1" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_60" msb="61" lsb="60"/>
+  <fieldat id="fieldset_0-59_59-1" msb="59" lsb="59"/>
+  <fieldat id="fieldset_0-58_56" msb="58" lsb="56"/>
+  <fieldat id="fieldset_0-55_55-1" msb="55" lsb="55"/>
+  <fieldat id="fieldset_0-54_54" msb="54" lsb="54"/>
+  <fieldat id="fieldset_0-53_53-1" msb="53" lsb="53"/>
+  <fieldat id="fieldset_0-52_52-1" msb="52" lsb="52"/>
+  <fieldat id="fieldset_0-51_51-1" msb="51" lsb="51"/>
+  <fieldat id="fieldset_0-50_50" msb="50" lsb="50"/>
+  <fieldat id="fieldset_0-49_49-1" msb="49" lsb="49"/>
+  <fieldat id="fieldset_0-48_48-1" msb="48" lsb="48"/>
+  <fieldat id="fieldset_0-47_47-1" msb="47" lsb="47"/>
+  <fieldat id="fieldset_0-46_46-1" msb="46" lsb="46"/>
+  <fieldat id="fieldset_0-45_45-1" msb="45" lsb="45"/>
+  <fieldat id="fieldset_0-44_44-1" msb="44" lsb="44"/>
+  <fieldat id="fieldset_0-43_43-1" msb="43" lsb="43"/>
+  <fieldat id="fieldset_0-42_42-1" msb="42" lsb="42"/>
+  <fieldat id="fieldset_0-41_41-1" msb="41" lsb="41"/>
+  <fieldat id="fieldset_0-40_40-1" msb="40" lsb="40"/>
+  <fieldat id="fieldset_0-39_39-1" msb="39" lsb="39"/>
+  <fieldat id="fieldset_0-38_38-1" msb="38" lsb="38"/>
+  <fieldat id="fieldset_0-37_37-1" msb="37" lsb="37"/>
+  <fieldat id="fieldset_0-36_36-1" msb="36" lsb="36"/>
+  <fieldat id="fieldset_0-35_35-1" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-34_34-1" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-33_30-1" msb="33" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27-1" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25-1" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_22" msb="24" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20-1" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18-1" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15-1" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14-1" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10-1" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_4" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0-1" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS SCR_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SCR_EL3</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SCR_EL3;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SCR_EL3" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SCR_EL3, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    SCR_EL3 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

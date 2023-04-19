@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GITS_CBASER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GITS_CBASER, ITS Command Queue Descriptor</h1><p>The GITS_CBASER characteristics are:</p><h2>Purpose</h2>
+        <p>Specifies the base address and size of the ITS command queue.</p>
+      <h2>Configuration</h2>
+        <p>Bits [63:32] and bits [31:0] are accessible separately.</p>
+      <h2>Attributes</h2>
+        <p>GITS_CBASER is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_63">Valid</a></td><td class="lr" colspan="1"><a href="#fieldset_0-62_62">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-61_59">InnerCache</a></td><td class="lr" colspan="3"><a href="#fieldset_0-58_56">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-55_53">OuterCache</a></td><td class="lr" colspan="1"><a href="#fieldset_0-52_52">RES0</a></td><td class="lr" colspan="20"><a href="#fieldset_0-51_12">Physical_Address</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-51_12">Physical_Address</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">Shareability</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">Size</a></td></tr></tbody></table><h4 id="fieldset_0-63_63">Valid, bit [63]</h4><div class="field">
+      <p>Indicates whether software has allocated memory for the command queue:</p>
+    <table class="valuetable"><tr><th>Valid</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No memory is allocated for the command queue.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Memory is allocated to the command queue.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-62_62">Bit [62]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-61_59">InnerCache, bits [61:59]</h4><div class="field">
+      <p>Indicates the Inner Cacheability attributes of accesses to the command queue. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>InnerCache</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Device-nGnRnE.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Normal Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Normal Inner Cacheable Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>Normal Inner Cacheable Write-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b111</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-allocate, Write-back.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-58_56">Bits [58:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_53">OuterCache, bits [55:53]</h4><div class="field">
+      <p>Indicates the Outer Cacheability attributes of accesses to the command queue. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>OuterCache</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Memory type defined in InnerCache field. For Normal memory, Outer Cacheability is the same as Inner Cacheability.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Normal Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Normal Outer Cacheable Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>Normal Outer Cacheable Write-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b111</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-allocate, Write-back.</p>
+        </td></tr></table>
+      <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-52_52">Bit [52]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-51_12">Physical_Address, bits [51:12]</h4><div class="field"><p>Bits [51:12] of the base physical address of the command queue. Bits [11:0] of the base address are 0.</p>
+<p>In implementations supporting fewer than 52 bits of physical address, unimplemented upper bits are <span class="arm-defined-word">RES0</span>.</p>
+<p>If bits [15:12] are not all zeros, behavior is a <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> choice:</p>
+<ul>
+<li>Bits [15:12] are treated as if all the bits are zero. The value read back from those bits is either the value written or zero.
+</li><li>The result of the calculation of an address for a command queue read can be corrupted.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_10">Shareability, bits [11:10]</h4><div class="field">
+      <p>Indicates the Shareability attributes of accesses to the command queue. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>Shareability</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Reserved. Treated as <span class="binarynumber">0b00</span>.</p>
+        </td></tr></table>
+      <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_8">Bits [9:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_0">Size, bits [7:0]</h4><div class="field">
+      <p>The number of 4KB pages of physical memory allocated to the command queue, minus one.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The command queue is a circular buffer and wraps at Physical Address [47:0] + (4096 * (Size + 1)).</p>
+<div class="note"><span class="note-header">Note</span><p>When this register is successfully written, the value of <a href="ext-gits_creadr.html">GITS_CREADR</a> is set to zero.</p></div></div><h2>Accessing GITS_CBASER</h2>
+        <p>When <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled == 1 or <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Quiescent == 0, writing this register is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+      <h4>GITS_CBASER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC ITS control</td><td><span class="hexnumber">0x0080</span></td><td>GITS_CBASER</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

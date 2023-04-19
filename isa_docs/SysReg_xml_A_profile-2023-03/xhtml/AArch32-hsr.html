@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">HSR, Hyp Syndrome Register</h1><p>The HSR characteristics are:</p><h2>Purpose</h2>
+        <p>Holds syndrome information for an exception taken to Hyp mode.</p>
+      <h2>Configuration</h2><p>AArch32 System register HSR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-esr_el2.html">ESR_EL2[31:0]</a>.</p><p>This register is present only when EL2 is capable of using AArch32. Otherwise, direct accesses to HSR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>HSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="6"><a href="#fieldset_0-31_26">EC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">IL</a></td><td class="lr" colspan="25"><a href="#fieldset_0-24_0">ISS</a></td></tr></tbody></table><div class="text_before_fields"><p>Execution in any Non-secure PE mode other than Hyp mode makes this register <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>When an <span class="arm-defined-word">UNPREDICTABLE</span> instruction is treated as <span class="arm-defined-word">UNDEFINED</span>, and the exception is taken to EL2, the value of HSR is <span class="arm-defined-word">UNKNOWN</span>. The value written to HSR must be consistent with a value that could be created as a result of an exception from the same Exception level that generated the exception as a result of a situation that is not <span class="arm-defined-word">UNPREDICTABLE</span> at that Exception level, in order to avoid the possibility of a privilege violation.</p></div><h4 id="fieldset_0-31_26">EC, bits [31:26]</h4><div class="field">
+      <p>Exception Class. Indicates the reason for the exception that this register holds information about. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>EC</th><th>Meaning</th><th>ISS</th></tr><tr><td class="bitfield">0b000000</td><td>
+          <p>Unknown reason.</p>
+        </td><td><a href="#fieldset_0-24_0_0">ISS encoding for exceptions with an unknown reason</a></td></tr><tr><td class="bitfield">0b000001</td><td><p>Trapped WFI or WFE instruction execution.</p>
+<p>Conditional WFE and WFI instructions that fail their condition code check do not cause an exception.</p></td><td><a href="#fieldset_0-24_0_1">ISS encoding for Exception from a WFI or WFE instruction</a></td></tr><tr><td class="bitfield">0b000011</td><td>
+          <p>Trapped MCR or MRC access with (coproc==<span class="binarynumber">0b1111</span>) that is not reported using EC <span class="binarynumber">0b000000</span>.</p>
+        </td><td><a href="#fieldset_0-24_0_2">ISS encoding for Exception from an MCR or MRC access</a></td></tr><tr><td class="bitfield">0b000100</td><td>
+          <p>Trapped MCRR or MRRC access with (coproc==<span class="binarynumber">0b1111</span>) that is not reported using EC <span class="binarynumber">0b000000</span>.</p>
+        </td><td><a href="#fieldset_0-24_0_3">ISS encoding for Exception from an MCRR or MRRC access</a></td></tr><tr><td class="bitfield">0b000101</td><td>
+          <p>Trapped MCR or MRC access with (coproc==<span class="binarynumber">0b1110</span>).</p>
+        </td><td><a href="#fieldset_0-24_0_2">ISS encoding for Exception from an MCR or MRC access</a></td></tr><tr><td class="bitfield">0b000110</td><td><p>Trapped LDC or STC access.</p>
+<p>The only architected uses of these instructions are:</p>
+<ul>
+<li>
+<p>An STC to write data to memory from <a href="AArch32-dbgdtrrxint.html">DBGDTRRXint</a>.</p>
+
+</li><li>
+<p>An LDC to read data from memory to <a href="AArch32-dbgdtrtxint.html">DBGDTRTXint</a>.</p>
+
+</li></ul></td><td><a href="#fieldset_0-24_0_4">ISS encoding for Exception from an LDC or STC instruction</a></td></tr><tr><td class="bitfield">0b000111</td><td><p>Access to Advanced SIMD or floating-point functionality trapped by a <a href="AArch32-hcptr.html">HCPTR</a>.{TASE, TCP10} control.</p>
+<p>Excludes exceptions generated because Advanced SIMD and floating-point are not implemented. These are reported with EC value <span class="binarynumber">0b000000</span>.</p></td><td><a href="#fieldset_0-24_0_5">ISS encoding for Exception from an access to SIMD or floating-point functionality, resulting from HCPTR</a></td></tr><tr><td class="bitfield">0b001000</td><td>
+          <p>Trapped VMRS access, from ID group trap, that is not reported using EC <span class="binarynumber">0b000111</span>.</p>
+        </td><td><a href="#fieldset_0-24_0_2">ISS encoding for Exception from an MCR or MRC access</a></td></tr><tr><td class="bitfield">0b001100</td><td>
+          <p>Trapped MRRC access with (coproc==<span class="binarynumber">0b1110</span>).</p>
+        </td><td><a href="#fieldset_0-24_0_3">ISS encoding for Exception from an MCRR or MRRC access</a></td></tr><tr><td class="bitfield">0b001110</td><td>
+          <p>Illegal exception return to AArch32 state.</p>
+        </td><td><a href="#fieldset_0-24_0_9">ISS encoding for Exception from an Illegal state or PC alignment fault</a></td></tr><tr><td class="bitfield">0b010001</td><td>
+          <p>Exception on SVC instruction execution in AArch32 state routed to EL2.</p>
+        </td><td><a href="#fieldset_0-24_0_6">ISS encoding for Exception from HVC or SVC instruction execution</a></td></tr><tr><td class="bitfield">0b010010</td><td>
+          <p>HVC instruction execution in AArch32 state, when HVC is not disabled.</p>
+        </td><td><a href="#fieldset_0-24_0_6">ISS encoding for Exception from HVC or SVC instruction execution</a></td></tr><tr><td class="bitfield">0b010011</td><td>
+          <p>Trapped execution of SMC instruction in AArch32 state.</p>
+        </td><td><a href="#fieldset_0-24_0_7">ISS encoding for Exception from SMC instruction execution</a></td></tr><tr><td class="bitfield">0b100000</td><td>
+          <p>Prefetch Abort from a lower Exception level.</p>
+        </td><td><a href="#fieldset_0-24_0_8">ISS encoding for Exception from a Prefetch Abort</a></td></tr><tr><td class="bitfield">0b100001</td><td>
+          <p>Prefetch Abort taken without a change in Exception level.</p>
+        </td><td><a href="#fieldset_0-24_0_8">ISS encoding for Exception from a Prefetch Abort</a></td></tr><tr><td class="bitfield">0b100010</td><td>
+          <p>PC alignment fault exception.</p>
+        </td><td><a href="#fieldset_0-24_0_9">ISS encoding for Exception from an Illegal state or PC alignment fault</a></td></tr><tr><td class="bitfield">0b100100</td><td>
+          <p>Data Abort exception from a lower Exception level.</p>
+        </td><td><a href="#fieldset_0-24_0_10">ISS encoding for Exception from a Data Abort</a></td></tr><tr><td class="bitfield">0b100101</td><td>
+          <p>Data Abort exception taken without a change in Exception level.</p>
+        </td><td><a href="#fieldset_0-24_0_10">ISS encoding for Exception from a Data Abort</a></td></tr></table><p>All other EC values are reserved by Arm, and:</p>
+<ul>
+<li>Unused values in the range <span class="binarynumber">0b000000</span> - <span class="binarynumber">0b101100</span> (<span class="hexnumber">0x00</span> - <span class="hexnumber">0x2C</span>) are reserved for future use for synchronous exceptions.
+</li><li>Unused values in the range <span class="binarynumber">0b101101</span> - <span class="binarynumber">0b111111</span> (<span class="hexnumber">0x2D</span> - <span class="hexnumber">0x3F</span>) are reserved for future use, and might be used for synchronous or asynchronous exceptions.
+</li></ul>
+<p>The effect of programming this field to a reserved value is that behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-25_25">IL, bit [25]</h4><div class="field">
+      <p>Instruction length bit. Indicates the size of the instruction that has been trapped to Hyp mode. When this bit is valid, possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>IL</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>16-bit instruction trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>32-bit instruction trapped.</p>
+        </td></tr></table><p>This field is <span class="arm-defined-word">RES1</span> and not valid for the following cases:</p>
+<ul>
+<li>When the EC field is <span class="binarynumber">0b000000</span>, indicating an exception with an unknown reason.
+</li><li>Prefetch Aborts.
+</li><li>Data Abort exceptions for which the HSR.ISS.ISV field is 0.
+</li><li>When the EC value is <span class="binarynumber">0b001110</span>, indicating an Illegal state exception.
+</li></ul>
+<p>The IL field is not valid and is <span class="arm-defined-word">UNKNOWN</span> on an exception from a PC alignment fault.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0">ISS, bits [24:0]</h4><div class="field">
+      <p>Instruction Specific Syndrome. Architecturally, this field can be defined independently for each defined Exception class. However, in practice, some ISS encodings are used for more than one Exception class.</p>
+    <div class="partial_fieldset"><h3 id="fieldset_0-24_0_0">ISS encoding for exceptions with an unknown reason</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="25"><a href="#fieldset_0-24_0_0-24_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_0-24_0">Bits [24:0]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><div class="text_after_fields"><p>This EC code is used for all exceptions that are not covered by any other EC value. This includes exceptions that are generated in the following situations:</p>
+<ul>
+<li>The attempted execution of an instruction bit pattern that has no allocated instruction or is not accessible in the current PE mode in the current Security state, including:<ul>
+<li>A read access using a System register encoding pattern that is not allocated for reads or that does not permit reads in the current PE mode and Security state.
+</li><li>A write access using a System register encoding pattern that is not allocated for writes or that does not permit writes in the current PE mode and Security state.
+</li><li>Instruction encodings that are unallocated.
+</li><li>Instruction encodings for instructions not implemented in the implementation.
+</li></ul>
+
+</li><li>In Debug state, the attempted execution of an instruction bit pattern that is not accessible in Debug state.
+</li><li>In Non-debug state, the attempted execution of an instruction bit pattern that is not accessible in Non-debug state.
+</li><li>The attempted execution of a short vector floating-point instruction.
+</li><li>In an implementation that does not include Advanced SIMD and floating-point functionality, an attempted access to Advanced SIMD or floating-point functionality under conditions where that access would be permitted if that functionality was present. This includes the attempted execution of an Advanced SIMD or floating-point instruction, and attempted accesses to Advanced SIMD and floating-point System registers.
+</li><li>An exception generated because of the value of one of the <a href="AArch32-sctlr.html">SCTLR</a>.{ITD, SED, CP15BEN} control bits.
+</li><li>Attempted execution of:<ul>
+<li>An HVC instruction when disabled by <a href="AArch32-hcr.html">HCR</a>.HCD, <a href="AArch32-scr.html">SCR</a>.HCE, or <a href="AArch64-scr_el3.html">SCR_EL3</a>.HCE.
+</li><li>An SMC instruction when disabled by <a href="AArch32-scr.html">SCR</a>.SCD or <a href="AArch64-scr_el3.html">SCR_EL3</a>.SMD.
+</li><li>An HLT instruction when disabled by <a href="ext-edscr.html">EDSCR</a>.HDE.
+</li></ul>
+
+</li><li>An HVC instruction when disabled by <a href="AArch32-hcr.html">HCR</a>.HCD, <a href="AArch32-scr.html">SCR</a>.HCE, or <a href="AArch64-scr_el3.html">SCR_EL3</a>.HCE.An SMC instruction when disabled by <a href="AArch32-scr.html">SCR</a>.SCD or <a href="AArch64-scr_el3.html">SCR_EL3</a>.SMD.An HLT instruction when disabled by <a href="ext-edscr.html">EDSCR</a>.HDE.
+</li><li>An exception generated because of the attempted execution of an MSR (Banked register) or MRS (Banked register) instruction that would access a Banked register that is not accessible from the Security state and PE mode at which the instruction was executed.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>An exception is generated only if the <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> behavior of the instruction is that it is <span class="arm-defined-word">UNDEFINED</span>, see <span class="xref">'MSR (banked register) and MRS (banked register)'</span>.</p></div><ul>
+<li>Attempted execution, in Debug state, of:<ul>
+<li>A DCPS1 instruction in Non-secure state from EL0 when EL2 is using AArch32 and the value of <a href="AArch32-hcr.html">HCR</a>.TGE is 1.
+</li><li>A DCPS2 instruction at EL1 or EL0 when EL2 is not implemented, or when EL3 is using AArch32 and the value of <a href="AArch32-scr.html">SCR</a>.NS is 0, or when EL3 is using AArch64 and the value of <a href="AArch64-scr_el3.html">SCR_EL3</a>.NS is 0.
+</li><li>A DCPS3 instruction when EL3 is not implemented, or when the value of <a href="ext-edscr.html">EDSCR</a>.SDD is 1.
+</li></ul>
+
+</li><li>In Debug state when the value of <a href="ext-edscr.html">EDSCR</a>.SDD is 1, the attempted execution at EL2, EL1, or EL0 of an instruction that is configured to trap to EL3.
+</li></ul>
+<p><span class="xref">'Undefined Instruction exception, when the value of HCR.TGE is 1'</span> describes the configuration settings for a trap that returns an HSR.EC value of <span class="binarynumber">0b000000</span>.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_1">ISS encoding for Exception from a WFI or WFE instruction</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_1-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_1-23_20">COND</a></td><td class="lr" colspan="19"><a href="#fieldset_0-24_0_1-19_1">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_1-0_0">TI</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_1-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_1-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_1-19_1">Bits [19:1]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_1-0_0">TI, bit [0]</h4><div class="field">
+            <p>Trapped instruction. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>TI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>WFI trapped.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>WFE trapped.</p>
+              </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields">
+          <p><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 execution of WFE and WFI instructions'</span> describes the configuration settings for this trap.</p>
+        </div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_2">ISS encoding for Exception from an MCR or MRC access</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_2-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_2-23_20">COND</a></td><td class="lr" colspan="3"><a href="#fieldset_0-24_0_2-19_17">Opc2</a></td><td class="lr" colspan="3"><a href="#fieldset_0-24_0_2-16_14">Opc1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_2-13_10">CRn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_2-9_9">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_2-8_5">Rt</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_2-4_1">CRm</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_2-0_0">Direction</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_2-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-19_17">Opc2, bits [19:17]</h4><div class="field"><p>The Opc2 value from the issued instruction.</p>
+<p>For a trapped VMRS access, holds the value <span class="binarynumber">0b000</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-16_14">Opc1, bits [16:14]</h4><div class="field"><p>The Opc1 value from the issued instruction.</p>
+<p>For a trapped VMRS access, holds the value <span class="binarynumber">0b111</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-13_10">CRn, bits [13:10]</h4><div class="field"><p>The CRn value from the issued instruction.</p>
+<p>For a trapped VMRS access, holds the reg field from the VMRS instruction encoding.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-9_9">Bit [9]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_2-8_5">Rt, bits [8:5]</h4><div class="field">
+            <p>The Rt value from the issued instruction, the general-purpose register used for the transfer.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-4_1">CRm, bits [4:1]</h4><div class="field"><p>The CRm value from the issued instruction.</p>
+<p>For a trapped VMRS access, holds the value <span class="binarynumber">0b0000</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_2-0_0">Direction, bit [0]</h4><div class="field">
+            <p>Indicates the direction of the trapped instruction.</p>
+          <table class="valuetable"><tr><th>Direction</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Write to System register space. MCR instruction.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Read from System register space. MRC or VMRS instruction.</p>
+              </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The following sections describe configuration settings for traps that are reported using EC value <span class="binarynumber">0b000011</span>:</p>
+<ul>
+<li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to the ID registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to lockdown, DMA, and TCM operations'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL1 execution of cache maintenance instructions'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL1 execution of TLB maintenance instructions'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL1 accesses to the Auxiliary Control Register'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to Performance Monitors registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to Activity Monitors registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL1 accesses to the CPACR'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL1 accesses to virtual memory control registers'</span>.
+</li><li><span class="xref">'General trapping to Hyp mode of Non-secure EL0 and EL1 accesses to System registers in the (coproc == 1111) encoding space'</span>.
+</li></ul>
+<p>The following sections describe configuration settings for traps that are reported using EC value <span class="binarynumber">0b000101</span>:</p>
+<ul>
+<li><span class="xref">'ID group 0, Primary device identification registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure System register accesses to trace registers'</span>.
+</li><li><span class="xref">'Trapping Non-secure System register accesses to Debug ROM registers'</span>.
+</li><li><span class="xref">'Trapping Non-secure System register accesses to powerdown debug registers'</span>.
+</li><li><span class="xref">'Trapping general Non-secure System register accesses to debug registers'</span>.
+</li></ul>
+<p>The following sections describes configuration settings for traps that are reported using EC value <span class="binarynumber">0b001000</span>:</p>
+<ul>
+<li><span class="xref">'ID group 0, Primary device identification registers'</span>.
+</li><li><span class="xref">'ID group 3, Detailed feature identification registers'</span>.
+</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_3">ISS encoding for Exception from an MCRR or MRRC access</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_3-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_3-23_20">COND</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_3-19_16">Opc1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-24_0_3-15_14">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_3-13_10">Rt2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_3-9_9">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_3-8_5">Rt</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_3-4_1">CRm</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_3-0_0">Direction</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_3-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-19_16">Opc1, bits [19:16]</h4><div class="field">
+            <p>The Opc1 value from the issued instruction.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-15_14">Bits [15:14]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_3-13_10">Rt2, bits [13:10]</h4><div class="field">
+            <p>The Rt2 value from the issued instruction, the second general-purpose register used for the transfer.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-9_9">Bit [9]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_3-8_5">Rt, bits [8:5]</h4><div class="field">
+            <p>The Rt value from the issued instruction, the first general-purpose register used for the transfer.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-4_1">CRm, bits [4:1]</h4><div class="field">
+            <p>The CRm value from the issued instruction.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_3-0_0">Direction, bit [0]</h4><div class="field">
+            <p>Indicates the direction of the trapped instruction.</p>
+          <table class="valuetable"><tr><th>Direction</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Write to System register space. MCRR instruction.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Read from System register space. MRRC instruction.</p>
+              </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The following sections describe configuration settings for traps that are reported using EC value <span class="binarynumber">0b000100</span>:</p>
+<ul>
+<li><span class="xref">'Traps to Hyp mode of Non-secure EL1 accesses to virtual memory control registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to Performance Monitors registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to Activity Monitors registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure EL0 and EL1 accesses to the Generic Timer registers'</span>.
+</li><li><span class="xref">'General trapping to Hyp mode of Non-secure EL0 and EL1 accesses to System registers in the (coproc == 1111) encoding space'</span>.
+</li></ul>
+<p>The following sections describe configuration settings for traps that are reported using EC value <span class="binarynumber">0b001100</span>:</p>
+<ul>
+<li><span class="xref">'Traps to Hyp mode of Non-secure System register accesses to trace registers'</span>.
+</li><li><span class="xref">'Trapping Non-secure System register accesses to Debug ROM registers'</span>.
+</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_4">ISS encoding for Exception from an LDC or STC instruction</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_4-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_4-23_20">COND</a></td><td class="lr" colspan="8"><a href="#fieldset_0-24_0_4-19_12">imm8</a></td><td class="lr" colspan="3"><a href="#fieldset_0-24_0_4-11_9">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_4-8_5">Rn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_4-4_4">Offset</a></td><td class="lr" colspan="3"><a href="#fieldset_0-24_0_4-3_1">AM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_4-0_0">Direction</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_4-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-19_12">imm8, bits [19:12]</h4><div class="field">
+            <p>The immediate value from the issued instruction.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-11_9">Bits [11:9]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_4-8_5">Rn, bits [8:5]</h4><div class="field"><p>The Rn value from the issued instruction. Valid only when AM[2] is 0, indicating an immediate form of the LDC or STC instruction.</p>
+<p>When AM[2] is 1, indicating a literal form of the LDC or STC instruction, this field is <span class="arm-defined-word">UNKNOWN</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-4_4">Offset, bit [4]</h4><div class="field">
+            <p>Indicates whether the offset is added or subtracted:</p>
+          <table class="valuetable"><tr><th>Offset</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Subtract offset.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Add offset.</p>
+              </td></tr></table>
+            <p>This bit corresponds to the U bit in the instruction encoding.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-3_1">AM, bits [3:1]</h4><div class="field">
+            <p>Addressing mode. The permitted values of this field are:</p>
+          <table class="valuetable"><tr><th>AM</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+                <p>Immediate unindexed.</p>
+              </td></tr><tr><td class="bitfield">0b001</td><td>
+                <p>Immediate post-indexed.</p>
+              </td></tr><tr><td class="bitfield">0b010</td><td>
+                <p>Immediate offset.</p>
+              </td></tr><tr><td class="bitfield">0b011</td><td>
+                <p>Immediate pre-indexed.</p>
+              </td></tr><tr><td class="bitfield">0b100</td><td><p>Literal unindexed.</p>
+<p>LDC instruction in A32 instruction set only.</p>
+<p>For a trapped STC instruction or a trapped T32 LDC instruction this encoding is reserved.</p></td></tr><tr><td class="bitfield">0b110</td><td><p>Literal offset.</p>
+<p>LDC instruction only.</p>
+<p>For a trapped STC instruction, this encoding is reserved.</p></td></tr></table><p>The values <span class="binarynumber">0b101</span> and <span class="binarynumber">0b111</span> are reserved. The effect of programming this field to a reserved value is that behavior is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.</p>
+<p>Bit [2] in this subfield indicates the instruction form, immediate or literal.</p>
+<p>Bits [1:0] in this subfield correspond to the bits {P, W} in the instruction encoding.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_4-0_0">Direction, bit [0]</h4><div class="field">
+            <p>Indicates the direction of the trapped instruction.</p>
+          <table class="valuetable"><tr><th>Direction</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Write to memory. STC instruction.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Read from memory. LDC instruction.</p>
+              </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields">
+          <p><span class="xref">'Trapping general Non-secure System register accesses to debug registers'</span> describes the configuration settings for the trap that is reported using EC value <span class="binarynumber">0b000110</span>.</p>
+        </div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_5">ISS encoding for Exception from an access to SIMD or floating-point functionality, resulting from HCPTR</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_5-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_5-23_20">COND</a></td><td class="lr" colspan="14"><a href="#fieldset_0-24_0_5-19_6">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_5-5_5">TA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_5-4_4">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_5-3_0">coproc</a></td></tr></tbody></table><div class="text_before_fields">
+          <p>Excludes exceptions that occur because Advanced SIMD and floating-point functionality is not implemented, or because the value of <a href="AArch32-hcr.html">HCR</a>.TGE or <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE is 1. These are reported with EC value <span class="binarynumber">0b000000</span>.</p>
+        </div><h4 id="fieldset_0-24_0_5-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_5-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_5-19_6">Bits [19:6]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_5-5_5">TA, bit [5]</h4><div class="field">
+            <p>Indicates trapped use of Advanced SIMD functionality.</p>
+          <table class="valuetable"><tr><th>TA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Exception was not caused by trapped use of Advanced SIMD functionality.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Exception was caused by trapped use of Advanced SIMD functionality.</p>
+              </td></tr></table><p>Any use of an Advanced SIMD instruction that is not also a floating-point instruction that is trapped to Hyp mode because of a trap configured in the <a href="AArch32-hcptr.html">HCPTR</a> sets this bit to 1.</p>
+<p>For a list of these instructions, see <span class="xref">'Controls of Advanced SIMD operation that do not apply to floating-point operation'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_5-4_4">Bit [4]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_5-3_0">coproc, bits [3:0]</h4><div class="field">
+            <p>When the <a href="AArch32-hsr.html">HSR</a>.TA field returns the value 1, this field returns the value <span class="binarynumber">0b1010</span>. Otherwise, this field is <span class="arm-defined-word">RES0</span>.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The following sections describe the configuration settings for the traps that are reported using EC value <span class="binarynumber">0b000111</span>:</p>
+<ul>
+<li><span class="xref">'General trapping to Hyp mode of Non-secure accesses to the SIMD and floating-point registers'</span>.
+</li><li><span class="xref">'Traps to Hyp mode of Non-secure accesses to Advanced SIMD functionality'</span>.
+</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_6">ISS encoding for Exception from HVC or SVC instruction execution</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="9"><a href="#fieldset_0-24_0_6-24_16">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-24_0_6-15_0">imm16</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_6-24_16">Bits [24:16]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_6-15_0">imm16, bits [15:0]</h4><div class="field"><p>The value of the immediate field from the HVC or SVC instruction.</p>
+<p>For an HVC instruction, this is the value of the imm16 field of the issued instruction.</p>
+<p>For an SVC instruction:</p>
+<ul>
+<li>If the instruction is unconditional, then:<ul>
+<li>For the T32 instruction, this field is zero-extended from the imm8 field of the instruction.
+</li><li>For the A32 instruction, this field is the bottom 16 bits of the imm24 field of the instruction.
+</li></ul>
+
+</li><li>For the T32 instruction, this field is zero-extended from the imm8 field of the instruction.For the A32 instruction, this field is the bottom 16 bits of the imm24 field of the instruction.
+</li><li>If the instruction is conditional, this field is <span class="arm-defined-word">UNKNOWN</span>.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The HVC instruction is unconditional, and a conditional SVC instruction generates an exception only if it passes its condition code check. Therefore, the syndrome information for these exceptions does not require conditionality information.</p>
+<p><span class="xref">'Supervisor Call exception, when the value of HCR.TGE is 1'</span> describes the configuration settings for the trap reported with EC value <span class="binarynumber">0b010001</span>.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_7">ISS encoding for Exception from SMC instruction execution</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_7-24_24">CV</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_7-23_20">COND</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_7-19_19">CCKNOWNPASS</a></td><td class="lr" colspan="19"><a href="#fieldset_0-24_0_7-18_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_7-24_24">CV, bit [24]</h4><div class="field">
+            <p>Condition code valid. Possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The COND field is not valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The COND field is valid.</p>
+              </td></tr></table><p>When an A32 instruction is trapped, CV is set to 1.</p>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CV is set to 1 or set to 0. For more information, see the description of the COND field.</p>
+<p>This field is valid only if CCKNOWNPASS is 1, otherwise it is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_7-23_20">COND, bits [23:20]</h4><div class="field"><p>The condition code for the trapped instruction.</p>
+<p>When an A32 instruction is trapped, CV is set to 1 and:</p>
+<ul>
+<li>If the instruction is conditional, COND is set to the condition code field value from the instruction.
+</li><li>If the instruction is unconditional, COND is set to <span class="binarynumber">0b1110</span>.
+</li></ul>
+<p>A conditional A32 instruction that is known to pass its condition code check can be presented either:</p>
+<ul>
+<li>With COND set to <span class="binarynumber">0b1110</span>, the value for unconditional.
+</li><li>With the COND value held in the instruction.
+</li></ul>
+<p>When a T32 instruction is trapped, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether:</p>
+<ul>
+<li>CV is set to 0 and COND is set to an <span class="arm-defined-word">UNKNOWN</span> value. Software must examine the SPSR.IT field to determine the condition, if any, of the T32 instruction.
+</li><li>CV is set to 1 and COND is set to the condition code for the condition that applied to the instruction.
+</li></ul>
+<p>For an implementation that, for both A32 and T32 instructions, takes an exception on a trapped conditional instruction only if the instruction passes its condition code check, these definitions mean that when CV is set to 1 it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the COND field is set to <span class="binarynumber">0b1110</span>, or to the value of any condition that applied to the instruction.</p>
+<p>This field is valid only if CCKNOWNPASS is 1, otherwise it is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_7-19_19">CCKNOWNPASS, bit [19]</h4><div class="field">
+            <p>Indicates whether the instruction might have failed its condition code check.</p>
+          <table class="valuetable"><tr><th>CCKNOWNPASS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>The instruction was unconditional, or was conditional and passed its condition code check.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>The instruction was conditional, and might have failed its condition code check.</p>
+              </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_7-18_0">Bits [18:0]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><div class="text_after_fields">
+          <p><span class="xref">'Traps to Hyp mode of Non-secure EL1 execution of SMC instructions'</span> describes the configuration settings for this trap, for instructions executed in Non-secure EL1.</p>
+        </div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_8">ISS encoding for Exception from a Prefetch Abort</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="14"><a href="#fieldset_0-24_0_8-24_11">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_8-10_10">FnV</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_8-9_9">EA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_8-8_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_8-7_7">S1PTW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_8-6_6">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_0-24_0_8-5_0">IFSC</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_8-24_11">Bits [24:11]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_8-10_10">FnV, bit [10]</h4><div class="field">
+            <p>FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.</p>
+          <table class="valuetable"><tr><th>FnV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p><a href="AArch32-hifar.html">HIFAR</a> is valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p><a href="AArch32-hifar.html">HIFAR</a> is not valid, and holds an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+              </td></tr></table>
+            <p>This field is valid only if the IFSC code is <span class="binarynumber">0b010000</span>. It is <span class="arm-defined-word">RES0</span> for all other aborts.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_8-9_9">EA, bit [9]</h4><div class="field"><p>External abort type. This bit can provide an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> classification of External aborts.</p>
+<p>For any abort other than an External abort this bit returns a value of 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_8-8_8">Bit [8]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_8-7_7">S1PTW, bit [7]</h4><div class="field">
+            <p>For a stage 2 fault, indicates whether the fault was a stage 2 fault on an access made for a stage 1 translation table walk:</p>
+          <table class="valuetable"><tr><th>S1PTW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Fault not on a stage 2 translation for a stage 1 translation table walk.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Fault on the stage 2 translation of an access for a stage 1 translation table walk.</p>
+              </td></tr></table>
+            <p>For any abort other than a stage 2 fault this bit is <span class="arm-defined-word">RES0</span>.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_8-6_6">Bit [6]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_8-5_0">IFSC, bits [5:0]</h4><div class="field">
+            <p>Instruction Fault Status Code. Possible values of this field are:</p>
+          <table class="valuetable"><tr><th>IFSC</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b000000</td><td>
+                <p>Address size fault in translation table base register.</p>
+              </td></tr><tr><td class="bitfield">0b000001</td><td>
+                <p>Address size fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b000010</td><td>
+                <p>Address size fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b000011</td><td>
+                <p>Address size fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b000101</td><td>
+                <p>Translation fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b000110</td><td>
+                <p>Translation fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b000111</td><td>
+                <p>Translation fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b001001</td><td>
+                <p>Access flag fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b001010</td><td>
+                <p>Access flag fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b001011</td><td>
+                <p>Access flag fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b001101</td><td>
+                <p>Permission fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b001110</td><td>
+                <p>Permission fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b001111</td><td>
+                <p>Permission fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b010000</td><td>
+                <p>Synchronous External abort, not on translation table walk.</p>
+              </td></tr><tr><td class="bitfield">0b010101</td><td>
+                <p>Synchronous External abort on translation table walk, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b010110</td><td>
+                <p>Synchronous External abort on translation table walk, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b010111</td><td>
+                <p>Synchronous External abort on translation table walk, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b011000</td><td>
+                <p>Synchronous parity or ECC error on memory access, not on translation table walk.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011101</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 1.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011110</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 2.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011111</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 3.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b100010</td><td>
+                <p>Debug exception.</p>
+              </td></tr><tr><td class="bitfield">0b110000</td><td>
+                <p>TLB conflict abort.</p>
+              </td></tr></table><p>All other values are reserved.</p>
+<p>For more information about the lookup level associated with a fault, see <span class="xref">'The level associated with MMU faults on a Long-descriptor translation table lookup'</span>.</p>
+<p>If the S1PTW bit is set, then the level refers the level of the stage2 translation that is translating a stage 1 translation walk.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The following sections describe cases where Prefetch Abort exceptions can be routed to Hyp mode, generating exceptions that are reported in the HSR with EC value <span class="binarynumber">0b100000</span>:</p>
+<ul>
+<li><span class="xref">'Abort exceptions, when the value of HCR.TGE is 1'</span>.
+</li><li><span class="xref">'Routing debug exceptions to EL2 using AArch32'</span>.
+</li></ul></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_9">ISS encoding for Exception from an Illegal state or PC alignment fault</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="25"><a href="#fieldset_0-24_0_9-24_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_9-24_0">Bits [24:0]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><div class="text_after_fields"><p>For more information about the Illegal state exception, see:</p>
+<ul>
+<li><span class="xref">'Illegal changes to PSTATE.M'</span>.
+</li><li><span class="xref">'Illegal return events from AArch32 state'</span>.
+</li><li><span class="xref">'Legal returns that set PSTATE.IL to 1'</span>.
+</li><li><span class="xref">'The Illegal Execution state exception'</span>.
+</li></ul>
+<p>For more information about the PC alignment fault exception, see <span class="xref">'Branching to an unaligned PC'</span>.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-24_0_10">ISS encoding for Exception from a Data Abort</h3><table class="regdiagram"><thead><tr><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-24_24">ISV</a></td><td class="lr" colspan="2"><a href="#fieldset_0-24_0_10-23_22">SAS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-21_21">SSE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-20_20">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-24_0_10-19_16">SRT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-15_15">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-14_14">AR</a></td><td class="lr" colspan="2"><a href="#fieldset_0-24_0_10-13_12">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-24_0_10-11_10-1">Bits[11:10]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-9_9">EA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-8_8">CM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-7_7">S1PTW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_0_10-6_6">WnR</a></td><td class="lr" colspan="6"><a href="#fieldset_0-24_0_10-5_0">DFSC</a></td></tr></tbody></table><h4 id="fieldset_0-24_0_10-24_24">ISV, bit [24]</h4><div class="field">
+            <p>Instruction Syndrome Valid. Indicates whether the syndrome information in ISS[23:14] is valid.</p>
+          <table class="valuetable"><tr><th>ISV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>No valid instruction syndrome. ISS[23:14] are <span class="arm-defined-word">RES0</span>.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>ISS[23:14] hold a valid instruction syndrome.</p>
+              </td></tr></table><p>This bit is 0 for all faults except Data Abort exceptions generated by stage 2 address translations for which all the following apply to the instruction that generated the Data Abort exception:</p>
+<ul>
+<li>The instruction is an LDR, LDA, LDRT, LDRSH, LDRSHT, LDRH, LDAH, LDRHT, LDRSB, LDRSBT, LDRB, LDAB, LDRBT, STR, STL, STRT, STRH, STLH, STRHT, STRB, STLB, or STRBT instruction.
+</li><li>The instruction is not performing register writeback.
+</li><li>The instruction is not using the PC as a source or destination register.
+</li></ul>
+<p>For these cases, ISV is <span class="arm-defined-word">UNKNOWN</span> if the exception was generated in Debug state in memory access mode, as described in <span class="xref">'Data Abort exceptions in Memory access mode'</span>, and otherwise indicates whether ISS[23:14] hold a valid syndrome.</p>
+<div class="note"><span class="note-header">Note</span><p>In the A32 instruction set, LDR*T and STR*T instructions always perform register writeback and therefore never return a valid instruction syndrome.</p></div><p>When FEAT_RAS is implemented, ISV is 0 for any synchronous External abort.</p>
+<p>ISV is set to 0 on a stage 2 abort on a stage 1 translation table walk.</p>
+<p>When FEAT_RAS is not implemented, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether ISV is set to 1 or 0 on a synchronous External abort on a stage 2 translation table walk.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-23_22">SAS, bits [23:22]</h4><div class="field">
+            <p>Syndrome Access Size. When ISV is 1, indicates the size of the access attempted by the faulting operation.</p>
+          <table class="valuetable"><tr><th>SAS</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+                <p>Byte</p>
+              </td></tr><tr><td class="bitfield">0b01</td><td>
+                <p>Halfword</p>
+              </td></tr><tr><td class="bitfield">0b10</td><td>
+                <p>Word</p>
+              </td></tr><tr><td class="bitfield">0b11</td><td>
+                <p>Doubleword</p>
+              </td></tr></table><p>This field is <span class="arm-defined-word">UNKNOWN</span> when the value of ISV is <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>This field is <span class="arm-defined-word">RES0</span> when the value of ISV is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-21_21">SSE, bit [21]</h4><div class="field">
+            <p>Syndrome Sign Extend. When ISV is 1, for a byte, halfword, or word load operation, indicates whether the data item must be sign extended. For these cases, the possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>SSE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Sign-extension not required.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Data item must be sign-extended.</p>
+              </td></tr></table><p>For all other operations this bit is 0.</p>
+<p>This field is <span class="arm-defined-word">UNKNOWN</span> when the value of ISV is <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>This field is <span class="arm-defined-word">RES0</span> when the value of ISV is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-20_20">Bit [20]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_10-19_16">SRT, bits [19:16]</h4><div class="field"><p>Syndrome Register Transfer. When ISV is 1, the register number of the Rt operand of the faulting instruction.</p>
+<p>This field is <span class="arm-defined-word">UNKNOWN</span> when the value of ISV is <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>This field is <span class="arm-defined-word">RES0</span> when the value of ISV is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-15_15">Bit [15]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_10-14_14">AR, bit [14]</h4><div class="field">
+            <p>Acquire/Release. When ISV is 1, the possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>AR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Instruction did not have acquire/release semantics.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Instruction did have acquire/release semantics.</p>
+              </td></tr></table><p>This field is <span class="arm-defined-word">UNKNOWN</span> when the value of ISV is <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>This field is <span class="arm-defined-word">RES0</span> when the value of ISV is 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-13_12">Bits [13:12]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_10-11_10-1">Bits[11:10]<span class="condition"><br/>When FEAT_RAS is implemented:
+                        </span></h4><h5>AET, bits [1:0]
+                 of bits 
+                        [11:10]</h5><div class="field">
+            <p>Asynchronous Error Type. When DFSC is <span class="binarynumber">0b010001</span>, describes the PE error state after taking the SError interrupt exception.</p>
+          <table class="valuetable"><tr><th>AET</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+                <p>Uncontainable (UC).</p>
+              </td></tr><tr><td class="bitfield">0b01</td><td>
+                <p>Unrecoverable state (UEU).</p>
+              </td></tr><tr><td class="bitfield">0b10</td><td>
+                <p>Restartable state (UEO).</p>
+              </td></tr><tr><td class="bitfield">0b11</td><td>
+                <p>Recoverable state (UER).</p>
+              </td></tr></table><p>On a synchronous Data Abort exception, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>In the event of multiple errors taken as a single SError interrupt exception, the overall PE error state is reported.</p>
+<div class="note"><span class="note-header">Note</span><p>Software can use this information to determine what recovery might be possible. The recovery software must also examine any implemented fault records to determine the location and extent of the error.</p></div><p>When FEAT_RAS is not implemented, or when DFSC is not <span class="binarynumber">0b010001</span>:</p>
+<ul>
+<li>Bit[11] is <span class="arm-defined-word">RES0</span>.
+</li><li>Bit[10] forms the FnV field.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>Armv8.2 requires the implementation of FEAT_RAS.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><h5>Bit [1]
+                 of bits 
+                        [11:10]</h5><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-24_0_10-10_10-2"> </h4><h5>FnV, bit [0]
+                 of bits 
+                        [11:10]</h5><div class="field">
+            <p>FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.</p>
+          <table class="valuetable"><tr><th>FnV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p><a href="AArch32-hdfar.html">HDFAR</a> is valid.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p><a href="AArch32-hdfar.html">HDFAR</a> is not valid, and holds an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+              </td></tr></table><p>When FEAT_RAS is not implemented, this field is valid only if DFSC is <span class="binarynumber">0b010000</span>. It is <span class="arm-defined-word">RES0</span> for all other aborts.</p>
+<p>When FEAT_RAS is implemented:</p>
+<ul>
+<li>If DFSC is <span class="binarynumber">0b010000</span>, this field is valid.
+</li><li>If DFSC is <span class="binarynumber">0b010001</span>, this bit forms part of the AET field, becoming AET[0].
+</li><li>This field is <span class="arm-defined-word">RES0</span> for all other aborts.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>Armv8.2 requires the implementation of FEAT_RAS.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-9_9">EA, bit [9]</h4><div class="field"><p>External Abort type. This bit can provide an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> classification of External aborts.</p>
+<p>For any abort other than an External abort this bit returns a value of 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-8_8">CM, bit [8]</h4><div class="field">
+            <p>Cache Maintenance. For a synchronous fault, identifies fault that comes from a cache maintenance or address translation instruction. For synchronous faults, the possible values of this bit are:</p>
+          <table class="valuetable"><tr><th>CM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Fault not generated by a cache maintenance or address translation instruction.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Fault generated by a cache maintenance or address translation instruction.</p>
+              </td></tr></table>
+            <p>For an asynchronous Data Abort exception, this bit is 0.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-7_7">S1PTW, bit [7]</h4><div class="field">
+            <p>For a stage 2 fault, indicates whether the fault was a stage 2 fault on an access made for a stage 1 translation table walk:</p>
+          <table class="valuetable"><tr><th>S1PTW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Fault not on a stage 2 translation for a stage 1 translation table walk.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Fault on the stage 2 translation of an access for a stage 1 translation table walk.</p>
+              </td></tr></table>
+            <p>For any abort other than a stage 2 fault this bit is <span class="arm-defined-word">RES0</span>.</p>
+          <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-6_6">WnR, bit [6]</h4><div class="field">
+            <p>Write not Read. Indicates whether a synchronous abort was caused by a write instruction or a read instruction.</p>
+          <table class="valuetable"><tr><th>WnR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+                <p>Abort caused by a read instruction.</p>
+              </td></tr><tr><td class="bitfield">0b1</td><td>
+                <p>Abort caused by a write instruction.</p>
+              </td></tr></table><p>For faults on cache maintenance and address translation instructions, this bit always returns a value of 1.</p>
+<p>On an asynchronous Data Abort exception:</p>
+<ul>
+<li>When FEAT_RAS is not implemented, this bit is <span class="arm-defined-word">UNKNOWN</span>.
+</li><li>When FEAT_RAS is implemented, this bit is <span class="arm-defined-word">RES0</span>.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>Armv8.2 requires the implementation of FEAT_RAS.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_0_10-5_0">DFSC, bits [5:0]</h4><div class="field">
+            <p>Data Fault Status Code. Possible values of this field are:</p>
+          <table class="valuetable"><tr><th>DFSC</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b000000</td><td>
+                <p>Address size fault in translation table base register.</p>
+              </td></tr><tr><td class="bitfield">0b000001</td><td>
+                <p>Address size fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b000010</td><td>
+                <p>Address size fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b000011</td><td>
+                <p>Address size fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b000101</td><td>
+                <p>Translation fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b000110</td><td>
+                <p>Translation fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b000111</td><td>
+                <p>Translation fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b001001</td><td>
+                <p>Access flag fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b001010</td><td>
+                <p>Access flag fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b001011</td><td>
+                <p>Access flag fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b001101</td><td>
+                <p>Permission fault, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b001110</td><td>
+                <p>Permission fault, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b001111</td><td>
+                <p>Permission fault, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b010000</td><td>
+                <p>Synchronous External abort, not on translation table walk.</p>
+              </td></tr><tr><td class="bitfield">0b010001</td><td>
+                <p>Asynchronous SError interrupt.</p>
+              </td></tr><tr><td class="bitfield">0b010101</td><td>
+                <p>Synchronous External abort on translation table walk, level 1.</p>
+              </td></tr><tr><td class="bitfield">0b010110</td><td>
+                <p>Synchronous External abort on translation table walk, level 2.</p>
+              </td></tr><tr><td class="bitfield">0b010111</td><td>
+                <p>Synchronous External abort on translation table walk, level 3.</p>
+              </td></tr><tr><td class="bitfield">0b011000</td><td>
+                <p>Synchronous parity or ECC error on memory access, not on translation table walk.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011001</td><td>
+                <p>Asynchronous SError interrupt, from a parity or ECC error on memory access.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011101</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 1.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011110</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 2.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b011111</td><td>
+                <p>Synchronous parity or ECC error on memory access on translation table walk, level 3.</p>
+              </td><td>When FEAT_RAS is not implemented</td></tr><tr><td class="bitfield">0b100001</td><td>
+                <p>Alignment fault.</p>
+              </td></tr><tr><td class="bitfield">0b100010</td><td>
+                <p>Debug exception.</p>
+              </td></tr><tr><td class="bitfield">0b110000</td><td>
+                <p>TLB conflict abort.</p>
+              </td></tr><tr><td class="bitfield">0b110100</td><td>
+                <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> fault (Lockdown).</p>
+              </td></tr><tr><td class="bitfield">0b110101</td><td>
+                <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> fault (Unsupported Exclusive access).</p>
+              </td></tr></table><p>All other values are reserved.</p>
+<p>For more information about the lookup level associated with a fault, see <span class="xref">'The level associated with MMU faults on a Long-descriptor translation table lookup'</span>.</p>
+<p>If the S1PTW bit is set, then the level refers the level of the stage2 translation that is translating a stage 1 translation walk.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="text_after_fields"><p>The following describe cases where Data Abort exceptions can be routed to Hyp mode, generating exceptions that are reported in the HSR with EC value <span class="binarynumber">0b100100</span>:</p>
+<ul>
+<li><span class="xref">'Abort exceptions, when the value of HCR.TGE is 1'</span>.
+</li><li><span class="xref">'Routing debug exceptions to EL2 using AArch32'</span>.
+</li></ul>
+<p>The following describe cases that can cause a Data Abort exception that is taken to Hyp mode, and reported in the HSR with EC value of <span class="binarynumber">0b100000</span> or <span class="binarynumber">0b100100</span>:</p>
+<ul>
+<li><span class="xref">'Hyp mode control of Non-secure access permissions'</span>.
+</li><li><span class="xref">'Memory fault reporting in Hyp mode'</span>.
+</li></ul></div></div></div><div class="access_mechanisms"><h2>Accessing HSR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0101</td><td>0b0010</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T5 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T5 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    R[t] = HSR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        R[t] = HSR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b0101</td><td>0b0010</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T5 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T5 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    HSR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        UNDEFINED;
+    else
+        HSR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

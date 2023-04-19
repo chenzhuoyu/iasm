@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCPIDR2</reg_short_name>
+        
+        <reg_long_name>Peripheral Identification Register 2</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0xFE8</hexnumber></reg_offset>
+    <reg_instance>TRCPIDR2</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides discovery information about the component.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For additional information, see the CoreSight Architecture Specification.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Management registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCPIDR2 is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRCPIDR2</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>31:8</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>REVISION</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Component major revision. TRCPIDR2.REVISION and <register_link state="ext" id="ext-trcpidr3.xml">TRCPIDR3</register_link>.REVAND together form the revision number of the component, with TRCPIDR2.REVISION being the most significant part and <register_link state="ext" id="ext-trcpidr3.xml">TRCPIDR3</register_link>.REVAND the least significant part. When a component is changed, TRCPIDR2.REVISION or <register_link state="ext" id="ext-trcpidr3.xml">TRCPIDR3</register_link>.REVAND are increased to ensure that software can differentiate the different revisions of the component. <register_link state="ext" id="ext-trcpidr3.xml">TRCPIDR3</register_link>.REVAND should be set to <binarynumber>0b0000</binarynumber> when TRCPIDR2.REVISION is increased.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>JEDEC</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>JEDEC-assigned JEP106 implementer code is used.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Reads as <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-2_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DES_1</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before">
+      <para>Designer, JEP106 identification code, bits [6:4]. <register_link state="ext" id="ext-trcpidr1.xml">TRCPIDR1</register_link>.DES_0 and TRCPIDR2.DES_1 together form the JEDEC-assigned JEP106 identification code for the designer of the component. The parity bit in the JEP106 identification code is not included. The code identifies the designer of the component, which might not be not the same as the implementer of the device containing the component. To obtain a number, or to see the assignment of these codes, contact JEDEC http://www.jedec.org.</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>For a component designed by Arm Limited, the JEP106 identification code is <hexnumber>0x3B</hexnumber>.</para>
+      </note>
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_8" msb="31" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_0" msb="2" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>External debugger accesses to this register are unaffected by the OS Lock.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

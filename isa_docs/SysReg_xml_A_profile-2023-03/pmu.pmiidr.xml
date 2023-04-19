@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMIIDR</reg_short_name>
+        
+        <reg_long_name>Performance Monitors Implementation Identification Register</reg_long_name>
+
+
+        <reg_parent_link id="pmu.xml">PMU</reg_parent_link>
+
+      
+        <reg_condition otherwise="RES0">when (FEAT_PMUv3_EXT32 is implemented and an implementation implements PMIIDR) or FEAT_PMUv3_EXT64 is implemented</reg_condition>
+      
+
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+        table_id="139930561017224"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0xE08</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalPMUAccess()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides discovery information about the Performance Monitor component.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMIIDR is a:</para>
+
+      </attributes_text>
+      <attributes_text>
+        <list type="unordered">
+<listitem><content>64-bit register when FEAT_PMUv3_EXT64 is implemented</content>
+</listitem><listitem><content>32-bit register otherwise</content>
+</listitem></list>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When FEAT_PMUv3_EXT64 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ProductID</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>31:20</rel_range>
+    <field_description order="before"><para>Part number, bits [11:0]. The part number is selected by the designer of the component.</para>
+<para>Matches the PMU.PMPIDR1.PART_1, PMU.PMPIDR0.PART_0 fields if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Variant</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before"><para>Component major revision.</para>
+<para>Defines either a variant of the component defined by PMIIDR.ProductID, or the major revision of the component.</para>
+<para>When defining a major revision, PMIIDR.Variant and PMIIDR.Revision together form the revision number of the component, with this field being the most significant part.</para>
+<para>When a component is changed, PMIIDR.Variant or PMIIDR.Revision is increased to ensure that software can differentiate between different revisions of the component. If this field is increased, PMIIDR.Revision should be set to <binarynumber>0b0000</binarynumber>.</para>
+<para>Matches the PMU.PMPIDR2.REVISION field, if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Revision</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before"><para>Component minor revision.</para>
+<para>PMIIDR.Variant and PMIIDR.Revision together form the revision number of the component, with this field being the least significant part.</para>
+<para>When a component is changed, PMIIDR.Variant or PMIIDR.Revision is increased to ensure that software can differentiate between different revisions of the component. If PMIIDR.Variant field is increased, this field should be set to <binarynumber>0b0000</binarynumber>, otherwise the value in this field should be increased.</para>
+<para>Matches the PMU.PMPIDR3.REVAND field, if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Implementer</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8, 6:0</rel_range>
+    <field_description order="before"><para>JEDEC-assigned JEP106 identifcation code of the designer of the component.</para>
+<para>Bits [11:8] are the JEP106 bank identifier minus 1 and bits [6:0] are the JEP106 identification code for the designer of the component.</para>
+<note><para>For Arm Limited, the JEP106 bank is 5 and the JEP106 identification code is <hexnumber>0x3B</hexnumber>, meaning PMIIDR[11:0] has the value <hexnumber>0x43B</hexnumber>.</para></note><para>Bits [11:8] match the PMU.PMPIDR4.DES_2 field, if present.</para>
+<para>Bits[6:0] match the {PMPIDR2.DES1, PMPIDR1.DES_0} fields if present.</para></field_description>
+    <field_description order="after"><para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+<para>The Implementer field is split as follows:</para>
+<list type="unordered">
+<listitem><content>Implementer[10:7] is PMIIDR[11:8].</content>
+</listitem><listitem><content>Implementer[6:0] is PMIIDR[6:0].</content>
+</listitem></list></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>11</field_msb>
+        <field_lsb>8</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>6</field_msb>
+        <field_lsb>0</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-6_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>Implementer[6:0]</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>11:8, 6:0</rel_range>
+    <field_description order="before"><para>This field is bits[6:0] of Implementer[10:0].</para>
+<para>See Implementer[10:7] for the field description.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition/>
+  <text_before_fields/>
+  <field id="fieldset_1-31_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ProductID</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>31:20</rel_range>
+    <field_description order="before"><para>Part number, bits [11:0]. The part number is selected by the designer of the component.</para>
+<para>Matches the PMU.PMPIDR1.PART_1, PMU.PMPIDR0.PART_0 fields if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Variant</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before"><para>Component major revision.</para>
+<para>Defines either a variant of the component defined by PMIIDR.ProductID, or the major revision of the component.</para>
+<para>When defining a major revision, PMIIDR.Variant and PMIIDR.Revision together form the revision number of the component, with this field being the most significant part.</para>
+<para>When a component is changed, PMIIDR.Variant or PMIIDR.Revision is increased to ensure that software can differentiate between different revisions of the component. If this field is increased, PMIIDR.Revision should be set to <binarynumber>0b0000</binarynumber>.</para>
+<para>Matches the PMU.PMPIDR2.REVISION field, if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Revision</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before"><para>Component minor revision.</para>
+<para>PMIIDR.Variant and PMIIDR.Revision together form the revision number of the component, with this field being the least significant part.</para>
+<para>When a component is changed, PMIIDR.Variant or PMIIDR.Revision is increased to ensure that software can differentiate between different revisions of the component. If PMIIDR.Variant field is increased, this field should be set to <binarynumber>0b0000</binarynumber>, otherwise the value in this field should be increased.</para>
+<para>Matches the PMU.PMPIDR3.REVAND field, if present.</para></field_description>
+    <field_description order="after">
+      <para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+    </field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Implementer</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8, 6:0</rel_range>
+    <field_description order="before"><para>JEDEC-assigned JEP106 identifcation code of the designer of the component.</para>
+<para>Bits [11:8] are the JEP106 bank identifier minus 1 and bits [6:0] are the JEP106 identification code for the designer of the component.</para>
+<note><para>For Arm Limited, the JEP106 bank is 5 and the JEP106 identification code is <hexnumber>0x3B</hexnumber>, meaning PMIIDR[11:0] has the value <hexnumber>0x43B</hexnumber>.</para></note><para>Bits [11:8] match the PMU.PMPIDR4.DES_2 field, if present.</para>
+<para>Bits[6:0] match the {PMPIDR2.DES1, PMPIDR1.DES_0} fields if present.</para></field_description>
+    <field_description order="after"><para>This field has an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value.</para>
+<para>The Implementer field is split as follows:</para>
+<list type="unordered">
+<listitem><content>Implementer[10:7] is PMIIDR[11:8].</content>
+</listitem><listitem><content>Implementer[6:0] is PMIIDR[6:0].</content>
+</listitem></list></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>11</field_msb>
+        <field_lsb>8</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>6</field_msb>
+        <field_lsb>0</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_1-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-6_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="True" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>Implementer[6:0]</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>11:8, 6:0</rel_range>
+    <field_description order="before"><para>This field is bits[6:0] of Implementer[10:0].</para>
+<para>See Implementer[10:7] for the field description.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_PMUv3_EXT64 is implemented</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_20" msb="31" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8" label="Implementer[10:7]"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_0" msb="6" lsb="0" label="Implementer[6:0]"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition/>
+  <fieldat id="fieldset_1-31_20" msb="31" lsb="20"/>
+  <fieldat id="fieldset_1-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_1-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_1-11_8" msb="11" lsb="8" label="Implementer[10:7]"/>
+  <fieldat id="fieldset_1-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_1-6_0" msb="6" lsb="0" label="Implementer[6:0]"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        <access_mechanism type="BlockAccessAbstract" table_id="139930561017224">
+        
+        
+        
+        <access_header>Accessible at offset 0xE08 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT64 is implemented
+        </access_condition>
+    </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

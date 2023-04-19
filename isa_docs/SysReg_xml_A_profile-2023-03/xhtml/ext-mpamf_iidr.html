@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMF_IIDR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMF_IIDR, MPAM Implementation Identification Register</h1><p>The MPAMF_IIDR characteristics are:</p><h2>Purpose</h2>
+        <p>Uniquely identifies the MSC implementation by the combination of implementer, product ID, variant, and revision.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMF_IIDR is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented. Otherwise, direct accesses to MPAMF_IIDR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MPAMF_IIDR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-31_20">ProductID</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">Variant</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">Revision</a></td><td class="lr" colspan="12"><a href="#fieldset_0-11_0">Implementer</a></td></tr></tbody></table><h4 id="fieldset_0-31_20">ProductID, bits [31:20]</h4><div class="field">
+      <p>The MSC implementer as identified in the MPAMF_IIDR.Implementer field must assure each product has a unique ProductID from any other with the same Implementer value.</p>
+    
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-19_16">Variant, bits [19:16]</h4><div class="field"><p>This field distinguishes product variants or major revisions of the product.</p>
+<div class="note"><span class="note-header">Note</span><p>Implementations of ProductID with differing software interfaces are expected to have different values in the MPAMF_IIDR.Variant field.</p></div>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-15_12">Revision, bits [15:12]</h4><div class="field"><p>This field distinguishes minor revisions of the product.</p>
+<div class="note"><span class="note-header">Note</span><p>This field is intended to differentiate product revisions that are minor changes and are largely software compatible with previous revisions.</p></div>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-11_0">Implementer, bits [11:0]</h4><div class="field"><p>Contains the JEP106 code of the company that implemented the MPAM MSC.</p>
+<p>[11:8] must contain the JEP106 continuation code of the implementer.</p>
+<p>[7] must always be 0.</p>
+<p>[6:0] must contain the JEP106 identity code of the implementer.</p>
+<p>For an Arm implementation, bits[11:0] are <span class="hexnumber">0x43B</span>.</p></div><h2>Accessing MPAMF_IIDR</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps.</p>
+
+      
+        <p>MPAMF_IIDR is read-only.</p>
+
+      
+        <p>MPAMF_IIDR must be readable from the Secure, Non-secure, Root, and Realm MPAM feature pages.</p>
+
+      
+        <p>MPAMF_IIDR must have the same contents in the Secure, Non-secure, Root, and Realm MPAM feature pages.</p>
+      <h4>MPAMF_IIDR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0018</span></td><td>MPAMF_IIDR_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0018</span></td><td>MPAMF_IIDR_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0018</span></td><td>MPAMF_IIDR_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0018</span></td><td>MPAMF_IIDR_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

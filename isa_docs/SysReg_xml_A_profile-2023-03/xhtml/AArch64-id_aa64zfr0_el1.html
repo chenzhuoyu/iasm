@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64ZFR0_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64ZFR0_EL1, SVE Feature ID Register 0</h1><p>The ID_AA64ZFR0_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides additional information about the implemented features of the AArch64 Scalable Vector Extension instruction set, when one or more of FEAT_SVE and FEAT_SME is implemented.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2>
+        <div class="note"><span class="note-header">Note</span><p>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <span class="arm-defined-word">RES0</span> from EL1, EL2, and EL3.</p><p>If <span class="xref">FEAT_SME</span> is implemented and <span class="xref">FEAT_SVE</span> is not implemented, then SVE instructions can only be executed when the PE is in Streaming SVE mode and the instructions are legal to execute in Streaming SVE mode.</p></div>
+      <h2>Attributes</h2>
+        <p>ID_AA64ZFR0_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_60">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-59_56">F64MM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">F32MM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">I8MM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">SM4</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">SHA3</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">B16B16</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">BF16</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">BitPerm</a></td><td class="lr" colspan="8"><a href="#fieldset_0-15_8">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">AES</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">SVEver</a></td></tr></tbody></table><h4 id="fieldset_0-63_60">Bits [63:60]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-59_56">F64MM, bits [59:56]</h4><div class="field">
+      <p>Indicates support for SVE FP64 double-precision floating-point matrix multiplication instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>F64MM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Double-precision matrix multiplication and related SVE instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Double-precision variant of the FMMLA instruction, and the LD1RO* instructions are implemented. The 128-bit element variants of the SVE TRN1, TRN2, UZP1, UZP2, ZIP1, and ZIP2 instructions are also implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_F64MM</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p></div><h4 id="fieldset_0-55_52">F32MM, bits [55:52]</h4><div class="field">
+      <p>Indicates support for the SVE FP32 single-precision floating-point matrix multiplication instruction. Defined values are:</p>
+    <table class="valuetable"><tr><th>F32MM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Single-precision matrix multiplication instruction is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Single-precision variant of the FMMLA instruction is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_F32MM</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>From Arm v8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p></div><h4 id="fieldset_0-51_48">Bits [51:48]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-47_44">I8MM, bits [47:44]</h4><div class="field">
+      <p>Indicates support for SVE Int8 matrix multiplication instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>I8MM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE Int8 matrix multiplication instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE SMMLA, SUDOT, UMMLA, USMMLA, and USDOT instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_I8MM</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>When Advanced SIMD and SVE are both implemented, this field must return the same value as <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.I8MM.</p>
+<p>From Armv8.6, the only permitted value is <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the SVE instructions SMMLA, UMMLA, and USMMLA, irrespective of the value of this field.</p></div><h4 id="fieldset_0-43_40">SM4, bits [43:40]</h4><div class="field">
+      <p>Indicates support for SVE SM4 instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SM4</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE SM4 instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE SM4E and SM4EKEY instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_SVE_SM4 implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p></div><h4 id="fieldset_0-39_36">Bits [39:36]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-35_32">SHA3, bits [35:32]</h4><div class="field">
+      <p>Indicates support for the SVE SHA3 instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SHA3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE SHA3 instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE RAX1 instruction is implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SVE_SHA3</span> implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p>
+<p>However, if both FEAT_SME2p1 and <span class="xref">FEAT_SVE_SHA3</span> are implemented, then the SVE RAX1 instruction can be executed when the PE is in Streaming SVE mode regardless of whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled.</p></div><h4 id="fieldset_0-31_28">Bits [31:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_24">B16B16, bits [27:24]</h4><div class="field">
+      <p>Indicates support for SVE2.1 non-widening BFloat16 instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>B16B16</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE2.1 non-widening BFloat16 instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE2.1 BFADD, BFCLAMP, BFMAX, BFMAXNM, BFMIN, BFMINNM, BFMLA, BFMLS, BFMUL, and BFSUB instructions with BFloat16 operands and results are implemented.</p>
+        </td></tr></table><p>FEAT_SVE_B16B16 implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>This field must indicate the same level of support as <a href="AArch64-id_aa64smfr0_el1.html">ID_AA64SMFR0_EL1</a>.B16B16.</p>
+<p>If one or more of FEAT_SVE2p1 and FEAT_SME2p1 is implemented, the values <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span> are permitted.</p>
+<p>Otherwise, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-23_20">BF16, bits [23:20]</h4><div class="field">
+      <p>Indicates support for SVE BFloat16 instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>BF16</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE BFloat16 instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE BFCVT, BFCVTNT, BFDOT, BFMLALB, BFMLALT, and BFMMLA instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As <span class="binarynumber">0b0001</span>, but the <a href="AArch64-fpcr.html">FPCR</a>.EBF field is also supported.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_BF16</span> adds the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_EBF16</span> adds the functionality identified by <span class="binarynumber">0b0010</span>.</p>
+<p>This field must return the same value as <a href="AArch64-id_aa64isar1_el1.html">ID_AA64ISAR1_EL1</a>.BF16.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the SVE instruction BFMMLA, irrespective of the value of this field.</p>
+<p>From Armv8.6 and Armv9.1, the value <span class="binarynumber">0b0000</span> is not permitted.</p></div><h4 id="fieldset_0-19_16">BitPerm, bits [19:16]</h4><div class="field">
+      <p>Indicates support for SVE bit permute instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>BitPerm</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE bit permute instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE BDEP, BEXT, and BGRP instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_SVE_BitPerm implements the functionality identified by <span class="binarynumber">0b0001</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p></div><h4 id="fieldset_0-15_8">Bits [15:8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_4">AES, bits [7:4]</h4><div class="field">
+      <p>Indicates support for SVE AES instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>AES</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>SVE AES* instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SVE AESE, AESD, AESMC, and AESIMC instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As <span class="binarynumber">0b0001</span>, plus 64-bit source element variants of SVE PMULLB and PMULLT instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_SVE_AES implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>FEAT_SVE_PMULL128 implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>The permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0010</span>.</p>
+<p>When the PE is in Streaming SVE mode and it is not known whether <span class="xref">FEAT_SME_FA64</span> is implemented and enabled, software should not attempt to execute the instructions described by nonzero values of this field, irrespective of the value of this field.</p></div><h4 id="fieldset_0-3_0">SVEver, bits [3:0]</h4><div class="field">
+      <p>Indicates support for SVE instructions when 
+one or more of FEAT_SME and 
+FEAT_SVE is implemented. Defined values are:</p>
+    <table class="valuetable"><tr><th>SVEver</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The SVE instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>As <span class="binarynumber">0b0000</span>, and adds the mandatory SVE2 instructions.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As <span class="binarynumber">0b0001</span>, and adds the mandatory SVE2.1 instructions.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>From Armv9, if this register is present, the value <span class="binarynumber">0b0000</span> is not permitted.</p>
+<p>FEAT_SVE2 implements the functionality identified by <span class="binarynumber">0b0001</span> when the PE is not in Streaming SVE mode.</p>
+<p>FEAT_SME implements the functionality identified by <span class="binarynumber">0b0001</span> when the PE is in Streaming SVE mode.</p>
+<p>FEAT_SME2p1 implements the functionality identified by <span class="binarynumber">0b0010</span> when the PE is in Streaming SVE mode.</p>
+<p>FEAT_SVE2p1 implements the functionality identified by <span class="binarynumber">0b0010</span> when the PE is not in Streaming SVE mode.</p>
+<p>From Armv9.4, the value <span class="binarynumber">0b0001</span> is not permitted.</p></div><div class="access_mechanisms"><h2>Accessing ID_AA64ZFR0_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64ZFR0_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0100</td><td>0b100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_AA64ZFR0_EL1) || boolean IMPLEMENTATION_DEFINED "ID_AA64ZFR0_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64ZFR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64ZFR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64ZFR0_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

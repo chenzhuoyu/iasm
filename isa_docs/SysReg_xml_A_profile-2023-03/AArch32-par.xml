@@ -1,0 +1,1376 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PAR</reg_short_name>
+        
+        <reg_long_name>Physical Address Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-par_el1.xml">PAR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Returns the output address (OA) from an Address translation instruction that executed successfully, or fault information if the instruction did not execute successfully.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Address translation instructions</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>PAR is a 64-bit register that can also be accessed as a 32-bit value. If it is accessed as a 32-bit register, accesses read and write bits[31:0] and do not modify bits[63:32].</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>The Configurations section specifies the cases where each PAR format is used.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>PAR is accessed as a 32-bit value:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When the PE is not in Hyp mode and is using the Short-descriptor translation table format.</content>
+</listitem><listitem><content>When the PE is in Hyp mode and executes an <register_link state="AArch32" id="AArch32-ats12nsopr.xml">ATS12NSOPR</register_link>, <register_link state="AArch32" id="AArch32-ats12nsopw.xml">ATS12NSOPW</register_link>, <register_link state="AArch32" id="AArch32-ats12nsour.xml">ATS12NSOUR</register_link>, or <register_link state="AArch32" id="AArch32-ats12nsouw.xml">ATS12NSOUW</register_link> instruction and the value of <register_link state="AArch32" id="AArch32-hcr.xml">HCR</register_link>.VM is 0 and the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.EAE is 0.</content>
+</listitem></list>
+
+      </configuration_text>
+      <configuration_text>
+        <para>In these cases, PAR[63:32] is <arm-defined-word>RES0</arm-defined-word>.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Otherwise, the PAR is accessed as a 64-bit value, if any of the following is true:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When using the Long-descriptor translation table format.</content>
+</listitem><listitem><content>If the stage 1 address translation is disabled and <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.EAE is set to 1.</content>
+</listitem><listitem><content>In an implementation that includes EL2, for the result of an ATS1Cxx instruction performed from Hyp mode.</content>
+</listitem></list>
+
+      </configuration_text>
+      <configuration_text>
+        <para>For PL1&amp;0 stage 1 translations, <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.EAE selects the translation table format.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PAR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When the instruction returned a 32-bit value to the PAR, PAR.F==0</fields_condition>
+  <fields_instance>the instruction returned a 32-bit value to the PAR, PAR.F==0</fields_instance>
+  <text_before_fields><para>This section describes the register value returned by the successful execution of an Address translation instruction. Software might subsequently write a different value to the register, and that write does not affect the operation of the PE.</para>
+<para>On a successful conversion, the PAR can return a value that indicates the resulting attributes, rather than the values that appear in the Translation table descriptors. More precisely:</para>
+<list type="unordered">
+<listitem><content>Memory attribute fields are permitted to report the resulting attributes, as determined by any permitted implementation choices and any applicable configuration bits, instead of reporting the values that appear in the Translation table descriptors. This applies to the NOS, SH, Inner, and Outer fields.</content>
+</listitem><listitem><content>See the NS bit description for constraints on the value it returns.</content>
+</listitem></list></text_before_fields>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PA</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>31:12</rel_range>
+    <field_description order="before">
+      <para>Output address. The output address (OA) corresponding to the supplied input address. This field returns address bits[31:12].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>When updating the PAR with the result of the translation operation, this bit is set as follows:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Short-descriptor translation table format used. This means the PAR returned a 32-bit value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NOS</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Not Outer Shareable. When the returned value of PAR.SH is 1, indicates the Shareability attribute for the physical memory region:</para>
+    </field_description>
+    <field_description order="after"><para>When the returned value of PAR.SH is 0 the value returned to this field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+<para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Memory region is Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Memory region is Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before"><para>Non-secure. The NS attribute for a translation table entry from a Secure translation regime.</para>
+<para>For a result from a Secure translation regime, this bit reflects the Security state of the physical address space of the translation. This means it reflects the effect of the NSTable bits of earlier levels of the translation table walk if those NSTable bits have an effect on the translation.</para>
+<para>For a result from a Non-secure translation regime, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Shareability. Indicates whether the physical memory region is Non-shareable:</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Memory is Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Memory is shareable, and PAR.NOS indicates whether the region is Outer Shareable or Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Inner[2:0]</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>6:4</rel_range>
+    <field_description order="before">
+      <para>Inner cacheability attribute for the region. Permitted values are:</para>
+    </field_description>
+    <field_description order="after"><para>The values <binarynumber>0b010</binarynumber> and <binarynumber>0b100</binarynumber> are reserved.</para>
+<para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Device-nGnRE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Write-Back, Write-Allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Write-Through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Write-Back, no Write-Allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Outer[1:0]</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>3:2</rel_range>
+    <field_description order="before">
+      <para>Outer cacheability attribute for the region. Permitted values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Write-Back, Write-Allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Write-Through, no Write-Allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Write-Back, no Write-Allocate.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SS</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Supersection. Used to indicate if the result is a Supersection:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Result is not a Supersection. PAR[31:12] contains OA[31:12].</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Result is a Supersection, and:</para>
+<list type="unordered">
+<listitem><content>PAR[31:24] contains OA[31:24].</content>
+</listitem><listitem><content>PAR[23:16] contains OA[39:32].</content>
+</listitem><listitem><content>PAR[15:12] contains <binarynumber>0b0000</binarynumber>.</content>
+</listitem></list>
+<para>If an implementation supports less than 40 bits of physical address, the bits in the PAR field that correspond to physical address bits that are not implemented are <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates whether the instruction performed a successful address translation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Address translation completed successfully.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When the instruction returned a 32-bit value to the PAR, PAR.F==1</fields_condition>
+  <fields_instance>the instruction returned a 32-bit value to the PAR, PAR.F==1</fields_instance>
+  <text_before_fields>
+    <para>This section describes the register value returned by a fault on the execution of an Address translation instruction. Software might subsequently write a different value to the register, and that write does not affect the operation of the PE.</para>
+  </text_before_fields>
+  <field id="fieldset_1-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>When updating the PAR with the result of the translation operation, this bit is set as follows:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Short-descriptor translation table format used. This means the PAR returned a 32-bit value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-10_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>10:7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FS[5]</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>Fault status bits, External abort type. Provides an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> classification of an External abort. Values are as in the <register_link state="AArch32" id="AArch32-dfsr.xml">DFSR</register_link>.ExT field when using the Short-descriptor translation table format.</para>
+<para>In an implementation that does not provide any classification of External aborts, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>For aborts other than External aborts this bit always returns 0.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-5_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FS[4:0]</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>5:1</rel_range>
+    <field_description order="before">
+      <para>Fault status bits. Values are as in the <register_link state="AArch32" id="AArch32-dfsr.xml">DFSR</register_link>.FS field when using the Short-descriptor translation table format.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00001</field_value>
+        <field_value_description>
+          <para>Alignment fault.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00011</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00100</field_value>
+        <field_value_description>
+          <para>Fault on instruction cache maintenance.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00101</field_value>
+        <field_value_description>
+          <para>Translation fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00110</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b00111</field_value>
+        <field_value_description>
+          <para>Translation fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01001</field_value>
+        <field_value_description>
+          <para>Domain fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01011</field_value>
+        <field_value_description>
+          <para>Domain fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01100</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, on translation table walk, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01101</field_value>
+        <field_value_description>
+          <para>Permission fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01110</field_value>
+        <field_value_description>
+          <para>Synchronous External abort, on translation table walk, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01111</field_value>
+        <field_value_description>
+          <para>Permission fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10000</field_value>
+        <field_value_description>
+          <para>TLB conflict abort.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11001</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access, not on translation table walk.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11100</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on translation table walk, level 1.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11110</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on translation table walk, level 2.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates whether the instruction performed a successful address translation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Address translation aborted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_2" length="64">
+  <fields_condition>When the instruction returned a 64-bit value to the PAR, PAR.F==0</fields_condition>
+  <fields_instance>the instruction returned a 64-bit value to the PAR, PAR.F==0</fields_instance>
+  <text_before_fields><para>This section describes the register value returned by the successful execution of an Address translation instruction. Software might subsequently write a different value to the register, and that write does not affect the operation of the PE.</para>
+<para>On a successful conversion, the PAR can return a value that indicates the resulting attributes, rather than the values that appear in the Translation table descriptors. More precisely:</para>
+<list type="unordered">
+<listitem><content>Memory attribute fields are permitted to report the resulting attributes, as determined by any permitted implementation choices and any applicable configuration bits, instead of reporting the values that appear in the Translation table descriptors. This applies to the ATTR and SH fields.</content>
+</listitem><listitem><content>See the NS bit description for constraints on the value it returns.</content>
+</listitem></list></text_before_fields>
+  <field id="fieldset_2-63_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ATTR</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>63:56</rel_range>
+    <field_description order="before"><para>Memory attributes for the returned output address. This field uses the same encoding as the Attr&lt;n&gt; fields in <register_link state="AArch32" id="AArch32-mair0.xml">MAIR0</register_link> and <register_link state="AArch32" id="AArch32-mair1.xml">MAIR1</register_link>.</para>
+<para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-55_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>55:40</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-39_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PA</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>39:12</rel_range>
+    <field_description order="before">
+      <para>Output address. The output address (OA) corresponding to the supplied input address. This field returns address bits[39:12].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>When updating the PAR with the result of the translation operation, this bit is set as follows:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Long-descriptor translation table format used. This means the PAR returned a 64-bit value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before"><para>Non-secure. The NS attribute for a translation table entry from a Secure translation regime.</para>
+<para>For a result from a Secure translation regime, this bit reflects the Security state of the physical address space of the translation. This means it reflects the effect of the NSTable bits of earlier levels of the translation table walk if those NSTable bits have an effect on the translation.</para>
+<para>For a result from a Non-secure translation regime, this bit is <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-8_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>8:7</rel_range>
+    <field_description order="before">
+      <para>Shareability attribute, for the returned output address. Permitted values are:</para>
+    </field_description>
+    <field_description order="after"><para>The value <binarynumber>0b01</binarynumber> is reserved.</para>
+<note><para>This field returns the value <binarynumber>0b10</binarynumber> for:</para><list type="unordered"><listitem><content>Any type of Device memory.</content></listitem><listitem><content>Normal memory with both Inner Non-cacheable and Outer Non-cacheable attributes.</content></listitem></list></note><para>The value returned in this field can be the resulting attribute, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_2-6_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>6:1</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_2-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates whether the instruction performed a successful address translation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Address translation completed successfully.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_3" length="64">
+  <fields_condition>When the instruction returned a 64-bit value to the PAR, PAR.F==1</fields_condition>
+  <fields_instance>the instruction returned a 64-bit value to the PAR, PAR.F==1</fields_instance>
+  <text_before_fields>
+    <para>This section describes the register value returned by a fault on the execution of an Address translation instruction. Software might subsequently write a different value to the register, and that write does not affect the operation of the PE.</para>
+  </text_before_fields>
+  <field id="fieldset_3-63_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>63:56</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-51_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>51:48</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-47_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>47:12</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_3-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LPAE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>When updating the PAR with the result of the translation operation, this bit is set as follows:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Long-descriptor translation table format used. This means the PAR returned a 64-bit value.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_3-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FSTAGE</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Indicates the translation stage at which the translation aborted:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Translation aborted because of a fault in the stage 1 translation.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Translation aborted because of a fault in the stage 2 translation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>S2WLK</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>If this bit is set to 1, it indicates the translation aborted because of a stage 2 fault during a stage 1 translation table walk.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_3-6_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FST</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>6:1</rel_range>
+    <field_description order="before">
+      <para>Fault status field. Values are as in the <register_link state="AArch32" id="AArch32-dfsr.xml">DFSR</register_link>.STATUS and <register_link state="AArch32" id="AArch32-ifsr.xml">IFSR</register_link>.STATUS fields when using the Long-descriptor translation table format.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000000</field_value>
+        <field_value_description>
+          <para>Address size fault in translation table base register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000001</field_value>
+        <field_value_description>
+          <para>Address size fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000010</field_value>
+        <field_value_description>
+          <para>Address size fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000011</field_value>
+        <field_value_description>
+          <para>Address size fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000101</field_value>
+        <field_value_description>
+          <para>Translation fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000110</field_value>
+        <field_value_description>
+          <para>Translation fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000111</field_value>
+        <field_value_description>
+          <para>Translation fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001001</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001010</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001011</field_value>
+        <field_value_description>
+          <para>Access flag fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001101</field_value>
+        <field_value_description>
+          <para>Permission fault, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001110</field_value>
+        <field_value_description>
+          <para>Permission fault, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001111</field_value>
+        <field_value_description>
+          <para>Permission fault, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010101</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010110</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010111</field_value>
+        <field_value_description>
+          <para>Synchronous External abort on translation table walk, level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011101</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 1.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011110</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 2.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011111</field_value>
+        <field_value_description>
+          <para>Synchronous parity or ECC error on memory access on translation table walk, level 3.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RAS is not implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110000</field_value>
+        <field_value_description>
+          <para>TLB conflict abort.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_3-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates whether the instruction performed a successful address translation.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Address translation aborted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When the instruction returned a 32-bit value to the PAR, PAR.F==0</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_12" msb="31" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_4" msb="6" lsb="4"/>
+  <fieldat id="fieldset_0-3_2" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When the instruction returned a 32-bit value to the PAR, PAR.F==1</fields_condition>
+  <fieldat id="fieldset_1-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_1-31_16" msb="31" lsb="16"/>
+  <fieldat id="fieldset_1-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_1-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_1-10_7" msb="10" lsb="7"/>
+  <fieldat id="fieldset_1-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_1-5_1" msb="5" lsb="1"/>
+  <fieldat id="fieldset_1-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When the instruction returned a 64-bit value to the PAR, PAR.F==0</fields_condition>
+  <fieldat id="fieldset_2-63_56" msb="63" lsb="56"/>
+  <fieldat id="fieldset_2-55_40" msb="55" lsb="40"/>
+  <fieldat id="fieldset_2-39_12" msb="39" lsb="12"/>
+  <fieldat id="fieldset_2-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_2-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_2-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_2-8_7" msb="8" lsb="7"/>
+  <fieldat id="fieldset_2-6_1" msb="6" lsb="1"/>
+  <fieldat id="fieldset_2-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When the instruction returned a 64-bit value to the PAR, PAR.F==1</fields_condition>
+  <fieldat id="fieldset_3-63_56" msb="63" lsb="56"/>
+  <fieldat id="fieldset_3-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_3-51_48" msb="51" lsb="48"/>
+  <fieldat id="fieldset_3-47_12" msb="47" lsb="12"/>
+  <fieldat id="fieldset_3-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_3-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_3-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_3-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_3-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_3-6_1" msb="6" lsb="1"/>
+  <fieldat id="fieldset_3-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0111"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T7 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T7 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = PAR_NS&lt;31:0&gt;;
+    else
+        R[t] = PAR&lt;31:0&gt;;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = PAR_NS&lt;31:0&gt;;
+    else
+        R[t] = PAR&lt;31:0&gt;;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        R[t] = PAR_S&lt;31:0&gt;;
+    else
+        R[t] = PAR_NS&lt;31:0&gt;;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0111"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="opc2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T7 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T7 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        PAR_NS&lt;31:0&gt; = R[t];
+    else
+        PAR&lt;31:0&gt; = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        PAR_NS&lt;31:0&gt; = R[t];
+    else
+        PAR&lt;31:0&gt; = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        PAR_S&lt;31:0&gt; = R[t];
+    else
+        PAR_NS&lt;31:0&gt; = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MRRC PAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="opc1" v="0b0000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T7 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T7 == '1' then
+        AArch32.TakeHypTrapException(0x04);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        (R[t2], R[t]) = (PAR_NS&lt;63:32&gt;, PAR_NS&lt;31:0&gt;);
+    else
+        (R[t2], R[t]) = (PAR&lt;63:32&gt;, PAR&lt;31:0&gt;);
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        (R[t2], R[t]) = (PAR_NS&lt;63:32&gt;, PAR_NS&lt;31:0&gt;);
+    else
+        (R[t2], R[t]) = (PAR&lt;63:32&gt;, PAR&lt;31:0&gt;);
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        (R[t2], R[t]) = (PAR_S&lt;63:32&gt;, PAR_S&lt;31:0&gt;);
+    else
+        (R[t2], R[t]) = (PAR_NS&lt;63:32&gt;, PAR_NS&lt;31:0&gt;);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCRR PAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCRR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;Rt2&gt;, &lt;CRm&gt;</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="CRm" v="0b0111"/>
+                
+                <enc n="opc1" v="0b0000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCRR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T7 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x04);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T7 == '1' then
+        AArch32.TakeHypTrapException(0x04);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        PAR_NS = R[t2]:R[t];
+    else
+        PAR = R[t2]:R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        PAR_NS = R[t2]:R[t];
+    else
+        PAR = R[t2]:R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        PAR_S = R[t2]:R[t];
+    else
+        PAR_NS = R[t2]:R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

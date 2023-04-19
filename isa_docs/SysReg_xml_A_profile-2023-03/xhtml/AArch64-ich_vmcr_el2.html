@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ICH_VMCR_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ICH_VMCR_EL2, Interrupt Controller Virtual Machine Control Register</h1><p>The ICH_VMCR_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Enables the hypervisor to save and restore the virtual machine view of the GIC state.</p>
+      <h2>Configuration</h2><p>AArch64 System register ICH_VMCR_EL2 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-ich_vmcr.html">ICH_VMCR[31:0]</a>.</p><p>This register is present only when FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented). Otherwise, direct accesses to ICH_VMCR_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>ICH_VMCR_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">VPMR</a></td><td class="lr" colspan="3"><a href="#fieldset_0-23_21">VBPR0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-20_18">VBPR1</a></td><td class="lr" colspan="8"><a href="#fieldset_0-17_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">VEOIM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-8_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">VCBPR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">VFIQEn</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">VAckCtl</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">VENG1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">VENG0</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_24">VPMR, bits [31:24]</h4><div class="field"><p>Virtual Priority Mask. The priority mask level for the virtual CPU interface. If the priority of a pending virtual interrupt is higher than the value indicated by this field, the interface signals the virtual interrupt to the PE.</p>
+<p>This field is an alias of <a href="AArch64-icv_pmr_el1.html">ICV_PMR_EL1</a>.Priority.</p></div><h4 id="fieldset_0-23_21">VBPR0, bits [23:21]</h4><div class="field"><p>Virtual Binary Point Register, Group 0. Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 0 interrupt preemption, and also determines Group 1 interrupt preemption if ICH_VMCR_EL2.VCBPR == 1.</p>
+<p>This field is an alias of <a href="AArch64-icv_bpr0_el1.html">ICV_BPR0_EL1</a>.BinaryPoint.</p>
+<p>The minimum value of this field is determined by <a href="AArch64-ich_vtr_el2.html">ICH_VTR_EL2</a>.PREbits. An attempt to program the binary point field to a value less than the minimum value sets the field to the minimum value.</p></div><h4 id="fieldset_0-20_18">VBPR1, bits [20:18]</h4><div class="field"><p>Virtual Binary Point Register, Group 1. Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 1 interrupt preemption if <a href="AArch64-ich_vmcr_el2.html">ICH_VMCR_EL2</a>.VCBPR == 0.</p>
+<p>This field is an alias of <a href="AArch64-icv_bpr1_el1.html">ICV_BPR1_EL1</a>.BinaryPoint.</p>
+<p>This field is always accessible to EL2 accesses, regardless of the setting of the ICH_VMCR_EL2.VCBPR field.</p>
+<p>For Non-secure writes, the minimum value of this field is the minimum value of ICH_VMCR_EL2.VBPR0 plus one.</p>
+<p>For Secure writes, the minimum value of this field is the minimum value of ICH_VMCR_EL2.VBPR0.</p>
+<p>An attempt to program the binary point field to a value less than the minimum value sets the field to the minimum value.</p></div><h4 id="fieldset_0-17_10">Bits [17:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9">VEOIM, bit [9]</h4><div class="field">
+      <p>Virtual EOI mode. Controls whether a write to an End of Interrupt register also deactivates the virtual interrupt:</p>
+    <table class="valuetable"><tr><th>VEOIM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="AArch64-icv_eoir0_el1.html">ICV_EOIR0_EL1</a> and <a href="AArch64-icv_eoir1_el1.html">ICV_EOIR1_EL1</a> provide both priority drop and interrupt deactivation functionality. Accesses to <a href="AArch64-icv_dir_el1.html">ICV_DIR_EL1</a> are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="AArch64-icv_eoir0_el1.html">ICV_EOIR0_EL1</a> and <a href="AArch64-icv_eoir1_el1.html">ICV_EOIR1_EL1</a> provide priority drop functionality only. <a href="AArch64-icv_dir_el1.html">ICV_DIR_EL1</a> provides interrupt deactivation functionality.</p>
+        </td></tr></table>
+      <p>This bit is an alias of <a href="AArch64-icv_ctlr_el1.html">ICV_CTLR_EL1</a>.EOImode.</p>
+    </div><h4 id="fieldset_0-8_5">Bits [8:5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4">VCBPR, bit [4]</h4><div class="field">
+      <p>Virtual Common Binary Point Register. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>VCBPR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="AArch64-icv_bpr1_el1.html">ICV_BPR1_EL1</a> determines the preemption group for virtual Group 1 interrupts.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reads of <a href="AArch64-icv_bpr1_el1.html">ICV_BPR1_EL1</a> return <a href="AArch64-icv_bpr0_el1.html">ICV_BPR0_EL1</a> plus one, saturated to <span class="binarynumber">0b111</span>. Writes to <a href="AArch64-icv_bpr1_el1.html">ICV_BPR1_EL1</a> are ignored.</p>
+        </td></tr></table>
+      <p>This field is an alias of <a href="AArch64-icv_ctlr_el1.html">ICV_CTLR_EL1</a>.CBPR.</p>
+    </div><h4 id="fieldset_0-3_3">VFIQEn, bit [3]</h4><div class="field">
+      <p>Virtual FIQ enable. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>VFIQEn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 virtual interrupts are presented as virtual IRQs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 virtual interrupts are presented as virtual FIQs.</p>
+        </td></tr></table><p>This bit is an alias of <a href="ext-gicv_ctlr.html">GICV_CTLR</a>.FIQEn.</p>
+<p>In implementations where the Non-secure copy of <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a>.SRE is always 1, this bit is <span class="arm-defined-word">RES1</span>.</p></div><h4 id="fieldset_0-2_2">VAckCtl, bit [2]</h4><div class="field">
+      <p>Virtual AckCtl. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>VAckCtl</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If the highest priority pending interrupt is Group 1, a read of <a href="ext-gicv_iar.html">GICV_IAR</a> or <a href="ext-gicv_hppir.html">GICV_HPPIR</a> returns an INTID of 1022.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>If the highest priority pending interrupt is Group 1, a read of <a href="ext-gicv_iar.html">GICV_IAR</a> or <a href="ext-gicv_hppir.html">GICV_HPPIR</a> returns the INTID of the corresponding interrupt.</p>
+        </td></tr></table><p>This bit is an alias of <a href="ext-gicv_ctlr.html">GICV_CTLR</a>.AckCtl.</p>
+<p>This field is supported for backwards compatibility with GICv2. Arm deprecates the use of this field.</p>
+<p>In implementations where the Non-secure copy of <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a>.SRE is always 1, this bit is <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-1_1">VENG1, bit [1]</h4><div class="field">
+      <p>Virtual Group 1 interrupt enable. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>VENG1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Virtual Group 1 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Virtual Group 1 interrupts are enabled.</p>
+        </td></tr></table>
+      <p>This bit is an alias of <a href="AArch64-icv_igrpen1_el1.html">ICV_IGRPEN1_EL1</a>.Enable.</p>
+    </div><h4 id="fieldset_0-0_0">VENG0, bit [0]</h4><div class="field">
+      <p>Virtual Group 0 interrupt enable. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>VENG0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Virtual Group 0 interrupts are disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Virtual Group 0 interrupts are enabled.</p>
+        </td></tr></table>
+      <p>This bit is an alias of <a href="AArch64-icv_igrpen0_el1.html">ICV_IGRPEN0_EL1</a>.Enable.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ICH_VMCR_EL2</h2>
+        <p>When EL2 is using System register access, EL1 using either System register or memory-mapped access must be supported.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ICH_VMCR_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b1011</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x4C8];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_SRE_EL2.SRE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ICH_VMCR_EL2;
+elsif PSTATE.EL == EL3 then
+    if ICC_SRE_EL3.SRE == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ICH_VMCR_EL2;
+                </p><h4 class="assembler">MSR ICH_VMCR_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b1011</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x4C8] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_SRE_EL2.SRE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        ICH_VMCR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if ICC_SRE_EL3.SRE == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        ICH_VMCR_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

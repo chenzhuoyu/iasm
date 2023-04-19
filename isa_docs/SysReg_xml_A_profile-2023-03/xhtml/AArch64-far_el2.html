@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>FAR_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">FAR_EL2, Fault Address Register (EL2)</h1><p>The FAR_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the faulting Virtual Address for all synchronous Instruction Abort exceptions, Data Abort exceptions, PC alignment fault exceptions and Watchpoint exceptions that are taken to EL2.</p>
+      <h2>Configuration</h2><p>AArch64 System register FAR_EL2 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-hdfar.html">HDFAR[31:0]</a>.</p><p>AArch64 System register FAR_EL2 bits [63:32] are architecturally mapped to AArch32 System register <a href="AArch32-hifar.html">HIFAR[31:0]</a>.</p><p>AArch64 System register FAR_EL2 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-dfar.html">DFAR[31:0]</a> (DFAR_S) when EL2 is implemented.</p><p>AArch64 System register FAR_EL2 bits [63:32] are architecturally mapped to AArch32 System register <a href="AArch32-ifar.html">IFAR[31:0]</a> (IFAR_S) when EL2 is implemented.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>FAR_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">Faulting Virtual Address for synchronous exceptions taken to EL2</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">Faulting Virtual Address for synchronous exceptions taken to EL2</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">Bits [63:0]</h4><div class="field"><p>Faulting Virtual Address for synchronous exceptions taken to EL2. Exceptions that set the FAR_EL2 are Instruction Aborts (EC <span class="hexnumber">0x20</span> or <span class="hexnumber">0x21</span>), Data Aborts (EC <span class="hexnumber">0x24</span> or <span class="hexnumber">0x25</span>),  PC alignment faults (EC <span class="hexnumber">0x22</span>), and Watchpoints (EC <span class="hexnumber">0x34</span> or <span class="hexnumber">0x35</span>). <a href="AArch64-esr_el2.html">ESR_EL2</a>.EC holds the EC value for the exception.</p>
+<p>For a synchronous External abort, if the VA that generated the abort was from an address range for which <span class="xref">TCR_ELx</span>.TBI{&lt;0|1&gt;} == 1 for the translation regime in use when the abort was generated, then the top eight bits of FAR_EL2 are <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>For a synchronous External abort other than a synchronous External abort on a translation table walk, this field is valid only if <a href="AArch64-esr_el2.html">ESR_EL2</a>.FnV is 0, and FAR_EL2 is <span class="arm-defined-word">UNKNOWN</span> if <a href="AArch64-esr_el2.html">ESR_EL2</a>.FnV is 1.</p>
+<p>If a memory fault that sets FAR_EL2, other than a Tag Check Fault, is generated from a data cache maintenance or other DC instruction, this field holds the address specified in the register argument of the instruction.</p>
+<p>On an exception due to a Tag Check Fault caused by a data cache maintenance or other DC instruction, the address held in FAR_EL2 is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> as one of the following:</p>
+<ul>
+<li>The lowest address that gave rise to the fault.
+</li><li>The address specified in the register argument of the instruction as generated by MMU faults caused by <a href="AArch64-dc-zva.html">DC ZVA</a>.
+</li></ul>
+<p>If the exception that updates FAR_EL2 is taken from an Exception level using AArch32, the top 32 bits are all zero, unless both of the following apply, in which case the top 32 bits of FAR_ELx are <span class="hexnumber">0x00000001</span>:</p>
+<ul>
+<li>The faulting address was generated by a load or store instruction that sequentially incremented from address <span class="hexnumber">0xFFFFFFFF</span>. Such a load or store instruction is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>.
+</li><li>The implementation treats such incrementing as setting bit[32] of the virtual address to 1.
+</li></ul>
+<p>When the PE sets <a href="AArch64-esr_el2.html">ESR_EL2</a>.{ISV,FnP} to {0,1} on taking a Data Abort exception, or sets <a href="AArch64-esr_el2.html">ESR_EL2</a>.{FnV,FnP} to {0,1} on taking a Watchpoint exception, the PE sets FAR_EL2 to any address within the naturally-aligned fault granule that contains the virtual address of the memory access that generated the Data Abort exception or Watchpoint exception.</p>
+<p>The naturally-aligned fault granule is one of:</p>
+<ul>
+<li>When ESR_EL2.DFSC is <span class="binarynumber">0b010001</span>, indicating a Synchronous Tag Check fault, it is a 16-byte tag granule.
+</li><li>When ESR_EL2.DFSC is <span class="binarynumber">0b11010x</span>, indicating an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> fault, it is an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> granule.
+</li><li>Otherwise, it is the smallest implemented translation granule.
+</li></ul>
+<p>When <span class="xref">FEAT_MOPS</span> is implemented, the value in FAR_EL2 on a synchronous exception from any of the Memory Copy and Memory Set instructions represents the first element that has not been copied or set, and is determined as follows:</p>
+<ul>
+<li>
+<p>For a Data Abort generated by the MMU, the value is within the address range of the relevant translation granule, aligned to the size of the relevant translation granule of the address that generated the Data Abort. Bits[(n-1):0] of the value are <span class="arm-defined-word">UNKNOWN</span>, where 2<sup>n</sup> is the relevant translation granule size in bytes. For the purpose of calculating the relevant translation granule, if the MMU is disabled for a stage of translation, then the current translation granule size is equal to 2<sup>64</sup> for stage 1, and the PARange for stage 2. The relevant translation granule is:</p>
+<ul>
+<li>For MMU faults generated at stage 1, the current stage 1 translation granule.
+</li><li>For MMU faults generated at stage 2, the smaller of the current stage 1 translation granule and the current stage 2 translation granule.
+</li><li>If FEAT_RME is implemented, for a synchronous data abort generated as the result of a GPF, the smallest of  the current stage 1 translation granule, the current stage 2 translation granule and the configured granule size in <a href="AArch64-gpccr_el3.html">GPCCR_EL3</a>.PGS.
+</li></ul>
+
+</li><li>
+<p>For a Data Abort generated by a Tag Check failure, the value is the lowest address that failed the Tag Check within the block size of the load or store.</p>
+
+</li><li>
+<p>For a Watchpoint exception, the value is an address range of the size defined by the <a href="AArch64-dczid_el0.html">DCZID_EL0</a>.BS field. This address does not need to be the element with a watchpoint, but can be some earlier element.</p>
+
+</li><li>
+<p>Otherwise, the value is the lowest address in the block size of the load or store.</p>
+
+</li></ul>
+<p>For a Data Abort exception or Watchpoint exception, if address tagging is enabled for the address accessed by the data access that caused the exception, then this field includes the tag. For more information about address tagging, see <span class="xref">'Address tagging'</span>.</p>
+<p>When FEAT_MTE_TAGGED_FAR is not implemented, on a synchronous Tag Check Fault abort, bits[63:60] are <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>Execution at EL1 or EL0 makes FAR_EL2 become <span class="arm-defined-word">UNKNOWN</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>The address held in this field is an address accessed by the instruction fetch or data access that caused the exception that actually gave rise to the instruction or data abort. It is the lower address that gave rise to the fault that is reported. Where different faults from different addresses arise from the same instruction, such as for an instruction that loads or stores an unaligned address that crosses a page boundary, the architecture does not prioritize which fault is reported.</p></div><p>For all other exceptions taken to EL2, FAR_EL2 is <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>FAR_EL2 is made <span class="arm-defined-word">UNKNOWN</span> on an exception return from EL2.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing FAR_EL2</h2>
+        <p>When <a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H is 1, without explicit synchronization, access from EL2 using the mnemonic FAR_EL2 or FAR_EL1 are not guaranteed to be ordered with respect to accesses using the other mnemonic.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, FAR_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0110</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = FAR_EL1;
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = FAR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = FAR_EL2;
+                </p><h4 class="assembler">MSR FAR_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0110</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        FAR_EL1 = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    FAR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    FAR_EL2 = X[t, 64];
+                </p><h4 class="assembler"><span class="condition">
+When FEAT_VHE is implemented
+            </span><br/>MRS &lt;Xt&gt;, FAR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0110</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.FAR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        X[t, 64] = NVMem[0x220];
+    else
+        X[t, 64] = FAR_EL1;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        X[t, 64] = FAR_EL2;
+    else
+        X[t, 64] = FAR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = FAR_EL1;
+                </p><h4 class="assembler"><span class="condition">
+When FEAT_VHE is implemented
+            </span><br/>MSR FAR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0110</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.FAR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        NVMem[0x220] = X[t, 64];
+    else
+        FAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        FAR_EL2 = X[t, 64];
+    else
+        FAR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    FAR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

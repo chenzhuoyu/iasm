@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64ISAR0_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64ISAR0_EL1, AArch64 Instruction Set Attribute Register 0</h1><p>The ID_AA64ISAR0_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the instructions implemented in AArch64 state.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers, see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>There are no configuration notes.</p><h2>Attributes</h2>
+        <p>ID_AA64ISAR0_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_60">RNDR</a></td><td class="lr" colspan="4"><a href="#fieldset_0-59_56">TLB</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">TS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">FHM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">DP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">SM4</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">SM3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">SHA3</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">RDM</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">TME</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">Atomic</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">CRC32</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">SHA2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">SHA1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">AES</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_60">RNDR, bits [63:60]</h4><div class="field"><p>Indicates support for Random Number instructions in AArch64 state.</p>
+<p>When FEAT_RNG_TRAP is implemented, the value returned by a direct read of ID_AA64ISAR0_EL1.RNDR is further controlled by the value of <a href="AArch64-scr_el3.html">SCR_EL3</a>.TRNDR.</p>
+<p>Defined values are:</p><table class="valuetable"><tr><th>RNDR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Random Number instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p><a href="AArch64-rndr.html">RNDR</a> and <a href="AArch64-rndrrs.html">RNDRRS</a> registers are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_RNG</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.5, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-59_56">TLB, bits [59:56]</h4><div class="field">
+      <p>Indicates support for Outer Shareable and TLB range maintenance instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>TLB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Outer Shareable and TLB range maintenance instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Outer Shareable TLB maintenance instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Outer Shareable and TLB range maintenance instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_TLBIOS</span> implements the functionality identified by the values <span class="binarynumber">0b0001</span> and <span class="binarynumber">0b0010</span>.</p>
+<p><span class="xref">FEAT_TLBIRANGE</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>From Armv8.4, the only permitted value is <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-55_52">TS, bits [55:52]</h4><div class="field">
+      <p>Indicates support for flag manipulation instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>TS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No flag manipulation instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>CFINV, RMIF, SETF16, and SETF8 instructions are implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>CFINV, RMIF, SETF16, SETF8, AXFLAG, and XAFLAG instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_FlagM</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_FlagM2</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>In Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>In Armv8.4, the only permitted value is <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.5, the only permitted value is <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-51_48">FHM, bits [51:48]</h4><div class="field">
+      <p>Indicates support for FMLAL and FMLSL instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>FHM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>FMLAL and FMLSL instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>FMLAL and FMLSL instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_FHM</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-47_44">DP, bits [47:44]</h4><div class="field">
+      <p>Indicates support for Dot Product instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>DP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Dot Product instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>UDOT and SDOT instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_DotProd</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-43_40">SM4, bits [43:40]</h4><div class="field">
+      <p>Indicates support for SM4 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>SM4</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No SM4 instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SM4E and SM4EKEY instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <span class="xref">FEAT_SM4</span> is not implemented, the value <span class="binarynumber">0b0001</span> is reserved.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>This field must have the same value as ID_AA64ISAR0_EL1.SM3.</p></div><h4 id="fieldset_0-39_36">SM3, bits [39:36]</h4><div class="field">
+      <p>Indicates support for SM3 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>SM3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No SM3 instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SM3SS1, SM3TT1A, SM3TT1B, SM3TT2A, SM3TT2B, SM3PARTW1, and SM3PARTW2 instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <span class="xref">FEAT_SM3</span> is not implemented, the value <span class="binarynumber">0b0001</span> is reserved.</p>
+<p><span class="xref">FEAT_SM3</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>This field must have the same value as ID_AA64ISAR0_EL1.SM4.</p></div><h4 id="fieldset_0-35_32">SHA3, bits [35:32]</h4><div class="field">
+      <p>Indicates support for SHA3 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>SHA3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No SHA3 instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EOR3, RAX1, XAR, and BCAX instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>If <span class="xref">FEAT_SHA3</span> is not implemented, the value <span class="binarynumber">0b0001</span> is reserved.</p>
+<p><span class="xref">FEAT_SHA3</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>If the value of ID_AA64ISAR0_EL1.SHA1 is <span class="binarynumber">0b0000</span>, this field must have the value <span class="binarynumber">0b0000</span>.</p>
+<p>If the value of this field is <span class="binarynumber">0b0001</span>, ID_AA64ISAR0_EL1.SHA2 must have the value <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-31_28">RDM, bits [31:28]</h4><div class="field">
+      <p>Indicates support for SQRDMLAH and SQRDMLSH instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>RDM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No RDMA instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SQRDMLAH and SQRDMLSH instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_RDM</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.1, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-27_24">TME, bits [27:24]</h4><div class="field">
+      <p>Indicates support for TME instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>TME</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>TME instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>TCANCEL, TCOMMIT, TSTART, and TTEST instructions are implemented.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    <p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>PSTATE.EL IN {EL2, EL1}</li><li>SCR_EL3.TME == 0</li></ul></li><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>PSTATE.EL == EL1</li><li>EL2Enabled()</li><li>HCR_EL2.TME == 0</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><h4 id="fieldset_0-23_20">Atomic, bits [23:20]</h4><div class="field">
+      <p>Indicates support for Atomic instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>Atomic</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Atomic instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>LDADD, LDCLR, LDEOR, LDSET, LDSMAX, LDSMIN, LDUMAX, LDUMIN, CAS, CASP, and SWP instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>As for <span class="binarynumber">0b0010</span>, plus 128-bit instructions LDCLRP, LDSETP and SWPP.</p>
+        </td><td>When FEAT_LSE128 is implemented</td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_LSE</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>FEAT_LSE128 implements the functionality identified by the value <span class="binarynumber">0b0011</span>.</p>
+<p>From Armv8.1, the value <span class="binarynumber">0b0000</span> is not permitted.</p></div><h4 id="fieldset_0-19_16">CRC32, bits [19:16]</h4><div class="field">
+      <p>Indicates support for CRC32 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>CRC32</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>CRC32 instructions are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>CRC32B, CRC32H, CRC32W, CRC32X, CRC32CB, CRC32CH, CRC32CW, and CRC32CX instructions are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_CRC32</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>In Armv8.0, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.1, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-15_12">SHA2, bits [15:12]</h4><div class="field">
+      <p>Indicates support for SHA2 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>SHA2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No SHA2 instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Implements instructions: SHA256H, SHA256H2, SHA256SU0, and SHA256SU1.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td><p>Implements instructions:</p>
+<ul>
+<li>
+<p>SHA256H, SHA256H2, SHA256SU0, and SHA256SU1.</p>
+
+</li><li>
+<p>SHA512H, SHA512H2, SHA512SU0, and SHA512SU1.</p>
+
+</li></ul></td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SHA256</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_SHA512</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>In Armv8, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.2, the permitted values are <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0001</span>, and <span class="binarynumber">0b0010</span>.</p>
+<p>If the value of ID_AA64ISAR0_EL1.SHA1 is <span class="binarynumber">0b0000</span>, this field must have the value <span class="binarynumber">0b0000</span>.</p>
+<p>If the value of this field is <span class="binarynumber">0b0010</span>, ID_AA64ISAR0_EL1.SHA3 must have the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-11_8">SHA1, bits [11:8]</h4><div class="field">
+      <p>Indicates support for SHA1 instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>SHA1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No SHA1 instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SHA1C, SHA1P, SHA1M, SHA1H, SHA1SU0, and SHA1SU1 instructions implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SHA1</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>If the value of ID_AA64ISAR0_EL1.SHA2 is <span class="binarynumber">0b0000</span>, this field must have the value <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-7_4">AES, bits [7:4]</h4><div class="field">
+      <p>Indicates support for AES instructions in AArch64 state. Defined values are:</p>
+    <table class="valuetable"><tr><th>AES</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No AES instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>AESE, AESD, AESMC, and AESIMC instructions implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, plus PMULL and PMULL2 instructions operating on 64-bit source elements.</p>
+        </td></tr></table><p><span class="xref">FEAT_AES</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p><span class="xref">FEAT_PMULL</span> implements the functionality identified by the value <span class="binarynumber">0b0010</span>.</p>
+<p>All other values are reserved.</p>
+<p>From Armv8, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-3_0">Bits [3:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_AA64ISAR0_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64ISAR0_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0110</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64ISAR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64ISAR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64ISAR0_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

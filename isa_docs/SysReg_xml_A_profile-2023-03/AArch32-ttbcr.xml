@@ -1,0 +1,865 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TTBCR</reg_short_name>
+        
+        <reg_long_name>Translation Table Base Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+
+          <reg_reset_special_text>
+              <para>Some RW fields of this register have defined reset values. These apply only if the PE resets into an Exception level that is using AArch32. If the PE resets into EL3 using AArch32 then:</para>
+<list type="unordered">
+<listitem><content>The EAE bit resets to 0 in both the Secure and the Non-secure instances of the register.</content>
+</listitem><listitem><content>Other reset values apply only to the Secure instance of the register.</content>
+</listitem></list>
+          </reg_reset_special_text>
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-tcr_el1.xml">TCR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The control register for stage 1 of the PL1&amp;0 translation regime. Its controls include:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>Where the VA range is split between addresses translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> and addresses translated using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</content>
+</listitem><listitem><content>The translation table format used by this stage of translation.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>From Armv8.2, when the value of TTBCR.{EAE, T2E} is {1, 1}, TTBCR is used with <register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The current translation table format determines which format of the register is used.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Some RW fields of this register have defined reset values. These apply only if the PE resets into an Exception level that is using AArch32. If the PE resets into EL3 using AArch32 then:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>The EAE bit resets to 0 in both the Secure and the Non-secure instances of the register.</content>
+</listitem><listitem><content>Other reset values apply only to the Secure instance of the register.</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TTBCR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fields_instance>AArch32-TTBCR.EAE == 0</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EAE</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Extended Address Enable.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Use the VMSAv8-32 translation system with the Short-descriptor translation table format.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-30_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>30:6</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PD1</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Translation table walk disable for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Perform translation table walks using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A TLB miss on an address that is translated using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link> generates a Translation fault. No translation table walk is performed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PD0</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Translation table walk disable for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>. This bit controls whether a translation table walk is performed on a TLB miss for an address that is translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Perform translation table walks using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A TLB miss on an address that is translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> generates a Translation fault. No translation table walk is performed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>N</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before"><para>Indicate the width of the base address held in <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>. In <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>, the base address field is bits[31:14-N]. The value of N also determines:</para>
+<list type="unordered">
+<listitem><content>Whether <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> or <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link> is used as the base address for translation table walks.</content>
+</listitem><listitem><content>The size of the translation table pointed to by <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</content>
+</listitem></list>
+<para>N can take any value from 0 to 7, that is, from <binarynumber>0b000</binarynumber> to <binarynumber>0b111</binarynumber>.</para>
+<para>When N has its reset value of 0, the translation table base is compatible with Armv5 and Armv6.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fields_instance>AArch32-TTBCR.EAE==1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EAE</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Extended Address Enable.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Use the VMSAv8-32 translation system with the Long-descriptor translation table format.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IMPLEMENTATION DEFINED</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-29_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH1</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>29:28</rel_range>
+    <field_description order="before">
+      <para>Shareability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-27_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ORGN1</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>27:26</rel_range>
+    <field_description order="before">
+      <para>Outer cacheability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRGN1</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Inner cacheability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-23_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EPD1</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>23</rel_range>
+    <field_description order="before">
+      <para>Translation table walk disable for translations using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Perform translation table walks using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A TLB miss on an address that is translated using <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link> generates a Translation fault. No translation table walk is performed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A1</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>Selects whether <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> or <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link> defines the ASID.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.ASID defines the ASID.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.ASID defines the ASID.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-21_19" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>21:19</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>T1SZ</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before">
+      <para>See <xref browsertext="'Selecting between TTBR0 and TTBR1, VMSAv8-32 Long-descriptor translation table format'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="CHDFDAJE"/> for how TTBCR.{T1SZ, T0SZ} determine the input address ranges and memory region sizes translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> and <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-13_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SH0</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>13:12</rel_range>
+    <field_description order="before">
+      <para>Shareability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Other values are reserved. The effect of programming this field to a Reserved value is that behavior is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Inner Shareable</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ORGN0</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Outer cacheability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-9_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IRGN0</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>9:8</rel_range>
+    <field_description order="before">
+      <para>Inner cacheability attribute for memory associated with translation table walks using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Through Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EPD0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Translation table walk disable for translations using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>. This bit controls whether a translation table walk is performed on a TLB miss, for an address that is translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Perform translation table walks using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>A TLB miss on an address that is translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> generates a Translation fault. No translation table walk is performed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>T2E</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>TTBCR2 Enable.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If TTBCR.EAE==0, then the behavior is as if the bit is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link> is disabled. The contents of <register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link> are treated as 0 for all purposes other than reading or writing the register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link> is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_AA32HPD is implemented</fields_condition>
+  </field>
+  <field id="fieldset_1-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_1-5_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>5:3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-2_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>T0SZ</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before">
+      <para>See <xref browsertext="'Selecting between TTBR0 and TTBR1, VMSAv8-32 Long-descriptor translation table format'" filename="G_the_aarch32_virtual_memory_system_architecture.fm" linkend="CHDFDAJE"/> for how TTBCR.{T1SZ, T0SZ} determine the input address ranges and memory region sizes translated using <register_link state="AArch32" id="AArch32-ttbr0.xml">TTBR0</register_link> and <register_link state="AArch32" id="AArch32-ttbr1.xml">TTBR1</register_link>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 0</fields_condition>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_6" msb="30" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_0" msb="2" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fieldat id="fieldset_1-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_1-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_1-29_28" msb="29" lsb="28"/>
+  <fieldat id="fieldset_1-27_26" msb="27" lsb="26"/>
+  <fieldat id="fieldset_1-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_1-23_23" msb="23" lsb="23"/>
+  <fieldat id="fieldset_1-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_1-21_19" msb="21" lsb="19"/>
+  <fieldat id="fieldset_1-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_1-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_1-13_12" msb="13" lsb="12"/>
+  <fieldat id="fieldset_1-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_1-9_8" msb="9" lsb="8"/>
+  <fieldat id="fieldset_1-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_1-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_1-5_3" msb="5" lsb="3"/>
+  <fieldat id="fieldset_1-2_0" msb="2" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC TTBCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR_NS;
+    else
+        R[t] = TTBCR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        R[t] = TTBCR_NS;
+    else
+        R[t] = TTBCR;
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' then
+        R[t] = TTBCR_S;
+    else
+        R[t] = TTBCR_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR TTBCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0010"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T2 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T2 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR_NS = R[t];
+    else
+        TTBCR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        TTBCR_NS = R[t];
+    else
+        TTBCR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if SCR.NS == '0' then
+            TTBCR_S = R[t];
+        else
+            TTBCR_NS = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

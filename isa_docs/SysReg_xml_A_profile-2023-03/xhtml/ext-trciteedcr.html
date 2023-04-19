@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCITEEDCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCITEEDCR, Instrumentation Trace Extension External Debug Control Register</h1><p>The TRCITEEDCR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls instrumentation trace filtering.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and TRCIDR0.ITE == 1. Otherwise, direct accesses to TRCITEEDCR are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCITEEDCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="25"><a href="#fieldset_0-31_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">RL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">S</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">E3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_0">E2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_0">E1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_0">E0</a></td></tr></tbody></table><h4 id="fieldset_0-31_7">Bits [31:7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">RL, bit [6]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Instrumentation Trace in Realm state.</p>
+    <table class="valuetable"><tr><th>RL</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation trace prohibited in Realm state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation trace permitted in Realm state.</p>
+        </td></tr></table><p>This field is ignored when <span class="function">SelfHostedTraceEnabled</span>() returns TRUE.</p>
+<p>This field is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO and TRCITEEDCR.E&lt;m&gt; to control whether Instrumentation trace is permitted or prohibited in Realm state.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">S, bit [5]<span class="condition"><br/>When Secure state is implemented:
+                        </span></h4><div class="field">
+      <p>Instrumentation Trace in Secure state.</p>
+    <table class="valuetable"><tr><th>S</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation trace prohibited in Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation trace permitted in Secure state.</p>
+        </td></tr></table><p>This field is ignored when <span class="function">SelfHostedTraceEnabled</span>() returns TRUE.</p>
+<p>When <span class="xref">FEAT_RME</span> is not implemented, this field is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO, TRCITEEDCR.E3, and TRCITEEDCR.E&lt;m&gt; to control whether Instrumentation trace is permitted or prohibited in Secure state.</p>
+<p>When <span class="xref">FEAT_RME</span> is implemented, this field is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO and TRCITEEDCR.E&lt;m&gt; to control whether Instrumentation trace is permitted or prohibited in Secure state.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">NS, bit [4]<span class="condition"><br/>When Non-secure state is implemented:
+                        </span></h4><div class="field">
+      <p>Instrumentation Trace in Non-secure state.</p>
+    <table class="valuetable"><tr><th>NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation trace prohibited in Non-secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation trace permitted in Non-secure state.</p>
+        </td></tr></table><p>This field is ignored when <span class="function">SelfHostedTraceEnabled</span>() returns TRUE.</p>
+<p>This field is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO and TRCITEEDCR.E&lt;m&gt; to control whether Instrumentation trace is permitted or prohibited in Non-secure state.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">E3, bit [3]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>Instrumentation Trace Enable at EL3.</p>
+    <table class="valuetable"><tr><th>E3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation trace prohibited at EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation trace permitted at EL3.</p>
+        </td></tr></table><p>This field is ignored when <span class="function">SelfHostedTraceEnabled</span>() returns TRUE.</p>
+<p>When <span class="xref">FEAT_RME</span> is not implemented, TRCITEEDCR.E3 is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO and TRCITEEDCR.S to control whether Instrumentation trace is permitted or prohibited at EL3.</p>
+<p>When <span class="xref">FEAT_RME</span> is implemented, TRCITEEDCR.E3 is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO to control whether Instrumentation trace is permitted or prohibited at EL3.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_0">E&lt;m&gt;, bit [m], for m = 2 to 0</h4><div class="field">
+      <p>Instrumentation Trace Enable at EL&lt;m&gt;.</p>
+    <table class="valuetable"><tr><th>E&lt;m&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Instrumentation trace prohibited at EL&lt;m&gt;.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Instrumentation trace permitted at EL&lt;m&gt;.</p>
+        </td></tr></table><p>This field is ignored when <span class="function">SelfHostedTraceEnabled</span>() returns TRUE.</p>
+<p>This bit is used in conjunction with <a href="ext-trcconfigr.html">TRCCONFIGR</a>.ITO, TRCITEEDCR.NS, TRCITEEDCR.S, and TRCITEEDCR.RL to control whether Instrumentation trace is permitted or prohibited at EL&lt;m&gt; in the specified Security states.</p>
+<p>TRCITEEDCR.E&lt;2&gt; is <span class="arm-defined-word">RES0</span> if EL2 is not implemented in any Security states.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h2>Accessing TRCITEEDCR</h2>
+        <p>Writes are <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> if the trace unit is not in the Idle state.</p>
+      <h4>TRCITEEDCR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x048</span></td><td>TRCITEEDCR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

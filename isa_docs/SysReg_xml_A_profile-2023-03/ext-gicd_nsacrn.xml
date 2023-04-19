@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICD_NSACR&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Non-secure Access Control Registers</reg_long_name>
+
+
+
+      
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>63</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>Dist_base</reg_frame>
+    <reg_offset><hexnumber>0x0E00</hexnumber> + (4 * n)</reg_offset>
+    <reg_instance>GICD_NSACR&lt;n&gt;</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 1</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Non-secure</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Root</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Realm</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Enables Secure software to permit Non-secure software on a particular PE to create and control Group 0 interrupts.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>The concept of selective enabling of Non-secure access to Group 0 and Secure Group 1 interrupts applies to SGIs and SPIs.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>GICD_NSACR0 is a Banked register used for SGIs. A copy is provided for every PE that has a CPU interface and that supports this feature.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICD_NSACR&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS_access&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Controls Non-secure access of the interrupt with ID 16n + x.</para>
+<para>If the corresponding interrupt does not support configurable Non-secure access, the field is RAZ/WI.</para>
+<para>Otherwise, the field is RW and determines the level of Non-secure control permitted if the interrupt is a Secure interrupt. If the interrupt is a Non-secure interrupt, this field is ignored.</para>
+<para>The possible values of each 2-bit field are:</para></field_description>
+    <field_array_indexes index_variable="x" element_size="2" range_specifier="2x+1:2x">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>No Non-secure access is permitted to fields associated with the corresponding interrupt.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description><para>Non-secure read and write access is permitted to set-pending bits in <register_link state="ext" id="ext-gicd_ispendrn.xml">GICD_ISPENDR&lt;n&gt;</register_link> associated with the corresponding interrupt. A Non-secure write access to <register_link state="ext" id="ext-gicd_setspi_nsr.xml">GICD_SETSPI_NSR</register_link> is permitted to set the pending state of the corresponding interrupt. A Non-secure write access to <register_link state="ext" id="ext-gicd_sgir.xml">GICD_SGIR</register_link> is permitted to generate a Secure SGI for the corresponding interrupt.</para>
+<para>An implementation might also provide read access to clear-pending bits in <register_link state="ext" id="ext-gicd_icpendrn.xml">GICD_ICPENDR&lt;n&gt;</register_link> associated with the corresponding interrupt.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b01</binarynumber>, but adds Non-secure read and write access permission to fields associated with the corresponding interrupt in the <register_link state="ext" id="ext-gicd_icpendrn.xml">GICD_ICPENDR&lt;n&gt;</register_link> registers. A Non-secure write access to <register_link state="ext" id="ext-gicd_clrspi_nsr.xml">GICD_CLRSPI_NSR</register_link> is permitted to clear the pending state of the corresponding interrupt. Also adds Non-secure read access permission to fields associated with the corresponding interrupt in the <register_link state="ext" id="ext-gicd_isactivern.xml">GICD_ISACTIVER&lt;n&gt;</register_link> and <register_link state="ext" id="ext-gicd_icactivern.xml">GICD_ICACTIVER&lt;n&gt;</register_link> registers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description><para>For GICD_NSACR0 this encoding is reserved and treated as 10.</para>
+<para>For all other GICD_NSACR&lt;n&gt; registers this encoding is treated as <binarynumber>0b10</binarynumber>, but adds Non-secure read and write access permission to <register_link state="ext" id="ext-gicd_itargetsrn.xml">GICD_ITARGETSR&lt;n&gt;</register_link> and <register_link state="ext" id="ext-gicd_iroutern.xml">GICD_IROUTER&lt;n&gt;</register_link> fields associated with the corresponding interrupt.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields><para>For interrupt ID m, when DIV and MOD are the integer division and modulo operations:</para>
+<list type="unordered">
+<listitem><content>The corresponding GICD_NSACR&lt;n&gt; number, n, is given by n = m DIV 16.</content>
+</listitem><listitem><content>The offset of the required GICD_NSACR&lt;n&gt; register is (<hexnumber>0xE00</hexnumber> + (4*n)).</content>
+</listitem></list>
+<note><para>Because each field in this register comprises two bits, GICD_NSACR0 controls access rights to SGI registers, GICD_NSACR1 controls access to PPI registers (and is always RAZ/WI), and all other GICD_NSACR&lt;n&gt; registers control access to SPI registers.</para></note><para>For compatibility with GICv2, writes to GICD_NSACR0 for a particular PE must be coordinated within the Distributor and must update <register_link state="ext" id="ext-gicr_nsacr.xml">GICR_NSACR</register_link> for the Redistributor associated with that PE.</para></text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="NS_access15" msb="31" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access14" msb="29" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access13" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access12" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access11" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access10" msb="21" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access9" msb="19" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access8" msb="17" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access7" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access6" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access5" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access4" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access3" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access2" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access1" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="63"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>These registers are always used when affinity routing is not enabled. When affinity routing is enabled for the Secure state, GICD_NSACR0 is <arm-defined-word>RES0</arm-defined-word> and <register_link state="ext" id="ext-gicr_nsacr.xml">GICR_NSACR</register_link> provides equivalent functionality for SGIs.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>These registers do not support PPIs, therefore GICD_NSACR1 is RAZ/WI.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

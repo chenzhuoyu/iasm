@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>BRBINFINJ_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">BRBINFINJ_EL1, Branch Record Buffer Information Injection Register</h1><p>The BRBINFINJ_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>The information of a Branch record for injection.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_BRBE is implemented. Otherwise, direct accesses to BRBINFINJ_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>BRBINFINJ_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="17"><a href="#fieldset_0-63_47">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-46_46">CCU</a></td><td class="lr" colspan="14"><a href="#fieldset_0-45_32">CC</a></td></tr><tr class="firstrow"><td class="lr" colspan="14"><a href="#fieldset_0-31_18">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">LASTFAILED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">T</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">RES0</a></td><td class="lr" colspan="6"><a href="#fieldset_0-13_8">TYPE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6">EL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">MPRED</a></td><td class="lr" colspan="3"><a href="#fieldset_0-4_2">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">VALID</a></td></tr></tbody></table><h4 id="fieldset_0-63_47">Bits [63:47]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-46_46">CCU, bit [46]</h4><div class="field">
+      <p>The number of PE clock cycles since the last Branch record entry is <span class="arm-defined-word">UNKNOWN</span>.</p>
+    <table class="valuetable"><tr><th>CCU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Indicates that the number of PE clock cycles since the last Branch record is indicated by BRBINFINJ_EL1.CC.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Indicates that the number of PE clock cycles since the last Branch record is <span class="arm-defined-word">UNKNOWN</span>.</p>
+        </td></tr></table>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID != <span class="binarynumber">0b00</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When BRBINFINJ_EL1.VALID == 0b00, access to this field
+                            is <span class="access_level">RES0</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-45_32">CC, bits [45:32]</h4><div class="field"><p>The number of PE clock cycles since the last Branch record entry.</p>
+<p>The format of this field uses a mantissa and exponent to express the cycle count value, as follows:</p>
+<ul>
+<li>CC bits[7:0] indicate the mantissa M.
+</li><li>CC bits[13:8] indicate the exponent E.
+</li></ul>
+<p>The cycle count is expressed using the following function:</p>
+<p> if IsZero(E) then UInt(M) else UInt('1':M:Zeros(UInt(E)-1)) </p>
+<p>If required, the cycle count is rounded to a multiple of 2<sup>(E-1)</sup> towards zero before being encoded.</p>
+<p>A value of all ones in both the mantissa and exponent indicates the cycle count value exceeded the size of the cycle counter.</p>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID != <span class="binarynumber">0b00</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES0</span> if
+                
+                    any of the following are true:
+                <ul><li>BRBINFINJ_EL1.CCU == 1</li><li>BRBINFINJ_EL1.VALID == 0b00</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-31_18">Bits [31:18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">LASTFAILED, bit [17]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates transaction failure or cancellation.</p>
+    <table class="valuetable"><tr><th>LASTFAILED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Indicates that no transactions in a non-prohibited region have failed or been canceled between the previous Branch record and this Branch record.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Indicates that at least one transaction in a non-prohibited region has failed or been canceled between the previous Branch record and this Branch record.</p>
+        </td></tr></table>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID != <span class="binarynumber">0b00</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When BRBINFINJ_EL1.VALID == 0b00, access to this field
+                            is <span class="access_level">RES0</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">T, bit [16]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Transactional state.</p>
+    <table class="valuetable"><tr><th>T</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The branch or exception was not executed in Transactional state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The branch or exception was executed in Transactional state.</p>
+        </td></tr></table>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID == <span class="binarynumber">0b10</span> or BRBINFINJ_EL1.VALID == <span class="binarynumber">0b11</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES0</span> if
+                
+                    any of the following are true:
+                <ul><li>BRBINFINJ_EL1.VALID == 0b00</li><li>BRBINFINJ_EL1.VALID == 0b01</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_14">Bits [15:14]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_8">TYPE, bits [13:8]</h4><div class="field">
+      <p>Branch type.</p>
+    <table class="valuetable"><tr><th>TYPE</th><th>Meaning</th></tr><tr><td class="bitfield">0b000000</td><td>
+          <p>Unconditional direct branch, excluding Branch with link.</p>
+        </td></tr><tr><td class="bitfield">0b000001</td><td>
+          <p>Indirect branch, excluding Branch with link, Return from subroutine, and Exception return.</p>
+        </td></tr><tr><td class="bitfield">0b000010</td><td>
+          <p>Direct Branch with link.</p>
+        </td></tr><tr><td class="bitfield">0b000011</td><td>
+          <p>Indirect Branch with link.</p>
+        </td></tr><tr><td class="bitfield">0b000101</td><td>
+          <p>Return from subroutine.</p>
+        </td></tr><tr><td class="bitfield">0b000111</td><td>
+          <p>Exception return.</p>
+        </td></tr><tr><td class="bitfield">0b001000</td><td>
+          <p>Conditional direct branch.</p>
+        </td></tr><tr><td class="bitfield">0b100001</td><td>
+          <p>Debug halt.</p>
+        </td></tr><tr><td class="bitfield">0b100010</td><td>
+          <p>Call.</p>
+        </td></tr><tr><td class="bitfield">0b100011</td><td>
+          <p>Trap.</p>
+        </td></tr><tr><td class="bitfield">0b100100</td><td>
+          <p>SError.</p>
+        </td></tr><tr><td class="bitfield">0b100110</td><td>
+          <p>Instruction debug.</p>
+        </td></tr><tr><td class="bitfield">0b100111</td><td>
+          <p>Data debug.</p>
+        </td></tr><tr><td class="bitfield">0b101010</td><td>
+          <p>Alignment.</p>
+        </td></tr><tr><td class="bitfield">0b101011</td><td>
+          <p>Inst Fault.</p>
+        </td></tr><tr><td class="bitfield">0b101100</td><td>
+          <p>Data Fault.</p>
+        </td></tr><tr><td class="bitfield">0b101110</td><td>
+          <p>IRQ.</p>
+        </td></tr><tr><td class="bitfield">0b101111</td><td>
+          <p>FIQ.</p>
+        </td></tr><tr><td class="bitfield">0b111001</td><td>
+          <p>Debug State Exit.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The value in this field is only valid when BRBINFINJ_EL1.VALID != <span class="binarynumber">0b00</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When BRBINFINJ_EL1.VALID == 0b00, access to this field
+                            is <span class="access_level">RES0</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-7_6">EL, bits [7:6]</h4><div class="field">
+      <p>The Exception Level at the target address.</p>
+    <table class="valuetable"><tr><th>EL</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>EL0.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>EL1.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>EL2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>EL3.</p>
+        </td><td>When FEAT_BRBEv1p1 is implemented</td></tr></table>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID == <span class="binarynumber">0b11</span> or BRBINFINJ_EL1.VALID == <span class="binarynumber">0b01</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES0</span> if
+                
+                    any of the following are true:
+                <ul><li>BRBINFINJ_EL1.VALID == 0b00</li><li>BRBINFINJ_EL1.VALID == 0b10</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-5_5">MPRED, bit [5]</h4><div class="field">
+      <p>Branch mispredict.</p>
+    <table class="valuetable"><tr><th>MPRED</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Branch was correctly predicted or the result of the prediction was not captured.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Branch was incorrectly predicted.</p>
+        </td></tr></table>
+      <p>The value in this field is only valid when BRBINFINJ_EL1.VALID == <span class="binarynumber">0b11</span> or BRBINFINJ_EL1.VALID == <span class="binarynumber">0b10</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES0</span> if
+                
+                    any of the following are true:
+                <ul><li>BRBINFINJ_EL1.VALID == 0b00</li><li>BRBINFINJ_EL1.VALID == 0b01</li><li>BRBINFINJ_EL1.TYPE[5] == 1</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-4_2">Bits [4:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_0">VALID, bits [1:0]</h4><div class="field">
+      <p>The Branch record is valid.</p>
+    <table class="valuetable"><tr><th>VALID</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td><p>This Branch record is not valid.</p>
+<p>The values of following fields are not valid:</p>
+<ul>
+<li><a href="AArch64-brbtgtinj_el1.html">BRBTGTINJ_EL1</a>.ADDRESS.
+</li><li><a href="AArch64-brbsrcinj_el1.html">BRBSRCINJ_EL1</a>.ADDRESS.
+</li><li>BRBINFINJ_EL1.MPRED.
+</li><li>BRBINFINJ_EL1.LASTFAILED.
+</li><li>BRBINFINJ_EL1.T.
+</li><li>BRBINFINJ_EL1.EL.
+</li><li>BRBINFINJ_EL1.TYPE.
+</li><li>BRBINFINJ_EL1.CC.
+</li><li>BRBINFINJ_EL1.CCU.
+</li></ul></td></tr><tr><td class="bitfield">0b01</td><td><p>This Branch record is valid.</p>
+<p>The values of following fields are not valid:</p>
+<ul>
+<li><a href="AArch64-brbsrcinj_el1.html">BRBSRCINJ_EL1</a>.ADDRESS.
+</li><li>BRBINFINJ_EL1.T.
+</li><li>BRBINFINJ_EL1.MPRED.
+</li></ul></td></tr><tr><td class="bitfield">0b10</td><td><p>This Branch record is valid.</p>
+<p>The values of following fields are not valid:</p>
+<ul>
+<li><a href="AArch64-brbtgtinj_el1.html">BRBTGTINJ_EL1</a>.ADDRESS.
+</li><li>BRBINFINJ_EL1.EL.
+</li></ul></td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>This Branch record is valid.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing BRBINFINJ_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, BRBINFINJ_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b001</td><td>0b1001</td><td>0b0001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.nBRBDATA == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = BRBINFINJ_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = BRBINFINJ_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = BRBINFINJ_EL1;
+                </p><h4 class="assembler">MSR BRBINFINJ_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b001</td><td>0b1001</td><td>0b0001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.nBRBDATA == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        BRBINFINJ_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        BRBINFINJ_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    BRBINFINJ_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

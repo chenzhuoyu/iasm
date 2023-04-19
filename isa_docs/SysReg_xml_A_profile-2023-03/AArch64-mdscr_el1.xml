@@ -1,0 +1,1001 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MDSCR_EL1</reg_short_name>
+        
+        <reg_long_name>Monitor Debug System Control Register</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrext.xml">DBGDSCRext</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>15</mapped_from_startbit>
+    <mapped_from_endbit>15</mapped_from_endbit>
+    <mapped_to_startbit>15</mapped_to_startbit>
+    <mapped_to_endbit>15</mapped_to_endbit>
+    <mapped_from_rangeset output="15">
+      <range>
+        <msb>15</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="15">
+      <range>
+        <msb>15</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>12</mapped_from_startbit>
+    <mapped_from_endbit>12</mapped_from_endbit>
+    <mapped_to_startbit>12</mapped_to_startbit>
+    <mapped_to_endbit>12</mapped_to_endbit>
+    <mapped_from_rangeset output="12">
+      <range>
+        <msb>12</msb>
+        <lsb>12</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="12">
+      <range>
+        <msb>12</msb>
+        <lsb>12</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-dbgdscrint.xml">DBGDSCRint</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>5</mapped_from_startbit>
+    <mapped_from_endbit>2</mapped_from_endbit>
+    <mapped_to_startbit>5</mapped_to_startbit>
+    <mapped_to_endbit>2</mapped_to_endbit>
+    <mapped_from_rangeset output="5:2">
+      <range>
+        <msb>5</msb>
+        <lsb>2</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="5:2">
+      <range>
+        <msb>5</msb>
+        <lsb>2</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-edscr2.xml">EDSCR2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>40</mapped_from_startbit>
+    <mapped_from_endbit>40</mapped_from_endbit>
+    <mapped_to_startbit>8</mapped_to_startbit>
+    <mapped_to_endbit>8</mapped_to_endbit>
+    <mapped_from_rangeset output="40">
+      <range>
+        <msb>40</msb>
+        <lsb>40</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="8">
+      <range>
+        <msb>8</msb>
+        <lsb>8</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when FEAT_Debugv8p9 is implemented</mapped_to_condition>
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Main control register for the debug implementation.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MDSCR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>63:36</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-35_35-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EHBWE</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Extended Halting Breakpoint and Watchpoint Enable. Used for save/restore of <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.EHBWE.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 0, software must treat this field as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this field holds the value of <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.EHBWE. Reads and writes of this field are indirect accesses to <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.EHBWE.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field is implemented or is <arm-defined-word>RES0</arm-defined-word> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link> is implemented as RAZ/WI.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_Debugv8p9 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-35_35-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnSPM</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable access to System PMU registers. When disabled, accesses to System PMU registers generate a trap to EL1.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are: <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-spmcntenclr_el0.xml">SPMCNTENCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmcntenset_el0.xml">SPMCNTENSET_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmcr_el0.xml">SPMCR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevcntrn_el0.xml">SPMEVCNTR&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevfilt2rn_el0.xml">SPMEVFILT2R&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevfiltrn_el0.xml">SPMEVFILTR&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevtypern_el0.xml">SPMEVTYPER&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmovsclr_el0.xml">SPMOVSCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmovsset_el0.xml">SPMOVSSET_EL0</register_link>, and <register_link state="AArch64" id="AArch64-spmselr_el0.xml">SPMSELR_EL0</register_link>.</para>
+<para>Unless the instruction generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content>If EL2 is implemented and enabled in the current Security state, and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, then trapped instructions generate an exception to EL2.</content>
+</listitem><listitem><content>Otherwise, trapped instructions generate an exception to EL1.</content>
+</listitem></list>
+<para>Trapped instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified System PMU registers at EL0 are trapped to EL1, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified System PMU registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPMU is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-34_34-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-33_33-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TTA</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap Trace Accesses. Used for save/restore of <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.TTA.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 0, software must treat this field as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK is 1, this field holds the value of <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.TTA. Reads and writes of this field are indirect accesses to <register_link state="ext" id="ext-edscr2.xml">EDSCR2</register_link>.TTA.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_TRBE_EXT is implemented or FEAT_ETEv1p3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-33_33-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-32_32-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EMBWE</field_name>
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Extended Monitor Breakpoint and Watchpoint Enable. Enables use of additional breakpoints or watchpoints.</para>
+    </field_description>
+    <field_description order="after"><para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field is implemented or is <arm-defined-word>RES0</arm-defined-word> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link> is implemented as RAZ/WI.</para>
+<para>This field is ignored by the PE and treated as zero when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>EL3 is implemented and <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.EBWE is 0.</content>
+</listitem><listitem><content>EL2 is implemented and enabled in the current Security state, and <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.EBWE is 0.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>Breakpoint and Watchpoint exceptions are disabled for each breakpoint &lt;n&gt; and watchpoint &lt;n&gt;, where n is greater than or equal to 16.</para>
+<para>The Effective value of <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link>.BANK is zero at EL1.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Breakpoint and Watchpoint exceptions are not affected by this mechanism.</para>
+<para>The Effective value of <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link>.BANK is not affected by this field.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL2 is not implemented and EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_Debugv8p9 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-32_32-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TFO</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trace Filter override. Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO.</para>
+    </field_description>
+    <field_description order="after"><para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TFO.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_TRF is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXfull</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXfull.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXfull</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXfull.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RXO</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.RXO.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, if bits [27,6] of the value written to MDSCR_EL1 are {1,0}, that is, the RXO bit is 1 and the ERR bit is 0, the PE sets <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.{RXO,ERR} to <arm-defined-word>UNKNOWN</arm-defined-word> values.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TXU</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TXU.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, if bits [26,6] of the value written to MDSCR_EL1 are {1,0}, that is, the TXU bit is 1 and the ERR bit is 0, the PE sets <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.{TXU,ERR} to <arm-defined-word>UNKNOWN</arm-defined-word> values.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTdis</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>23:22</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, and software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this field holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis. Reads and writes of this field are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.INTdis.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDA</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.TDA.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SC2</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.SC2.</para></field_description>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_PCSRv8 is implemented, FEAT_VHE is implemented and FEAT_PCSRv8p2 is not implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RAZ/WI">
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, RAZ/WI.</para>
+    </field_description>
+    <field_description order="after">
+      <para>Hardware must implement this field as RAZ/WI. Software must not rely on the register reading as zero, and must use a read-modify-write sequence to write to the register.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MDE</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before">
+      <para>Monitor debug events. Enable Breakpoint, Watchpoint, and Vector Catch exceptions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Breakpoint, Watchpoint, and Vector Catch exceptions disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Breakpoint, Watchpoint, and Vector Catch exceptions enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HDE</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.HDE.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-13_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>KDE</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>13</rel_range>
+    <field_description order="before">
+      <para>Local (kernel) debug enable. If EL<sub>D</sub> is using AArch64, enable debug exceptions within EL<sub>D</sub>. Permitted values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para><arm-defined-word>RES0</arm-defined-word> if EL<sub>D</sub> is using AArch32.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Debug exceptions, other than Breakpoint Instruction exceptions, disabled within EL<sub>D</sub>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All debug exceptions enabled within EL<sub>D</sub>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDCC</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before"><para>Traps EL0 accesses to the Debug Communication Channel (DCC) registers to EL1, or to EL2 when it is implemented and enabled for the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, from both Execution states, as follows:</para>
+<list type="unordered">
+<listitem><content>In AArch64 state, MRS or MSR accesses to the following DCC registers are trapped, reported using EC syndrome value <hexnumber>0x18</hexnumber>:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdccsr_el0.xml">MDCCSR_EL0</register_link>.</content>
+</listitem><listitem><content>If not in Debug state, <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link>, <register_link state="AArch64" id="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</register_link>, and <register_link state="AArch64" id="AArch64-dbgdtrrx_el0.xml">DBGDTRRX_EL0</register_link>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>In AArch32 state, MRC or MCR accesses to the following registers are trapped, reported using EC syndrome value <hexnumber>0x05</hexnumber>.<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link>, <register_link state="AArch32" id="AArch32-dbgdidr.xml">DBGDIDR</register_link>, <register_link state="AArch32" id="AArch32-dbgdsar.xml">DBGDSAR</register_link>, <register_link state="AArch32" id="AArch32-dbgdrar.xml">DBGDRAR</register_link>.</content>
+</listitem><listitem><content>If not in Debug state, <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link>, and <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>In AArch32 state, LDC access to <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and STC access to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link> are trapped, reported using EC syndrome value <hexnumber>0x06</hexnumber>.</content>
+</listitem><listitem><content>In AArch32 state, MRRC accesses to <register_link state="AArch32" id="AArch32-dbgdsar.xml">DBGDSAR</register_link> and <register_link state="AArch32" id="AArch32-dbgdrar.xml">DBGDRAR</register_link> are trapped, reported using EC syndrome value <hexnumber>0x0C</hexnumber>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>EL0 using AArch64: EL0 accesses to the AArch64 DCC registers are trapped.</para>
+<para>EL0 using AArch32: EL0 accesses to the AArch32 DCC registers are trapped.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>11</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>11:7</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ERR</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before"><para>Used for save/restore of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 0, software must treat this bit as UNK/SBZP.</para>
+<para>When <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>.OSLK == 1, this bit holds the value of <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR. Reads and writes of this bit are indirect accesses to <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ERR.</para></field_description>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>The architected behavior of this field determines the value it returns after a reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 1</field_access_level>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When OSLSR_EL1.OSLK == 0</field_access_level>
+        <field_access_type>RO</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-5_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>5:1</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SS</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Software step control bit. If EL<sub>D</sub> is using AArch64, enable Software step. Permitted values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para><arm-defined-word>RES0</arm-defined-word> if EL<sub>D</sub> is using AArch32.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Software step disabled</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Software step enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_36" msb="63" lsb="36"/>
+  <fieldat id="fieldset_0-35_35-1" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-34_34-1" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-33_33-1" msb="33" lsb="33"/>
+  <fieldat id="fieldset_0-32_32-1" msb="32" lsb="32"/>
+  <fieldat id="fieldset_0-31_31-1" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_22" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_0-15_15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_7" msb="11" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_1" msb="5" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS MDSCR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, MDSCR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.MDSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x158];
+    else
+        X[t, 64] = MDSCR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDSCR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MDSCR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister MDSCR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR MDSCR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.MDSCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x158] = X[t, 64];
+    else
+        MDSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MDSCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MDSCR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

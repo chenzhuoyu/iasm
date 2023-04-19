@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICH_VTR</reg_short_name>
+        
+        <reg_long_name>Virtual Type Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3_LEGACY is implemented and EL2 is implemented</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Virtual interface control</reg_component>
+    <reg_offset><hexnumber>0x0004</hexnumber></reg_offset>
+    <reg_instance>GICH_VTR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Secure</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When an access is Non-secure</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates the number of implemented virtual priority bits and List registers.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC virtualised guest interface control registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is available when the GIC implementation supports interrupt virtualization.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICH_VTR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PRIbits</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>31:29</rel_range>
+    <field_description order="before"><para>The number of virtual priority bits implemented, minus one.</para>
+<para>An implementation must implement at least 32 levels of virtual priority (5 priority bits).</para></field_description>
+  </field>
+  <field id="fieldset_0-28_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PREbits</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>28:26</rel_range>
+    <field_description order="before"><para>The number of virtual preemption bits implemented, minus one.</para>
+<para>An implementation must implement at least 32 levels of virtual preemption priority (5 preemption bits).</para>
+<para>The value of this field must be less than or equal to the value of GICH_VTR.PRIbits.</para></field_description>
+  </field>
+  <field id="fieldset_0-25_23" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDbits</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>25:23</rel_range>
+    <field_description order="before">
+      <para>The number of virtual interrupt identifier bits supported:</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>16 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>24 bits.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-22_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SEIS</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>22</rel_range>
+    <field_description order="before">
+      <para>SEI support. Indicates whether the virtual CPU interface supports generation of SEIs:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic does not support generation of SEIs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic supports generation of SEIs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-21_21" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A3V</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>21</rel_range>
+    <field_description order="before">
+      <para>Affinity 3 valid. Possible values are:</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic only supports zero values of the Aff3 field in <register_link state="AArch64" id="AArch64-icc_sgi0r_el1.xml">ICC_SGI0R_EL1</register_link>, <register_link state="AArch64" id="AArch64-icc_sgi1r_el1.xml">ICC_SGI1R_EL1</register_link>, and <register_link state="AArch64" id="AArch64-icc_asgi1r_el1.xml">ICC_ASGI1R_EL1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The virtual CPU interface logic supports nonzero values of the Aff3 field in <register_link state="AArch64" id="AArch64-icc_sgi0r_el1.xml">ICC_SGI0R_EL1</register_link>, <register_link state="AArch64" id="AArch64-icc_sgi1r_el1.xml">ICC_SGI1R_EL1</register_link>, and <register_link state="AArch64" id="AArch64-icc_asgi1r_el1.xml">ICC_ASGI1R_EL1</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-20_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>20:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ListRegs</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>The number of implemented List registers, minus one.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_29" msb="31" lsb="29"/>
+  <fieldat id="fieldset_0-28_26" msb="28" lsb="26"/>
+  <fieldat id="fieldset_0-25_23" msb="25" lsb="23"/>
+  <fieldat id="fieldset_0-22_22" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_5" msb="20" lsb="5"/>
+  <fieldat id="fieldset_0-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is used only when System register access is not enabled. When System register access is enabled:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>For AArch32 implementations, <register_link state="AArch32" id="AArch32-ich_vtr.xml">ICH_VTR</register_link> provides equivalent functionality.</content>
+</listitem><listitem><content>For AArch64 implementations, <register_link state="AArch64" id="AArch64-ich_vtr_el2.xml">ICH_VTR_EL2</register_link> provides equivalent functionality.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

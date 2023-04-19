@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SPSR_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SPSR_EL3, Saved Program Status Register (EL3)</h1><p>The SPSR_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the saved process state when an exception is taken to EL3.</p>
+      <h2>Configuration</h2><p>This register is present only when EL3 is implemented. Otherwise, direct accesses to SPSR_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>SPSR_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When AArch32 is supported and exception taken from AArch32 state:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="30"><a href="#fieldset_0-63_34">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-33_33-1">PPEND</a></td><td class="lr" colspan="1"><a href="#fieldset_0-32_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">N</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">Z</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">V</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27">Q</a></td><td class="lr" colspan="2"><a href="#fieldset_0-26_25">IT[1:0]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24-1">DIT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">SSBS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">PAN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21">SS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">IL</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">GE</a></td><td class="lr" colspan="6"><a href="#fieldset_0-15_10">IT[7:2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">E</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">I</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">F</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">T</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">M[4]</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">M[3:0]</a></td></tr></tbody></table><div class="text_before_fields">
+    <p>An exception return from EL3 using AArch64 makes SPSR_EL1 become <span class="arm-defined-word">UNKNOWN</span>.</p>
+  </div><h4 id="fieldset_0-63_34">Bits [63:34]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-33_33-1">PPEND, bit [33]<span class="condition"><br/>When FEAT_SEBEP is implemented:
+                        </span></h4><div class="field">
+      <p>PMU exception pending bit. Set to the value of PSTATE.PPEND on taking an exception to EL3, and conditionally  copied to PSTATE.PPEND on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-33_33-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-32_32">Bit [32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">N, bit [31]</h4><div class="field">
+      <p>Negative Condition flag. Set to the value of PSTATE.N on taking an exception to EL3, and  copied to PSTATE.N on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30">Z, bit [30]</h4><div class="field">
+      <p>Zero Condition flag. Set to the value of PSTATE.Z on taking an exception to EL3, and  copied to PSTATE.Z on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-29_29">C, bit [29]</h4><div class="field">
+      <p>Carry Condition flag. Set to the value of PSTATE.C on taking an exception to EL3, and  copied to PSTATE.C on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-28_28">V, bit [28]</h4><div class="field">
+      <p>Overflow Condition flag. Set to the value of PSTATE.V on taking an exception to EL3, and  copied to PSTATE.V on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27">Q, bit [27]</h4><div class="field">
+      <p>Overflow or saturation flag. Set to the value of PSTATE.Q on taking an exception to EL3, and  copied to PSTATE.Q on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_25">IT, bits [15:10, 26:25]</h4><div class="field">
+      <p>If-Then. Set to the value of PSTATE.IT on taking an exception to EL3, and  copied to PSTATE.IT on executing an exception return operation in EL3.</p>
+    <p>SPSR_EL1.IT must contain a value that is valid for the instruction being returned to.</p>
+<p>The IT field is split as follows:</p>
+<ul>
+<li>IT[1:0] is SPSR_EL3[26:25].
+</li><li>IT[7:2] is SPSR_EL3[15:10].
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24-1">DIT, bit [24]<span class="condition"><br/>When FEAT_DIT is implemented:
+                        </span></h4><div class="field">
+      <p>Data Independent Timing. Set to the value of PSTATE.DIT on taking an exception to EL3, and  copied to PSTATE.DIT on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23-1">SSBS, bit [23]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field">
+      <p>Speculative Store Bypass. Set to the value of PSTATE.SSBS on taking an exception to EL3, and  copied to PSTATE.SSBS on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">PAN, bit [22]<span class="condition"><br/>When FEAT_PAN is implemented:
+                        </span></h4><div class="field">
+      <p>Privileged Access Never. Set to the value of PSTATE.PAN on taking an exception to EL3, and  copied to PSTATE.PAN on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21">SS, bit [21]</h4><div class="field">
+      <p>Software Step. Set to the value of PSTATE.SS on taking an exception to EL3, and conditionally  copied to PSTATE.SS on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-20_20">IL, bit [20]</h4><div class="field">
+      <p>Illegal Execution state. Set to the value of PSTATE.IL on taking an exception to EL3, and  copied to PSTATE.IL on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_16">GE, bits [19:16]</h4><div class="field">
+      <p>Greater than or Equal flags. Set to the value of PSTATE.GE on taking an exception to EL3, and  copied to PSTATE.GE on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">E, bit [9]</h4><div class="field">
+      <p>Endianness. Set to the value of PSTATE.E on taking an exception to EL3, and  copied to PSTATE.E on executing an exception return operation in EL3.</p>
+    
+      <p>If the implementation does not support big-endian operation, SPSR_EL1.E is <span class="arm-defined-word">RES0</span>. If the implementation does not support little-endian operation, SPSR_EL1.E is <span class="arm-defined-word">RES1</span>. On executing an exception return operation in EL3, if the implementation does not support big-endian operation at the Exception level being returned to, SPSR_EL1.E is <span class="arm-defined-word">RES0</span>, and if the implementation does not support little-endian operation at the Exception level being returned to, SPSR_EL1.E is <span class="arm-defined-word">RES1</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8">A, bit [8]</h4><div class="field">
+      <p>SError interrupt mask. Set to the value of PSTATE.A on taking an exception to EL3, and  copied to PSTATE.A on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7">I, bit [7]</h4><div class="field">
+      <p>IRQ interrupt mask. Set to the value of PSTATE.I on taking an exception to EL3, and  copied to PSTATE.I on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6">F, bit [6]</h4><div class="field">
+      <p>FIQ interrupt mask. Set to the value of PSTATE.F on taking an exception to EL3, and  copied to PSTATE.F on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5">T, bit [5]</h4><div class="field">
+      <p>T32 Instruction set state. Set to the value of PSTATE.T on taking an exception to EL3, and  copied to PSTATE.T on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4">M[4], bit [4]</h4><div class="field">
+      <p>Execution state. Set to <span class="binarynumber">0b1</span>, the value of PSTATE.nRW, on taking an exception to EL3 from AArch32 state, and copied to PSTATE.nRW on executing an exception return operation in EL3.</p>
+    <table class="valuetable"><tr><th>M[4]</th><th>Meaning</th></tr><tr><td class="bitfield">0b1</td><td>
+          <p>AArch32 execution state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_0">M[3:0], bits [3:0]</h4><div class="field">
+      <p>AArch32 Mode. Set to the value of PSTATE.M[3:0] on taking an exception to EL3, and  copied to PSTATE.M[3:0] on executing an exception return operation in EL3.</p>
+    <table class="valuetable"><tr><th>M[3:0]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>User.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>FIQ.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>IRQ.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Supervisor.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Monitor.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Abort.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>Hyp.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>Undefined.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>System.</p>
+        </td></tr></table>
+      <p>Other values are reserved. If SPSR_EL1.M[3:0] has a Reserved value, or a value for an unimplemented Exception level, executing an exception return operation in EL3 is an illegal return event, as described in <span class="xref">'Illegal return events from AArch64 state'</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h3>When exception taken from AArch64 state:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="29"><a href="#fieldset_1-63_35">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-34_34-1">EXLOCK</a></td><td class="lr" colspan="1"><a href="#fieldset_1-33_33-1">PPEND</a></td><td class="lr" colspan="1"><a href="#fieldset_1-32_32-1">PM</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_1-31_31">N</a></td><td class="lr" colspan="1"><a href="#fieldset_1-30_30">Z</a></td><td class="lr" colspan="1"><a href="#fieldset_1-29_29">C</a></td><td class="lr" colspan="1"><a href="#fieldset_1-28_28">V</a></td><td class="lr" colspan="2"><a href="#fieldset_1-27_26">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-25_25-1">TCO</a></td><td class="lr" colspan="1"><a href="#fieldset_1-24_24-1">DIT</a></td><td class="lr" colspan="1"><a href="#fieldset_1-23_23-1">UAO</a></td><td class="lr" colspan="1"><a href="#fieldset_1-22_22-1">PAN</a></td><td class="lr" colspan="1"><a href="#fieldset_1-21_21">SS</a></td><td class="lr" colspan="1"><a href="#fieldset_1-20_20">IL</a></td><td class="lr" colspan="6"><a href="#fieldset_1-19_14">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-13_13-1">ALLINT</a></td><td class="lr" colspan="1"><a href="#fieldset_1-12_12-1">SSBS</a></td><td class="lr" colspan="2"><a href="#fieldset_1-11_10-1">BTYPE</a></td><td class="lr" colspan="1"><a href="#fieldset_1-9_9">D</a></td><td class="lr" colspan="1"><a href="#fieldset_1-8_8">A</a></td><td class="lr" colspan="1"><a href="#fieldset_1-7_7">I</a></td><td class="lr" colspan="1"><a href="#fieldset_1-6_6">F</a></td><td class="lr" colspan="1"><a href="#fieldset_1-5_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-4_4">M[4]</a></td><td class="lr" colspan="4"><a href="#fieldset_1-3_0">M[3:0]</a></td></tr></tbody></table><div class="text_before_fields">
+    <p>An exception return from EL3 using AArch64 makes SPSR_EL1 become <span class="arm-defined-word">UNKNOWN</span>.</p>
+  </div><h4 id="fieldset_1-63_35">Bits [63:35]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-34_34-1">EXLOCK, bit [34]<span class="condition"><br/>When FEAT_GCS is implemented:
+                        </span></h4><div class="field">
+      <p>Exception return state lock. Set to the value of PSTATE.EXLOCK on taking an exception to EL3, and  copied to PSTATE.EXLOCK on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-34_34-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-33_33-1">PPEND, bit [33]<span class="condition"><br/>When FEAT_SEBEP is implemented:
+                        </span></h4><div class="field">
+      <p>PMU exception pending bit. Set to the value of PSTATE.PPEND on taking an exception to EL3, and conditionally  copied to PSTATE.PPEND on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-33_33-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-32_32-1">PM, bit [32]<span class="condition"><br/>When FEAT_EBEP is implemented:
+                        </span></h4><div class="field">
+      <p>PMU exception mask bit. Set to the value of PSTATE.PM on taking an exception to EL3, and  copied to PSTATE.PM on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-32_32-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-31_31">N, bit [31]</h4><div class="field">
+      <p>Negative Condition flag. Set to the value of PSTATE.N on taking an exception to EL3, and  copied to PSTATE.N on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-30_30">Z, bit [30]</h4><div class="field">
+      <p>Zero Condition flag. Set to the value of PSTATE.Z on taking an exception to EL3, and  copied to PSTATE.Z on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-29_29">C, bit [29]</h4><div class="field">
+      <p>Carry Condition flag. Set to the value of PSTATE.C on taking an exception to EL3, and  copied to PSTATE.C on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-28_28">V, bit [28]</h4><div class="field">
+      <p>Overflow Condition flag. Set to the value of PSTATE.V on taking an exception to EL3, and  copied to PSTATE.V on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-27_26">Bits [27:26]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-25_25-1">TCO, bit [25]<span class="condition"><br/>When FEAT_MTE is implemented:
+                        </span></h4><div class="field">
+      <p>Tag Check Override. Set to the value of PSTATE.TCO on taking an exception to EL3, and  copied to PSTATE.TCO on executing an exception return operation in EL3.</p>
+    
+      <p>When <span class="xref">FEAT_MTE2</span> is not implemented, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether this field is <span class="arm-defined-word">RES0</span> or behaves as if <span class="xref">FEAT_MTE2</span> is implemented.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-25_25-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-24_24-1">DIT, bit [24]<span class="condition"><br/>When FEAT_DIT is implemented:
+                        </span></h4><div class="field">
+      <p>Data Independent Timing. Set to the value of PSTATE.DIT on taking an exception to EL3, and  copied to PSTATE.DIT on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-23_23-1">UAO, bit [23]<span class="condition"><br/>When FEAT_UAO is implemented:
+                        </span></h4><div class="field">
+      <p>User Access Override. Set to the value of PSTATE.UAO on taking an exception to EL3, and  copied to PSTATE.UAO on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-22_22-1">PAN, bit [22]<span class="condition"><br/>When FEAT_PAN is implemented:
+                        </span></h4><div class="field">
+      <p>Privileged Access Never. Set to the value of PSTATE.PAN on taking an exception to EL3, and  copied to PSTATE.PAN on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-21_21">SS, bit [21]</h4><div class="field">
+      <p>Software Step. Set to the value of PSTATE.SS on taking an exception to EL3, and conditionally  copied to PSTATE.SS on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-20_20">IL, bit [20]</h4><div class="field">
+      <p>Illegal Execution state. Set to the value of PSTATE.IL on taking an exception to EL3, and  copied to PSTATE.IL on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-19_14">Bits [19:14]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-13_13-1">ALLINT, bit [13]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field">
+      <p>All IRQ or FIQ interrupts mask. Set to the value of PSTATE.ALLINT on taking an exception to EL3, and  copied to PSTATE.ALLINT on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-12_12-1">SSBS, bit [12]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field">
+      <p>Speculative Store Bypass. Set to the value of PSTATE.SSBS on taking an exception to EL3, and  copied to PSTATE.SSBS on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-11_10-1">BTYPE, bits [11:10]<span class="condition"><br/>When FEAT_BTI is implemented:
+                        </span></h4><div class="field">
+      <p>Branch Type Indicator. Set to the value of PSTATE.BTYPE on taking an exception to EL3, and  copied to PSTATE.BTYPE on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-11_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-9_9">D, bit [9]</h4><div class="field">
+      <p>Debug exception mask. Set to the value of PSTATE.D on taking an exception to EL3, and  copied to PSTATE.D on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-8_8">A, bit [8]</h4><div class="field">
+      <p>SError interrupt mask. Set to the value of PSTATE.A on taking an exception to EL3, and  copied to PSTATE.A on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-7_7">I, bit [7]</h4><div class="field">
+      <p>IRQ interrupt mask. Set to the value of PSTATE.I on taking an exception to EL3, and  copied to PSTATE.I on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-6_6">F, bit [6]</h4><div class="field">
+      <p>FIQ interrupt mask. Set to the value of PSTATE.F on taking an exception to EL3, and  copied to PSTATE.F on executing an exception return operation in EL3.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-5_5">Bit [5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-4_4">M[4], bit [4]</h4><div class="field">
+      <p>Execution state. Set to <span class="binarynumber">0b0</span>, the value of PSTATE.nRW, on taking an exception to EL3 from AArch64 state, and copied to PSTATE.nRW on executing an exception return operation in EL3.</p>
+    <table class="valuetable"><tr><th>M[4]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>AArch64 execution state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-3_0">M[3:0], bits [3:0]</h4><div class="field">
+      <p>AArch64 Exception level and selected Stack Pointer.</p>
+    <table class="valuetable"><tr><th>M[3:0]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL0t.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>EL1t.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>EL1h.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>EL2t.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>EL2h.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>EL3t.</p>
+        </td></tr><tr><td class="bitfield">0b1101</td><td>
+          <p>EL3h.</p>
+        </td></tr></table><p>Other values are reserved. If SPSR_EL1.M[3:0] has a Reserved value, or a value for an unimplemented Exception level, executing an exception return operation in EL3 is an illegal return event, as described in <span class="xref">'Illegal return events from AArch64 state'</span>.</p>
+<p>The bits in this field are interpreted as follows:</p>
+<ul>
+<li>M[3:2] is set to the value of PSTATE.EL on taking an exception to EL3 and copied to PSTATE.EL on executing an exception return operation in EL3.
+</li><li>M[1] is unused and is 0 for all non-reserved values.
+</li><li>M[0] is set to the value of PSTATE.SP on taking an exception to EL3 and copied to PSTATE.SP on executing an exception return operation in EL3.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing SPSR_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SPSR_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0100</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SPSR_EL3;
+                </p><h4 class="assembler">MSR SPSR_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0100</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if IsFeatureImplemented(FEAT_GCS) &amp;&amp; GetCurrentEXLOCKEN() &amp;&amp; !Halted() &amp;&amp; PSTATE.EXLOCK == '1' then
+        EXLOCKException();
+    else
+        SPSR_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

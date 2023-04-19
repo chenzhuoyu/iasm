@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_DFR0_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_DFR0_EL1, AArch32 Debug Feature Register 0</h1><p>The ID_DFR0_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides top level information about the debug system in AArch32 state.</p>
+
+      
+        <p>Must be interpreted with the Main ID Register, <a href="AArch64-midr_el1.html">MIDR_EL1</a>.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>AArch64 System register ID_DFR0_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-id_dfr0.html">ID_DFR0[31:0]</a>.</p><h2>Attributes</h2>
+        <p>ID_DFR0_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When AArch32 is supported:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">TraceFilt</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">PerfMon</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">MProfDbg</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">MMapTrc</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">CopTrc</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">MMapDbg</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">CopSDbg</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">CopDbg</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_28">TraceFilt, bits [31:28]</h4><div class="field">
+      <p>Armv8.4 Self-hosted Trace Extension version. Defined values are:</p>
+    <table class="valuetable"><tr><th>TraceFilt</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Armv8.4 Self-hosted Trace Extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Armv8.4 Self-hosted Trace Extension implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_TRF</span> implements the functionality added by the value <span class="binarynumber">0b0001</span>.</p>
+<p>From Armv8.3, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-27_24">PerfMon, bits [27:24]</h4><div class="field"><p>Performance Monitors Extension version.</p>
+<p>This field does not follow the standard ID scheme, but uses the alternative ID scheme described in <span class="xref">'Alternative ID scheme used for the Performance Monitors Extension version'</span></p>
+<p>Defined values are:</p><table class="valuetable"><tr><th>PerfMon</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Performance Monitors Extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Performance Monitors Extension, PMUv1 implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Performance Monitors Extension, PMUv2 implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Performance Monitors Extension, PMUv3 implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td><p>PMUv3 for Armv8.1. As <span class="binarynumber">0b0011</span>, and adds support for:</p>
+<ul>
+<li>Extended 16-bit <a href="AArch32-pmevtypern.html">PMEVTYPER&lt;n&gt;</a>.evtCount field.
+</li><li>If EL2 is implemented, the <a href="AArch32-hdcr.html">HDCR</a>.HPMD control.
+</li></ul></td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>PMUv3 for Armv8.4. As <span class="binarynumber">0b0100</span>, and adds support for the <a href="AArch32-pmmir.html">PMMIR</a> register.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td><p>PMUv3 for Armv8.5. As <span class="binarynumber">0b0101</span>, and adds support for:</p>
+<ul>
+<li>64-bit event counters.
+</li><li>If EL2 is implemented, the <a href="AArch32-hdcr.html">HDCR</a>.HCCD control.
+</li><li>If EL3 is implemented, the <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.SCCD control.
+</li></ul></td></tr><tr><td class="bitfield">0b0111</td><td><p>PMUv3 for Armv8.7. As <span class="binarynumber">0b0110</span>, and adds support for:</p>
+<ul>
+<li>The <a href="AArch32-pmcr.html">PMCR</a>.FZO and, if EL2 is implemented, <a href="AArch32-hdcr.html">HDCR</a>.HPMFZO controls.
+</li><li>If EL3 is implemented, the <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.{MPMX,MCCD} controls.
+</li></ul></td></tr><tr><td class="bitfield">0b1000</td><td><p>PMUv3 for Armv8.8. As <span class="binarynumber">0b0111</span>, and:</p>
+<ul>
+<li>Extends the Common event number space to include <span class="hexnumber">0x0040</span> to <span class="hexnumber">0x00BF</span> and <span class="hexnumber">0x4040</span> to <span class="hexnumber">0x40BF</span>.
+</li><li>Removes the <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> behaviors if a reserved or unimplemented PMU event number is selected.
+</li></ul></td></tr><tr><td class="bitfield">0b1001</td><td><p>PMUv3 for Armv8.9. As <span class="binarynumber">0b1000</span>, and:</p>
+<ul>
+<li>Updates the definitions of existing PMU events.
+</li><li>Adds support for the <a href="ext-edecr.html">EDECR</a>.PME control.
+</li></ul></td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> form of performance monitors supported, PMUv3 not supported. Arm does not recommend this value for new implementations.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_PMUv3</span> implements the functionality identified by the value <span class="binarynumber">0b0011</span>.</p>
+<p><span class="xref">FEAT_PMUv3p1</span> implements the functionality identified by the value <span class="binarynumber">0b0100</span>.</p>
+<p><span class="xref">FEAT_PMUv3p4</span> implements the functionality identified by the value <span class="binarynumber">0b0101</span>.</p>
+<p><span class="xref">FEAT_PMUv3p5</span> implements the functionality identified by the value <span class="binarynumber">0b0110</span>.</p>
+<p><span class="xref">FEAT_PMUv3p7</span> implements the functionality identified by the value <span class="binarynumber">0b0111</span>.</p>
+<p><span class="xref">FEAT_PMUv3p8</span> implements the functionality identified by the value <span class="binarynumber">0b1000</span>.</p>
+<p><span class="xref">FEAT_PMUv3p9</span> implements the functionality identified by the value <span class="binarynumber">0b1001</span>.</p>
+<p>In any Armv8 implementation, the values <span class="binarynumber">0b0001</span> and <span class="binarynumber">0b0010</span> are not permitted.</p>
+<p>From Armv8.1, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b0011</span> is not permitted.</p>
+<p>From Armv8.4, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b0100</span> is not permitted.</p>
+<p>From Armv8.5, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b0101</span> is not permitted.</p>
+<p>From Armv8.7, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b0110</span> is not permitted.</p>
+<p>From Armv8.8, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b0111</span> is not permitted.</p>
+<p>From Armv8.9, if <span class="xref">FEAT_PMUv3</span> is implemented, the value <span class="binarynumber">0b1000</span> is not permitted.</p></div><h4 id="fieldset_0-23_20">MProfDbg, bits [23:20]</h4><div class="field">
+      <p>M-profile Debug. Support for memory-mapped debug model for M-profile processors. Defined values are:</p>
+    <table class="valuetable"><tr><th>MProfDbg</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Support for M-profile Debug architecture, with memory-mapped access.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-19_16">MMapTrc, bits [19:16]</h4><div class="field">
+      <p>Memory-mapped Trace. Support for memory-mapped trace model. Defined values are:</p>
+    <table class="valuetable"><tr><th>MMapTrc</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Support for Arm trace architecture, with memory-mapped access.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>For more information, see the Arm® Embedded Trace Macrocell Architecture Specification, ETMv4 (ARM IHI 0064).</p></div><h4 id="fieldset_0-15_12">CopTrc, bits [15:12]</h4><div class="field">
+      <p>Support for System registers-based trace model, using registers in the coproc == <span class="binarynumber">0b1110</span> encoding space. Defined values are:</p>
+    <table class="valuetable"><tr><th>CopTrc</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Support for Arm trace architecture, with System registers access.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>For more information, see the Arm® Embedded Trace Macrocell Architecture Specification, ETMv4 (ARM IHI 0064).</p></div><h4 id="fieldset_0-11_8">MMapDbg, bits [11:8]</h4><div class="field">
+      <p>Memory-mapped Debug. Support for Armv7 memory-mapped debug model for A and R-profile processors. Defined values are:</p>
+    <table class="valuetable"><tr><th>MMapDbg</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Support for Armv7, v7 Debug architecture, with memory-mapped access.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Support for Armv7, v7.1 Debug architecture, with memory-mapped access.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<p>The optional memory map defined by Armv8 is not compatible with Armv7.</p></div><h4 id="fieldset_0-7_4">CopSDbg, bits [7:4]</h4><div class="field"><p>Support for a System registers-based Secure debug model, using registers in the coproc = <span class="binarynumber">0b1110</span> encoding space, for an A-profile processor that includes EL3.</p>
+<p>If EL3 is not implemented and the implemented Security state is Non-secure state, this field is <span class="arm-defined-word">RES0</span>. Otherwise, this field reads the same as bits [3:0].</p></div><h4 id="fieldset_0-3_0">CopDbg, bits [3:0]</h4><div class="field">
+      <p>Debug architecture version. Indicates presence of Armv8 debug architecture. Defined values are:</p>
+    <table class="valuetable"><tr><th>CopDbg</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Armv6, v6 Debug architecture, with System registers access.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Armv6, v6.1 Debug architecture, with System registers access.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Armv7, v7 Debug architecture, with System registers access.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Armv7, v7.1 Debug architecture, with System registers access.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Armv8 debug architecture.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Armv8 debug architecture with Virtualization Host Extensions.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>Armv8.2 debug architecture, <span class="xref">FEAT_Debugv8p2</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>Armv8.4 debug architecture, <span class="xref">FEAT_Debugv8p4</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>Armv8.8 debug architecture, <span class="xref">FEAT_Debugv8p8</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>Armv8.9 debug architecture, <span class="xref">FEAT_Debugv8p9</span>.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The values <span class="binarynumber">0b0000</span>, <span class="binarynumber">0b0010</span>, <span class="binarynumber">0b0011</span>, <span class="binarynumber">0b0100</span>, and <span class="binarynumber">0b0101</span> are not permitted in Armv8.</p>
+<p><span class="xref">FEAT_VHE</span> implements the functionality identified by the value <span class="binarynumber">0b0111</span>.</p>
+<p><span class="xref">FEAT_Debugv8p2</span> implements the functionality identified by the value <span class="binarynumber">0b1000</span>.</p>
+<p><span class="xref">FEAT_Debugv8p4</span> implements the functionality identified by the value <span class="binarynumber">0b1001</span>.</p>
+<p><span class="xref">FEAT_Debugv8p8</span> implements the functionality identified by the value <span class="binarynumber">0b1010</span>.</p>
+<p><span class="xref">FEAT_Debugv8p9</span> implements the functionality identified by the value <span class="binarynumber">0b1011</span>.</p>
+<p>From Armv8.1, when <span class="xref">FEAT_VHE</span> is implemented the value <span class="binarynumber">0b0110</span> is not permitted.</p>
+<p>From Armv8.2, the values <span class="binarynumber">0b0110</span> and <span class="binarynumber">0b0111</span> are not permitted.</p>
+<p>From Armv8.4, the value <span class="binarynumber">0b1000</span> is not permitted.</p>
+<p>From Armv8.8, the value <span class="binarynumber">0b1001</span> is not permitted.</p>
+<p>From Armv8.9, the value <span class="binarynumber">0b1010</span> is not permitted.</p></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr></tbody></table><h4 id="fieldset_1-63_0">Bits [63:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">UNKNOWN</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_DFR0_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_DFR0_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0001</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_DFR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_DFR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_DFR0_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

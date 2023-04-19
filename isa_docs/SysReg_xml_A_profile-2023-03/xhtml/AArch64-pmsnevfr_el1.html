@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMSNEVFR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMSNEVFR_EL1, Sampling Inverted Event Filter Register</h1><p>The PMSNEVFR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls sample filtering by events. The overall inverted filter is the logical OR of these filters. For example, if PMSNEVFR_EL1.E[3] and PMSNEVFR_EL1.E[5] are both set to 1, samples that have either event 3 (Level 1 unified or data cache refill) or event 5 (TLB walk) set to 1 are not recorded.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_SPEv1p2 is implemented. Otherwise, direct accesses to PMSNEVFR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>PMSNEVFR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[63]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[62]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[61]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[60]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[59]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[58]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[57]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[56]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[55]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[54]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[53]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[52]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[51]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[50]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[49]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_48">E[48]</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_32">RAZ/WI</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_12-31_31">E[31]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-30_30">E[30]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-29_29">E[29]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-28_28">E[28]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-27_27">E[27]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-26_26">E[26]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-25_25">E[25]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-24_24">E[24]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">E[23]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">E[22]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">E[21]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">E[20]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">E[19]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">E[18]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">E[17]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">E[16]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-15_15">E[15]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-14_14">E[14]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-13_13">E[13]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-63_12-12_12">E[12]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">E[11]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">E[10]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">E[9]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">E[8]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">E[7]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">E[6]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">E[5]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">E[4]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">E[3]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">E[2]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">E[1]</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">RAZ/WI</a></td></tr></tbody></table><h4 id="fieldset_0-63_48">E[&lt;x&gt;], bit [x], for x = 63 to 48, 31 to 24, 15 to 12</h4><div class="field">
+      <p>E[&lt;x&gt;] is the event filter for <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> event &lt;x&gt;.</p>
+    <table class="valuetable"><tr><th>E[&lt;x&gt;]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Event &lt;x&gt; is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have event &lt;x&gt; == 1.</p>
+        </td></tr></table><p>An <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> event might be recorded as a multi-bit field. In this case, the corresponding bits of PMSNEVFR_EL1 define an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> filter for the event.</p>
+<p>This bit is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>When event &lt;x&gt; is not implemented, or filtering on event &lt;x&gt; is not supported, access to this field is <span class="access_level">RAZ/WI</span>.</p></div><h4 id="fieldset_0-47_32">Bits [47:32]</h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-23_23-1">E[23], bit [23]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented and event 23 is implemented:
+                        </span></h4><div class="field">
+      <p>Data not snooped.</p>
+    <table class="valuetable"><tr><th>E[23]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Data snooped event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Data snooped event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-22_22-1">E[22], bit [22]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented and event 22 is implemented:
+                        </span></h4><div class="field">
+      <p>Not recently fetched.</p>
+    <table class="valuetable"><tr><th>E[22]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Recently fetched event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Recently fetched event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-21_21-1">E[21], bit [21]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented and event 21 is implemented:
+                        </span></h4><div class="field">
+      <p>Cache data not modified.</p>
+    <table class="valuetable"><tr><th>E[21]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Cache data modified event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Cache data modified event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-20_20-1">E[20], bit [20]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented and event 20 is implemented:
+                        </span></h4><div class="field">
+      <p>Level 2 data cache hit.</p>
+    <table class="valuetable"><tr><th>E[20]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Level 2 data cache miss event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Level 2 data cache miss event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-19_19-1">E[19], bit [19]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented and event 19 is implemented:
+                        </span></h4><div class="field">
+      <p>No level 2 data cache access.</p>
+    <table class="valuetable"><tr><th>E[19]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Level 2 data cache access event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Level 2 data cache access event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-18_18-1">E[18], bit [18]<span class="condition"><br/>When FEAT_SVE is implemented and FEAT_SPEv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Not empty predicate.</p>
+    <table class="valuetable"><tr><th>E[18]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Empty predicate event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Empty predicate event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-17_17-1">E[17], bit [17]<span class="condition"><br/>When FEAT_SVE is implemented and FEAT_SPEv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Not partial predicate.</p>
+    <table class="valuetable"><tr><th>E[17]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Partial predicate event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Partial predicate event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-16_16-1">E[16], bit [16]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Not transactional.</p>
+    <table class="valuetable"><tr><th>E[16]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Transactional event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Transactional event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-11_11-1">E[11], bit [11]<span class="condition"><br/>When FEAT_SPEv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Aligned.</p>
+    <table class="valuetable"><tr><th>E[11]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Misalignment event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Misalignment event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-10_10-1">E[10], bit [10]<span class="condition"><br/>When (FEAT_SPEv1p4 is implemented or filtering on event 10 is optionally supported) and event 10 is implemented:
+                        </span></h4><div class="field">
+      <p>No remote access.</p>
+    <table class="valuetable"><tr><th>E[10]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Remote access event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Remote access event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-9_9-1">E[9], bit [9]<span class="condition"><br/>When (FEAT_SPEv1p4 is implemented or filtering on event 9 is optionally supported) and event 9 is implemented:
+                        </span></h4><div class="field">
+      <p>Last Level cache hit.</p>
+    <table class="valuetable"><tr><th>E[9]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Last Level cache miss event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Last Level cache miss event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-8_8-1">E[8], bit [8]<span class="condition"><br/>When (FEAT_SPEv1p4 is implemented or filtering on event 8 is optionally supported) and event 8 is implemented:
+                        </span></h4><div class="field">
+      <p>No Last Level cache access.</p>
+    <table class="valuetable"><tr><th>E[8]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Last Level cache access event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Last Level cache access event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-7_7">E[7], bit [7]</h4><div class="field">
+      <p>Correctly predicted.</p>
+    <table class="valuetable"><tr><th>E[7]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Mispredicted event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Mispredicted event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6">E[6], bit [6]</h4><div class="field">
+      <p>Taken.</p>
+    <table class="valuetable"><tr><th>E[6]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Not taken event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Not taken event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5">E[5], bit [5]</h4><div class="field">
+      <p>TLB hit.</p>
+    <table class="valuetable"><tr><th>E[5]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>TLB walk event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the TLB walk event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-1">E[4], bit [4]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented or filtering on event 4 is optionally supported:
+                        </span></h4><div class="field">
+      <p>No TLB access.</p>
+    <table class="valuetable"><tr><th>E[4]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>TLB access event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the TLB access event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-3_3">E[3], bit [3]</h4><div class="field">
+      <p>Level 1 data or unified cache hit.</p>
+    <table class="valuetable"><tr><th>E[3]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Level 1 data or unified cache refill event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Level 1 data or unified cache refill event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-1">E[2], bit [2]<span class="condition"><br/>When FEAT_SPEv1p4 is implemented or filtering on event 2 is optionally supported:
+                        </span></h4><div class="field">
+      <p>No Level 1 data cache access.</p>
+    <table class="valuetable"><tr><th>E[2]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Level 1 data cache access event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Level 1 data cache access event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-1_1-1">E[1], bit [1]<span class="condition"><br/>When the PE supports sampling of speculative instructions:
+                        </span></h4><div class="field">
+      <p>Speculative.</p>
+    <table class="valuetable"><tr><th>E[1]</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Architecturally executed event is ignored.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Do not record samples that have the Architecturally executed event == 1.</p>
+        </td></tr></table>
+      <p>This field is ignored by the PE when <a href="AArch64-pmsfcr_el1.html">PMSFCR_EL1</a>.FnE == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><h4 id="fieldset_0-0_0">Bit [0]</h4><div class="field">
+      <p>Reserved, RAZ/WI.</p>
+    </div><div class="access_mechanisms"><h2>Accessing PMSNEVFR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, PMSNEVFR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.nPMSNEVFR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x850];
+    else
+        X[t, 64] = PMSNEVFR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMSNEVFR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMSNEVFR_EL1;
+                </p><h4 class="assembler">MSR PMSNEVFR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.nPMSNEVFR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x850] = X[t, 64];
+    else
+        PMSNEVFR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPMSN == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMSNEVFR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMSNEVFR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

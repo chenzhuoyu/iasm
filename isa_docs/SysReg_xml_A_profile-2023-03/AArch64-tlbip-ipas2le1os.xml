@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="False" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TLBIP IPAS2LE1OS, TLBIP IPAS2LE1OSNXS</reg_short_name>
+        
+        <reg_long_name>TLB Invalidate Pair by Intermediate Physical Address, Stage 2, Last level, EL1, Outer Shareable</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_D128 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>If EL2 is implemented and enabled in the current Security state, invalidates cached copies of translation table entries from TLBs that meet all the following requirements:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>
+<para>The entry is a 128-bit stage 2 only translation table entry, from the final level of the translation table walk.</para>
+<para>Or the entry is a 64-bit stage 2 only translation table entry, from the final level of the translation table walk, if TTL[3:2] is <binarynumber>0b00</binarynumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, one of the following applies:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.{NSE, NS} is {0, 0} and the entry would be required to translate the specified IPA using the Secure EL1&amp;0 translation regime.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.{NSE, NS} is {0, 1} and the entry would be required to translate the specified IPA using the Non-secure EL1&amp;0 translation regime.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.{NSE, NS} is {1, 1} and the entry would be required to translate the specified IPA using the Realm EL1&amp;0 translation regime.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is not implemented, one of the following applies:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.NS is 0 and the entry would be required to translate the specified IPA using the Secure EL1&amp;0 translation regime.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.NS is 1 and the entry would be required to translate the specified IPA using the Non-secure EL1&amp;0 translation regime.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>The entry would be used with the current VMID.</para>
+</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The invalidation is not required to apply to caching structures that combine stage 1 and stage 2 translation table entries.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The invalidation applies to all PEs in the same Outer Shareable shareability domain as the PE that executes this System instruction.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For more information about the architectural requirements for this System instruction, see <xref browsertext="'Invalidation of TLB entries from stage 2 translations'" filename="D_the_aarch64_virtual_memory_system_architecture.fm" linkend="CHDFBBEA"/>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If <xref browsertext="FEAT_XS" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.XS"/> is implemented, the nXS variant of this System instruction is defined.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Both variants perform the same invalidation, but the TLBI System instruction without the nXS qualifier waits for all memory accesses using in-scope old translation information to complete before it is considered complete.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The TLBI System instruction with the nXS qualifier is considered complete when the subset of these memory accesses with XS attribute set to 0 are complete.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>TLB maintenance instructions</reg_group>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TLBIP IPAS2LE1OS, TLBIP IPAS2LE1OSNXS is a 128-bit System instruction.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="128">
+  <text_before_fields/>
+  <field id="fieldset_0-127_108" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>127</field_msb>
+    <field_lsb>108</field_lsb>
+    <rel_range>127:108</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-107_64" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IPA[51:48]</field_name>
+    <field_msb>107</field_msb>
+    <field_lsb>64</field_lsb>
+    <rel_range>107:64</rel_range>
+    <field_description order="before">
+      <para>Bits[55:12] of the intermediate physical address to match.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-63_63-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>When the instruction is executed and <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.{NSE, NS} == {0, 0}, NS selects the IPA space.</para>
+    </field_description>
+    <field_description order="after"><para>When the instruction is executed and SCR_EL3.{NSE, NS} == {1, 1}, this field is <arm-defined-word>RES0</arm-defined-word>, and the instruction applies only to the Realm IPA space.</para>
+<para>When the instruction is executed and SCR_EL3.{NSE, NS} == {0, 1}, this field is <arm-defined-word>RES0</arm-defined-word>, and the instruction applies only to the Non-secure IPA space.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>IPA is in the Secure IPA space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>IPA is in the Non-secure IPA space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_RME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NS</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Not Secure. Specifies the IPA space.</para>
+    </field_description>
+    <field_description order="after"><para>When the instruction is executed in Non-secure state, this field is <arm-defined-word>RES0</arm-defined-word>, and the instruction applies only to the Non-secure IPA space.</para>
+<para>When <xref browsertext="FEAT_SEL2" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.SecEL2"/> is not implemented, or if EL2 is disabled in the current Security state, this field is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>IPA is in the Secure IPA space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>IPA is in the Non-secure IPA space.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_SEL2 is implemented and FEAT_RME is not implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-63_63-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-62_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>62</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>62:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TTL</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Translation Table Level. Indicates the level of the translation table walk that holds the leaf entry for the address being invalidated.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If an incorrect value of the TTL field is specified for the entry being invalidated by the instruction, then no entries are required by the architecture to be invalidated from the TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00xx</field_value>
+        <field_value_description>
+          <para>No information supplied as to the translation table level. Hardware must assume that the entry can be from any level. In this case, TTL&lt;1:0&gt; is <arm-defined-word>RES0</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01xx</field_value>
+        <field_value_description><para>The entry comes from a 4KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, level 0. Otherwise, treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : Level 1.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10xx</field_value>
+        <field_value_description><para>The entry comes from a 16KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : Reserved. Treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, level 1. Otherwise, treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11xx</field_value>
+        <field_value_description><para>The entry comes from a 64KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : Reserved. Treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : Level 1.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_TTL is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-47_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-43_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>43:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="128">
+  <fieldat id="fieldset_0-127_108" msb="127" lsb="108"/>
+  <fieldat id="fieldset_0-107_64" msb="107" lsb="64"/>
+  <fieldat id="fieldset_0-63_63-1" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_48" msb="62" lsb="48"/>
+  <fieldat id="fieldset_0-47_44-1" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_0" msb="43" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="TLBIP IPAS2LE1OS" type="SystemAccessor">
+            <encoding>
+            <access_instruction>TLBIP IPAS2LE1OS{, &lt;Xt&gt;, &lt;Xt2&gt;}</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b1000"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="TLBIP" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    AArch64.TLBIP_IPAS2(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBILevel_Last, TLBI_AllAttr, X[t2, 64]:X[t, 64]);
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        return;
+    else
+        AArch64.TLBIP_IPAS2(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBILevel_Last, TLBI_AllAttr, X[t2, 64]:X[t, 64]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="TLBIP IPAS2LE1OSNXS" type="SystemAccessor">
+            <encoding>
+            <access_instruction>TLBIP IPAS2LE1OSNXS{, &lt;Xt&gt;, &lt;Xt2&gt;}</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b100"/>
+            </encoding>
+            <access_permission>
+                <ps name="TLBIP" sections="1" secttype="access_permission">
+                <pstext>
+if !IsFeatureImplemented(FEAT_XS) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x14);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    AArch64.TLBIP_IPAS2(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBILevel_Last, TLBI_ExcludeXS, X[t2, 64]:X[t, 64]);
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        return;
+    else
+        AArch64.TLBIP_IPAS2(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBILevel_Last, TLBI_ExcludeXS, X[t2, 64]:X[t, 64]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

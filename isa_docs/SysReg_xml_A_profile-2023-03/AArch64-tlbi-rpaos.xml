@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="False" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TLBI RPAOS</reg_short_name>
+        
+        <reg_long_name>TLB Range Invalidate GPT Information by PA, Outer Shareable</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_RME is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Invalidates cached copies of GPT entries from TLBs. Details:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>
+<para>The invalidation applies to TLB entries containing GPT information that relates to a physical address.</para>
+</content>
+</listitem><listitem><content>
+<para>The invalidation affects all TLBs in the Outer Shareable domain.</para>
+</content>
+</listitem><listitem><content>
+<para>Invalidates TLB entries containing GPT information from all levels of the GPT walk that relates to the supplied physical address.</para>
+</content>
+</listitem><listitem><content>
+<para>Invalidations are range-based, invalidating TLB entries starting from the address in BaseADDR, within the range as specified by SIZE.</para>
+</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The full set of TLB maintenance instructions that invalidate cached GPT entries is: <register_link id="AArch64-tlbi-paall.xml" state="AArch64">TLBI PAALL</register_link>, <register_link id="AArch64-tlbi-paallos.xml" state="AArch64">TLBI PAALLOS</register_link>, <register_link id="AArch64-tlbi-rpalos.xml" state="AArch64">TLBI RPALOS</register_link>, and <register_link id="AArch64-tlbi-rpaos.xml" state="AArch64">TLBI RPAOS</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>These instructions have the same ordering, observability, and completion behavior as all other TLBI instructions.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>TLB maintenance instructions</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TLBI RPAOS is a 64-bit System instruction.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>63:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SIZE</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before"><para>Size of the range for invalidation.</para>
+<para>If SIZE is a reserved value, no TLB entries are required to be invalidated.</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If SIZE gives a range smaller than the configured physical granule size in <register_link state="AArch64" id="AArch64-gpccr_el3.xml">GPCCR_EL3</register_link>.PGS, then the Effective value of SIZE is taken to be the size configured by <register_link state="AArch64" id="AArch64-gpccr_el3.xml">GPCCR_EL3</register_link>.PGS.</para>
+<para>If <register_link state="AArch64" id="AArch64-gpccr_el3.xml">GPCCR_EL3</register_link>.PGS is configured to a reserved value, no TLB entries are required to be invalidated.</para>
+<para>If <register_link state="AArch64" id="AArch64-gpccr_el3.xml">GPCCR_EL3</register_link>.PGS is configured to different values at the broadcasting PE and receiving PE, no TLB entries are required to be invalidated at the receiving PE.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>4KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>16KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>64KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>2MB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>32MB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>512MB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>1GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description>
+          <para>16GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1000</field_value>
+        <field_value_description>
+          <para>64GB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1001</field_value>
+        <field_value_description>
+          <para>512GB.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-39_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Address</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>39:0</rel_range>
+    <field_description order="before"><para>The starting address for the range of the maintenance instruction.</para>
+<para>This field is decoded with reference to the value of <register_link state="AArch64" id="AArch64-gpccr_el3.xml">GPCCR_EL3</register_link>.PGS to give BaseADDR as follows:</para>
+<table><tgroup cols="2"><thead><row><entry>GPCCR_EL3.PGS</entry><entry>BaseADDR</entry></row></thead><tbody><row><entry><binarynumber>0b00</binarynumber> (4KB)</entry><entry>BaseADDR[51:12] = Xt[39:0]</entry></row><row><entry><binarynumber>0b10</binarynumber> (16KB)</entry><entry>BaseADDR[51:14] = Xt[39:2]</entry></row><row><entry><binarynumber>0b01</binarynumber> (64KB)</entry><entry>BaseADDR[51:16] = Xt[39:4]</entry></row></tbody></tgroup></table></field_description>
+    <field_description order="after"><para>Other bits of BaseADDR are treated as zero, to give the Effective value of BaseADDR.</para>
+<para>If the Effective value of BaseADDR is not aligned to the size of the Effective value of SIZE, no TLB entries are required to be invalidated.</para>
+<para>If the Effective value of BaseADDR targets an address above the implemented PA range that <register_link state="AArch64" id="AArch64-id_aa64mmfr0_el1.xml">ID_AA64MMFR0_EL1</register_link>.PARange indicates, no TLB entries are required to be invalidated.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_48" msb="63" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_0" msb="39" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="TLBI RPAOS" type="SystemAccessor">
+            <encoding>
+            <access_instruction>TLBI RPAOS{, &lt;Xt&gt;}</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b110"/>
+                
+                <enc n="CRn" v="0b1000"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="TLBI" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    AArch64.TLBI_RPA(TLBILevel_Any, X[t, 64], Shareability_OSH);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

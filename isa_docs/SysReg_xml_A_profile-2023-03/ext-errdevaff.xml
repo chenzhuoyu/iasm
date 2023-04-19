@@ -1,0 +1,516 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ERRDEVAFF</reg_short_name>
+        
+        <reg_long_name>Device Affinity Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when the group of error records has affinity with a PE or cluster of PEs</reg_condition>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>RAS</reg_component>
+    <reg_offset><hexnumber>0xFA8</hexnumber></reg_offset>
+    <reg_instance>ERRDEVAFF</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>For a group of error records that has affinity with a single PE or a group of PEs, ERRDEVAFF is a copy of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link> or part of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>If the group of error records has affinity with a single PE, the affinity level is 0, then ERRDEVAFF reads the same value as <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>, and ERRDEVAFF.F0V reads-as-one to indicate affinity level 0.</content>
+</listitem><listitem><content>If the group of error records has affinity with a group of PEs, the affinity level is 1, 2, or 3, then parts of ERRDEVAFF reads the same value as parts of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>, and the rest of ERRDEVAFF indicates the level.</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For example, if the group of PEs is a subset of the PEs at affinity level 1 then all of the following are true:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>All the PEs in the group have the same values in <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.{Aff3,Aff2}, and these values are equal to ERRDEVAFF.{Aff3,Aff2}.</content>
+</listitem><listitem><content>ERRDEVAFF.Aff1 is nonzero and not <hexnumber>0x80</hexnumber>, and ERRDEVAFF.{Aff0,F0V} read-as-zero, to indicate at least affinity level 1. The subset of PEs at level 1 that the group of error records has affinity with is indicated by the least-significant set bit in ERRDEVAFF.Aff1. In this example, if ERRDEVAFF.Aff1[2:0] is <binarynumber>0b100</binarynumber>, then the group of error records has affinity with the up-to 8 PEs that have <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:3] == ERRDEVAFF.Aff1[7:3].</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Depending on the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> nature of the system, it might be possible that ERRDEVAFF is read before system firmware has configured the group of error records and/or the PE or group of PEs that the group of error records has affinity with. When this is the case, ERRDEVAFF reads as zero.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>If RAS System Architecture v1.1 is not implemented then ERRDEVAFF can only describe a group of error records that is affine with a single PE or all the PEs at an affinity level.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Depending on the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> nature of the system, it might be possible that ERRDEVAFF is read before system firmware has configured the group of error records or the PE or group of PEs that the group of error records has affinity with. When this is the case, ERRDEVAFF reads as zero.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>RAS registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>ERRDEVAFF is implemented only as part of a memory-mapped group of error records.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ERRDEVAFF is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>ERRDEVAFF</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>63:40</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-39_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Aff3</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>39:32</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 3. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff3 field, viewed from the highest Exception level of the associated PE or PEs.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F0V</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Indicates that the ERRDEVAFF.Aff0 field is valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0 is not valid, and the PE affinity is above level 0 or a subset of level 0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0 is valid, and the PE affinity is at level 0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>U</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Uniprocessor. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.U field, viewed from the highest Exception level of the associated PE.</para>
+    </field_description>
+    <fields_condition>When ERRDEVAFF.F0V == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN" reserved_type="UNKNOWN">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>29:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="UNKNOWN">
+    <field_name>MT</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Multithreaded. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.MT field, viewed from the highest Exception level of the associated PE.</para>
+    </field_description>
+    <fields_condition>When ERRDEVAFF.F0V == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-24_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN" reserved_type="UNKNOWN">
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff2</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 2. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2 field, viewed from the highest Exception level of the associated PE or PEs.</para>
+    </field_description>
+    <fields_condition>When affine with a PE or PEs at affinity level 2 or below</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff2</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 2. Defines part of the <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2 field, viewed from the highest Exception level of the associated PEs.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0bxxxxxxx1</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:1] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:1], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxxx10</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:2] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:2], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxx100</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:3] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:3], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:4] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:4], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxx10000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:5] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:5], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxx100000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7:6] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7:6], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bx1000000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff2[7] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff2[7], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When affine with a sub-set of PEs at affinity level 2</fields_condition>
+  </field>
+  <field id="fieldset_0-23_16-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff2</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 2. Indicates whether the PE affinity is at level 3.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x80</field_value>
+        <field_value_description>
+          <para>PE affinity is at level 3.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff1</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 1. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1 field, viewed from the highest Exception level of the associated PE or PEs.</para>
+    </field_description>
+    <fields_condition>When affine with a PE or PEs at affinity level 1 or below</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff1</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 1. Defines part of the <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1 field, viewed from the highest Exception level of the associated PEs.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0bxxxxxxx1</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:1] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:1], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxxx10</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:2] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:2], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxx100</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:3] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:3], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:4] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:4], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxx10000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:5] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:5], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxx100000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7:6] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7:6], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bx1000000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff1[7] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff1[7], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When affine with a sub-set of PEs at affinity level 1</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff1</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 1. Indicates whether the PE affinity is at level 2.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para>PE affinity is above level 2 or a subset of level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x80</field_value>
+        <field_value_description>
+          <para>PE affinity is at level 2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 0. The <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0 field, viewed from the highest Exception level of the associated PE.</para>
+    </field_description>
+    <fields_condition>When affine with a PE at affinity level 0</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 0. Defines part of the <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0 field, viewed from the highest Exception level of the associated PEs.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0bxxxxxxx1</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:1] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:1], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxxx10</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:2] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:2], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxxx100</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:3] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:3], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxxx1000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:4] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:4], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxxx10000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:5] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:5], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bxx100000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7:6] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7:6], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0bx1000000</field_value>
+        <field_value_description>
+          <para>ERRDEVAFF.Aff0[7] is the value of <register_link state="AArch64" id="AArch64-mpidr_el1.xml">MPIDR_EL1</register_link>.Aff0[7], viewed from the highest Exception level of the associated PEs.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When affine with a sub-set of PEs at affinity level 0</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>Aff0</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>PE affinity level 0. Indicates whether the PE affinity is at level 1.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0x00</field_value>
+        <field_value_description>
+          <para>PE affinity is above level 1 or a subset of level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0x80</field_value>
+        <field_value_description>
+          <para>PE affinity is at level 1.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_40" msb="63" lsb="40"/>
+  <fieldat id="fieldset_0-39_32" msb="39" lsb="32"/>
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30-1" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_25" msb="29" lsb="25"/>
+  <fieldat id="fieldset_0-24_24-1" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_16-1" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_8-1" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0-1" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

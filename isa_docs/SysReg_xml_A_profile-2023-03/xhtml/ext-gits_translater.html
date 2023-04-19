@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GITS_TRANSLATER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GITS_TRANSLATER, ITS Translation Register</h1><p>The GITS_TRANSLATER characteristics are:</p><h2>Purpose</h2>
+        <p>Written by a requesting Device to signal an interrupt for translation by the ITS.</p>
+      <h2>Configuration</h2>
+        <p>This register is at the same offset as <a href="ext-gicd_setspi_nsr.html">GICD_SETSPI_NSR</a> in the Distributor, and is at the same offset as <a href="ext-gicr_setlpir.html">GICR_SETLPIR</a> in the Redistributor.</p>
+      <h2>Attributes</h2>
+        <p>GITS_TRANSLATER is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-31_0">EventID</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">EventID, bits [31:0]</h4><div class="field"><p>An identifier corresponding to the interrupt to be translated.</p>
+<div class="note"><span class="note-header">Note</span><p>The size of the EventID is DeviceID specific, and set when the DeviceID is mapped to an ITT (using <span class="xref">MAPD</span>).</p></div><p>The number of EventID bits implemented is reported by <a href="ext-gits_typer.html">GITS_TYPER</a>.ID_bits. If a write specifies nonzero identifiers bits outside this range behavior is a <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> choice between:</p>
+<ul>
+<li>Nonzero identifier bits outside the supported range are ignored.
+</li><li>The write is ignored.
+</li></ul></div><div class="text_after_fields">
+    <p>The DeviceID presented to an ITS is used to index a device table. The device table maps the DeviceID to an interrupt translation table for that device.</p>
+  </div><h2>Accessing GITS_TRANSLATER</h2>
+        <p>16-bit access to bits [15:0] of this register must be supported. When this register is written by a 16-bit transaction, bits [31:16] are written as zero.</p>
+
+      
+        <p>Implementations must ensure that:</p>
+
+      
+        <ul>
+<li>A unique DeviceID is provided for each requesting device, and the DeviceID is presented to the ITS when a write to this register occurs in a manner that cannot be spoofed by any agent capable of performing writes.
+</li><li>The DeviceID presented corresponds to the DeviceID field in the ITS commands.
+</li></ul>
+
+      
+        <p>Writes to this register are ignored if any of the following are true:</p>
+
+      
+        <ul>
+<li><a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled == 0.
+</li><li>The presented DeviceID is not mapped to an Interrupt Translation Table.
+</li><li>The DeviceID is larger than the supported size.
+</li><li>The DeviceID is mapped to an Interrupt Translation Table, but the EventID is outside the range specified by <span class="xref">MAPD</span>.
+</li><li>The EventID is mapped to an Interrupt Translation Table and the EventID is within the range specified by <span class="xref">MAPD</span>, but the EventID is unmapped.
+</li></ul>
+
+      
+        <p>Translation requests that result from writes to this register are subject to certain ordering rules. For more information, see <span class="xref">'Ordering of translations with the output to ITS commands' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+      <h4>GITS_TRANSLATER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC ITS translation</td><td><span class="hexnumber">0x0040</span></td><td>GITS_TRANSLATER</td></tr></table><p>Accesses on this interface are <span class="access_level">WO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

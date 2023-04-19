@@ -1,0 +1,632 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CPACR_EL1</reg_short_name>
+        
+        <reg_long_name>Architectural Feature Access Control Register</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-cpacr.xml">CPACR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls access to trace, 
+SME, Streaming SVE, 
+SVE, 
+and Advanced SIMD and floating-point functionality.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Other system control registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>When EL2 is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} == {1, 1}, the fields in this register have no effect on execution at EL0 and EL1. In this case, the controls provided by <register_link state="AArch64" id="AArch64-cptr_el2.xml">CPTR_EL2</register_link> are used.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CPACR_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>63:30</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>E0POE</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Enable access to <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link>.</para>
+<para>Traps EL0 accesses to <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link>, from AArch64 state only to EL1, or to EL2 when it is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1. The exception is reported using ESR_ELx.EC value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control causes EL0 access to <register_link state="AArch64" id="AArch64-por_el0.xml">POR_EL0</register_link> to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_S1POE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TTA</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before"><para>Traps EL0 and EL1 System register accesses to all implemented trace registers from both Execution states to EL1, or to EL2 when it is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, as follows:</para>
+<list type="unordered">
+<listitem><content>
+<para>In AArch64 state, accesses to trace registers are trapped, reported using ESR_ELx.EC value <hexnumber>0x18</hexnumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>In AArch32 state, MRC and MCR accesses to trace registers are trapped, reported using ESR_ELx.EC value <hexnumber>0x05</hexnumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>In AArch32 state, MRRC and MCRR accesses to trace registers are trapped, reported using ESR_ELx.EC value <hexnumber>0x0C</hexnumber>.</para>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><note><list type="unordered"><listitem><content>The ETMv4 architecture and ETE do not permit EL0 to access the trace registers. If the trace unit implements FEAT_ETMv4 or FEAT_ETE, EL0 accesses to the trace registers are <arm-defined-word>UNDEFINED</arm-defined-word>, and any resulting exception is higher priority than an exception that would be generated because the value of <register_link state="AArch64" id="AArch64-cpacr_el1.xml">CPACR_EL1</register_link>.TTA is 1.</content></listitem><listitem><content>The Arm architecture does not provide traps on trace register accesses through the optional memory-mapped interface.</content></listitem></list></note><para>System register accesses to the trace registers can have side-effects. When a System register access is trapped, any side-effects that are normally associated with the access do not occur before the exception is taken.</para>
+<para>If System register access to the trace functionality is not implemented, this bit is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control causes EL0 and EL1 System register accesses to all implemented trace registers to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-27_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>27:26</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-25_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SMEN</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before"><para>Traps execution at EL1 and EL0 of SME instructions, SVE instructions when FEAT_SVE is not implemented or the PE is in Streaming SVE mode, and instructions that directly access the <register_link state="AArch64" id="AArch64-svcr.xml">SVCR</register_link> or <register_link state="AArch64" id="AArch64-smcr_el1.xml">SMCR_EL1</register_link> System registers to EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1. </para>
+<para>When instructions that directly access the <register_link state="AArch64" id="AArch64-svcr.xml">SVCR</register_link> System register are trapped with reference to this control, the <instruction>MSR SVCRSM</instruction>, <instruction>MSR SVCRZA</instruction>, and <instruction>MSR SVCRSMZA</instruction> instructions are also trapped.</para>
+<para>The exception is reported using ESR_ELx.EC value of <hexnumber>0x1D</hexnumber>, with an ISS code of <hexnumber>0x0000000</hexnumber>.</para>
+<para>This field does not affect whether Streaming SVE or SME register values are valid.</para>
+<para>A trap taken as a result of CPACR_EL1.SMEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL0 to be trapped, but does not cause execution of any instructions at EL1 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>This control does not cause execution of any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-25_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-23_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>23:22</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-21_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FPEN</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>21:20</rel_range>
+    <field_description order="before"><para>Traps execution at EL1 and EL0 of instructions that access the Advanced SIMD and floating-point registers from both Execution states to EL1, reported using ESR_ELx.EC value <hexnumber>0x07</hexnumber>, or to EL2 reported using ESR_ELx.EC value <hexnumber>0x00</hexnumber> when EL2 is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, as follows:</para>
+<list type="unordered">
+<listitem><content>In AArch64 state, accesses to <register_link state="AArch64" id="AArch64-fpcr.xml">FPCR</register_link>, <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>, any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-31 registers.</content>
+</listitem><listitem><content>In AArch32 state, <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>, and any of the SIMD and floating-point registers Q0-15, including their views as D0-D31 registers or S0-31 registers.</content>
+</listitem></list>
+<para>Traps execution at EL1 and EL0 of 
+SME and 
+SVE instructions 
+ to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1.
+The exception is reported using ESR_ELx.EC value <hexnumber>0x07</hexnumber>.</para>
+<para>A trap taken as a result of CPACR_EL1.SMEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.</para>
+<para>A trap taken as a result of CPACR_EL1.ZEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.</para></field_description>
+    <field_description order="after"><para>Writes to <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link>, <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link>, and <register_link state="AArch32" id="AArch32-mvfr2.xml">MVFR2</register_link> from EL1 or higher are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> and whether these accesses can be trapped by this control depends on implemented <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> behavior.</para>
+<note><list type="unordered"><listitem><content>Attempts to write to the FPSID count as use of the registers for accesses from EL1 or higher.</content></listitem><listitem><content>Accesses from EL0 to <register_link state="AArch32" id="AArch32-fpsid.xml">FPSID</register_link>, <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link>, <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link>, <register_link state="AArch32" id="AArch32-mvfr2.xml">MVFR2</register_link>, and <register_link state="AArch32" id="AArch32-fpexc.xml">FPEXC</register_link> are <arm-defined-word>UNDEFINED</arm-defined-word>, and any resulting exception is higher priority than an exception that would be generated because the value of CPACR_EL1.FPEN is not <binarynumber>0b11</binarynumber>.</content></listitem></list></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL0 to be trapped, but does not cause execution of any instructions at EL1 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>This control does not cause execution of any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>19:18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ZEN</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before"><para>Traps execution at EL1 and EL0 of SVE instructions when the PE is not in Streaming SVE mode, and instructions that directly access the <register_link state="AArch64" id="AArch64-zcr_el1.xml">ZCR_EL1</register_link> System register to EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1.</para>
+<para>The exception is reported using ESR_ELx.EC value <hexnumber>0x19</hexnumber>.</para>
+<para>A trap taken as a result of CPACR_EL1.ZEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL0 to be trapped, but does not cause execution of any instructions at EL1 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>This control causes execution of these instructions at EL1 and EL0 to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>This control does not cause execution of any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SVE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_30" msb="63" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_26" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-25_24-1" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_22" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-21_20" msb="21" lsb="20"/>
+  <fieldat id="fieldset_0-19_18" msb="19" lsb="18"/>
+  <fieldat id="fieldset_0-17_16-1" msb="17" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>When <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.E2H is 1, without explicit synchronization, access from EL3 using the mnemonic CPACR_EL1 or CPACR_EL12 are not guaranteed to be ordered with respect to accesses using the other mnemonic.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS CPACR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, CPACR_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TCPAC == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGRTR_EL2.CPACR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        X[t, 64] = NVMem[0x100];
+    else
+        X[t, 64] = CPACR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        X[t, 64] = CPTR_EL2;
+    else
+        X[t, 64] = CPACR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = CPACR_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister CPACR_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR CPACR_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TCPAC == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGWTR_EL2.CPACR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '111' then
+        NVMem[0x100] = X[t, 64];
+    else
+        CPACR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HCR_EL2.E2H == '1' then
+        CPTR_EL2 = X[t, 64];
+    else
+        CPACR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    CPACR_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MRS CPACR_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, CPACR_EL12</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        X[t, 64] = NVMem[0x100];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+            UNDEFINED;
+        elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            X[t, 64] = CPACR_EL1;
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        X[t, 64] = CPACR_EL1;
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister CPACR_EL12" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR CPACR_EL12, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b101"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV1,NV&gt; == '101' then
+        NVMem[0x100] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.E2H == '1' then
+        if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TCPAC == '1' then
+            UNDEFINED;
+        elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+            if Halted() &amp;&amp; EDSCR.SDD == '1' then
+                UNDEFINED;
+            else
+                AArch64.SystemAccessTrap(EL3, 0x18);
+        else
+            CPACR_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' then
+        CPACR_EL1 = X[t, 64];
+    else
+        UNDEFINED;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

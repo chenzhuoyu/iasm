@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICR_NSACR</reg_short_name>
+        
+        <reg_long_name>Non-secure Access Control Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Redistributor</reg_component>
+    <reg_frame>SGI_base</reg_frame>
+    <reg_offset><hexnumber>0x0E00</hexnumber></reg_offset>
+    <reg_instance>GICR_NSACR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 1</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Secure</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Non-secure</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Root</reg_access_level>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Realm</reg_access_level>
+          <reg_access_type>RAZ/WI</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Enables Secure software to permit Non-secure software to create SGIs targeting the PE connected to this Redistributor by writing to <register_link state="AArch64" id="AArch64-icc_sgi1r_el1.xml">ICC_SGI1R_EL1</register_link>, <register_link state="AArch64" id="AArch64-icc_asgi1r_el1.xml">ICC_ASGI1R_EL1</register_link> or <register_link state="AArch64" id="AArch64-icc_sgi0r_el1.xml">ICC_SGI0R_EL1</register_link>.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For more information, see <xref browsertext="'Forwarding an SGI to a target PE' in ARM&#174; Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_programmers_model.fm" linkend="BEIIJFBD"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Redistributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>For a description on when a write to <register_link state="AArch64" id="AArch64-icc_sgi0r_el1.xml">ICC_SGI0R_EL1</register_link>, <register_link state="AArch64" id="AArch64-icc_sgi1r_el1.xml">ICC_SGI1R_EL1</register_link> or <register_link state="AArch64" id="AArch64-icc_asgi1r_el1.xml">ICC_ASGI1R_EL1</register_link> is permitted to generate an interrupt, see <xref browsertext="'Use of control registers for SGI forwarding' in ARM&#174; Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_programmers_model.fm" linkend="CHDJCIBI"/>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICR_NSACR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>NS_access&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>Configures the level of Non-secure access permitted when the SGI is in Secure Group 0 or Secure Group 1, as defined from <register_link state="ext" id="ext-gicr_igroupr0.xml">GICR_IGROUPR0</register_link> and <register_link state="ext" id="ext-gicr_igrpmodr0.xml">GICR_IGRPMODR0</register_link>. A field is provided for each SGI. The possible values of each 2-bit field are:</para>
+    </field_description>
+    <field_array_indexes index_variable="x" element_size="2" range_specifier="2x+1:2x">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-secure writes are not permitted to generate Secure Group 0 SGIs or Secure Group 1 SGIs.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Non-secure writes are permitted to generate a Secure Group 0 SGI.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b01</binarynumber>, but additionally Non-secure writes to are permitted to generate a Secure Group 1 SGI.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description><para>Reserved.</para>
+<para>If the field is programmed to the reserved value, then the hardware will treat the field as if it has been programmed to an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> choice of the valid values. However, to maintain the principle that as the value increases additional accesses are permitted Arm strongly recommends that implementations treat this value as <binarynumber>0b10</binarynumber>. It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the value read back is the value programmed or the valid value chosen.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="NS_access15" msb="31" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access14" msb="29" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access13" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access12" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access11" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access10" msb="21" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access9" msb="19" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access8" msb="17" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access7" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access6" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access5" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access4" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access3" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access2" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access1" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="NS_access0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is used when affinity routing is enabled. When affinity routing is not enabled for the Security state of the interrupt, <register_link state="ext" id="ext-gicd_nsacrn.xml">GICD_NSACR&lt;n&gt;</register_link> with n=0 provides equivalent functionality.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>This register does not support PPIs.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

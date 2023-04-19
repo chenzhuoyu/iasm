@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" encoding="UTF-8" href="iform.xsl" version="1.0"?>
+<!DOCTYPE instructionsection PUBLIC "-//ARM//DTD instructionsection //EN" "iform-p.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+
+<instructionsection id="BTI" title="BTI -- A64" type="instruction">
+  <docvars>
+    <docvar key="instr-class" value="system" />
+    <docvar key="isa" value="A64" />
+    <docvar key="mnemonic" value="BTI" />
+  </docvars>
+  <heading>BTI</heading>
+  <desc>
+    <brief>
+      <para>Branch Target Identification</para>
+    </brief>
+    <authored>
+      <para>Branch Target Identification. A <instruction>BTI</instruction> instruction is used to guard against the execution of instructions which are not the intended target of a branch.</para>
+      <para>Outside of a guarded memory region, a <instruction>BTI</instruction> instruction executes as a <instruction>NOP</instruction>. Within a guarded memory region while <xref linkend="BEIDIGBH">PSTATE</xref>.BTYPE != <binarynumber>0b00</binarynumber>, a <instruction>BTI</instruction> instruction compatible with the current value of PSTATE.BTYPE will not generate a Branch Target Exception and will allow execution of subsequent instructions within the memory region.</para>
+      <para>The operand <syntax>&lt;targets&gt;</syntax> passed to a <instruction>BTI</instruction> instruction determines the values of <xref linkend="BEIDIGBH">PSTATE</xref>.BTYPE which the <instruction>BTI</instruction> instruction is compatible with.</para>
+      <note>
+        <para>Within a guarded memory region, when <xref linkend="BEIDIGBH">PSTATE</xref>.BTYPE != <binarynumber>0b00</binarynumber>, all instructions will generate a Branch Target Exception, other than <instruction>BRK</instruction>, <instruction>BTI</instruction>, <instruction>HLT</instruction>, <instruction>PACIASP</instruction>, and <instruction>PACIBSP</instruction>, which might not. See the individual instructions for more information.</para>
+      </note>
+    </authored>
+  </desc>
+  <alias_list howmany="0"></alias_list>
+  <classes>
+    <iclass name="System" oneof="1" id="iclass_system" no_encodings="1" isa="A64">
+      <docvars>
+        <docvar key="instr-class" value="system" />
+        <docvar key="isa" value="A64" />
+        <docvar key="mnemonic" value="BTI" />
+      </docvars>
+      <iclassintro count="1"></iclassintro>
+      <arch_variants>
+        <arch_variant name="ARMv8.5" feature="FEAT_BTI" />
+      </arch_variants>
+      <regdiagram form="32" psname="aarch64/instrs/system/hints/BTI_HB_hints" tworows="1">
+        <box hibit="31" width="10" settings="10">
+          <c>1</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="21" name="L" settings="1">
+          <c>0</c>
+        </box>
+        <box hibit="20" width="2" name="op0" settings="2">
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="18" width="3" name="op1" settings="3">
+          <c>0</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+        <box hibit="15" width="4" name="CRn" settings="4">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="11" width="4" name="CRm" usename="1" settings="4" psbits="xxxx">
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="7" width="3" name="op2" usename="1" settings="1" psbits="xxx">
+          <c>x</c>
+          <c>x</c>
+          <c>0</c>
+        </box>
+        <box hibit="4" width="5" name="Rt" settings="5">
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+          <c>1</c>
+        </box>
+      </regdiagram>
+      <encoding name="BTI_HB_hints" oneofinclass="1" oneof="1" label="">
+        <docvars>
+          <docvar key="instr-class" value="system" />
+          <docvar key="isa" value="A64" />
+          <docvar key="mnemonic" value="BTI" />
+        </docvars>
+        <asmtemplate><text>BTI  </text><text>{</text><a link="sa_targets" hover="Type of indirection (field &quot;op2&lt;2:1&gt;&quot;) [(omitted),c,j,jc]">&lt;targets&gt;</a><text>}</text></asmtemplate>
+      </encoding>
+      <ps_section howmany="1">
+        <ps name="aarch64/instrs/system/hints/BTI_HB_hints" mylink="aarch64.instrs.system.hints.BTI_HB_hints" enclabels="" sections="1" secttype="noheading">
+          <pstext mayhavelinks="1" section="Decode" rep_section="decode"><a link="SystemHintOp" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp</a> op;
+
+if CRm:op2 == '0100 xx0' then
+    op = <a link="SystemHintOp_BTI" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_BTI</a>;
+    // Check branch target compatibility between BTI instruction and PSTATE.BTYPE
+    <a link="impl-aarch64.SetBTypeCompatible.1" file="shared_pseudocode.xml" hover="function: SetBTypeCompatible(boolean x)">SetBTypeCompatible</a>(<a link="impl-aarch64.BTypeCompatible_BTI.1" file="shared_pseudocode.xml" hover="function: boolean BTypeCompatible_BTI(bits(2) hintcode)">BTypeCompatible_BTI</a>(op2&lt;2:1&gt;));
+else
+    <a link="impl-shared.EndOfInstruction.0" file="shared_pseudocode.xml" hover="function: EndOfInstruction()">EndOfInstruction</a>();</pstext>
+        </ps>
+      </ps_section>
+    </iclass>
+  </classes>
+  <explanations scope="all">
+    <explanation enclist="BTI_HB_hints" symboldefcount="1">
+      <symbol link="sa_targets">&lt;targets&gt;</symbol>
+      <definition encodedin="op2&lt;2:1&gt;">
+        <intro>Is the type of indirection, </intro>
+        <table class="valuetable">
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry class="bitfield">op2&lt;2:1&gt;</entry>
+                <entry class="symbol">&lt;targets&gt;</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry class="bitfield">00</entry>
+                <entry class="symbol">(omitted)</entry>
+              </row>
+              <row>
+                <entry class="bitfield">01</entry>
+                <entry class="symbol">c</entry>
+              </row>
+              <row>
+                <entry class="bitfield">10</entry>
+                <entry class="symbol">j</entry>
+              </row>
+              <row>
+                <entry class="bitfield">11</entry>
+                <entry class="symbol">jc</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </definition>
+    </explanation>
+  </explanations>
+  <ps_section howmany="1">
+    <ps name="aarch64/instrs/system/hints/BTI_HB_hints" mylink="execute" enclabels="" sections="1" secttype="Operation">
+      <pstext mayhavelinks="1" section="Execute" rep_section="execute">case op of
+    when <a link="SystemHintOp_YIELD" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_YIELD</a>
+        <a link="impl-shared.Hint_Yield.0" file="shared_pseudocode.xml" hover="function: Hint_Yield()">Hint_Yield</a>();
+
+    when <a link="SystemHintOp_DGH" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_DGH</a>
+        <a link="impl-shared.Hint_DGH.0" file="shared_pseudocode.xml" hover="function: Hint_DGH()">Hint_DGH</a>();
+
+    when <a link="SystemHintOp_WFE" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_WFE</a>
+        integer localtimeout = 1 &lt;&lt; 64;    // No local timeout event is generated
+        <a link="impl-shared.Hint_WFE.2" file="shared_pseudocode.xml" hover="function: Hint_WFE(integer localtimeout, WFxType wfxtype)">Hint_WFE</a>(localtimeout, <a link="WFxType_WFE" file="shared_pseudocode.xml" hover="enumeration WFxType {WFxType_WFE, WFxType_WFI, WFxType_WFET, WFxType_WFIT}">WFxType_WFE</a>);
+
+    when <a link="SystemHintOp_WFI" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_WFI</a>
+        integer localtimeout = 1 &lt;&lt; 64;    // No local timeout event is generated
+        <a link="impl-shared.Hint_WFI.2" file="shared_pseudocode.xml" hover="function: Hint_WFI(integer localtimeout, WFxType wfxtype)">Hint_WFI</a>(localtimeout, <a link="WFxType_WFI" file="shared_pseudocode.xml" hover="enumeration WFxType {WFxType_WFE, WFxType_WFI, WFxType_WFET, WFxType_WFIT}">WFxType_WFI</a>);
+
+    when <a link="SystemHintOp_SEV" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_SEV</a>
+        <a link="impl-shared.SendEvent.0" file="shared_pseudocode.xml" hover="function: SendEvent()">SendEvent</a>();
+
+    when <a link="SystemHintOp_SEVL" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_SEVL</a>
+        <a link="impl-shared.SendEventLocal.0" file="shared_pseudocode.xml" hover="function: SendEventLocal()">SendEventLocal</a>();
+
+    when <a link="SystemHintOp_ESB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_ESB</a>
+        if <a link="impl-shared.HaveTME.0" file="shared_pseudocode.xml" hover="function: boolean HaveTME()">HaveTME</a>() &amp;&amp; TSTATE.depth &gt; 0 then
+            <a link="impl-aarch64.FailTransaction.2" file="shared_pseudocode.xml" hover="function: FailTransaction(TMFailure cause, boolean retry)">FailTransaction</a>(<a link="TMFailure_ERR" file="shared_pseudocode.xml" hover="enumeration TMFailure { TMFailure_CNCL, TMFailure_DBG, TMFailure_ERR, TMFailure_NEST, TMFailure_SIZE, TMFailure_MEM, TMFailure_TRIVIAL, TMFailure_IMP }">TMFailure_ERR</a>, FALSE);
+        <a link="impl-shared.SynchronizeErrors.0" file="shared_pseudocode.xml" hover="function: SynchronizeErrors()">SynchronizeErrors</a>();
+        <a link="AArch64.ESBOperation.0" file="shared_pseudocode.xml" hover="function: AArch64.ESBOperation()">AArch64.ESBOperation</a>();
+        if PSTATE.EL IN {<a link="EL0" file="shared_pseudocode.xml" hover="constant bits(2) EL0 = '00'">EL0</a>, <a link="EL1" file="shared_pseudocode.xml" hover="constant bits(2) EL1 = '01'">EL1</a>} &amp;&amp; <a link="impl-shared.EL2Enabled.0" file="shared_pseudocode.xml" hover="function: boolean EL2Enabled()">EL2Enabled</a>() then <a link="AArch64.vESBOperation.0" file="shared_pseudocode.xml" hover="function: AArch64.vESBOperation()">AArch64.vESBOperation</a>();
+        <a link="impl-shared.TakeUnmaskedSErrorInterrupts.0" file="shared_pseudocode.xml" hover="function: TakeUnmaskedSErrorInterrupts()">TakeUnmaskedSErrorInterrupts</a>();
+
+    when <a link="SystemHintOp_PSB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_PSB</a>
+        <a link="impl-aarch64.ProfilingSynchronizationBarrier.0" file="shared_pseudocode.xml" hover="function: ProfilingSynchronizationBarrier()">ProfilingSynchronizationBarrier</a>();
+
+    when <a link="SystemHintOp_TSB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_TSB</a>
+        <a link="impl-shared.TraceSynchronizationBarrier.0" file="shared_pseudocode.xml" hover="function: TraceSynchronizationBarrier()">TraceSynchronizationBarrier</a>();
+
+    when <a link="SystemHintOp_GCSB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_GCSB</a>
+        <a link="impl-aarch64.GCSSynchronizationBarrier.0" file="shared_pseudocode.xml" hover="function: GCSSynchronizationBarrier()">GCSSynchronizationBarrier</a>();
+
+    when <a link="SystemHintOp_CHKFEAT" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_CHKFEAT</a>
+        <a link="impl-aarch64.X.write.2" file="shared_pseudocode.xml" hover="accessor: X[integer n, integer width] = bits(width) value">X</a>[16, 64] = <a link="AArch64.ChkFeat.1" file="shared_pseudocode.xml" hover="function: bits(64) AArch64.ChkFeat(bits(64) feat_select)">AArch64.ChkFeat</a>(<a link="impl-aarch64.X.read.2" file="shared_pseudocode.xml" hover="accessor: bits(width) X[integer n, integer width]">X</a>[16, 64]);
+
+    when <a link="SystemHintOp_CSDB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_CSDB</a>
+        <a link="impl-shared.ConsumptionOfSpeculativeDataBarrier.0" file="shared_pseudocode.xml" hover="function: ConsumptionOfSpeculativeDataBarrier()">ConsumptionOfSpeculativeDataBarrier</a>();
+
+    when <a link="SystemHintOp_CLRBHB" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_CLRBHB</a>
+        <a link="impl-shared.Hint_CLRBHB.0" file="shared_pseudocode.xml" hover="function: Hint_CLRBHB()">Hint_CLRBHB</a>();
+
+    when <a link="SystemHintOp_BTI" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_BTI</a>
+        <a link="impl-aarch64.SetBTypeNext.1" file="shared_pseudocode.xml" hover="function: SetBTypeNext(bits(2) x)">SetBTypeNext</a>('00');
+
+    when <a link="SystemHintOp_NOP" file="shared_pseudocode.xml" hover="enumeration SystemHintOp { SystemHintOp_NOP, SystemHintOp_YIELD, SystemHintOp_WFE, SystemHintOp_WFI, SystemHintOp_SEV, SystemHintOp_SEVL, SystemHintOp_DGH, SystemHintOp_ESB, SystemHintOp_PSB, SystemHintOp_TSB, SystemHintOp_BTI, SystemHintOp_WFET, SystemHintOp_WFIT, SystemHintOp_CLRBHB, SystemHintOp_GCSB, SystemHintOp_CHKFEAT, SystemHintOp_CSDB }">SystemHintOp_NOP</a>
+        return;    // do nothing
+
+    otherwise
+        <a link="impl-shared.Unreachable.0" file="shared_pseudocode.xml" hover="function: Unreachable()">Unreachable</a>();</pstext>
+    </ps>
+  </ps_section>
+</instructionsection>

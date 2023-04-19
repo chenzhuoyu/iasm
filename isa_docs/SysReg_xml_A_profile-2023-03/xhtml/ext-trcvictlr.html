@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCVICTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCVICTLR, ViewInst Main Control Register</h1><p>The TRCVICTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls instruction trace filtering.</p>
+      <h2>Configuration</h2><p>External register TRCVICTLR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-trcvictlr.html">TRCVICTLR[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_EXT is implemented. Otherwise, direct accesses to TRCVICTLR are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>TRCVICTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="5"><a href="#fieldset_0-31_27">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">EXLEVEL_RL_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25-1">EXLEVEL_RL_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24-1">EXLEVEL_RL_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">EXLEVEL_NS_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">EXLEVEL_NS_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">EXLEVEL_NS_EL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19-1">EXLEVEL_S_EL3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">EXLEVEL_S_EL2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">EXLEVEL_S_EL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16-1">EXLEVEL_S_EL0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">TRCERR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">TRCRESET</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">SSSTATUS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">EVENT_TYPE</a></td><td class="lr" colspan="2"><a href="#fieldset_0-6_5">RES0</a></td><td class="lr" colspan="5"><a href="#fieldset_0-4_0-1">Bits[4:0]</a></td></tr></tbody></table><h4 id="fieldset_0-31_27">Bits [31:27]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">EXLEVEL_RL_EL2, bit [26]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL2 == 1:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL2 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL2 is 0 the trace unit generates instruction trace for EL2 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL2 is 1 the trace unit does not generate instruction trace for EL2 in Realm state.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL2 is 0 the trace unit does not generate instruction trace for EL2 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL2 is 1 the trace unit generates instruction trace for EL2 in Realm state.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_25-1">EXLEVEL_RL_EL1, bit [25]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL1 == 1:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL1 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL1 is 0 the trace unit generates instruction trace for EL1 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL1 is 1 the trace unit does not generate instruction trace for EL1 in Realm state.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL1 is 0 the trace unit does not generate instruction trace for EL1 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL1 is 1 the trace unit generates instruction trace for EL1 in Realm state.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-25_25-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-24_24-1">EXLEVEL_RL_EL0, bit [24]<span class="condition"><br/>When TRCIDR6.EXLEVEL_RL_EL0 == 1:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL0 in Realm state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_RL_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL0 is 0 the trace unit generates instruction trace for EL0 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL0 is 1 the trace unit does not generate instruction trace for EL0 in Realm state.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When TRCVICTLR.EXLEVEL_NS_EL0 is 0 the trace unit does not generate instruction trace for EL0 in Realm state.</p>
+<p>When TRCVICTLR.EXLEVEL_NS_EL0 is 1 the trace unit generates instruction trace for EL0 in Realm state.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23">Bit [23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">EXLEVEL_NS_EL2, bit [22]<span class="condition"><br/>When Non-secure EL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL2 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL2 in Non-secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL2 in Non-secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">EXLEVEL_NS_EL1, bit [21]<span class="condition"><br/>When Non-secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL1 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL1 in Non-secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL1 in Non-secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20-1">EXLEVEL_NS_EL0, bit [20]<span class="condition"><br/>When Non-secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL0 in Non-secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_NS_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL0 in Non-secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL0 in Non-secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19-1">EXLEVEL_S_EL3, bit [19]<span class="condition"><br/>When EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL3.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_19-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">EXLEVEL_S_EL2, bit [18]<span class="condition"><br/>When EL2 is implemented and FEAT_SEL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL2 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL2 in Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL2 in Secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">EXLEVEL_S_EL1, bit [17]<span class="condition"><br/>When Secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL1 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL1 in Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL1 in Secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16-1">EXLEVEL_S_EL0, bit [16]<span class="condition"><br/>When Secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter instruction trace for EL0 in Secure state.</p>
+    <table class="valuetable"><tr><th>EXLEVEL_S_EL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The trace unit generates instruction trace for EL0 in Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The trace unit does not generate instruction trace for EL0 in Secure state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_12">Bits [15:12]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">TRCERR, bit [11]<span class="condition"><br/>When TRCIDR3.TRCERR == 1:
+                        </span></h4><div class="field">
+      <p>Controls the forced tracing of System Error exceptions.</p>
+    <table class="valuetable"><tr><th>TRCERR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Forced tracing of System Error exceptions is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Forced tracing of System Error exceptions is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10">TRCRESET, bit [10]</h4><div class="field">
+      <p>Controls the forced tracing of PE Resets.</p>
+    <table class="valuetable"><tr><th>TRCRESET</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Forced tracing of PE Resets is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Forced tracing of PE Resets is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">SSSTATUS, bit [9]</h4><div class="field">
+      <p>ViewInst start/stop function status.</p>
+    <table class="valuetable"><tr><th>SSSTATUS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Stopped State.</p>
+<p>The ViewInst start/stop function is in the stopped state.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Started State.</p>
+<p>The ViewInst start/stop function is in the started state.</p></td></tr></table><p>Before software enables the trace unit, it must write to this field to set the initial state of the ViewInst start/stop function. If the ViewInst start/stop function is not used then set this field to 1. Arm recommends that the value of this field is set before each trace session begins.</p>
+<p>If the trace unit becomes disabled while a start point or stop point is still speculative, then the value of TRCVICTLR.SSSTATUS is <span class="arm-defined-word">UNKNOWN</span> and might represent the result of a speculative start point or stop point.</p>
+<p>If software which is running on the PE being traced disables the trace unit, either by clearing <a href="ext-trcprgctlr.html">TRCPRGCTLR</a>.EN or locking the OS Lock, Arm recommends that a DSB and an ISB instruction are executed before disabling the trace unit to prevent any start points or stop points being speculative at the point of disabling the trace unit. This procedure assumes that all start points or stop points occur before the barrier instructions are executed. The procedure does not guarantee that there are no speculative start points or stop points when disabling, although it helps minimize the probability.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES1</span> if
+                
+                    all of the following are true:
+                <ul><li>TRCIDR4.NUMACPAIRS == 0b0000</li><li>TRCIDR4.NUMPC == 0b0000</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_0-8_8">Bit [8]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7-1">EVENT_TYPE, bit [7]<span class="condition"><br/>When TRCIDR4.NUMRSPAIR != 0b0000:
+                        </span></h4><div class="field">
+      <p>Chooses the type of Resource Selector.</p>
+    <table class="valuetable"><tr><th>EVENT_TYPE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>A single Resource Selector.</p>
+<p>TRCVICTLR.EVENT.SEL[4:0] selects the single Resource Selector, from 0-31, used to activate the resource event.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>A Boolean-combined pair of Resource Selectors.</p>
+<p>TRCVICTLR.EVENT.SEL[3:0] selects the Resource Selector pair, from 0-15, that has a Boolean function that is applied to it whose output is used to activate the resource event. TRCVICTLR.EVENT.SEL[4] is <span class="arm-defined-word">RES0</span>.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_5">Bits [6:5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_0-1">Bits[4:0]<span class="condition"><br/>When TRCIDR4.NUMRSPAIR != 0b0000:
+                        </span></h4><h5>EVENT_SEL, bits [4:0]
+                 of bits 
+                        [4:0]</h5><div class="field">
+      <p>Defines the selected Resource Selector or pair of Resource Selectors. TRCVICTLR.EVENT.TYPE controls whether TRCVICTLR.EVENT.SEL is the index of a single Resource Selector, or the index of a pair of Resource Selectors.</p>
+    <p>If an unimplemented Resource Selector is selected using this field, the behavior of the resource event is <span class="arm-defined-word">UNPREDICTABLE</span>, and the resource event might fire or might not fire when the resources are not in the Paused state.</p>
+<p>Selecting Resource Selector pair 0 using this field is <span class="arm-defined-word">UNPREDICTABLE</span>, and the resource event might fire or might not fire when the resources are not in the Paused state.</p><p>The reset behavior of this field is:</p><ul><li>On a Trace unit reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_0-2"><span class="condition"><br/>When TRCIDR4.NUMRSPAIR == 0b0000:
+                        </span></h4><h5>Reserved, bits [4:0]
+                 of bits 
+                        [4:0]</h5><div class="field"><p>This field is reserved:</p>
+<ul>
+<li>Bits [4:1] are <span class="arm-defined-word">RES0</span>.
+</li><li>Bit [0] is <span class="arm-defined-word">RES1</span>.
+</li></ul></div><h4 id="fieldset_0-4_0-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing TRCVICTLR</h2>
+        <p>Must be programmed.</p>
+
+      
+        <p>Reads from this register might return an <span class="arm-defined-word">UNKNOWN</span> value if the trace unit is not in either of the Idle or Stable states.</p>
+      <h4>TRCVICTLR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>ETE</td><td><span class="hexnumber">0x080</span></td><td>TRCVICTLR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered(), accesses to this register generate an error response.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

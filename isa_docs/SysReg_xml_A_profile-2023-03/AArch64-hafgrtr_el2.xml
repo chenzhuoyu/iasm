@@ -1,0 +1,1227 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>HAFGRTR_EL2</reg_short_name>
+        
+        <reg_long_name>Hypervisor Activity Monitors Fine-Grained Read Trap Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_AMUv1 is implemented and FEAT_FGT is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+            <reg_reset_limited_to_el>EL2</reg_reset_limited_to_el>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides controls for traps of <instruction>MRS</instruction> reads of Activity Monitors System registers.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>A group mapping that does not have a known primary</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>HAFGRTR_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>HAFGRTR_EL2</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_50" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>50</field_lsb>
+    <rel_range>63:50</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_49-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0</field_name>
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>49</field_msb>
+        <field_lsb>49</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>47</field_msb>
+        <field_lsb>47</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>45</field_msb>
+        <field_lsb>45</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>43</field_msb>
+        <field_lsb>43</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>41</field_msb>
+        <field_lsb>41</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>39</field_msb>
+        <field_lsb>39</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>37</field_msb>
+        <field_lsb>37</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>35</field_msb>
+        <field_lsb>35</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>33</field_msb>
+        <field_lsb>33</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>31</field_msb>
+        <field_lsb>31</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>29</field_msb>
+        <field_lsb>29</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>27</field_msb>
+        <field_lsb>27</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>25</field_msb>
+        <field_lsb>25</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>23</field_msb>
+        <field_lsb>23</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>21</field_msb>
+        <field_lsb>21</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>19</field_msb>
+        <field_lsb>19</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="19+2x">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_name>AMEVTYPER1&lt;x&gt;_EL0</field_value_name>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, EL1 is using AArch64, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then, unless the read generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x03</hexnumber>.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When AMEVTYPER1&lt;x&gt; is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-49_49-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>49</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>49</field_msb>
+        <field_lsb>49</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>47</field_msb>
+        <field_lsb>47</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>45</field_msb>
+        <field_lsb>45</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>43</field_msb>
+        <field_lsb>43</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>41</field_msb>
+        <field_lsb>41</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>39</field_msb>
+        <field_lsb>39</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>37</field_msb>
+        <field_lsb>37</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>35</field_msb>
+        <field_lsb>35</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>33</field_msb>
+        <field_lsb>33</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>31</field_msb>
+        <field_lsb>31</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>29</field_msb>
+        <field_lsb>29</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>27</field_msb>
+        <field_lsb>27</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>25</field_msb>
+        <field_lsb>25</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>23</field_msb>
+        <field_lsb>23</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>21</field_msb>
+        <field_lsb>21</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>19</field_msb>
+        <field_lsb>19</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0</field_name>
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>48</field_msb>
+        <field_lsb>48</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>46</field_msb>
+        <field_lsb>46</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>44</field_msb>
+        <field_lsb>44</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>42</field_msb>
+        <field_lsb>42</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>40</field_msb>
+        <field_lsb>40</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>38</field_msb>
+        <field_lsb>38</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>36</field_msb>
+        <field_lsb>36</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>34</field_msb>
+        <field_lsb>34</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>32</field_msb>
+        <field_lsb>32</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>30</field_msb>
+        <field_lsb>30</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>28</field_msb>
+        <field_lsb>28</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>26</field_msb>
+        <field_lsb>26</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>24</field_msb>
+        <field_lsb>24</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>22</field_msb>
+        <field_lsb>22</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>20</field_msb>
+        <field_lsb>20</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>18</field_msb>
+        <field_lsb>18</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="18+2x">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_name>AMEVCNTR1&lt;x&gt;_EL0</field_value_name>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, EL1 is using AArch64, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then, unless the read generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x03</hexnumber>.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When AMEVCNTR1&lt;x&gt; is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-48_48-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>48</field_msb>
+        <field_lsb>48</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>46</field_msb>
+        <field_lsb>46</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>44</field_msb>
+        <field_lsb>44</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>42</field_msb>
+        <field_lsb>42</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>40</field_msb>
+        <field_lsb>40</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>38</field_msb>
+        <field_lsb>38</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>36</field_msb>
+        <field_lsb>36</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>34</field_msb>
+        <field_lsb>34</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>32</field_msb>
+        <field_lsb>32</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>30</field_msb>
+        <field_lsb>30</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>28</field_msb>
+        <field_lsb>28</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>26</field_msb>
+        <field_lsb>26</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>24</field_msb>
+        <field_lsb>24</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>22</field_msb>
+        <field_lsb>22</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>20</field_msb>
+        <field_lsb>20</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>18</field_msb>
+        <field_lsb>18</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-49_19-47_47-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[14]</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-47_47-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-46_46-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[14]</field_name>
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-46_46-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-45_45-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[13]</field_name>
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-45_45-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>45</field_msb>
+    <field_lsb>45</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-44_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[13]</field_name>
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-44_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>44</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-43_43-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[12]</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-43_43-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-42_42-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[12]</field_name>
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-42_42-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-41_41-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[11]</field_name>
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-41_41-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>41</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-40_40-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[11]</field_name>
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-40_40-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>40</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-39_39-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[10]</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-39_39-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>39</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-38_38-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[10]</field_name>
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-38_38-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>38</field_msb>
+    <field_lsb>38</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-37_37-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[9]</field_name>
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-37_37-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>37</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-36_36-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[9]</field_name>
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-36_36-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-35_35-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[8]</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-35_35-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-34_34-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[8]</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-34_34-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-33_33-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[7]</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-33_33-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-32_32-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[7]</field_name>
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-32_32-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-31_31-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[6]</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-31_31-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-30_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[6]</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-30_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[5]</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[5]</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[4]</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[4]</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-25_25-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[3]</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-25_25-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-24_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[3]</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-24_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[2]</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[2]</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[1]</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-20_20-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[1]</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-20_20-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVTYPER1&lt;x&gt;_EL0[0]</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevtyper1n_el0.xml" state="AArch64">AMEVTYPER1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevtyper1n.xml" state="AArch32">AMEVTYPER1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-49_19-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-18_18-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" reserved_type="RES0">
+    <field_name>AMEVCNTR1&lt;x&gt;_EL0[0]</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr1n_el0.xml" state="AArch64">AMEVCNTR1&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr1n.xml" state="AArch32">AMEVCNTR1&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_18-18_18-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True" rwtype="RES0" reserved_type="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AMCNTEN&lt;x&gt;</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>17, 0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MRS</instruction> reads and <instruction>MRC</instruction> reads of multiple System registers.</para>
+<para>Enables a trap to EL2 the following operations:</para>
+<list type="unordered">
+<listitem><content>At EL1 and EL0 using AArch64: <instruction>MRS</instruction> reads of AMCNTENCLR&lt;x&gt;_EL0 and AMCNTENSET&lt;x&gt;_EL0.</content>
+</listitem><listitem><content>At EL0 using AArch32 when EL1 is using AArch64: <instruction>MRC</instruction> reads of AMCNTENCLR&lt;x&gt; and AMCNTENSET&lt;x&gt;.</content>
+</listitem></list></field_description>
+    <field_rangesets>
+      <field_rangeset>
+        <field_msb>17</field_msb>
+        <field_lsb>17</field_lsb>
+      </field_rangeset>
+      <field_rangeset>
+        <field_msb>0</field_msb>
+        <field_lsb>0</field_lsb>
+      </field_rangeset>
+    </field_rangesets>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="17x">
+      <field_array_index>
+        <field_array_start>1</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_name>AMCNTEN&lt;x&gt;</field_value_name>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The operations listed above are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, EL1 is using AArch64, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then, unless the read generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> reads at EL1 and EL0 using AArch64 of AMCNTENCLR&lt;x&gt;_EL0 and AMCNTENSET&lt;x&gt;_EL0 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> reads at EL0 using AArch32 of AMCNTENCLR&lt;x&gt; and AMCNTENSET&lt;x&gt; are trapped to EL2 and reported with EC syndrome value <hexnumber>0x03</hexnumber>.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-17_0-17_17" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>AMCNTEN1</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Trap <instruction>MRS</instruction> reads and <instruction>MRC</instruction> reads of multiple System registers.</para>
+<para>Enables a trap to EL2 the following operations:</para>
+<list type="unordered">
+<listitem><content>At EL1 and EL0 using AArch64: <instruction>MRS</instruction> reads of AMCNTENCLR1_EL0 and AMCNTENSET1_EL0.</content>
+</listitem><listitem><content>At EL0 using AArch32 when EL1 is using AArch64: <instruction>MRC</instruction> reads of AMCNTENCLR1 and AMCNTENSET1.</content>
+</listitem></list></field_description>
+  </field>
+  <field id="fieldset_0-16_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>16:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AMEVCNTR0&lt;x&gt;_EL0</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>4:1</rel_range>
+    <field_description order="before">
+      <para>Trap <instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr0n_el0.xml" state="AArch64">AMEVCNTR0&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr0n.xml" state="AArch32">AMEVCNTR0&lt;x&gt;</register_link> at EL0 using AArch32 when EL1 is using AArch64 to EL2.</para>
+    </field_description>
+    <field_array_indexes index_variable="x" element_size="1" range_specifier="x+1">
+      <field_array_index>
+        <field_array_start>3</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr0n_el0.xml" state="AArch64">AMEVCNTR0&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 and <instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr0n.xml" state="AArch32">AMEVCNTR0&lt;x&gt;</register_link> at EL0 using AArch32 are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} != {1, 1}, EL1 is using AArch64, and either EL3 is not implemented or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.FGTEn == 1, then, unless the read generates a higher priority exception:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> reads of <register_link id="AArch64-amevcntr0n_el0.xml" state="AArch64">AMEVCNTR0&lt;x&gt;_EL0</register_link> at EL1 and EL0 using AArch64 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content><instruction>MRC</instruction> reads of <register_link id="AArch32-amevcntr0n.xml" state="AArch32">AMEVCNTR0&lt;x&gt;</register_link> at EL0 using AArch32 are trapped to EL2 and reported with EC syndrome value <hexnumber>0x03</hexnumber>.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-17_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" is_expansion="True">
+    <field_name>AMCNTEN0</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <instruction>MRS</instruction> reads and <instruction>MRC</instruction> reads of multiple System registers.</para>
+<para>Enables a trap to EL2 the following operations:</para>
+<list type="unordered">
+<listitem><content>At EL1 and EL0 using AArch64: <instruction>MRS</instruction> reads of AMCNTENCLR0_EL0 and AMCNTENSET0_EL0.</content>
+</listitem><listitem><content>At EL0 using AArch32 when EL1 is using AArch64: <instruction>MRC</instruction> reads of AMCNTENCLR0 and AMCNTENSET0.</content>
+</listitem></list></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_50" msb="63" lsb="50"/>
+  <fieldat id="fieldset_0-49_49-1" label="AMEVTYPER115_EL0" msb="49" lsb="49"/>
+  <fieldat id="fieldset_0-48_48-1" label="AMEVCNTR115_EL0" msb="48" lsb="48"/>
+  <fieldat id="fieldset_0-49_19-47_47-1" label="AMEVTYPER114_EL0" msb="47" lsb="47"/>
+  <fieldat id="fieldset_0-48_18-46_46-1" label="AMEVCNTR114_EL0" msb="46" lsb="46"/>
+  <fieldat id="fieldset_0-49_19-45_45-1" label="AMEVTYPER113_EL0" msb="45" lsb="45"/>
+  <fieldat id="fieldset_0-48_18-44_44-1" label="AMEVCNTR113_EL0" msb="44" lsb="44"/>
+  <fieldat id="fieldset_0-49_19-43_43-1" label="AMEVTYPER112_EL0" msb="43" lsb="43"/>
+  <fieldat id="fieldset_0-48_18-42_42-1" label="AMEVCNTR112_EL0" msb="42" lsb="42"/>
+  <fieldat id="fieldset_0-49_19-41_41-1" label="AMEVTYPER111_EL0" msb="41" lsb="41"/>
+  <fieldat id="fieldset_0-48_18-40_40-1" label="AMEVCNTR111_EL0" msb="40" lsb="40"/>
+  <fieldat id="fieldset_0-49_19-39_39-1" label="AMEVTYPER110_EL0" msb="39" lsb="39"/>
+  <fieldat id="fieldset_0-48_18-38_38-1" label="AMEVCNTR110_EL0" msb="38" lsb="38"/>
+  <fieldat id="fieldset_0-49_19-37_37-1" label="AMEVTYPER19_EL0" msb="37" lsb="37"/>
+  <fieldat id="fieldset_0-48_18-36_36-1" label="AMEVCNTR19_EL0" msb="36" lsb="36"/>
+  <fieldat id="fieldset_0-49_19-35_35-1" label="AMEVTYPER18_EL0" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-48_18-34_34-1" label="AMEVCNTR18_EL0" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-49_19-33_33-1" label="AMEVTYPER17_EL0" msb="33" lsb="33"/>
+  <fieldat id="fieldset_0-48_18-32_32-1" label="AMEVCNTR17_EL0" msb="32" lsb="32"/>
+  <fieldat id="fieldset_0-49_19-31_31-1" label="AMEVTYPER16_EL0" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-48_18-30_30-1" label="AMEVCNTR16_EL0" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-49_19-29_29-1" label="AMEVTYPER15_EL0" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-48_18-28_28-1" label="AMEVCNTR15_EL0" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-49_19-27_27-1" label="AMEVTYPER14_EL0" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-48_18-26_26-1" label="AMEVCNTR14_EL0" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-49_19-25_25-1" label="AMEVTYPER13_EL0" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-48_18-24_24-1" label="AMEVCNTR13_EL0" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-49_19-23_23-1" label="AMEVTYPER12_EL0" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-48_18-22_22-1" label="AMEVCNTR12_EL0" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-49_19-21_21-1" label="AMEVTYPER11_EL0" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-48_18-20_20-1" label="AMEVCNTR11_EL0" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-49_19-19_19-1" label="AMEVTYPER10_EL0" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-48_18-18_18-1" label="AMEVCNTR10_EL0" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17" label="AMCNTEN1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_5" msb="16" lsb="5"/>
+  <fieldat id="fieldset_0-4_1" label="AMEVCNTR03_EL0" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-4_1" label="AMEVCNTR02_EL0" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-4_1" label="AMEVCNTR01_EL0" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-4_1" label="AMEVCNTR00_EL0" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-17_0-0_0" label="AMCNTEN0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS HAFGRTR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, HAFGRTR_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0011"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x1E8];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = HAFGRTR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = HAFGRTR_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister HAFGRTR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR HAFGRTR_EL2, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0011"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x1E8] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.FGTEn == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        HAFGRTR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    HAFGRTR_EL2 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

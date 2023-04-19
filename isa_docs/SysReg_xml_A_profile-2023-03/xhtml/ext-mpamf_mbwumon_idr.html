@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMF_MBWUMON_IDR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMF_MBWUMON_IDR, MPAM Features Memory Bandwidth Usage Monitoring ID register</h1><p>The MPAMF_MBWUMON_IDR characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates the number of memory bandwidth usage monitor instances implemented. This register also indicates several properties of MBWU monitoring, including whether the implementation supports capture, scaling, or long counters.</p>
+
+      
+        <p>MPAMF_MBWUMON_IDR_s indicates the number of Secure memory bandwidth usage monitor instances.
+MPAMF_MBWUMON_IDR_ns indicates the number of Non-secure memory bandwidth usage monitor instances.
+MPAMF_MBWUMON_IDR_rt indicates the number of Root memory bandwidth usage monitor instances.
+MPAMF_MBWUMON_IDR_rl indicates the number of Realm memory bandwidth usage monitor instances.</p>
+
+      
+        <p>If <a href="ext-mpamf_idr.html">MPAMF_IDR</a>.HAS_RIS is 1, fields that mention RIS must reflect the properties of the resource instance currently selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS. Fields that do not mention RIS are constant across all resource instances.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMF_MBWUMON_IDR is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MSMON == 1 and MPAMF_MSMON_IDR.MSMON_MBWU == 1. Otherwise, direct accesses to MPAMF_MBWUMON_IDR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MPAMF_MBWUMON_IDR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">HAS_CAPTURE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30-1">HAS_LONG</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29-1">LWD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28-1">HAS_RWBW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">HAS_OFLOW_LNKG</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">HAS_OFSR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">HAS_CEVNT_OFLW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24-1">HAS_OFLOW_CAPT</a></td><td class="lr" colspan="3"><a href="#fieldset_0-23_21">RES0</a></td><td class="lr" colspan="5"><a href="#fieldset_0-20_16">SCALE</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">NUM_MON</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">HAS_CAPTURE, bit [31]</h4><div class="field">
+      <p>The implementation supports copying an <a href="ext-msmon_mbwu.html">MSMON_MBWU</a> to the corresponding <a href="ext-msmon_mbwu_capture.html">MSMON_MBWU_CAPTURE</a> on a capture event.</p>
+    <table class="valuetable"><tr><th>HAS_CAPTURE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-msmon_mbwu_capture.html">MSMON_MBWU_CAPTURE</a> is not implemented and there is no support for capture events in the MBWU monitor.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The <a href="ext-msmon_mbwu_capture.html">MSMON_MBWU_CAPTURE</a> register is implemented and the MBWU monitor supports the capture event behavior.</p>
+        </td></tr></table><p>If RIS is implemented, this field indicates that MBWU monitor capture is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+<p>If MPAMF_MBWUMON_IDR.HAS_LONG is 1, this also indicates that <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> is implemented.</p></div><h4 id="fieldset_0-30_30-1">HAS_LONG, bit [30]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field"><p>Indicates whether <a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a> is implemented.</p>
+<p>If HAS_CAPTURE is 1, indicates whether <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> is implemented.</p><table class="valuetable"><tr><th>HAS_LONG</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Does not implement <a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a> or <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Implements <a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a>. If HAS_CAPTURE == 1, <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> is also implemented.</p>
+        </td></tr></table><p>If RIS is implemented, this field indicates that the long MBWU monitor is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+<p>If MPAMF_MBWUMON_IDR.HAS_CAPTURE is 1, this also indicates that <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> is implemented.</p></div><h4 id="fieldset_0-30_30-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_29-1">LWD, bit [29]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field"><p>Long register VALUE width.</p>
+<p>If <a href="ext-mpamf_mbwumon_idr.html">MPAMF_MBWUMON_IDR</a>.HAS_LONG is 0, <a href="ext-mpamf_mbwumon_idr.html">MPAMF_MBWUMON_IDR</a>.LWD must also be 0.</p><table class="valuetable"><tr><th>LWD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If <a href="ext-mpamf_mbwumon_idr.html">MPAMF_MBWUMON_IDR</a>.HAS_LONG is 1, <a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a> has 44-bit VALUE field in bits [43:0]. Bits [62:44] are <span class="arm-defined-word">RES0</span>. If HAS_LONG is 1 and <a href="ext-mpamf_mbwumon_idr.html">MPAMF_MBWUMON_IDR</a>.HAS_CAPTURE is 1, <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> also has 44-bit VALUE field in bits [43:0].</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a> has 63-bit VALUE field in bits [62:0]. If <a href="ext-mpamf_mbwumon_idr.html">MPAMF_MBWUMON_IDR</a>.HAS_CAPTURE == 1, <a href="ext-msmon_mbwu_l_capture.html">MSMON_MBWU_L_CAPTURE</a> also has 63-bit VALUE field in bits [62:0].</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates the length of the <a href="ext-msmon_mbwu_l.html">MSMON_MBWU_L</a>.VALUE field implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-29_29-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-28_28-1">HAS_RWBW, bit [28]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Read/write bandwidth selection is implemented in <a href="ext-msmon_cfg_mbwu_flt.html">MSMON_CFG_MBWU_FLT</a>.</p>
+    <table class="valuetable"><tr><th>HAS_RWBW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Read/write bandwidth selection is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Read/write bandwidth selection is implemented.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates whether read/write bandwidth collection selection is available in <a href="ext-msmon_cfg_mbwu_flt.html">MSMON_CFG_MBWU_FLT</a> for resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-28_28-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_27-1">HAS_OFLOW_LNKG, bit [27]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Supports <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_LNKG field to control how overflow on an instance affects other monitor instances in this MSC.</p>
+    <table class="valuetable"><tr><th>HAS_OFLOW_LNKG</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Does not support MBWU overflow linkage.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Supports MBWU overflow linkage and the <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_LNKG field.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates that <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_LNKG is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">HAS_OFSR, bit [26]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>The MBWU monitor overflow status bitmap register, <a href="ext-msmon_mbwu_ofsr.html">MSMON_MBWU_OFSR</a>, is implemented.</p>
+    <table class="valuetable"><tr><th>HAS_OFSR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-msmon_mbwu_ofsr.html">MSMON_MBWU_OFSR</a> register is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-msmon_mbwu_ofsr.html">MSMON_MBWU_OFSR</a> register is implemented.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates that MBWU monitor overflow status bitmap register is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_25">HAS_CEVNT_OFLW, bit [25]</h4><div class="field">
+      <p>Supports <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.CEVNT_OFLW field which can enable the MBWU monitor instance to perform overflow behaviors on a capture event.</p>
+    <table class="valuetable"><tr><th>HAS_CEVNT_OFLW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Does not support <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.CEVNT_OFLW.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Supports <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.CEVNT_OFLW.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates that <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.CEVNT_OFLW is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-24_24-1">HAS_OFLOW_CAPT, bit [24]<span class="condition"><br/>When FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Supports <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_CAPT field which can enable the MBWU monitor instance to capture the monitor on an overflow.</p>
+    <table class="valuetable"><tr><th>HAS_OFLOW_CAPT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Does not support <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_CAPT.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Supports <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_CAPT.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates that <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_CAPT is implemented for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-24_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_21">Bits [23:21]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_16">SCALE, bits [20:16]</h4><div class="field">
+      <p>Scaling of <a href="ext-msmon_mbwu.html">MSMON_MBWU</a>.VALUE in bits. If scaling is enabled by <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.SCLEN, the byte count in the VALUE field has been shifted by SCALE bits to the right.</p>
+    <table class="valuetable"><tr><th>SCALE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00000</td><td>
+          <p>Scaling is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0bxxxxx</td><td>
+          <p>Other values are right shift count when scaling is enabled.</p>
+        </td></tr></table>
+      <p>If RIS is implemented, this field indicates the scale value for <a href="ext-msmon_mbwu.html">MSMON_MBWU</a>.VALUE field for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h4 id="fieldset_0-15_0">NUM_MON, bits [15:0]</h4><div class="field">
+      <p>The number of memory bandwidth usage monitor instances implemented. The largest monitor instance selector, <a href="ext-msmon_cfg_mon_sel.html">MSMON_CFG_MON_SEL</a>.MON_SEL, is NUM_MON minus 1.</p>
+    
+      <p>If RIS is implemented, this field indicates the number of MBWU monitor instances for <a href="ext-msmon_mbwu.html">MSMON_MBWU</a>.VALUE field for the resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS.</p>
+    </div><h2>Accessing MPAMF_MBWUMON_IDR</h2>
+        <p>This register is within the MPAM feature page memory frames. In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps.</p>
+
+      
+        <p>MPAMF_MBWUMON_IDR is read-only.</p>
+
+      
+        <p>MPAMF_MBWUMON_IDR must be readable from the Non-secure, Secure, Root, and Realm MPAM feature pages.</p>
+
+      
+        <p>MPAMF_MBWUMON_IDR is permitted to have the same contents when read from the Secure, Non-secure, Root, and Realm MPAM feature pages unless the register contents are different for the different versions:</p>
+
+      
+        <ul>
+<li>MPAMF_MBWUMON_IDR_s is permitted to have either the same or different contents to MPAMF_MBWUMON_IDR_ns, MPAMF_MBWUMON_IDR_rt, or MPAMF_MBWUMON_IDR_rl.
+</li><li>MPAMF_MBWUMON_IDR_ns is permitted to have either the same or different contents to MPAMF_MBWUMON_IDR_rt or MPAMF_MBWUMON_IDR_rl.
+</li><li>MPAMF_MBWUMON_IDR_rt is permitted to have either the same or different contents to MPAMF_MBWUMON_IDR_rl.
+</li></ul>
+
+      
+        <p>There must be separate registers in the Secure (MPAMF_MBWUMON_IDR_s), Non-secure (MPAMF_MBWUMON_IDR_ns), Root (MPAMF_MBWUMON_IDR_rt), and Realm (MPAMF_MBWUMON_IDR_rl) MPAM feature pages.</p>
+
+      
+        <p>When <a href="ext-mpamf_idr.html">MPAMF_IDR</a>.HAS_RIS is 1, MPAMF_MBWUMON_IDR shows the configuration of memory bandwidth monitoring for the bandwidth resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS. Fields that mention RIS in their field descriptions have values that track the implemented properties of the resource instance. Fields that do not mention RIS are constant across all resource instances.</p>
+
+      
+        <p>Access to MPAMF_MBWUMON_IDR is not affected by <a href="ext-msmon_cfg_mon_sel.html">MSMON_CFG_MON_SEL</a>.RIS.</p>
+      <h4>MPAMF_MBWUMON_IDR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0090</span></td><td>MPAMF_MBWUMON_IDR_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0090</span></td><td>MPAMF_MBWUMON_IDR_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0090</span></td><td>MPAMF_MBWUMON_IDR_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0090</span></td><td>MPAMF_MBWUMON_IDR_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

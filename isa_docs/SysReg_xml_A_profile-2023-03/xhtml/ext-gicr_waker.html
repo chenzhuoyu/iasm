@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICR_WAKER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICR_WAKER, Redistributor Wake Register</h1><p>The GICR_WAKER characteristics are:</p><h2>Purpose</h2>
+        <p>Permits software to control the behavior of the WakeRequest power management signal corresponding to the Redistributor. Power management operations follow the rules in <span class="xref">'Power management' in in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+      <h2>Configuration</h2>
+        <p>A copy of this register is provided for each Redistributor.</p>
+      <h2>Attributes</h2>
+        <p>GICR_WAKER is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="28"><a href="#fieldset_0-30_3">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">ChildrenAsleep</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">ProcessorSleep</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">IMPLEMENTATION DEFINED, bit [31]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><h4 id="fieldset_0-30_3">Bits [30:3]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2">ChildrenAsleep, bit [2]</h4><div class="field">
+      <p>Read-only. Indicates whether the connected PE is quiescent:</p>
+    <table class="valuetable"><tr><th>ChildrenAsleep</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An interface to the connected PE might be active.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All interfaces to the connected PE are quiescent.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul></div><h4 id="fieldset_0-1_1">ProcessorSleep, bit [1]</h4><div class="field">
+      <p>Indicates whether the Redistributor can assert the <span class="signal">WakeRequest</span> signal:</p>
+    <table class="valuetable"><tr><th>ProcessorSleep</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This PE is not in, and is not entering, a low power state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>The PE is either in, or is in the process of entering, a low power state.</p>
+<p>All interrupts that arrive at the Redistributor:</p>
+<ul>
+<li>Assert a <span class="signal">WakeRequest</span> signal.
+</li><li>Are held in the pending state at the Redistributor, and are not communicated to the CPU interface.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>When ProcessorSleep == 1, the Redistributor must ensure that any interrupts that are pending on the CPU interface are released.</p></div><p>For an implementation that is using the GIC Stream Protocol Interface:</p>
+<ul>
+<li>A Quiesce command puts the interface between the Redistributor and the CPU interface in a quiescent state. For more information, see <span class="xref">'Quiesce (IRI)' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.
+</li><li>A Release command releases any interrupts that are pending on the CPU interface. For more information, see <span class="xref">'Release (ICC)' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.
+</li></ul></td></tr></table><div class="note"><span class="note-header">Note</span><p>Before powering down a PE, software must set this bit to 1 and wait until ChildrenAsleep == 1. After powering up a PE, or following a failed powerdown, software must set this bit to 0 and wait until ChildrenAsleep == 0.</p></div><p>Changing ProcessorSleep from 1 to 0 when ChildrenAsleep is not 1 results in <span class="arm-defined-word">UNPREDICTABLE</span> behavior.</p>
+<p>Changing ProcessorSleep from 0 to 1 when the Enable for each interrupt group in the associated CPU interface is not 0 results in <span class="arm-defined-word">UNPREDICTABLE</span> behavior.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">1</span>.
+</li></ul></div><h4 id="fieldset_0-0_0">IMPLEMENTATION DEFINED, bit [0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><h2>Accessing GICR_WAKER</h2>
+        <p>To ensure a Redistributor is quiescent, software must write to GICR_WAKER with ProcessorSleep == 1, then poll the register until ChildrenAsleep == 1.</p>
+
+      
+        <p>Resetting the connected PE when GICR_WAKER.ProcessorSleep==0 or GICR_WAKER.ChildresAsleep==0, can lead to <span class="arm-defined-word">UNPREDICTABLE</span> behavior in the IRI.</p>
+
+      
+        <p>Resetting the IRI when GICR_WAKER.ProcessorSleep==0 or GICR_WAKER.ChildresAsleep==0 can lead to <span class="arm-defined-word">UNPREDICTABLE</span> behavior in the connected PE.</p>
+      <h4>GICR_WAKER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Redistributor</td><td>RD_base</td><td><span class="hexnumber">0x0014</span></td><td>GICR_WAKER</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 1, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When GICD_CTLR.DS == 0 and an access is Secure, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When GICD_CTLR.DS == 0 and an access is Non-secure, accesses to this register are <span class="access_level">RAZ/WI</span>.
+          </li><li>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Root, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Realm, accesses to this register are <span class="access_level">RAZ/WI</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

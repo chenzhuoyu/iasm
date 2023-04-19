@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DIT</reg_short_name>
+        
+        <reg_long_name>Data Independent Timing</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_DIT is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Allows access to the Data Independent Timing bit.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Process state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DIT is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>63:25</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DIT</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Data Independent Timing.</para>
+    </field_description>
+    <field_description order="after"><para>The data processing instructions affected by this bit are:</para>
+<list type="unordered">
+<listitem><content>
+<para>All cryptographic instructions. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>AESD</instruction>, <instruction>AESE</instruction>, <instruction>AESIMC</instruction>, <instruction>AESMC</instruction>, <instruction>SHA1C</instruction>, <instruction>SHA1H</instruction>, <instruction>SHA1M</instruction>, <instruction>SHA1P</instruction>, <instruction>SHA1SU0</instruction>, <instruction>SHA1SU1</instruction>, <instruction>SHA256H</instruction>, <instruction>SHA256H2</instruction>, <instruction>SHA256SU0</instruction>, <instruction>SHA256SU1</instruction>, <instruction>SHA512H</instruction>, <instruction>SHA512H2</instruction>, <instruction>SHA512SU0</instruction>, <instruction>SHA512SU1</instruction>, <instruction>EOR3</instruction>, <instruction>RAX1</instruction>, <instruction>XAR</instruction>, <instruction>BCAX</instruction>, <instruction>SM3SS1</instruction>, <instruction>SM3TT1A</instruction>, <instruction>SM3TT1B</instruction>, <instruction>SM3TT2A</instruction>, <instruction>SM3TT2B</instruction>, <instruction>SM3PARTW1</instruction>, <instruction>SM3PARTW2</instruction>, <instruction>SM4E</instruction>, and <instruction>SM4EKEY</instruction>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>A subset of those instructions which use the general-purpose register file. These instructions are:</para>
+<list type="unordered">
+<listitem><content>
+<para><instruction>ADC</instruction>, <instruction>ADCS</instruction>, <instruction>ADD</instruction>, <instruction>ADDS</instruction>, <instruction>AND</instruction>, <instruction>ANDS</instruction>, <instruction>ASR</instruction>, <instruction>ASRV</instruction>, <instruction>BFC</instruction>, <instruction>BFI</instruction>, <instruction>BFM</instruction>, <instruction>BFXIL</instruction>, <instruction>BIC</instruction>, <instruction>BICS</instruction>, <instruction>CCMN</instruction>, <instruction>CCMP</instruction>, <instruction>CFINV</instruction>, <instruction>CINC</instruction>, <instruction>CINV</instruction>, <instruction>CLS</instruction>, <instruction>CLZ</instruction>, <instruction>CMN</instruction>, <instruction>CMP</instruction>, <instruction>CNEG</instruction>, <instruction>CSEL</instruction>, <instruction>CSET</instruction>, <instruction>CSETM</instruction>, <instruction>CSINC</instruction>, <instruction>CSINV</instruction>, <instruction>CSNEG</instruction>, <instruction>EON</instruction>, <instruction>EOR</instruction>, <instruction>EXTR</instruction>, <instruction>LSL</instruction>, <instruction>LSLV</instruction>, <instruction>LSR</instruction>, <instruction>LSRV</instruction>, <instruction>MADD</instruction>, <instruction>MNEG</instruction>, <instruction>MOV</instruction>, <instruction>MOVK</instruction>, <instruction>MOVN</instruction>, <instruction>MOVZ</instruction>, <instruction>MSUB</instruction>, <instruction>MUL</instruction>, <instruction>MVN</instruction>, <instruction>NEG</instruction>, <instruction>NEGS</instruction>, <instruction>NGC</instruction>, <instruction>NGCS</instruction>, <instruction>NOP</instruction>, <instruction>ORN</instruction>, <instruction>ORR</instruction>, <instruction>RBIT</instruction>, <instruction>REV</instruction>, <instruction>REV16</instruction>, <instruction>REV32</instruction>, <instruction>REV64</instruction>, <instruction>RMIF</instruction>, <instruction>ROR</instruction>, <instruction>RORV</instruction>, <instruction>SBC</instruction>, <instruction>SBCS</instruction>, <instruction>SBFIZ</instruction>, <instruction>SBFM</instruction>, <instruction>SBFX</instruction>, <instruction>SETF8</instruction>, <instruction>SETF16</instruction>, <instruction>SMADDL</instruction>, <instruction>SMNEGL</instruction>, <instruction>SMSUBL</instruction>, <instruction>SMULH</instruction>, <instruction>SMULL</instruction>, <instruction>SUB</instruction>, <instruction>SUBS</instruction>, <instruction>SXTB</instruction>, <instruction>SXTH</instruction>, <instruction>SXTW</instruction>, <instruction>TST</instruction>, <instruction>UBFIZ</instruction>, <instruction>UBFM</instruction>, <instruction>UBFX</instruction>, <instruction>UMADDL</instruction>, <instruction>UMNEGL</instruction>, <instruction>UMSUBL</instruction>, <instruction>UMULH</instruction>, <instruction>UMULL</instruction>, <instruction>UXTB</instruction>, and <instruction>UXTH</instruction>.</para>
+</content>
+</listitem><listitem><content>
+<para>If FEAT_CRC32 is implemented, <instruction>CRC32B</instruction>, <instruction>CRC32H</instruction>, <instruction>CRC32W</instruction>, <instruction>CRC32X</instruction>, <instruction>CRC32CB</instruction>, <instruction>CRC32CH</instruction>, <instruction>CRC32CW</instruction>, and <instruction>CRC32CX</instruction>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>A subset of those instructions which use the SIMD&amp;FP register file. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>ABS</instruction>, <instruction>ADD</instruction>, <instruction>ADDHN</instruction>, <instruction>ADDHN2</instruction>, <instruction>ADDP</instruction>, <instruction>ADDV</instruction>, <instruction>AND</instruction>, <instruction>BIC</instruction>, <instruction>BIF</instruction>, <instruction>BIT</instruction>, <instruction>BSL</instruction>, <instruction>CLS</instruction>, <instruction>CLZ</instruction>, <instruction>CMEQ</instruction>, <instruction>CMGE</instruction>, <instruction>CMGT</instruction>, <instruction>CMHI</instruction>, <instruction>CMHS</instruction>, <instruction>CMLE</instruction>, <instruction>CMLT</instruction>, <instruction>CMTST</instruction>, <instruction>CNT</instruction>, <instruction>DUP</instruction>, <instruction>EOR</instruction>, <instruction>EXT</instruction>, <instruction>FCSEL</instruction>, <instruction>INS</instruction>, <instruction>MLA</instruction>, <instruction>MLS</instruction>, <instruction>MOV</instruction>, <instruction>MOVI</instruction>, <instruction>MUL</instruction>, <instruction>MVN</instruction>, <instruction>MVNI</instruction>, <instruction>NEG</instruction>, <instruction>NOT</instruction>, <instruction>ORN</instruction>, <instruction>ORR</instruction>, <instruction>PMUL</instruction>, <instruction>PMULL</instruction>, <instruction>PMULL2</instruction>, <instruction>RADDHN</instruction>, <instruction>RADDHN2</instruction>, <instruction>RBIT</instruction>, <instruction>REV16</instruction>, <instruction>REV32</instruction>, <instruction>RSHRN</instruction>, <instruction>RSHRN2</instruction>, <instruction>RSUBHN</instruction>, <instruction>RSUBHN2</instruction>, <instruction>SABA</instruction>, <instruction>SABD</instruction>, <instruction>SABAL</instruction>, <instruction>SABAL2</instruction>, <instruction>SABDL</instruction>, <instruction>SABDL2</instruction>, <instruction>SADALP</instruction>, <instruction>SADDL</instruction>, <instruction>SADDL2</instruction>, <instruction>SADDLP</instruction>, <instruction>SADDLV</instruction>, <instruction>SADDW</instruction>, <instruction>SADDW2</instruction>, <instruction>SHADD</instruction>, <instruction>SHL</instruction>, <instruction>SHLL</instruction>, <instruction>SHLL2</instruction>, <instruction>SHRN</instruction>, <instruction>SHRN2</instruction>, <instruction>SHSUB</instruction>, <instruction>SLI</instruction>, <instruction>SMAX</instruction>, <instruction>SMAXP</instruction>, <instruction>SMAXV</instruction>, <instruction>SMIN</instruction>, <instruction>SMINP</instruction>, <instruction>SMINV</instruction>, <instruction>SMLAL</instruction>, <instruction>SMLAL2</instruction>, <instruction>SMLSL</instruction>, <instruction>SMLSL2</instruction>, <instruction>SMOV</instruction>, <instruction>SMULL</instruction>, <instruction>SMULL2</instruction>, <instruction>SQDMULH</instruction> (by element), <instruction>SQDMULH</instruction> (vector), <instruction>SQRDMLAH</instruction> (by element), <instruction>SQRDMLAH</instruction> (vector), <instruction>SQRDMULH</instruction> (by element), <instruction>SQRDMULH</instruction> (vector), <instruction>SRI</instruction>, <instruction>SSHL</instruction>, <instruction>SSHLL</instruction>, <instruction>SSHLL2</instruction>, <instruction>SSHR</instruction>, <instruction>SSRA</instruction>, <instruction>SSUBL</instruction>, <instruction>SSUBL2</instruction>, <instruction>SSUBW</instruction>, <instruction>SSUBW2</instruction>, <instruction>SUB</instruction>, <instruction>SUBHN</instruction>, <instruction>SUBHN2</instruction>, <instruction>SXTL</instruction>, <instruction>SXTL2</instruction>, <instruction>TBL</instruction>, <instruction>TBX</instruction>, <instruction>TRN1</instruction>, <instruction>TRN2</instruction>, <instruction>UABA</instruction>, <instruction>UABAL</instruction>, <instruction>UABAL2</instruction>, <instruction>UABD</instruction>, <instruction>UABDL</instruction>, <instruction>UABDL2</instruction>, <instruction>UADALP</instruction>, <instruction>UADDL</instruction>, <instruction>UADDL2</instruction>, <instruction>UADDLP</instruction>, <instruction>UADDLV</instruction>, <instruction>UADDW</instruction>, <instruction>UADDW2</instruction>, <instruction>UHADD</instruction>, <instruction>UHSUB</instruction>, <instruction>UMAX</instruction>, <instruction>UMAXP</instruction>, <instruction>UMAXV</instruction>, <instruction>UMIN</instruction>, <instruction>UMINP</instruction>, <instruction>UMINV</instruction>, <instruction>UMLAL</instruction>, <instruction>UMLAL2</instruction>, <instruction>UMLSL</instruction>, <instruction>UMOV</instruction>, <instruction>UMLSL2</instruction>, <instruction>UMULL</instruction>, <instruction>UMULL2</instruction>, <instruction>USHL</instruction>, <instruction>USHLL</instruction>, <instruction>USHLL2</instruction>, <instruction>USHR</instruction>, <instruction>USRA</instruction>, <instruction>USUBL</instruction>, <instruction>USUBL2</instruction>, <instruction>USUBW</instruction>, <instruction>USUBW2</instruction>, <instruction>UXTL</instruction>, <instruction>UXTL2</instruction>, <instruction>UZP1</instruction>, <instruction>UZP2</instruction>, <instruction>XTN</instruction>, <instruction>XTN2</instruction>, <instruction>ZIP1</instruction>, and <instruction>ZIP2</instruction>.</content>
+</listitem></list>
+</content>
+</listitem></list>
+<note><para>The architecture makes no statement about the timing properties when the PSTATE.DIT bit is not set. However, it is likely that many of these instructions have timing that is invariant of the data in many situations.</para><para>In particular, Arm strongly recommends that the Armv8.3 pointer authentication instructions do not have their timing dependent on the key value used in the pointer authentication in all cases, regardless of the PSTATE.DIT bit.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The architecture makes no statement about the timing properties of any instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The architecture requires that:</para>
+<list type="unordered">
+<listitem><content>
+<para>The timing of every load and store instruction is insensitive to the value of the data being loaded or stored.</para>
+</content>
+</listitem><listitem><content>
+<para>For certain data processing instructions, the instruction takes a time which is independent of:</para>
+<list type="unordered">
+<listitem><content>
+<para>The values of the data supplied in any of its registers.</para>
+</content>
+</listitem><listitem><content>
+<para>The values of the NZCV flags.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>For certain data processing instructions, the response of the instruction to asynchronous exceptions does not vary based on:</para>
+<list type="unordered">
+<listitem><content>
+<para>The values of the data supplied in any of its registers.</para>
+</content>
+</listitem><listitem><content>
+<para>The values of the NZCV flags.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>23:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_25" msb="63" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_0" msb="23" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS DIT" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, DIT</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    X[t, 64] = Zeros(39):PSTATE.DIT:Zeros(24);
+elsif PSTATE.EL == EL1 then
+    X[t, 64] = Zeros(39):PSTATE.DIT:Zeros(24);
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = Zeros(39):PSTATE.DIT:Zeros(24);
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = Zeros(39):PSTATE.DIT:Zeros(24);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister DIT" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR DIT, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    PSTATE.DIT = X[t, 64]&lt;24&gt;;
+elsif PSTATE.EL == EL1 then
+    PSTATE.DIT = X[t, 64]&lt;24&gt;;
+elsif PSTATE.EL == EL2 then
+    PSTATE.DIT = X[t, 64]&lt;24&gt;;
+elsif PSTATE.EL == EL3 then
+    PSTATE.DIT = X[t, 64]&lt;24&gt;;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate DIT" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR DIT, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

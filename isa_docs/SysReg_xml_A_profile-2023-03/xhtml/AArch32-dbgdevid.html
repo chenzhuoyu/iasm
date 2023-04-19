@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>DBGDEVID</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">DBGDEVID, Debug Device ID register 0</h1><p>The DBGDEVID characteristics are:</p><h2>Purpose</h2>
+        <p>Adds to the information given by the <a href="AArch32-dbgdidr.html">DBGDIDR</a> by describing other features of the debug implementation.</p>
+      <h2>Configuration</h2><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to DBGDEVID are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>This register is required in all implementations.</p>
+      <h2>Attributes</h2>
+        <p>DBGDEVID is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">CIDMask</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">AuxRegs</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">DoubleLock</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">VirtExtns</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">VectorCatch</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">BPAddrMask</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">WPAddrMask</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">PCSample</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">CIDMask, bits [31:28]</h4><div class="field">
+      <p>Indicates the level of support for the Context ID matching breakpoint masking capability. Defined values are:</p>
+    <table class="valuetable"><tr><th>CIDMask</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Context ID masking is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Context ID masking is implemented.</p>
+        </td></tr></table>
+      <p>All other values are reserved. The value of this for Armv8 is <span class="binarynumber">0b0000</span>.</p>
+    </div><h4 id="fieldset_0-27_24">AuxRegs, bits [27:24]</h4><div class="field">
+      <p>Indicates support for Auxiliary registers. Permitted values for this field are:</p>
+    <table class="valuetable"><tr><th>AuxRegs</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Support for External Debug Auxiliary Control Register, <a href="ext-edacr.html">EDACR</a>.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-23_20">DoubleLock, bits [23:20]</h4><div class="field">
+      <p>OS Double Lock implemented. Defined values are:</p>
+    <table class="valuetable"><tr><th>DoubleLock</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>OS Double Lock is not implemented. <a href="AArch32-dbgosdlr.html">DBGOSDLR</a> is RAZ/WI.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>OS Double Lock is implemented. <a href="AArch32-dbgosdlr.html">DBGOSDLR</a> is RW.</p>
+        </td></tr></table><p><span class="xref">FEAT_DoubleLock</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>All other values are reserved.</p></div><h4 id="fieldset_0-19_16">VirtExtns, bits [19:16]</h4><div class="field">
+      <p>Indicates whether EL2 is implemented. Defined values are:</p>
+    <table class="valuetable"><tr><th>VirtExtns</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>EL2 is not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>EL2 is implemented.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-15_12">VectorCatch, bits [15:12]</h4><div class="field">
+      <p>Defines the form of Vector Catch exception implemented. Defined values are:</p>
+    <table class="valuetable"><tr><th>VectorCatch</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Address matching Vector Catch exception implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Exception matching Vector Catch exception implemented.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-11_8">BPAddrMask, bits [11:8]</h4><div class="field">
+      <p>Indicates the level of support for the instruction address matching breakpoint masking capability. Defined values are:</p>
+    <table class="valuetable"><tr><th>BPAddrMask</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Breakpoint address masking might be implemented. If not implemented, <a href="AArch32-dbgbcrn.html">DBGBCR&lt;n&gt;</a>[28:24] is RAZ/WI.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Breakpoint address masking is implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Breakpoint address masking is not implemented. <a href="AArch32-dbgbcrn.html">DBGBCR&lt;n&gt;</a>[28:24] is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr></table>
+      <p>All other values are reserved. The value of this for Armv8 is <span class="binarynumber">0b1111</span>.</p>
+    </div><h4 id="fieldset_0-7_4">WPAddrMask, bits [7:4]</h4><div class="field">
+      <p>Indicates the level of support for the data address matching watchpoint masking capability. Defined values are:</p>
+    <table class="valuetable"><tr><th>WPAddrMask</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Watchpoint address masking might be implemented. If not implemented, <a href="AArch32-dbgwcrn.html">DBGWCR&lt;n&gt;</a>.MASK (Address mask) is RAZ/WI.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Watchpoint address masking is implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Watchpoint address masking is not implemented. <a href="AArch32-dbgwcrn.html">DBGWCR&lt;n&gt;</a>.MASK (Address mask) is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr></table>
+      <p>All other values are reserved. The value of this for Armv8 is <span class="binarynumber">0b0001</span>.</p>
+    </div><h4 id="fieldset_0-3_0">PCSample, bits [3:0]</h4><div class="field">
+      <p>Indicates the level of PC Sample-based Profiling support using external debug registers. Defined values are:</p>
+    <table class="valuetable"><tr><th>PCSample</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>PC Sample-based Profiling Extension is not implemented in the external debug registers space.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Only <a href="ext-edpcsr.html">EDPCSR</a> and <a href="ext-edcidsr.html">EDCIDSR</a> are implemented. This option is only permitted if EL3 and EL2 are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p><a href="ext-edpcsr.html">EDPCSR</a>, <a href="ext-edcidsr.html">EDCIDSR</a>, and <a href="ext-edvidsr.html">EDVIDSR</a> are implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>When <span class="xref">FEAT_PCSRv8p2</span> is implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<div class="note"><span class="note-header">Note</span><p><span class="xref">FEAT_PCSRv8p2</span> implements the PC Sample-based Profiling Extension in the Performance Monitors register space, as indicated by the value of PMU.PMDEVID.PCSample.</p></div></div><div class="access_mechanisms"><h2>Accessing DBGDEVID</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1110</td><td>0b000</td><td>0b0111</td><td>0b0010</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGDEVID;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    else
+        R[t] = DBGDEVID;
+elsif PSTATE.EL == EL3 then
+    R[t] = DBGDEVID;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

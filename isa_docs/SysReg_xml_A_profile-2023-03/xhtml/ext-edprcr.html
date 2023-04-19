@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDPRCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDPRCR, External Debug Power/Reset Control Register</h1><p>The EDPRCR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls the PE functionality related to powerup, reset, and powerdown.</p>
+      <h2>Configuration</h2><p>When FEAT_DoPD is implemented, EDPRCR is in the Core power domain. Otherwise, EDPRCR contains fields that are in the Core power domain and fields that are in the Debug power domain.
+    </p>
+        <p>CORENPDRQ is the only field that is mapped between the EDPRCR and DBGPRCR and DBGPRCR_EL1.</p>
+      <h2>Attributes</h2>
+        <p>EDPRCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When FEAT_DoPD is implemented:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="30"><a href="#fieldset_0-31_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">CWRR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">CORENPDRQ</a></td></tr></tbody></table><h4 id="fieldset_0-31_2">Bits [31:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">CWRR, bit [1]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>The PE ignores all writes to this bit.</p>
+    </div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Warm reset request.</p>
+<p>The extent of the reset is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>, but must be one of:</p>
+<ul>
+<li>The request is ignored.
+</li><li>Only this PE is Warm reset.
+</li><li>This PE and other components of the system, possibly including other PEs, are Warm reset.
+</li></ul>
+<p>Arm deprecates use of this bit, and recommends that implementations ignore the request.</p><table class="valuetable"><tr><th>CWRR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Request Warm reset.</p>
+        </td></tr></table><p>This field is in the Core power domain</p>
+<p>The PE ignores writes to this bit if any of the following are true:</p>
+<ul>
+<li>ExternalInvasiveDebugEnabled() == FALSE, EL3 is not implemented, and the implemented Security state is Non-secure state.
+</li><li>ExternalSecureInvasiveDebugEnabled() == FALSE, EL3 is not implemented, and the implemented Security state is Secure state.
+</li><li>ExternalSecureInvasiveDebugEnabled() == FALSE and EL3 is implemented.
+</li></ul>
+<p>In an implementation that includes the recommended external debug interface, this bit drives the DBGRSTREQ signal.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>OSLockStatus()</li><li>SoftwareLockStatus()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">WO/RAZ</span>.</li></ul></div><h4 id="fieldset_0-0_0">CORENPDRQ, bit [0]</h4><div class="field"><p>Core no powerdown request. Requests emulation of powerdown.</p>
+<p>This request is typically passed to an external power controller. This means that whether a request causes power up is dependent on the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> nature of the system. The power controller must not allow the Core power domain to switch off while this bit is 1.</p><table class="valuetable"><tr><th>CORENPDRQ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If the system responds to a powerdown request, it powers down Core power domain.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>If the system responds to a powerdown request, it does not powerdown the Core power domain, but instead emulates a powerdown of that domain.</p>
+        </td></tr></table><p>When this bit reads as <span class="arm-defined-word">UNKNOWN</span>, the PE ignores writes to this bit.</p>
+<p>This field is in the Core power domain, and permitted accesses to this field map to the <a href="AArch32-dbgprcr.html">DBGPRCR</a>.CORENPDRQ and <a href="AArch64-dbgprcr_el1.html">DBGPRCR_EL1</a>.CORENPDRQ fields.</p>
+<p>In an implementation that includes the recommended external debug interface, this bit drives the DBGNOPWRDWN signal.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit is reset to the Cold reset value on exit from an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> software-visible retention state. For more information about retention states, see <span class="xref">'Core power domain power states'</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>Writes to this bit are not prohibited by the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> authentication interface. This means that a debugger can request emulation of powerdown regardless of whether invasive debug is permitted.</p></div><p>On a Cold reset, if the powerup request is implemented and the powerup request has been asserted, this field is an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> choice of 0 or 1. If the powerup request is not asserted, this field is set to 0.</p><p>Accessing this field has the following behavior:</p><ul><li>When OSLockStatus(), access to this field
+                            is <span class="access_level">UNKNOWN/WI</span>.</li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="28"><a href="#fieldset_1-31_4">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-3_3">COREPURQ</a></td><td class="lr" colspan="1"><a href="#fieldset_1-2_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-1_1-1">CWRR</a></td><td class="lr" colspan="1"><a href="#fieldset_1-0_0">CORENPDRQ</a></td></tr></tbody></table><h4 id="fieldset_1-31_4">Bits [31:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-3_3">COREPURQ, bit [3]</h4><div class="field"><p>Core powerup request. Allows a debugger to request that the power controller power up the core, enabling access to the debug register in the Core power domain, and that the power controller emulates powerdown.</p>
+<p>This request is typically passed to an external power controller. This means that whether a request causes power up is dependent on the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> nature of the system. The power controller must not allow the Core power domain to switch off while this bit is 1.</p><table class="valuetable"><tr><th>COREPURQ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not request power up of the Core power domain.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Request power up of the Core power domain, and emulation of powerdown.</p>
+        </td></tr></table><p>In an implementation that includes the recommended external debug interface, this bit drives the DBGPWRUPREQ signal.</p>
+<p>This field is in the Debug power domain and can be read and written when the Core power domain is powered off.</p>
+<div class="note"><span class="note-header">Note</span><p>Writes to this bit are not prohibited by the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> authentication interface. This means that a debugger can request emulation of powerdown regardless of whether invasive debug is permitted.</p></div><p>The reset behavior of this field is:</p><ul><li>On an External debug reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h4 id="fieldset_1-2_2">Bit [2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-1_1-1">CWRR, bit [1]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>The PE ignores all writes to this bit.</p>
+    </div><h4 id="fieldset_1-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Warm reset request.</p>
+<p>The extent of the reset is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>, but must be one of:</p>
+<ul>
+<li>The request is ignored.
+</li><li>Only this PE is Warm reset.
+</li><li>This PE and other components of the system, possibly including other PEs, are Warm reset.
+</li></ul>
+<p>Arm deprecates use of this bit, and recommends that implementations ignore the request.</p><table class="valuetable"><tr><th>CWRR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No action.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Request Warm reset.</p>
+        </td></tr></table><p>This field is in the Core power domain</p>
+<p>The PE ignores writes to this bit if any of the following are true:</p>
+<ul>
+<li>ExternalInvasiveDebugEnabled() == FALSE, EL3 is not implemented, and the implemented Security state is Non-secure state.
+</li><li>ExternalSecureInvasiveDebugEnabled() == FALSE, EL3 is not implemented, and the implemented Security state is Secure state.
+</li><li>ExternalSecureInvasiveDebugEnabled() == FALSE and EL3 is implemented.
+</li></ul>
+<p>In an implementation that includes the recommended external debug interface, this bit drives the DBGRSTREQ signal.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>!IsCorePowered()</li><li>DoubleLockStatus()</li><li>OSLockStatus()</li><li>SoftwareLockStatus()</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">WO/RAZ</span>.</li></ul></div><h4 id="fieldset_1-0_0">CORENPDRQ, bit [0]</h4><div class="field"><p>Core no powerdown request. Requests emulation of powerdown.</p>
+<p>This request is typically passed to an external power controller. This means that whether a request causes power up is dependent on the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> nature of the system. The power controller must not allow the Core power domain to switch off while this bit is 1.</p><table class="valuetable"><tr><th>CORENPDRQ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>If the system responds to a powerdown request, it powers down Core power domain.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>If the system responds to a powerdown request, it does not powerdown the Core power domain, but instead emulates a powerdown of that domain.</p>
+        </td></tr></table><p>When this bit reads as <span class="arm-defined-word">UNKNOWN</span>, the PE ignores writes to this bit.</p>
+<p>This field is in the Core power domain, and permitted accesses to this field map to the <a href="AArch32-dbgprcr.html">DBGPRCR</a>.CORENPDRQ and <a href="AArch64-dbgprcr_el1.html">DBGPRCR_EL1</a>.CORENPDRQ fields.</p>
+<p>In an implementation that includes the recommended external debug interface, this bit drives the DBGNOPWRDWN signal.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this bit is reset to the value of <a href="ext-edprcr.html">EDPRCR</a>.COREPURQ on exit from an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> software-visible retention state. For more information about retention states, see <span class="xref">'Core power domain power states'</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>Writes to this bit are not prohibited by the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> authentication interface. This means that a debugger can request emulation of powerdown regardless of whether invasive debug is permitted.</p></div><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to the value in <a href="ext-edprcr.html">EDPRCR</a>.COREPURQ.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">UNKNOWN/WI</span> if
+                
+                    any of the following are true:
+                <ul><li>!IsCorePowered()</li><li>DoubleLockStatus()</li><li>OSLockStatus()</li></ul></li><li>When SoftwareLockStatus(), access to this field
+                            is <span class="access_level">RO</span>.</li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RW</span>.</li></ul></div><h2>Accessing EDPRCR</h2>
+        <p>On permitted accesses to the register, other access controls affect the behavior of some fields. See the field descriptions for more information.</p>
+      <h4>EDPRCR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x310</span></td><td>EDPRCR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When (FEAT_DoPD is not implemented or IsCorePowered()) and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When (FEAT_DoPD is not implemented or IsCorePowered()) and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

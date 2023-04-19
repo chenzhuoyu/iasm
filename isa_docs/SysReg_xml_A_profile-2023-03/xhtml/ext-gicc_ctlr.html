@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICC_CTLR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICC_CTLR, CPU Interface Control Register</h1><p>The GICC_CTLR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls the CPU interface, including enabling of interrupt groups, interrupt signal bypass, binary point registers used, and separation of priority drop and interrupt deactivation.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>If the GIC implementation supports two Security states, independent EOI controls are provided for accesses from each Security state. Secure accesses handle both Group 0 and Group 1 interrupts, and Non-secure accesses handle Group 1 interrupts only.</p></div>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3_LEGACY is implemented. Otherwise, direct accesses to GICC_CTLR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>In a GIC implementation that supports two Security states:</p>
+
+      
+        <ul>
+<li>This register is Banked.
+</li><li>The register bit assignments are different in the Secure and Non-secure copies.
+</li></ul>
+      <h2>Attributes</h2>
+        <p>GICC_CTLR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When GICD_CTLR.DS==0, Non-secure access:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="22"><a href="#fieldset_0-31_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">EOImodeNS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-8_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">IRQBypDisGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">FIQBypDisGrp1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-4_1">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">EnableGrp1</a></td></tr></tbody></table><h4 id="fieldset_0-31_10">Bits [31:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9">EOImodeNS, bit [9]</h4><div class="field">
+      <p>Controls the behavior of Non-secure accesses to <a href="ext-gicc_eoir.html">GICC_EOIR</a>, <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>, and <a href="ext-gicc_dir.html">GICC_DIR</a>.</p>
+    <table class="valuetable"><tr><th>EOImodeNS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide both priority drop and interrupt deactivation functionality. Accesses to <a href="ext-gicc_dir.html">GICC_DIR</a> are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide priority drop functionality only. <a href="ext-gicc_dir.html">GICC_DIR</a> provides interrupt deactivation functionality.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>An implementation is permitted to make this bit RAO/WI.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-8_7">Bits [8:7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6">IRQBypDisGrp1, bit [6]</h4><div class="field">
+      <p>When the signaling of IRQs by the CPU interface is disabled, this field partly controls whether the bypass IRQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>IRQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass IRQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass IRQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5">FIQBypDisGrp1, bit [5]</h4><div class="field">
+      <p>When the signaling of FIQs by the CPU interface is disabled, this field partly controls whether the bypass FIQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>FIQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass FIQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass FIQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DFB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_1">Bits [4:1]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0">EnableGrp1, bit [0]</h4><div class="field">
+      <p>This Non-secure field enables the signaling of Group 1 interrupts by the CPU interface to a target PE:</p>
+    <table class="valuetable"><tr><th>EnableGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 1 interrupt signaling is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 1 interrupt signaling is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h3>When GICD_CTLR.DS==0, Secure access:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="21"><a href="#fieldset_1-31_11">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-10_10">EOImodeNS</a></td><td class="lr" colspan="1"><a href="#fieldset_1-9_9">EOImodeS</a></td><td class="lr" colspan="1"><a href="#fieldset_1-8_8">IRQBypDisGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-7_7">FIQBypDisGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-6_6">IRQBypDisGrp0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-5_5">FIQBypDisGrp0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-4_4">CBPR</a></td><td class="lr" colspan="1"><a href="#fieldset_1-3_3">FIQEn</a></td><td class="lr" colspan="1"><a href="#fieldset_1-2_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_1-1_1">EnableGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_1-0_0">EnableGrp0</a></td></tr></tbody></table><h4 id="fieldset_1-31_11">Bits [31:11]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-10_10">EOImodeNS, bit [10]</h4><div class="field">
+      <p>Controls the behavior of Non-secure accesses to <a href="ext-gicc_eoir.html">GICC_EOIR</a>, <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>, and <a href="ext-gicc_dir.html">GICC_DIR</a>.</p>
+    <table class="valuetable"><tr><th>EOImodeNS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide both priority drop and interrupt deactivation functionality. Accesses to <a href="ext-gicc_dir.html">GICC_DIR</a> are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide priority drop functionality only. <a href="ext-gicc_dir.html">GICC_DIR</a> provides interrupt deactivation functionality.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>An implementation is permitted to make this bit RAO/WI.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-9_9">EOImodeS, bit [9]</h4><div class="field">
+      <p>Controls the behavior of Secure accesses to <a href="ext-gicc_eoir.html">GICC_EOIR</a>, <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>, and <a href="ext-gicc_dir.html">GICC_DIR</a>.</p>
+    <table class="valuetable"><tr><th>EOImodeS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide both priority drop and interrupt deactivation functionality. Accesses to <a href="ext-gicc_dir.html">GICC_DIR</a> are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide priority drop functionality only. <a href="ext-gicc_dir.html">GICC_DIR</a> provides interrupt deactivation functionality.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>An implementation is permitted to make this bit RAO/WI.</p>
+      </div>
+      <p>This field shares state with <a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-8_8">IRQBypDisGrp1, bit [8]</h4><div class="field">
+      <p>When the signaling of IRQs by the CPU interface is disabled, this field partly controls whether the bypass IRQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>IRQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass IRQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass IRQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-7_7">FIQBypDisGrp1, bit [7]</h4><div class="field">
+      <p>When the signaling of FIQs by the CPU interface is disabled, this field partly controls whether the bypass FIQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>FIQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass FIQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass FIQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DFB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-6_6">IRQBypDisGrp0, bit [6]</h4><div class="field">
+      <p>When the signaling of IRQs by the CPU interface is disabled, this field partly controls whether the bypass IRQ signal is signaled to the PE for Group 0:</p>
+    <table class="valuetable"><tr><th>IRQBypDisGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass IRQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass IRQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-5_5">FIQBypDisGrp0, bit [5]</h4><div class="field">
+      <p>When the signaling of FIQs by the CPU interface is disabled, this field partly controls whether the bypass FIQ signal is signaled to the PE for Group 0:</p>
+    <table class="valuetable"><tr><th>FIQBypDisGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass FIQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass FIQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-4_4">CBPR, bit [4]</h4><div class="field">
+      <p>Controls whether <a href="ext-gicc_bpr.html">GICC_BPR</a> provides common control of preemption to Group 0 and Group 1 interrupts:</p>
+    <table class="valuetable"><tr><th>CBPR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p><a href="ext-gicc_bpr.html">GICC_BPR</a> determines preemption for Group 0 interrupts only.</p>
+<p><a href="ext-gicc_abpr.html">GICC_ABPR</a> determines preemption for Group 1 interrupts.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_bpr.html">GICC_BPR</a> determines preemption for both Group 0 and Group 1 interrupts.</p>
+        </td></tr></table><p>This field is an alias of <a href="AArch64-icc_ctlr_el3.html">ICC_CTLR_EL3</a>.CBPR_EL1NS.</p>
+<p>In a GIC that supports two Security states, when CBPR == 1:</p>
+<ul>
+<li>A Non-secure read of <a href="ext-gicc_bpr.html">GICC_BPR</a> returns the value of Secure <a href="ext-gicc_bpr.html">GICC_BPR</a>.Binary_Point, incremented by 1, and saturated to <span class="binarynumber">0b111</span>.
+</li><li>Non-secure writes of <a href="ext-gicc_bpr.html">GICC_BPR</a> are ignored.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-3_3">FIQEn, bit [3]</h4><div class="field">
+      <p>Controls whether the CPU interface signals Group 0 interrupts to a target PE using the FIQ or IRQ signal:</p>
+    <table class="valuetable"><tr><th>FIQEn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupts are signaled using the IRQ signal.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupts are signaled using the FIQ signal.</p>
+        </td></tr></table><p>Group 1 interrupts are signaled using the IRQ signal only.</p>
+<p>If an implementation supports two Security states, this bit is permitted to be RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-2_2">Bit [2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_1-1_1">EnableGrp1, bit [1]</h4><div class="field">
+      <p>This Non-secure field enables the signaling of Group 1 interrupts by the CPU interface to a target PE:</p>
+    <table class="valuetable"><tr><th>EnableGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 1 interrupt signaling is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 1 interrupt signaling is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_1-0_0">EnableGrp0, bit [0]</h4><div class="field">
+      <p>Enables the signaling of Group 0 interrupts by the CPU interface to a target PE:</p>
+    <table class="valuetable"><tr><th>EnableGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupt signaling is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupt signaling is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h3>When GICD_CTLR.DS == 1:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="22"><a href="#fieldset_2-31_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-9_9">EOImode</a></td><td class="lr" colspan="1"><a href="#fieldset_2-8_8">IRQBypDisGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_2-7_7">FIQBypDisGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_2-6_6">IRQBypDisGrp0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-5_5">FIQBypDisGrp0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-4_4">CBPR</a></td><td class="lr" colspan="1"><a href="#fieldset_2-3_3">FIQEn</a></td><td class="lr" colspan="1"><a href="#fieldset_2-2_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_2-1_1">EnableGrp1</a></td><td class="lr" colspan="1"><a href="#fieldset_2-0_0">EnableGrp0</a></td></tr></tbody></table><h4 id="fieldset_2-31_10">Bits [31:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-9_9">EOImode, bit [9]</h4><div class="field">
+      <p>Controls the behavior of accesses to <a href="ext-gicc_eoir.html">GICC_EOIR</a>, <a href="ext-gicc_aeoir.html">GICC_AEOIR</a>, and <a href="ext-gicc_dir.html">GICC_DIR</a>.</p>
+    <table class="valuetable"><tr><th>EOImode</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide both priority drop and interrupt deactivation functionality. Accesses to <a href="ext-gicc_dir.html">GICC_DIR</a> are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_eoir.html">GICC_EOIR</a> and <a href="ext-gicc_aeoir.html">GICC_AEOIR</a> provide priority drop functionality only. <a href="ext-gicc_dir.html">GICC_DIR</a> provides interrupt deactivation functionality.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>An implementation is permitted to make this bit RAO/WI.</p>
+      </div>
+      <p>This field shares state with <a href="ext-gicc_ctlr.html">GICC_CTLR</a>.EOImodeS.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-8_8">IRQBypDisGrp1, bit [8]</h4><div class="field">
+      <p>When the signaling of IRQs by the CPU interface is disabled, this field partly controls whether the bypass IRQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>IRQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass IRQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass IRQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-7_7">FIQBypDisGrp1, bit [7]</h4><div class="field">
+      <p>When the signaling of FIQs by the CPU interface is disabled, this field partly controls whether the bypass FIQ signal is signaled to the PE for Group 1:</p>
+    <table class="valuetable"><tr><th>FIQBypDisGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass FIQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass FIQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DFB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-6_6">IRQBypDisGrp0, bit [6]</h4><div class="field">
+      <p>When the signaling of IRQs by the CPU interface is disabled, this field partly controls whether the bypass IRQ signal is signaled to the PE for Group 0:</p>
+    <table class="valuetable"><tr><th>IRQBypDisGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass IRQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass IRQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-5_5">FIQBypDisGrp0, bit [5]</h4><div class="field">
+      <p>When the signaling of FIQs by the CPU interface is disabled, this field partly controls whether the bypass FIQ signal is signaled to the PE for Group 0:</p>
+    <table class="valuetable"><tr><th>FIQBypDisGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The bypass FIQ signal is signaled to the PE.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The bypass FIQ signal is not signaled to the PE.</p>
+        </td></tr></table><p>If System register access is enabled for EL3 and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB == 1, this field is RAO/WI.</p>
+<p>If System register access is enabled for EL1, this field is ignored.</p>
+<p>If an implementation does not support legacy interrupts, this bit is permitted to be RAO/WI.</p>
+<p>For more information, see <span class="xref">'Interrupt bypass support' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-4_4">CBPR, bit [4]</h4><div class="field">
+      <p>Controls whether <a href="ext-gicc_bpr.html">GICC_BPR</a> provides common control of preemption to Group 0 and Group 1 interrupts:</p>
+    <table class="valuetable"><tr><th>CBPR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p><a href="ext-gicc_bpr.html">GICC_BPR</a> determines preemption for Group 0 interrupts only.</p>
+<p><a href="ext-gicc_abpr.html">GICC_ABPR</a> determines preemption for Group 1 interrupts.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gicc_bpr.html">GICC_BPR</a> determines preemption for both Group 0 and Group 1 interrupts.</p>
+        </td></tr></table><p>This field is an alias of <a href="AArch64-icc_ctlr_el3.html">ICC_CTLR_EL3</a>.CBPR_EL1NS.</p>
+<p>In a GIC that supports two Security states, when CBPR == 1:</p>
+<ul>
+<li>A Non-secure read of <a href="ext-gicc_bpr.html">GICC_BPR</a> returns the value of Secure <a href="ext-gicc_bpr.html">GICC_BPR</a>.Binary_Point, incremented by 1, and saturated to <span class="binarynumber">0b111</span>.
+</li><li>Non-secure writes of <a href="ext-gicc_bpr.html">GICC_BPR</a> are ignored.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-3_3">FIQEn, bit [3]</h4><div class="field">
+      <p>Controls whether the CPU interface signals Group 0 interrupts to a target PE using the FIQ or IRQ signal:</p>
+    <table class="valuetable"><tr><th>FIQEn</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupts are signaled using the IRQ signal.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupts are signaled using the FIQ signal.</p>
+        </td></tr></table><p>Group 1 interrupts are signaled using the IRQ signal only.</p>
+<p>If an implementation supports two Security states, this bit is permitted to be RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-2_2">Bit [2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_2-1_1">EnableGrp1, bit [1]</h4><div class="field">
+      <p>This Non-secure field enables the signaling of Group 1 interrupts by the CPU interface to a target PE:</p>
+    <table class="valuetable"><tr><th>EnableGrp1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 1 interrupt signaling is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 1 interrupt signaling is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_2-0_0">EnableGrp0, bit [0]</h4><div class="field">
+      <p>Enables the signaling of Group 0 interrupts by the CPU interface to a target PE:</p>
+    <table class="valuetable"><tr><th>EnableGrp0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Group 0 interrupt signaling is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Group 0 interrupt signaling is enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h2>Accessing GICC_CTLR</h2>
+        <p>This register is used only when System register access is not enabled. When System register access is enabled:</p>
+
+      
+        <ul>
+<li>For AArch32 implementations, <a href="AArch32-icc_ctlr.html">ICC_CTLR</a> and <a href="AArch32-icc_mctlr.html">ICC_MCTLR</a> provide equivalent functionality.
+</li><li>For AArch64 implementations, <a href="AArch64-icc_ctlr_el1.html">ICC_CTLR_EL1</a> and <a href="AArch64-icc_ctlr_el3.html">ICC_CTLR_EL3</a> provide equivalent functionality.
+</li></ul>
+      <h4>GICC_CTLR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC CPU interface</td><td><span class="hexnumber">0x0000</span></td><td>GICC_CTLR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 0, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Secure, accesses to this register are <span class="access_level">RW</span>.
+          </li><li>When an access is Non-secure, accesses to this register are <span class="access_level">RW</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GITS_TYPER</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GITS_TYPER, ITS Type Register</h1><p>The GITS_TYPER characteristics are:</p><h2>Purpose</h2>
+        <p>Specifies the features that an ITS supports.</p>
+      <h2>Configuration</h2><p>There are no configuration notes.</p><h2>Attributes</h2>
+        <p>GITS_TYPER is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="17"><a href="#fieldset_0-63_47">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-46_46">INV</a></td><td class="lr" colspan="1"><a href="#fieldset_0-45_45">UMSIirq</a></td><td class="lr" colspan="1"><a href="#fieldset_0-44_44">UMSI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-43_43-1">nID</a></td><td class="lr" colspan="2"><a href="#fieldset_0-42_41-1">SVPET</a></td><td class="lr" colspan="1"><a href="#fieldset_0-40_40-1">VMAPP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-39_39-1">VSGI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-38_38-1">MPAM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-37_37">VMOVP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-36_36">CIL</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">CIDbits</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">HCC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">PTA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18">SEIS</a></td><td class="lr" colspan="5"><a href="#fieldset_0-17_13">Devbits</a></td><td class="lr" colspan="5"><a href="#fieldset_0-12_8">ID_bits</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">ITT_entry_size</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">CCT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">Virtual</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">Physical</a></td></tr></tbody></table><h4 id="fieldset_0-63_47">Bits [63:47]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-46_46">INV, bit [46]</h4><div class="field">
+      <p>ITS cache invalidation behavior on disable.</p>
+    <table class="valuetable"><tr><th>INV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether ITS caches are invalidated on clearing <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled and <a href="ext-gits_basern.html">GITS_BASER&lt;n&gt;</a>.Valid.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>ITS caches are invalidated on clearing <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled and <a href="ext-gits_basern.html">GITS_BASER&lt;n&gt;</a>.Valid.</p>
+        </td></tr></table><p>If GITS_TYPER.INV is 1, after the following sequence:</p>
+<ul>
+<li><a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled written to 0.
+</li><li>A read of <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Quiescent returns 1.
+</li><li><a href="ext-gits_basern.html">GITS_BASER&lt;n&gt;</a>.Valid written to 0.
+</li></ul>
+<p>There is no cached information from the ITS memory structure pointed to by <a href="ext-gits_basern.html">GITS_BASER&lt;n&gt;</a>.</p></div><h4 id="fieldset_0-45_45">UMSIirq, bit [45]</h4><div class="field">
+      <p>Indicates support for generating an interrupt on receiving unmapped MSI.</p>
+    <table class="valuetable"><tr><th>UMSIirq</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Interrupt on unmapped MSI not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Interrupt on unmapped MSI is supported.</p>
+        </td></tr></table>
+      <p>If GITS_TYPER.UMSI is 0, this field is <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-44_44">UMSI, bit [44]</h4><div class="field">
+      <p>Indicates suport for reporting receipt of unmapped MSIs.</p>
+    <table class="valuetable"><tr><th>UMSI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Reporting of unmapped MSIs is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Reporting of unmapped MSIs is supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-43_43-1">nID, bit [43]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>nID</p>
+    <table class="valuetable"><tr><th>nID</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Individual doorbell interrupt supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Individual doorbell interrupt not supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-43_43-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-42_41-1">SVPET, bits [42:41]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>SVPET</p>
+    <table class="valuetable"><tr><th>SVPET</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>vPE Table is not shared with Redistributors.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>vPE Table is shared with the groups of Redistributors indicated by GITS_MPIDR.Aff3.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>vPE Table is shared with the groups of Redistributors indicated by GITS_MPIDR fields Aff3 and Aff2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>vPE Table is shared with the groups of Redistributors indicated by GITS_MPIDR fields Aff3, Aff2 and Aff1.</p>
+        </td></tr></table></div><h4 id="fieldset_0-42_41-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-40_40-1">VMAPP, bit [40]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>VMAPP</p>
+    <table class="valuetable"><tr><th>VMAPP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>FEAT_GICv4 VMAPP command layout.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>FEAT_GICv4p1 VMAPP command layout.</p>
+        </td></tr></table></div><h4 id="fieldset_0-40_40-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-39_39-1">VSGI, bit [39]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>VSGI</p>
+    <table class="valuetable"><tr><th>VSGI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Direct injection of SGIs is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Direct injection of SGIs is supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-39_39-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-38_38-1">MPAM, bit [38]<span class="condition"><br/>When FEAT_GICv3p1 is implemented:
+                        </span></h4><div class="field">
+      <p>MPAM</p>
+    <table class="valuetable"><tr><th>MPAM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>MPAM is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>MPAM is supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-38_38-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-37_37">VMOVP, bit [37]</h4><div class="field">
+      <p>Indicates the form of the VMOVP command.</p>
+    <table class="valuetable"><tr><th>VMOVP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When moving a vPE, software must issue a VMOVP on all ITSs that have mappings for that vPE. The ITSList and Sequence Number fields in the VMOVP command must ensure synchronization, otherwise behavior is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When moving a vPE, software must only issue a VMOVP on one of the ITSs that has a mapping for that vPE. The ITSList and Sequence Number fields in the VMOVP command are <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr></table></div><h4 id="fieldset_0-36_36">CIL, bit [36]</h4><div class="field">
+      <p>Collection ID Limit.</p>
+    <table class="valuetable"><tr><th>CIL</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>ITS supports 16-bit Collection ID, <a href="ext-gits_typer.html">GITS_TYPER</a>.CIDbits is <span class="arm-defined-word">RES0</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-gits_typer.html">GITS_TYPER</a>.CIDbits indicates supported Collection ID size</p>
+        </td></tr></table>
+      <p>In implementations that do not support Collections in external memory, this bit is <span class="arm-defined-word">RES0</span> and the number of Collections supported is reported by <a href="ext-gits_typer.html">GITS_TYPER</a>.HCC.</p>
+    </div><h4 id="fieldset_0-35_32">CIDbits, bits [35:32]</h4><div class="field"><p>Number of Collection ID bits.</p>
+<ul>
+<li>The number of bits of Collection ID minus one.
+</li><li>When <a href="ext-gits_typer.html">GITS_TYPER</a>.CIL == 0, this field is <span class="arm-defined-word">RES0</span>.
+</li></ul></div><h4 id="fieldset_0-31_24">HCC, bits [31:24]</h4><div class="field"><p>Hardware Collection Count. The number of interrupt collections supported by the ITS without provisioning of external memory.</p>
+<div class="note"><span class="note-header">Note</span><p>Collections held in hardware are unmapped at reset.</p></div></div><h4 id="fieldset_0-23_20">Bits [23:20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19">PTA, bit [19]</h4><div class="field">
+      <p>Physical Target Addresses. Indicates the format of the target address:</p>
+    <table class="valuetable"><tr><th>PTA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The target address corresponds to the PE number specified by <a href="ext-gicr_typer.html">GICR_TYPER</a>.Processor_Number.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The target address corresponds to the base physical address of the required Redistributor.</p>
+        </td></tr></table>
+      <p>For more information, see <span class="xref">'RDbase' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+    </div><h4 id="fieldset_0-18_18">SEIS, bit [18]</h4><div class="field">
+      <p>SEI support. Indicates whether the virtual CPU interface supports generation of SEIs:</p>
+    <table class="valuetable"><tr><th>SEIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The ITS does not support local generation of SEIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The ITS supports local generation of SEIs.</p>
+        </td></tr></table></div><h4 id="fieldset_0-17_13">Devbits, bits [17:13]</h4><div class="field">
+      <p>The number of DeviceID bits implemented, minus one.</p>
+    </div><h4 id="fieldset_0-12_8">ID_bits, bits [12:8]</h4><div class="field">
+      <p>The number of EventID bits implemented, minus one.</p>
+    </div><h4 id="fieldset_0-7_4">ITT_entry_size, bits [7:4]</h4><div class="field"><p>Read-only. Indicates the number of bytes per translation table entry, minus one.</p>
+<p>For more information about the ITS command 'MAPD', see <span class="xref">MAPD</span>.</p></div><h4 id="fieldset_0-3_3">IMPLEMENTATION DEFINED, bit [3]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><h4 id="fieldset_0-2_2">CCT, bit [2]</h4><div class="field">
+      <p>Cumulative Collection Tables.</p>
+    <table class="valuetable"><tr><th>CCT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The total number of supported collections is determined by the number of collections held in memory only.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The total number of supported collections is determined by number of collections that are held in memory and the number indicated by GITS_TYPER.HCC.</p>
+        </td></tr></table>
+      <p>If GITS_TYPER.HCC == 0, or if memory backed collections are not supported (all <a href="ext-gits_basern.html">GITS_BASER&lt;n&gt;</a>.Type != 100), this bit is <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">Virtual, bit [1]<span class="condition"><br/>When FEAT_GICv4 is implemented:
+                        </span></h4><div class="field">
+      <p>Indicates whether the ITS supports virtual LPIs and direct injection of virtual LPIs:</p>
+    <table class="valuetable"><tr><th>Virtual</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The ITS does not support virtual LPIs or direct injection of virtual LPIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The ITS supports virtual LPIs and direct injection of virtual LPIs.</p>
+        </td></tr></table></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0">Physical, bit [0]</h4><div class="field">
+      <p>Indicates whether the ITS supports physical LPIs:</p>
+    <table class="valuetable"><tr><th>Physical</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The ITS does not support physical LPIs.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The ITS supports physical LPIs.</p>
+        </td></tr></table>
+      <p>This field is <span class="arm-defined-word">RES1</span>, indicating that the ITS supports physical LPIs.</p>
+    </div><h2>Accessing GITS_TYPER</h2><h4>GITS_TYPER can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC ITS control</td><td><span class="hexnumber">0x0008</span></td><td>GITS_TYPER</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

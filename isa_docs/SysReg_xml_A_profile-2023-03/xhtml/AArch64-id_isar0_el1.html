@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_ISAR0_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_ISAR0_EL1, AArch32 Instruction Set Attribute Register 0</h1><p>The ID_ISAR0_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides information about the instruction sets implemented by the PE in AArch32 state.</p>
+
+      
+        <p>Must be interpreted with <a href="AArch64-id_isar1_el1.html">ID_ISAR1_EL1</a>, <a href="AArch64-id_isar2_el1.html">ID_ISAR2_EL1</a>, <a href="AArch64-id_isar3_el1.html">ID_ISAR3_EL1</a>, <a href="AArch64-id_isar4_el1.html">ID_ISAR4_EL1</a>, and <a href="AArch64-id_isar5_el1.html">ID_ISAR5_EL1</a>.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>AArch64 System register ID_ISAR0_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-id_isar0.html">ID_ISAR0[31:0]</a>.</p><h2>Attributes</h2>
+        <p>ID_ISAR0_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When AArch32 is supported:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_28">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_28">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">Divide</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">Debug</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">Coproc</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">CmpBranch</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">BitField</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">BitCount</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">Swap</a></td></tr></tbody></table><h4 id="fieldset_0-63_28">Bits [63:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_24">Divide, bits [27:24]</h4><div class="field">
+      <p>Indicates the implemented Divide instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>Divide</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds SDIV and UDIV in the T32 instruction set.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, and adds SDIV and UDIV in the A32 instruction set.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0010</span>.</p></div><h4 id="fieldset_0-23_20">Debug, bits [23:20]</h4><div class="field">
+      <p>Indicates the implemented Debug instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>Debug</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds BKPT.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-19_16">Coproc, bits [19:16]</h4><div class="field">
+      <p>Indicates the implemented System register access instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>Coproc</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented, except for instructions separately attributed by the architecture to provide access to AArch32 System registers and System instructions.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds generic CDP, LDC, MCR, MRC, and STC.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, and adds generic CDP2, LDC2, MCR2, MRC2, and STC2.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>As for <span class="binarynumber">0b0010</span>, and adds generic MCRR and MRRC.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>As for <span class="binarynumber">0b0011</span>, and adds generic MCRR2 and MRRC2.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-15_12">CmpBranch, bits [15:12]</h4><div class="field">
+      <p>Indicates the implemented combined Compare and Branch instructions in the T32 instruction set. Defined values are:</p>
+    <table class="valuetable"><tr><th>CmpBranch</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds CBNZ and CBZ.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-11_8">BitField, bits [11:8]</h4><div class="field">
+      <p>Indicates the implemented BitField instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>BitField</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds BFC, BFI, SBFX, and UBFX.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-7_4">BitCount, bits [7:4]</h4><div class="field">
+      <p>Indicates the implemented Bit Counting instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>BitCount</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds CLZ.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-3_0">Swap, bits [3:0]</h4><div class="field">
+      <p>Indicates the implemented Swap instructions in the A32 instruction set. Defined values are:</p>
+    <table class="valuetable"><tr><th>Swap</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>None implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Adds SWP and SWPB.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-63_0">UNKNOWN</a></td></tr></tbody></table><h4 id="fieldset_1-63_0">Bits [63:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">UNKNOWN</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_ISAR0_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_ISAR0_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0010</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_ISAR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_ISAR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_ISAR0_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

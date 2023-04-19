@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CNTCV</reg_short_name>
+        
+        <reg_long_name>Counter Count Value register</reg_long_name>
+
+        <power_domain_text>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether CNTCV is implemented in the Core power domain or in the Debug power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+      register_startbit="63"
+      register_endbit="0"
+  >
+    <reg_component>Timer</reg_component>
+    <reg_frame>CNTControlBase</reg_frame>
+    <reg_offset><hexnumber>0x008</hexnumber></reg_offset>
+    <reg_instance>CNTCV</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+      register_startbit="63"
+      register_endbit="0"
+  >
+    <reg_component>Timer</reg_component>
+    <reg_frame>CNTReadBase</reg_frame>
+    <reg_offset><hexnumber>0x000</hexnumber></reg_offset>
+    <reg_instance>CNTCV</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Indicates the current count value.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Generic Timer registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>For more information, see <xref browsertext="'Power and reset domains for the system level implementation of the Generic Timer'" filename="I_system_level_implementation_of_the_generic__.fm" linkend="CEGHAIAF"/>.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CNTCV is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CountValue</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para>Indicates the counter value.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Timer">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <table><tgroup cols="2"><thead><row><entry>Frame</entry><entry>Accessibility</entry></row></thead><tbody><row><entry>CNTControlBase</entry><entry>RW</entry></row><row><entry>CNTReadBase</entry><entry>RO</entry></row></tbody></tgroup></table>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>A write to CNTCV must be visible in the <register_link state="ext" id="ext-cntpct.xml">CNTPCT</register_link> register of each running processor in a finite time.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>For the instance of the register in the CNTControlBase frame:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>In a system that supports Secure and Non-secure memory maps, the CNTControlBase frame, and therefore this register instance, is implemented only in the Secure memory map.</content>
+</listitem><listitem><content>If the counter is enabled, the effect of writing to the register is <arm-defined-word>UNKNOWN</arm-defined-word>.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>In an implementation that supports 64-bit atomic memory accesses, this register must be accessible using a 64-bit atomic access.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ICH_ELRSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ICH_ELRSR, Interrupt Controller Empty List Register Status Register</h1><p>The ICH_ELRSR characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates which List registers contain valid interrupts.</p>
+      <h2>Configuration</h2><p>AArch32 System register ICH_ELRSR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-ich_elrsr_el2.html">ICH_ELRSR_EL2[31:0]</a>.</p><p>This register is present only when EL2 is capable of using AArch32, FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented). Otherwise, direct accesses to ICH_ELRSR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>ICH_ELRSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_0-31_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">Status0</a></td></tr></tbody></table><h4 id="fieldset_0-31_16">Bits [31:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">Status&lt;n&gt;, bit [n], for n = 15 to 0</h4><div class="field">
+      <p>Status bit for List register &lt;n&gt;, <a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a>:</p>
+    <table class="valuetable"><tr><th>Status&lt;n&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>List register <a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a>, if implemented, contains a valid interrupt. Using this List register can result in overwriting a valid interrupt.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>List register <a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a> does not contain a valid interrupt. The List register is empty and can be used without overwriting a valid interrupt or losing an EOI maintenance interrupt.</p>
+        </td></tr></table>
+      <p>For any List register &lt;n&gt;, the corresponding status bit is set to 1 if <a href="AArch32-ich_lrcn.html">ICH_LRC&lt;n&gt;</a>.State is <span class="binarynumber">0b00</span> and either <a href="AArch32-ich_lrcn.html">ICH_LRC&lt;n&gt;</a>.HW is 1 or <a href="AArch32-ich_lrcn.html">ICH_LRC&lt;n&gt;</a>.EOI (bit [9]) is 0.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ICH_ELRSR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b1100</td><td>0b1011</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_ELRSR;
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_ELRSR;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

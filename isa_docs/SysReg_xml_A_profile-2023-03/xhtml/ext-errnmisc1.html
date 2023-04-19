@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERR&lt;n&gt;MISC1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERR&lt;n&gt;MISC1, Error Record &lt;n&gt; Miscellaneous Register 1, n = 0 - 65534</h1><p>The ERR&lt;n&gt;MISC1 characteristics are:</p><h2>Purpose</h2>
+        <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> error syndrome register. The miscellaneous syndrome registers might contain:</p>
+
+      
+        <ul>
+<li>Information to locate where the error was detected.
+</li><li>If the error was detected within a FRU, the identity of the FRU.
+</li><li>A Corrected error counter or counters.
+</li><li>Other state information not present in the corresponding status and address registers.
+</li></ul>
+      <h2>Configuration</h2><p>This register is present only when error record n is implemented. Otherwise, direct accesses to ERR&lt;n&gt;MISC1 are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-errnfr.html">ERRFR[FirstRecordOfNode(n)]</a> describes the features implemented by the node that owns error record &lt;n&gt;. FirstRecordOfNode(n) is the index of the first error record owned by the same node as error record &lt;n&gt;. If the node owns a single record then FirstRecordOfNode(n) = n.</p>
+
+      
+        <p>For <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> fields in ERR&lt;n&gt;MISC1, writing zero returns the error record to an initial quiescent state.</p>
+
+      
+        <p>In particular, if any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome fields might generate a Fault Handling or Error Recovery Interrupt request, writing zero is sufficient to deactivate the Interrupt request.</p>
+
+      
+        <p>Fields that are read-only, nonzero, and ignore writes are compliant with this requirement.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>Arm recommends that any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome field that can generate a Fault Handling, Error Recovery, Critical, or <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>, interrupt request is disabled at Cold reset and is enabled by software writing an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> nonzero value to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> field in <a href="ext-errnctlr.html">ERRCTLR[FirstRecordOfNode(n)]</a>.</p></div>
+      <h2>Attributes</h2>
+        <p>ERR&lt;n&gt;MISC1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">IMPLEMENTATION DEFINED, bits [63:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h2>Accessing ERR&lt;n&gt;MISC1</h2>
+        <p>Reads from ERR&lt;n&gt;MISC1 return an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value and writes have <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> behavior.</p>
+
+      
+        <p>If the Common Fault Injection Mechanism is implemented by the node that owns this error record, and <a href="ext-errnpfgf.html">ERRPFGF[FirstRecordOfNode(n)]</a>.MV is 1, then some parts of this register are read/write when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is 0. See <a href="ext-errnpfgf.html">ERR&lt;n&gt;PFGF</a>.MV for more information.</p>
+
+      
+        <p>For other parts of this register, or if the Common Fault Injection Mechanism is not implemented, then Arm recommends that:</p>
+
+      
+        <ul>
+<li>Miscellaneous syndrome for multiple errors, such as a corrected error counter, is read/write.
+</li><li>When <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is 1, the miscellaneous syndrome specific to the most recently recorded error ignores writes.
+</li></ul>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>These recommendations allow a counter to be reset in the presence of a persistent error, while preventing specific information, such as that identifying a FRU, from being lost if an error is detected while the previous error is being logged.</p></div>
+      <h4>ERR&lt;n&gt;MISC1 can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0x028</span> + (64 * n)</td><td>ERR&lt;n&gt;MISC1</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

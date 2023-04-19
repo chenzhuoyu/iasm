@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MVFR1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MVFR1, Media and VFP Feature Register 1</h1><p>The MVFR1 characteristics are:</p><h2>Purpose</h2>
+        <p>Describes the features provided by the AArch32 Advanced SIMD and Floating-point implementation.</p>
+
+      
+        <p>Must be interpreted with <a href="AArch32-mvfr0.html">MVFR0</a> and <a href="AArch32-mvfr2.html">MVFR2</a>.</p>
+
+      
+        <p>For general information about the interpretation of the ID registers see <span class="xref">'Principles of the ID scheme for fields in ID registers'</span>.</p>
+      <h2>Configuration</h2><p>AArch32 System register MVFR1 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-mvfr1_el1.html">MVFR1_EL1[31:0]</a>.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to MVFR1 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>Implemented only if the implementation includes Advanced SIMD and floating-point instructions.</p>
+      <h2>Attributes</h2>
+        <p>MVFR1 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">SIMDFMAC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">FPHP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">SIMDHP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">SIMDSP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">SIMDInt</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">SIMDLS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">FPDNaN</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">FPFtZ</a></td></tr></tbody></table><h4 id="fieldset_0-31_28">SIMDFMAC, bits [31:28]</h4><div class="field">
+      <p>Advanced SIMD Fused Multiply-Accumulate. Indicates whether the Advanced SIMD implementation provides fused multiply accumulate instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SIMDFMAC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p>
+<p>The Advanced SIMD and floating-point implementations must provide the same level of support for these instructions.</p></div><h4 id="fieldset_0-27_24">FPHP, bits [27:24]</h4><div class="field">
+      <p>Floating Point Half Precision. Indicates the level of half-precision floating-point support. Defined values are:</p>
+    <table class="valuetable"><tr><th>FPHP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Floating-point half-precision conversion instructions are supported for conversion between single-precision and half-precision.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, and adds instructions for conversion between double-precision and half-precision.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>As for <span class="binarynumber">0b0010</span>, and adds support for half-precision floating-point arithmetic.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> in an implementation without floating-point support.
+</li><li><span class="binarynumber">0b0010</span> in an implementation with floating-point support that does not include the <span class="xref">FEAT_FP16</span> extension.
+</li><li><span class="binarynumber">0b0011</span> in an implementation with floating-point support that includes the <span class="xref">FEAT_FP16</span> extension.
+</li></ul>
+<p>The level of support indicated by this field must be equivalent to the level of support indicated by the SIMDHP field, meaning the permitted values are:</p>
+<table class="valuetable"><thead><tr><th>Half Precision instructions supported</th><th>FPHP</th><th>SIMDHP</th></tr></thead><tbody><tr><td>No support</td><td><span class="binarynumber">0b0000</span></td><td><span class="binarynumber">0b0000</span></td></tr><tr><td>Conversions only</td><td><span class="binarynumber">0b0010</span></td><td><span class="binarynumber">0b0001</span></td></tr><tr><td>Conversions and arithmetic</td><td><span class="binarynumber">0b0011</span></td><td><span class="binarynumber">0b0010</span></td></tr></tbody></table></div><h4 id="fieldset_0-23_20">SIMDHP, bits [23:20]</h4><div class="field">
+      <p>Advanced SIMD Half Precision. Indicates the level of half-precision floating-point support. Defined values are:</p>
+    <table class="valuetable"><tr><th>SIMDHP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not supported.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>SIMD half-precision conversion instructions are supported for conversion between single-precision and half-precision.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>As for <span class="binarynumber">0b0001</span>, and adds support for half-precision floating-point arithmetic.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are:</p>
+<ul>
+<li><span class="binarynumber">0b0000</span> in an implementation without SIMD floating-point support.
+</li><li><span class="binarynumber">0b0001</span> in an implementation with SIMD floating-point support that does not include the <span class="xref">FEAT_FP16</span> extension.
+</li><li><span class="binarynumber">0b0010</span> in an implementation with SIMD floating-point support that includes the <span class="xref">FEAT_FP16</span> extension.
+</li></ul>
+<p>The level of support indicated by this field must be equivalent to the level of support indicated by the FPHP field, meaning the permitted values are:</p>
+<table class="valuetable"><thead><tr><th>Half Precision instructions supported</th><th>FPHP</th><th>SIMDHP</th></tr></thead><tbody><tr><td>No support</td><td><span class="binarynumber">0b0000</span></td><td><span class="binarynumber">0b0000</span></td></tr><tr><td>Conversions only</td><td><span class="binarynumber">0b0010</span></td><td><span class="binarynumber">0b0001</span></td></tr><tr><td>Conversions and arithmetic</td><td><span class="binarynumber">0b0011</span></td><td><span class="binarynumber">0b0010</span></td></tr></tbody></table></div><h4 id="fieldset_0-19_16">SIMDSP, bits [19:16]</h4><div class="field">
+      <p>Advanced SIMD Single Precision. Indicates whether the Advanced SIMD and floating-point implementation provides single-precision floating-point instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SIMDSP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Implemented. This value is permitted only if the SIMDInt field is <span class="binarynumber">0b0001</span>.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-15_12">SIMDInt, bits [15:12]</h4><div class="field">
+      <p>Advanced SIMD Integer. Indicates whether the Advanced SIMD and floating-point implementation provides integer instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SIMDInt</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-11_8">SIMDLS, bits [11:8]</h4><div class="field">
+      <p>Advanced SIMD Load/Store. Indicates whether the Advanced SIMD and floating-point implementation provides load/store instructions. Defined values are:</p>
+    <table class="valuetable"><tr><th>SIMDLS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-7_4">FPDNaN, bits [7:4]</h4><div class="field">
+      <p>Default NaN mode. Indicates whether the floating-point implementation provides support only for the Default NaN mode. Defined values are:</p>
+    <table class="valuetable"><tr><th>FPDNaN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented, or hardware supports only the Default NaN mode.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Hardware supports propagation of NaN values.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-3_0">FPFtZ, bits [3:0]</h4><div class="field">
+      <p>Flush to Zero mode. Indicates whether the floating-point implementation provides support only for the Flush-to-Zero mode of operation. Defined values are:</p>
+    <table class="valuetable"><tr><th>FPFtZ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Not implemented, or hardware supports only the Flush-to-Zero mode of operation.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Hardware supports full denormalized number arithmetic.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>In Armv8-A, the permitted values are <span class="binarynumber">0b0000</span> and <span class="binarynumber">0b0001</span>.</p></div><div class="access_mechanisms"><h2>Accessing MVFR1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">VMRS{&lt;c&gt;}{&lt;q&gt;} &lt;Rt&gt;, &lt;spec_reg&gt;</h4><table class="access_instructions"><tr><th>reg</th></tr><tr><td>0b0110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif (ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || CPACR.cp10 == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x08);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x08);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TID3 == '1' then
+        AArch32.TakeHypTrapException(0x08);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = MVFR1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x00);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = MVFR1;
+elsif PSTATE.EL == EL3 then
+    if CPACR.cp10 == '00' then
+        UNDEFINED;
+    else
+        R[t] = MVFR1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCVISSCTLR</reg_short_name>
+        
+        <reg_long_name>ViewInst Start/Stop Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and UInt(TRCIDR4.NUMACPAIRS) &gt; 0</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0x088</hexnumber></reg_offset>
+    <reg_instance>TRCVISSCTLR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trcvissctlr.xml">TRCVISSCTLR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Use this to select, or read, the Single Address Comparators for the ViewInst start/stop function.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace unit registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCVISSCTLR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_instance>TRCVISSCTLR</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>STOP[&lt;m&gt;]</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before">
+      <para>Selects whether Single Address Comparator &lt;m&gt; is used with the ViewInst start/stop function, for the purpose of stopping trace.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= 2 × <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMACPAIRS.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m+16">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The Single Address Comparator &lt;m&gt;, is not selected as a stop resource.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The Single Address Comparator &lt;m&gt;, is selected as a stop resource.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>START[&lt;m&gt;]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Selects whether Single Address Comparator &lt;m&gt; is used with the ViewInst start/stop function, for the purpose of starting trace.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= 2 × <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMACPAIRS.</para>
+    </field_description>
+    <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The Single Address Comparator &lt;m&gt;, is not selected as a start resource.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The Single Address Comparator &lt;m&gt;, is selected as a start resource.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_16" label="STOP[15]" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[14]" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[13]" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[12]" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[11]" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[10]" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[9]" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[8]" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[7]" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[6]" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[5]" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[4]" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[3]" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[2]" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[1]" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-31_16" label="STOP[0]" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" label="START[15]" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-15_0" label="START[14]" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-15_0" label="START[13]" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-15_0" label="START[12]" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-15_0" label="START[11]" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-15_0" label="START[10]" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-15_0" label="START[9]" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-15_0" label="START[8]" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-15_0" label="START[7]" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-15_0" label="START[6]" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-15_0" label="START[5]" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-15_0" label="START[4]" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-15_0" label="START[3]" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-15_0" label="START[2]" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-15_0" label="START[1]" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-15_0" label="START[0]" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Must be programmed if <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMACPAIRS &gt; <binarynumber>0b0000</binarynumber>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>For any 2 comparators selected for the ViewInst start/stop function, the comparator containing the lower address must be a lower numbered comparator.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> if the trace unit is not in the Idle state.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

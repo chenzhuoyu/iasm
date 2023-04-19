@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ICC_BPR1_EL1</reg_short_name>
+        
+        <reg_long_name>Interrupt Controller Binary Point Register 1</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_GICv3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-icc_bpr1.xml">ICC_BPR1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>ICC_BPR1_EL1_S</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>ICC_BPR1_S</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-icc_bpr1.xml">ICC_BPR1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>ICC_BPR1_EL1_NS</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>ICC_BPR1_NS</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 1 interrupt preemption.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC control registers</reg_group>
+            <reg_group>GIC system registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>Virtual accesses to this register update <register_link state="AArch64" id="AArch64-ich_vmcr_el2.xml">ICH_VMCR_EL2</register_link>.VBPR1.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+        <reg_banking>
+            <reg_bank>
+                <bank_text>This register is banked between ICC_BPR1_EL1 and ICC_BPR1_EL1_S and ICC_BPR1_EL1_NS.</bank_text>
+            </reg_bank>
+        </reg_banking>
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ICC_BPR1_EL1 is a 64-bit register.</para>
+
+      </attributes_text>
+      <attributes_text>
+        <para>This register has the following instances:</para>
+
+      </attributes_text>
+      <attributes_text>
+        <list type="unordered">
+<listitem><content>ICC_BPR1_EL1, when EL3 is not implemented</content>
+</listitem><listitem><content>ICC_BPR1_EL1_S, when EL3 is implemented</content>
+</listitem><listitem><content>ICC_BPR1_EL1_NS, when EL3 is implemented</content>
+</listitem></list>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>63:3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BinaryPoint</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>2:0</rel_range>
+    <field_description order="before"><para>If the GIC is configured to use separate binary point fields for Group 0 and Group 1 interrupts, the value of this field controls how the 8-bit interrupt priority field is split into a group priority field, that determines interrupt preemption, and a subpriority field. For more information about priorities, see <xref browsertext="'Priority grouping' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)" filename="AS_interrupt_handling_and_prioritization.fm" linkend="CJHBBBJE"/>.</para>
+<para>The minimum value of the Non-secure copy of this register is the minimum value of <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link> + 1. The minimum value of the Secure copy of this register is the minimum value of <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link>.</para>
+<para>If EL3 is implemented and <register_link state="AArch64" id="AArch64-icc_ctlr_el3.xml">ICC_CTLR_EL3</register_link>.CBPR_EL1S is 1:</para>
+<list type="unordered">
+<listitem><content>
+<para>Accesses to this register from Secure EL2 access the state of <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>Accesses to this register from Secure EL1:</para>
+<list type="unordered">
+<listitem><content>
+<para>When SCR_EL3.EEL2 is 1 and HCR_EL2.IMO is 1, access the state of <register_link state="AArch64" id="AArch64-icv_bpr1_el1.xml">ICV_BPR1_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>Otherwise, access the state of <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list>
+<para>If EL3 is implemented and <register_link state="AArch64" id="AArch64-icc_ctlr_el3.xml">ICC_CTLR_EL3</register_link>.CBPR_EL1NS is 1, Non-secure accesses to this register at EL1 or EL2 behave as follows, depending on the values of <xref browsertext="HCR_EL2" filename="AS_introduction.fm" linkend="CACEJBCI"/>.IMO and <xref browsertext="SCR_EL3" filename="AS_introduction.fm" linkend="CACICECE"/>.IRQ:</para>
+<table><tgroup cols="3"><thead><row><entry>HCR_EL2.IMO</entry><entry>SCR_EL3.IRQ</entry><entry>Behavior</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Non-secure EL1 and EL2 reads return <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link> + 1 saturated to <binarynumber>0b111</binarynumber>. Non-secure EL1 and EL2 writes are ignored.</entry></row><row><entry><binarynumber>0b0</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure EL1 and EL2 accesses trap to EL3.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b0</binarynumber></entry><entry>Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 reads return <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link> + 1 saturated to <binarynumber>0b111</binarynumber>. Non-secure EL2 writes are ignored.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 accesses trap to EL3.</entry></row></tbody></tgroup></table>
+<para>If EL3 is not implemented and <register_link state="AArch64" id="AArch64-icc_ctlr_el1.xml">ICC_CTLR_EL1</register_link>.CBPR is 1, Non-secure accesses to this register at EL1 or EL2 behave as follows, depending on the values of <xref browsertext="HCR_EL2" filename="AS_introduction.fm" linkend="CACEJBCI"/>.IMO:</para>
+<table><tgroup cols="2"><thead><row><entry>HCR_EL2.IMO</entry><entry>Behavior</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry>Non-secure EL1 and EL2 reads return <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link> + 1 saturated to <binarynumber>0b111</binarynumber>. Non-secure EL1 and EL2 writes are ignored.</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry>Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 reads return <register_link state="AArch64" id="AArch64-icc_bpr0_el1.xml">ICC_BPR0_EL1</register_link> + 1 saturated to <binarynumber>0b111</binarynumber>. Non-secure EL2 writes are ignored.</entry></row></tbody></tgroup></table></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_3" msb="63" lsb="3"/>
+  <fieldat id="fieldset_0-2_0" msb="2" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>On a reset, the binary point field is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>An attempt to program the binary point field to a value less than the minimum value sets the field to the minimum value.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ICC_BPR1_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ICC_BPR1_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1100"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.IRQ == '1' then
+        UNDEFINED;
+    elsif ICC_SRE_EL1.SRE == '0' then
+        AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; ICH_HCR_EL2.TALL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.IMO == '1' then
+        X[t, 64] = ICV_BPR1_EL1;
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.IRQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) then
+        if SCR_EL3.NS == '0' then
+            X[t, 64] = ICC_BPR1_EL1_S;
+        else
+            X[t, 64] = ICC_BPR1_EL1_NS;
+    else
+        X[t, 64] = ICC_BPR1_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.IRQ == '1' then
+        UNDEFINED;
+    elsif ICC_SRE_EL2.SRE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.IRQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) then
+        if SCR_EL3.NS == '0' then
+            X[t, 64] = ICC_BPR1_EL1_S;
+        else
+            X[t, 64] = ICC_BPR1_EL1_NS;
+    else
+        X[t, 64] = ICC_BPR1_EL1;
+elsif PSTATE.EL == EL3 then
+    if ICC_SRE_EL3.SRE == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        if SCR_EL3.NS == '0' then
+            X[t, 64] = ICC_BPR1_EL1_S;
+        else
+            X[t, 64] = ICC_BPR1_EL1_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister ICC_BPR1_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR ICC_BPR1_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b1100"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.IRQ == '1' then
+        UNDEFINED;
+    elsif ICC_SRE_EL1.SRE == '0' then
+        AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; ICH_HCR_EL2.TALL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.IMO == '1' then
+        ICV_BPR1_EL1 = X[t, 64];
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.IRQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) then
+        if SCR_EL3.NS == '0' then
+            ICC_BPR1_EL1_S = X[t, 64];
+        else
+            ICC_BPR1_EL1_NS = X[t, 64];
+    else
+        ICC_BPR1_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SCR_EL3.IRQ == '1' then
+        UNDEFINED;
+    elsif ICC_SRE_EL2.SRE == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SCR_EL3.IRQ == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) then
+        if SCR_EL3.NS == '0' then
+            ICC_BPR1_EL1_S = X[t, 64];
+        else
+            ICC_BPR1_EL1_NS = X[t, 64];
+    else
+        ICC_BPR1_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if ICC_SRE_EL3.SRE == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        if SCR_EL3.NS == '0' then
+            ICC_BPR1_EL1_S = X[t, 64];
+        else
+            ICC_BPR1_EL1_NS = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MVBAR</reg_short_name>
+        
+        <reg_long_name>Monitor Vector Base Address Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL3 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>When EL3 is implemented and can use AArch32, holds the vector base address for any exception that is taken to Monitor mode.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Secure software must program the MVBAR with the required initial value as part of the PE boot sequence.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Security registers</reg_group>
+            <reg_group>Exception and fault handling registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether MVBAR[0] has a fixed value and ignored writes, or takes the last value written to it.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>On a Warm reset into EL3 using AArch32, the reset value of MVBAR is an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> choice between the following:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>MVBAR[31:5] = an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value, which might be <arm-defined-word>UNKNOWN</arm-defined-word>, MVBAR[4:1] = <arm-defined-word>RES0</arm-defined-word>, and MVBAR[0] = 0.</content>
+</listitem><listitem><content>MVBAR[31:1] = an <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> value that is bits[31:1] of the AArch32 reset address, and MVBAR[0] = 1.</content>
+</listitem></list>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MVBAR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When programmed with a vector base address</fields_condition>
+  <fields_instance>programmed with a vector base address</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_shortdesc>Vector Base Address</field_shortdesc>
+    <field_msb>31</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>31:5</rel_range>
+    <field_description order="before">
+      <para>Vector Base Address. Bits[31:5] of the base address of the exception vectors for exceptions taken to this Exception level. Bits[4:0] of an exception vector are the exception offset.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Reserved</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, see Configurations.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When programmed with a vector base address</fields_condition>
+  <fieldat id="fieldset_0-31_5" msb="31" lsb="5"/>
+  <fieldat id="fieldset_0-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC RVBAR-MVBAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if IsHighestEL(EL1) then
+        R[t] = RVBAR;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2&gt; == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if IsHighestEL(EL2) then
+        R[t] = RVBAR;
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    R[t] = MVBAR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR RVBAR-MVBAR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1100"/>
+                
+                <enc n="CRm" v="0b0000"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2&gt; == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        MVBAR = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

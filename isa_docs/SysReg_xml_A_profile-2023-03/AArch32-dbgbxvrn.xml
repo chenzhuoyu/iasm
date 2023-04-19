@@ -1,0 +1,428 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>DBGBXVR&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Debug Breakpoint Extended Value Registers</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>15</reg_array_end>
+         </reg_array>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-dbgbvrn_el1.xml">DBGBVR&lt;n&gt;_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>32</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:32">
+      <range>
+        <msb>63</msb>
+        <lsb>32</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="ext-dbgbvrn_el1.xml">DBGBVR&lt;n&gt;_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>External</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>32</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:32">
+      <range>
+        <msb>63</msb>
+        <lsb>32</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds a value for use in breakpoint matching, to support VMID matching. Used in conjunction with a control register <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link> and a value register <register_link state="AArch32" id="AArch32-dbgbvrn.xml">DBGBVR&lt;n&gt;</register_link>, where EL2 is implemented and breakpoint n supports Context matching.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>How this register is interpreted depends on the value of <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>.BT.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>.BT is <binarynumber>0b10xx</binarynumber>, this register holds a VMID.</content>
+</listitem><listitem><content>When <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>.BT is <binarynumber>0b11xx</binarynumber>, this register holds a Context ID.</content>
+</listitem></list>
+
+      </configuration_text>
+      <configuration_text>
+        <para>For other values of <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>.BT, this register is <arm-defined-word>RES0</arm-defined-word>.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Accesses to this register are <arm-defined-word>UNDEFINED</arm-defined-word> in any of the following cases:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>Breakpoint n is not implemented.</content>
+</listitem><listitem><content>Breakpoint n does not support Context matching.</content>
+</listitem><listitem><content>EL2 is not implemented.</content>
+</listitem></list>
+
+      </configuration_text>
+      <configuration_text>
+        <para>For more information, see the description of the <register_link state="AArch32" id="AArch32-dbgdidr.xml">DBGDIDR</register_link>.CTX_CMPs field.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>DBGBXVR&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When DBGBCR&lt;n&gt;.BT == 0b10xx and EL2 is implemented</fields_condition>
+  <fields_instance>DBGBCR&lt;n&gt;.BT==0b10xx and EL2 implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_8-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>VMID[15:8]</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Extension to VMID[7:0]. For more information, see VMID[7:0].</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_VMID16 is implemented and VTCR_EL2.VS == 1</fields_condition>
+  </field>
+  <field id="fieldset_0-15_8-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VMID[7:0]</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>7:0</rel_range>
+    <field_description order="before"><para>VMID value for comparison. The VMID is 8 bits when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>EL2 is using AArch32.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-vtcr_el2.xml">VTCR_EL2</register_link>.VS is 0.</content>
+</listitem><listitem><content><xref browsertext="FEAT_VMID16" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.VMID16"/> is not implemented.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When DBGBCR&lt;n&gt;.BT == 0b11xx and EL2 is implemented</fields_condition>
+  <fields_instance>DBGBCR&lt;n&gt;.BT==0b11xx and EL2 implemented</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>ContextID2</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>Context ID value for comparison against <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_VHE is implemented or FEAT_Debugv8p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_1-31_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When DBGBCR&lt;n&gt;.BT == 0b10xx and EL2 is implemented</fields_condition>
+  <fieldat id="fieldset_0-31_16" msb="31" lsb="16"/>
+  <fieldat id="fieldset_0-15_8-1" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-7_0" msb="7" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When DBGBCR&lt;n&gt;.BT == 0b11xx and EL2 is implemented</fields_condition>
+  <fieldat id="fieldset_1-31_0-1" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="15"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC DBGBXVR&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-15</acc_array_range>
+                </acc_array>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="m[3:0]"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;3:0&gt;);
+
+if m &gt;= NUM_BREAKPOINTS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGBXVR[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGBXVR[m];
+elsif PSTATE.EL == EL3 then
+    if DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGBXVR[m];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR DBGBXVR&lt;m&gt;" type="SystemAccessor">
+            <encoding>
+                
+                <acc_array var="m">
+                    <acc_array_range>0-15</acc_array_range>
+                </acc_array>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1110"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="m[3:0]"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+integer m = UInt(CRm&lt;3:0&gt;);
+
+if m &gt;= NUM_BREAKPOINTS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGBXVR[m] = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGBXVR[m] = R[t];
+elsif PSTATE.EL == EL3 then
+    if DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGBXVR[m] = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

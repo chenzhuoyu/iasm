@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMCFG_MBW_MAX</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMCFG_MBW_MAX, MPAM Memory Bandwidth Maximum Partition Configuration Register</h1><p>The MPAMCFG_MBW_MAX characteristics are:</p><h2>Purpose</h2>
+        <p>MPAMCFG_MBW_MAX is a 32-bit read/write register that controls the maximum fraction of memory bandwidth that the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a> is permitted to use.</p>
+
+      
+        <p>MPAMCFG_MBW_MAX_s controls maximum bandwidth for the Secure PARTID selected by the Secure instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_MAX_ns controls the maximum bandwidth for the Non-secure PARTID selected by the Non-secure instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_MAX_rt controls the maximum bandwidth for the Root PARTID selected by the Root instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.
+MPAMCFG_MBW_MAX_rl controls the maximum bandwidth for the Realm PARTID selected by the Realm instance of <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.</p>
+
+      
+        <p>A PARTID that has used more than MAX is given no access to additional bandwidth if HARDLIM == 1 or is given additional bandwidth only if there are no requests from PARTIDs that have not exceeded their MAX if HARDLIM == 0.</p>
+
+      
+        <p>If <a href="ext-mpamf_idr.html">MPAMF_IDR</a>.HAS_RIS is 1, the control settings accessed are those of the resource instance currently selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS and the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMCFG_MBW_MAX is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MBW_PART == 1 and MPAMF_MBW_IDR.HAS_MAX == 1. Otherwise, direct accesses to MPAMCFG_MBW_MAX are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MPAMCFG_MBW_MAX is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">HARDLIM</a></td><td class="lr" colspan="15"><a href="#fieldset_0-30_16">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">MAX</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">HARDLIM, bit [31]</h4><div class="field">
+      <p>Hard bandwidth limiting.</p>
+    <table class="valuetable"><tr><th>HARDLIM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When MAX bandwidth is exceeded, the partition contends with a low preference for downstream bandwidth beyond MAX.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When MAX bandwidth is exceeded, the partition does not use any more bandwidth until the memory bandwidth measurement for the partition falls below MAX.</p>
+        </td></tr></table></div><h4 id="fieldset_0-30_16">Bits [30:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">MAX, bits [15:0]</h4><div class="field">
+      <p>Memory maximum bandwidth allocated to the partition selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>. MAX is in fixed-point fraction format. The fraction represents the portion of the total memory bandwidth capacity through the controlled component that the PARTID is permitted to allocate.</p>
+    <p>The implemented width of the fixed-point fraction is given in <a href="ext-mpamf_mbw_idr.html">MPAMF_MBW_IDR</a>.BWA_WD. Unimplemented bits are RAZ/WI. The implemented bits of the MAX field are always to the left of the field. For example, if BWA_WD = 3, the implemented bits are MPAMCFG_MBW_MAX[15:13] and MPAMCFG_MBW_MAX[12:0] are unimplemented.</p>
+<p>The fixed-point fraction MAX is less than 1. The implied binary point is between bits 15 and 16. In an implementation with w implemented bits, the largest fraction of the bandwidth that can be represented is 1- (0.5)<sup>w</sup>.</p></div><h2>Accessing MPAMCFG_MBW_MAX</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MPAMCFG_MBW_MAX_s must only be accessible from the Secure MPAM feature page.
+</li><li>MPAMCFG_MBW_MAX_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MPAMCFG_MBW_MAX_rt must only be accessible from the Root MPAM feature page.
+</li><li>MPAMCFG_MBW_MAX_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MPAMCFG_MBW_MAX_s, MPAMCFG_MBW_MAX_ns, MPAMCFG_MBW_MAX_rt, and MPAMCFG_MBW_MAX_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MPAMCFG_MBW_MAX_s) accesses the memory maximum bandwidth partitioning used for Secure PARTIDs.
+</li><li>The Non-secure instance (MPAMCFG_MBW_MAX_ns) accesses the memory maximum bandwidth partitioning used for Non-secure PARTIDs.
+</li><li>The Root instance (MPAMCFG_MBW_MAX_rt) accesses the memory maximum bandwidth partitioning used for Root PARTIDs.
+</li><li>The Realm instance (MPAMCFG_MBW_MAX_rl) accesses the memory maximum bandwidth partitioning used for Realm PARTIDs.
+</li></ul>
+
+      
+        <p>When RIS is implemented, loads and stores to MPAMCFG_MBW_MAX access the memory maximum bandwidth partitioning configuration settings for the bandwidth resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS and the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When RIS is not implemented, loads and stores to MPAMCFG_MBW_MAX access the memory maximum bandwidth partitioning configuration settings for the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When PARTID narrowing is implemented, loads and stores to MPAMCFG_MBW_MAX access the memory maximum bandwidth partitioning configuration settings for the internal PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 1.</p>
+
+      
+        <p>When PARTID narrowing is not implemented, loads and stores to MPAMCFG_MBW_MAX access the memory maximum bandwidth partitioning configuration settings for the request PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 0.</p>
+      <h4>MPAMCFG_MBW_MAX can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0208</span></td><td>MPAMCFG_MBW_MAX_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0208</span></td><td>MPAMCFG_MBW_MAX_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0208</span></td><td>MPAMCFG_MBW_MAX_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0208</span></td><td>MPAMCFG_MBW_MAX_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

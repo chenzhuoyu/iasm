@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CNTTIDR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CNTTIDR, Counter-timer Timer ID Register</h1><p>The CNTTIDR characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates the implemented timers in the memory map, and their features. For each value of N from 0 to 7 it indicates whether:</p>
+
+      
+        <ul>
+<li>Frame CNTBaseN is a view of an implemented timer.
+</li><li>Frame CNTBaseN has a second view, CNTEL0BaseN.
+</li><li>Frame CNTBaseN has a virtual timer capability.
+</li></ul>
+      <h2>Configuration</h2><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CNTTIDR is implemented in the Core power domain or in the Debug power domain.
+    </p>
+        <p>For more information, see <span class="xref">'Power and reset domains for the system level implementation of the Generic Timer'</span>.</p>
+      <h2>Attributes</h2>
+        <p>CNTTIDR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame7</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame6</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame5</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame4</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-31_0">Frame0</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">Frame&lt;n&gt;, bits [4n+3:4n], for n = 7 to 0</h4><div class="field"><p>A 4-bit field indicating the features of frame CNTBase&lt;n&gt;.</p>
+<p>Bit[3] of the field is <span class="arm-defined-word">RES0</span>.</p>
+<p>Bit[2], the FEL0 subfield, indicates whether frame CNTBase&lt;n&gt; has a second view, CNTEL0Base&lt;n&gt;. The possible values of this bit are:</p>
+<table class="valuetable"><thead><tr><th>Bit[2]</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td>Frame&lt;n&gt; does not have a second view. The <a href="ext-cntel0acr.html">CNTEL0ACR</a> register in the first view of the frame is<span class="arm-defined-word">RES0</span></td></tr><tr><td><span class="binarynumber">0b1</span></td><td>Frame&lt;n&gt; has a second view, CNTEL0Base&lt;n&gt;.</td></tr></tbody></table>
+<p>If bit[0] is 0, bit[2] is <span class="arm-defined-word">RES0</span>.</p>
+<p>Bit[1], the FVI subfield, indicates whether both:</p>
+<ul>
+<li>Frame CNTBase&lt;n&gt; implements the virtual timer registers <a href="ext-cntv_cval.html">CNTV_CVAL</a>, <a href="ext-cntv_tval.html">CNTV_TVAL</a>, and <a href="ext-cntv_ctl.html">CNTV_CTL</a>.
+</li><li>This CNTCTLBase frame implements the virtual timer offset register <a href="ext-cntvoffn.html">CNTVOFF&lt;n&gt;</a>.
+</li></ul>
+<p>The possible values of bit[1] are:</p>
+<table class="valuetable"><thead><tr><th>Bit[1]</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td>Frame&lt;n&gt; does not have virtual capability. The virtual time and offset registers are<span class="arm-defined-word">RES0</span>.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td>Frame&lt;n&gt; has virtual capability. The virtual time and offset registers are implemented</td></tr></tbody></table>
+<p>If bit[0] is 0, bit[1] is <span class="arm-defined-word">RES0</span>.</p>
+<p>Bit[0], the FI subfield, indicates whether frame CNTBase&lt;n&gt; is implemented. The possible values of this bit are:</p>
+<table class="valuetable"><thead><tr><th>Bit[0]</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td>Frame&lt;n&gt; is not implemented. All registers associated with the frame are<span class="arm-defined-word">RES0</span>.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td>Frame&lt;n&gt; is implemented</td></tr></tbody></table></div><h2>Accessing CNTTIDR</h2>
+        <p>In a system that recognizes two Security states this register is accessible by both Secure and Non-secure accesses.</p>
+      <h4>CNTTIDR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>Timer</td><td>CNTCTLBase</td><td><span class="hexnumber">0x008</span></td><td>CNTTIDR</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

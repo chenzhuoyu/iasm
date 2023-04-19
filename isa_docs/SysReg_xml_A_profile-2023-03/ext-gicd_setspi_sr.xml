@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICD_SETSPI_SR</reg_short_name>
+        
+        <reg_long_name>Set Secure SPI Pending Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>Dist_base</reg_frame>
+    <reg_offset><hexnumber>0x0050</hexnumber></reg_offset>
+    <reg_instance>GICD_SETSPI_SR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 1</reg_access_level>
+          <reg_access_type>WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Secure</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0 and an access is Non-secure</reg_access_level>
+          <reg_access_type>WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Root</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When GICD_CTLR.DS == 0, FEAT_RME is implemented and an access is Realm</reg_access_level>
+          <reg_access_type>WI</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Adds the pending state to a valid SPI.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>A write to this register changes the state of an inactive SPI to pending, and the state of an active SPI to active and pending.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If <register_link state="ext" id="ext-gicd_typer.xml">GICD_TYPER</register_link>.MBIS == 0, this register is reserved.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS == 1, this register is WI.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICD_SETSPI_SR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_13" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>31:13</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-12_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INTID</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>12:0</rel_range>
+    <field_description order="before">
+      <para>The INTID of the SPI.</para>
+    </field_description>
+  </field>
+  <text_after_fields><para>The function of this register depends on whether the targeted SPI is configured to be an edge-triggered or level-sensitive interrupt:</para>
+<list type="unordered">
+<listitem><content>For an edge-triggered interrupt, a write to <register_link state="ext" id="ext-gicd_setspi_nsr.xml">GICD_SETSPI_NSR</register_link> or GICD_SETSPI_SR adds the pending state to the targeted interrupt. It will stop being pending on activation, or if the pending state is removed by a write to <register_link state="ext" id="ext-gicd_clrspi_nsr.xml">GICD_CLRSPI_NSR</register_link>, <register_link state="ext" id="ext-gicd_clrspi_sr.xml">GICD_CLRSPI_SR</register_link>, or <register_link state="ext" id="ext-gicd_icpendrn.xml">GICD_ICPENDR&lt;n&gt;</register_link>.</content>
+</listitem><listitem><content>For a level-sensitive interrupt, a write to <register_link state="ext" id="ext-gicd_setspi_nsr.xml">GICD_SETSPI_NSR</register_link> or GICD_SETSPI_SR adds the pending state to the targeted interrupt. It will remain pending until it is deasserted by a write to <register_link state="ext" id="ext-gicd_clrspi_nsr.xml">GICD_CLRSPI_NSR</register_link> or <register_link state="ext" id="ext-gicd_clrspi_sr.xml">GICD_CLRSPI_SR</register_link>. If the interrupt is activated between having the pending state added and being deactivated, then the interrupt will be active and pending.</content>
+</listitem></list></text_after_fields>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_13" msb="31" lsb="13"/>
+  <fieldat id="fieldset_0-12_0" msb="12" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Writes to this register have no effect if:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>The value is written by a Non-secure access.</content>
+</listitem><listitem><content>The value written specifies an invalid SPI.</content>
+</listitem><listitem><content>The SPI is already pending.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>16-bit accesses to bits [15:0] of this register must be supported.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERR&lt;n&gt;MISC0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERR&lt;n&gt;MISC0, Error Record &lt;n&gt; Miscellaneous Register 0, n = 0 - 65534</h1><p>The ERR&lt;n&gt;MISC0 characteristics are:</p><h2>Purpose</h2>
+        <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> error syndrome register. The miscellaneous syndrome registers might contain:</p>
+
+      
+        <ul>
+<li>Information to locate where the error was detected.
+</li><li>If the error was detected within a FRU, the identity of the FRU.
+</li><li>A Corrected error counter or counters.
+</li><li>Other state information not present in the corresponding status and address registers.
+</li></ul>
+
+      
+        <p>If the node that owns error record &lt;n&gt; implements a standard format Corrected error counter or counters (<a href="ext-errnfr.html">ERRFR[FirstRecordOfNode(n)]</a>.CEC != <span class="binarynumber">0b000</span>), then it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether error record &lt;n&gt; can record countable errors, and:</p>
+
+      
+        <ul>
+<li>If error record &lt;n&gt; records countable errors, then ERR&lt;n&gt;MISC0 implements the standard format Corrected error counter or counters for error record &lt;n&gt;.
+</li><li>If error record &lt;n&gt; does not record countable errors, then it is recommended that the fields in ERR&lt;n&gt;MISC0 defined for the standard format counter or counters are <span class="arm-defined-word">RES0</span>. That is, the fields behave like counters that never count.
+</li></ul>
+      <h2>Configuration</h2><p>This register is present only when error record n is implemented. Otherwise, direct accesses to ERR&lt;n&gt;MISC0 are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-errnfr.html">ERRFR[FirstRecordOfNode(n)]</a> describes the features implemented by the node that owns error record &lt;n&gt;. FirstRecordOfNode(n) is the index of the first error record owned by the same node as error record &lt;n&gt;. If the node owns a single record then FirstRecordOfNode(n) = n.</p>
+
+      
+        <p>For <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> fields in ERR&lt;n&gt;MISC0, writing zero returns the error record to an initial quiescent state.</p>
+
+      
+        <p>In particular, if any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome fields might generate a Fault Handling or Error Recovery Interrupt request, writing zero is sufficient to deactivate the Interrupt request.</p>
+
+      
+        <p>Fields that are read-only, nonzero, and ignore writes are compliant with this requirement.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>Arm recommends that any <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome field that can generate a Fault Handling, Error Recovery, Critical, or <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>, interrupt request is disabled at Cold reset and is enabled by software writing an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> nonzero value to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> field in <a href="ext-errnctlr.html">ERRCTLR[FirstRecordOfNode(n)]</a>.</p></div>
+      <h2>Attributes</h2>
+        <p>ERR&lt;n&gt;MISC0 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><h3>When ERRFR[FirstRecordOfNode(n)].CEC == 0b000 or error record n does not record countable errors:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">IMPLEMENTATION DEFINED, bits [63:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h3>When ERRFR[FirstRecordOfNode(n)].CEC == 0b100, ERRFR[FirstRecordOfNode(n)].RP == 0 and error record n records countable errors:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_1-63_48">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_1-47_47">OF</a></td><td class="lr" colspan="15"><a href="#fieldset_1-46_32">CEC</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-31_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_1-63_48">IMPLEMENTATION DEFINED, bits [63:48]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h4 id="fieldset_1-47_47">OF, bit [47]</h4><div class="field">
+      <p>Sticky overflow bit. Set to 1 when ERR&lt;n&gt;MISC0.CEC is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-46_32">CEC, bits [46:32]</h4><div class="field">
+      <p>Corrected error count. Incremented for each Corrected error. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and might be <span class="arm-defined-word">UNPREDICTABLE</span> whether Deferred and Uncorrected errors are counted.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_1-31_0">IMPLEMENTATION DEFINED, bits [31:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h3>When ERRFR[FirstRecordOfNode(n)].CEC == 0b010, ERRFR[FirstRecordOfNode(n)].RP == 0 and error record n records countable errors:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="24"><a href="#fieldset_2-63_40">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_2-39_39">OF</a></td><td class="lr" colspan="7"><a href="#fieldset_2-38_32">CEC</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_2-31_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_2-63_40">IMPLEMENTATION DEFINED, bits [63:40]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h4 id="fieldset_2-39_39">OF, bit [39]</h4><div class="field">
+      <p>Sticky overflow bit. Set to 1 when ERR&lt;n&gt;MISC0.CEC is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-38_32">CEC, bits [38:32]</h4><div class="field">
+      <p>Corrected error count. Incremented for each Corrected error. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and might be <span class="arm-defined-word">UNPREDICTABLE</span> whether Deferred and Uncorrected errors are counted.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_2-31_0">IMPLEMENTATION DEFINED, bits [31:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h3>When ERRFR[FirstRecordOfNode(n)].CEC == 0b100, ERRFR[FirstRecordOfNode(n)].RP == 1 and error record n records countable errors:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_3-63_63">OFO</a></td><td class="lr" colspan="15"><a href="#fieldset_3-62_48">CECO</a></td><td class="lr" colspan="1"><a href="#fieldset_3-47_47">OFR</a></td><td class="lr" colspan="15"><a href="#fieldset_3-46_32">CECR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_3-31_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_3-63_63">OFO, bit [63]</h4><div class="field">
+      <p>Sticky overflow bit, other. Set to 1 when ERR&lt;n&gt;MISC0.CECO is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OFO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Other counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Other counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-62_48">CECO, bits [62:48]</h4><div class="field">
+      <p>Corrected error count, other. Incremented for each countable error that is not accounted for by incrementing ERR&lt;n&gt;MISC0.CECR.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-47_47">OFR, bit [47]</h4><div class="field">
+      <p>Sticky overflow bit, repeat. Set to 1 when ERR&lt;n&gt;MISC0.CECR is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OFR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Repeat counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Repeat counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-46_32">CECR, bits [46:32]</h4><div class="field">
+      <p>Corrected error count, repeat. Incremented for the first countable error, which also records other syndrome for the error, and subsequently for each countable error that matches the recorded other syndrome. Corrected errors are countable errors. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and might be <span class="arm-defined-word">UNPREDICTABLE</span> whether Deferred and Uncorrected errors are countable errors.</p>
+    
+      <div class="note"><span class="note-header">Note</span>
+        <p>For example, the other syndrome might include the set and way information for an error detected in a cache. This might be recorded in the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> ERR&lt;n&gt;MISC&lt;m&gt; fields on a first Corrected error. ERR&lt;n&gt;MISC0.CECR is then incremented for each subsequent Corrected Error in the same set and way.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_3-31_0">IMPLEMENTATION DEFINED, bits [31:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h3>When ERRFR[FirstRecordOfNode(n)].CEC == 0b010, ERRFR[FirstRecordOfNode(n)].RP == 1 and error record n records countable errors:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="16"><a href="#fieldset_4-63_48">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_4-47_47">OFO</a></td><td class="lr" colspan="7"><a href="#fieldset_4-46_40">CECO</a></td><td class="lr" colspan="1"><a href="#fieldset_4-39_39">OFR</a></td><td class="lr" colspan="7"><a href="#fieldset_4-38_32">CECR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_4-31_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_4-63_48">IMPLEMENTATION DEFINED, bits [63:48]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h4 id="fieldset_4-47_47">OFO, bit [47]</h4><div class="field">
+      <p>Sticky overflow bit, other. Set to 1 when ERR&lt;n&gt;MISC0.CECO is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OFO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Other counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Other counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-46_40">CECO, bits [46:40]</h4><div class="field">
+      <p>Corrected error count, other. Incremented for each countable error that is not accounted for by incrementing ERR&lt;n&gt;MISC0.CECR.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-39_39">OFR, bit [39]</h4><div class="field">
+      <p>Sticky overflow bit, repeat. Set to 1 when ERR&lt;n&gt;MISC0.CECR is incremented and wraps through zero.</p>
+    <table class="valuetable"><tr><th>OFR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Repeat counter has not overflowed.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Repeat counter has overflowed.</p>
+        </td></tr></table>
+      <p>A direct write that modifies this field might indirectly set <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF to an <span class="arm-defined-word">UNKNOWN</span> value and a direct write to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF that clears it to zero might indirectly set this field to an <span class="arm-defined-word">UNKNOWN</span> value.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-38_32">CECR, bits [38:32]</h4><div class="field">
+      <p>Corrected error count, repeat. Incremented for the first countable error, which also records other syndrome for the error, and subsequently for each countable error that matches the recorded other syndrome. Corrected errors are countable errors. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> and might be <span class="arm-defined-word">UNPREDICTABLE</span> whether Deferred and Uncorrected errors are countable errors.</p>
+    
+      <div class="note"><span class="note-header">Note</span>
+        <p>For example, the other syndrome might include the set and way information for an error detected in a cache. This might be recorded in the <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> ERR&lt;n&gt;MISC&lt;m&gt; fields on a first Corrected error. ERR&lt;n&gt;MISC0.CECR is then incremented for each subsequent Corrected Error in the same set and way.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_4-31_0">IMPLEMENTATION DEFINED, bits [31:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> syndrome.</p>
+    </div><h2>Accessing ERR&lt;n&gt;MISC0</h2>
+        <p>Reads from ERR&lt;n&gt;MISC0 return an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value and writes have <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> behavior.</p>
+
+      
+        <p>If the Common Fault Injection Mechanism is implemented by the node that owns this error record, and <a href="ext-errnpfgf.html">ERRPFGF[FirstRecordOfNode(n)]</a>.MV is 1, then some parts of this register are read/write when <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is 0. See <a href="ext-errnpfgf.html">ERR&lt;n&gt;PFGF</a>.MV for more information.</p>
+
+      
+        <p>For other parts of this register, or if the Common Fault Injection Mechanism is not implemented, then Arm recommends that:</p>
+
+      
+        <ul>
+<li>Miscellaneous syndrome for multiple errors, such as a corrected error counter, is read/write.
+</li><li>When <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is 1, the miscellaneous syndrome specific to the most recently recorded error ignores writes.
+</li></ul>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>These recommendations allow a counter to be reset in the presence of a persistent error, while preventing specific information, such as that identifying a FRU, from being lost if an error is detected while the previous error is being logged.</p></div>
+      <h4>ERR&lt;n&gt;MISC0 can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0x020</span> + (64 * n)</td><td>ERR&lt;n&gt;MISC0</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MSMON_OFLOW_SR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MSMON_OFLOW_SR, MPAM Monitor Overflow Status Register</h1><p>The MSMON_OFLOW_SR characteristics are:</p><h2>Purpose</h2>
+        <p>MSMON_OFLOW_SR is a 32-bit read-only register that shows MPAM monitor overflow status for this MSC.</p>
+
+      
+        <p>MSMON_OFLOW_SR_s gives the status of overflows of Secure MPAM monitors.
+MSMON_OFLOW_SR_ns gives the status of overflows of Non-secure MPAM monitors.
+MSMON_OFLOW_SR_rt gives the status of overflows of Root MPAM monitors.
+MSMON_OFLOW_SR_rl gives the status of overflows of Realm MPAM monitors.</p>
+      <h2>Configuration</h2><p>The power domain of MSMON_OFLOW_SR is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when FEAT_MPAM is implemented, MPAMF_IDR.HAS_MSMON == 1 and MPAMF_MSMON_IDR.HAS_OFLOW_SR == 1. Otherwise, direct accesses to MSMON_OFLOW_SR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>The power and reset domain of each MSC component is specific to that component.</p>
+      <h2>Attributes</h2>
+        <p>MSMON_OFLOW_SR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">CSU_OFLOW_PND</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">MBWU_OFLOW_PND</a></td><td class="lr" colspan="14"><a href="#fieldset_0-29_16">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_0">RIS_PND0</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">CSU_OFLOW_PND, bit [31]</h4><div class="field">
+      <p>At least one cache storage usage monitor has OFLOW_STATUS of 1 in <a href="ext-msmon_cfg_csu_ctl.html">MSMON_CFG_CSU_CTL</a>.</p>
+    <table class="valuetable"><tr><th>CSU_OFLOW_PND</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>There are no cache storage usage monitor instances where <a href="ext-msmon_cfg_csu_ctl.html">MSMON_CFG_CSU_CTL</a>.OFLOW_STATUS is 1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-msmon_cfg_csu_ctl.html">MSMON_CFG_CSU_CTL</a> for at least one of the cache storage usage monitor instances has OFLOW_STATUS set to 1.</p>
+        </td></tr></table>
+      <p>This field clears when <a href="ext-msmon_cfg_csu_ctl.html">MSMON_CFG_CSU_CTL</a>.OFLOW_STATUS has been reset to 0 for all CSU monitor instances in this MSC.</p>
+    </div><h4 id="fieldset_0-30_30">MBWU_OFLOW_PND, bit [30]</h4><div class="field">
+      <p>At least one memory bandwidth usage monitor instance has OFLOW_STATUS or OFLOW_STATUS_L of 1 in <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.</p>
+    <table class="valuetable"><tr><th>MBWU_OFLOW_PND</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>There are no memory bandwidth usage monitor instances where <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_STATUS is 1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a> for at least one of the memory bandwidth usage monitor instances has either OFLOW_STATUS or OFLOW_STATUS_L set to 1.</p>
+        </td></tr></table>
+      <p>This field clears when <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_STATUS and <a href="ext-msmon_cfg_mbwu_ctl.html">MSMON_CFG_MBWU_CTL</a>.OFLOW_STATUS_L have been reset to 0 for all MBWU monitor instances in this MSC.</p>
+    </div><h4 id="fieldset_0-29_16">Bits [29:16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">RIS_PND&lt;r&gt;, bit [r], for r = 15 to 0</h4><div class="field">
+      <p>Overflow status by RIS.</p>
+    <table class="valuetable"><tr><th>RIS_PND&lt;r&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>RIS r has no unread overflows of any type of monitor.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>RIS r has at least one unread overflow in at least one of the monitor types.</p>
+        </td></tr></table><p>Combined with the CSU_OFLOW_PND and MBWU_OFLOW_PND flags in this register, an interrupt service routine could poll only the monitor types indicated in monitors for the resource instances flagged in this field.</p>
+<p>Bit r is set when any monitor instance of any type in resource instance r has OFLOW_STATUS or OFLOW_STATUS_L set to 1.</p></div><h2>Accessing MSMON_OFLOW_SR</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MSMON_OFLOW_SR_s must only be accessible from the Secure MPAM feature page.
+</li><li>MSMON_OFLOW_SR_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MSMON_OFLOW_SR_rt must only be accessible from the Root MPAM feature page.
+</li><li>MSMON_OFLOW_SR_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MSMON_OFLOW_SR_s, MSMON_OFLOW_SR_ns, MSMON_OFLOW_SR_rt, and MSMON_OFLOW_SR_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MSMON_OFLOW_SR_s) accesses the monitor overflow status summary of Secure monitors.
+</li><li>The Non-secure instance (MSMON_OFLOW_SR_ns) accesses the monitor overflow status summary of Non-secure monitors.
+</li><li>The Root instance (MSMON_OFLOW_SR_rt) accesses the monitor overflow status summary of Root monitors.
+</li><li>The Realm instance (MSMON_OFLOW_SR_rl) accesses the monitor overflow status summary of Realm monitors.
+</li></ul>
+      <h4>MSMON_OFLOW_SR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x08F0</span></td><td>MSMON_OFLOW_SR_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x08F0</span></td><td>MSMON_OFLOW_SR_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x08F0</span></td><td>MSMON_OFLOW_SR_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x08F0</span></td><td>MSMON_OFLOW_SR_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,945 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRCRSCTLR&lt;n&gt;</reg_short_name>
+        
+        <reg_long_name>Resource Selection Control Register &lt;n&gt;</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_ETE is implemented, FEAT_TRC_EXT is implemented and (UInt(TRCIDR4.NUMRSPAIR) + 1) * 2 &gt; n</reg_condition>
+          <reg_array>
+              <reg_array_start>2</reg_array_start>
+              <reg_array_end>31</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>ETE</reg_component>
+    <reg_offset><hexnumber>0x200</hexnumber> + (4 * n)</reg_offset>
+    <reg_instance>TRCRSCTLR&lt;n&gt;</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When OSLockStatus(), or !AllowExternalTraceAccess() or !IsTraceCorePowered()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trcrsctlrn.xml">TRCRSCTLR&lt;n&gt;</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls the selection of the resources in the trace unit.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace unit registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>Resource selector 0 always returns FALSE.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Resource selector 1 always returns TRUE.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>Resource selectors are implemented in pairs. Each odd numbered resource selector is part of a pair with the even numbered resource selector that is numbered as one less than it. For example, resource selectors 2 and 3 form a pair.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRCRSCTLR&lt;n&gt; is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>31:22</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PAIRINV</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Controls whether the combined result from a resource selector pair is inverted.</para>
+    </field_description>
+    <field_description order="after"><para>If:</para>
+<list type="unordered">
+<listitem><content>A is the register TRCRSCTLR&lt;n&gt;.</content>
+</listitem><listitem><content>B is the register TRCRSCTLR&lt;n+1&gt;.</content>
+</listitem></list>
+<para>Then the combined output of the 2 resource selectors A and B depends on the value of (A.PAIRINV, A.INV, B.INV) as follows:</para>
+<list type="unordered">
+<listitem><content><binarynumber>0b000</binarynumber> -&gt; A and B.</content>
+</listitem><listitem><content><binarynumber>0b001</binarynumber> -&gt; Reserved.</content>
+</listitem><listitem><content><binarynumber>0b010</binarynumber> -&gt; not(A) and B.</content>
+</listitem><listitem><content><binarynumber>0b011</binarynumber> -&gt; not(A) and not(B).</content>
+</listitem><listitem><content><binarynumber>0b100</binarynumber> -&gt; not(A) or not(B).</content>
+</listitem><listitem><content><binarynumber>0b101</binarynumber> -&gt; not(A) or B.</content>
+</listitem><listitem><content><binarynumber>0b110</binarynumber> -&gt; Reserved.</content>
+</listitem><listitem><content><binarynumber>0b111</binarynumber> -&gt; A or B.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Do not invert the combined output of the 2 resource selectors.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Invert the combined output of the 2 resource selectors.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When n MOD 2 == 0</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>INV</field_name>
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Controls whether the resource, that TRCRSCTLR&lt;n&gt;.GROUP and TRCRSCTLR&lt;n&gt;.SELECT selects, is inverted.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Do not invert the output of this selector.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Invert the output of this selector.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="True" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GROUP</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Selects a group of resources.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>External Input Selectors.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="External Input Selectors" linked_field_id="fieldset_0-15_0_0"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>PE Comparator Inputs.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="PE Comparator Inputs" linked_field_id="fieldset_0-15_0_1"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>Counters and Sequencer.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Counters and Sequencer" linked_field_id="fieldset_0-15_0_2"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>Single-shot Comparator Controls.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Single-shot Comparator Controls" linked_field_id="fieldset_0-15_0_3"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description>
+          <para>Single Address Comparators.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Single Address Comparators" linked_field_id="fieldset_0-15_0_4"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>Address Range Comparators.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Address Range Comparators" linked_field_id="fieldset_0-15_0_5"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>Context Identifier Comparators.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Context Identifier Comparators" linked_field_id="fieldset_0-15_0_6"/>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description>
+          <para>Virtual Context Identifier Comparators.</para>
+        </field_value_description>
+        <field_value_links_to linked_field_name="SELECT" linked_field_condition="Virtual Context Identifier Comparators" linked_field_id="fieldset_0-15_0_7"/>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Trace unit">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="True" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SELECT</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Resource Specific Controls. Contains the controls specific to the resource group selected by GROUP, described in the following sections.</para>
+    </field_description>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_0" length="16">
+        <fields_condition/>
+        <fields_instance>External Input Selectors</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_0-15_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>4</field_lsb>
+          <rel_range>15:4</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>EXTIN[&lt;m&gt;]</field_name>
+          <field_msb>3</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>3:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more External Inputs.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr5.xml">TRCIDR5</register_link>.NUMEXTINSEL.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>3</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore EXTIN &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select EXTIN &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_0-15_4" msb="15" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_0-3_0" label="EXTIN[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_0-3_0" label="EXTIN[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_0-3_0" label="EXTIN[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_0-3_0" label="EXTIN[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_1" length="16">
+        <fields_condition/>
+        <fields_instance>PE Comparator Inputs</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_1-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_1-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>PECOMP[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>7:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more PE Comparator Inputs.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMPC.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>7</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore PE Comparator Input &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select PE Comparator Input &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_1-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_1-7_0" label="PECOMP[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_2" length="16">
+        <fields_condition/>
+        <fields_instance>Counters and Sequencer</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_2-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_2-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>SEQUENCER[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>4</field_lsb>
+          <rel_range>7:4</rel_range>
+          <field_description order="before">
+            <para>Sequencer states.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr5.xml">TRCIDR5</register_link>.NUMSEQSTATE.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m+4">
+            <field_array_index>
+              <field_array_start>3</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Sequencer state &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Sequencer state &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <field id="fieldset_0-15_0_2-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>COUNTERS[&lt;m&gt;]</field_name>
+          <field_msb>3</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>3:0</rel_range>
+          <field_description order="before">
+            <para>Counters resources at zero.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr5.xml">TRCIDR5</register_link>.NUMCNTR.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>3</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Counter &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Counter &lt;m&gt; is zero.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_2-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_2-7_4" label="SEQUENCER[3]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_2-7_4" label="SEQUENCER[2]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_2-7_4" label="SEQUENCER[1]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_2-7_4" label="SEQUENCER[0]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_2-3_0" label="COUNTERS[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_2-3_0" label="COUNTERS[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_2-3_0" label="COUNTERS[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_2-3_0" label="COUNTERS[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_3" length="16">
+        <fields_condition/>
+        <fields_instance>Single-shot Comparator Controls</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_3-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_3-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>SINGLE_SHOT[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>7:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more Single-shot Comparator Controls.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMSSCC.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>7</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Single-shot Comparator Control &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Single-shot Comparator Control &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_3-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_3-7_0" label="SINGLE_SHOT[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_4" length="16">
+        <fields_condition/>
+        <fields_instance>Single Address Comparators</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_4-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>SAC[&lt;m&gt;]</field_name>
+          <field_msb>15</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>15:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more Single Address Comparators.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= 2 × <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMACPAIRS.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>15</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Single Address Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Single Address Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[15]" msb="15" lsb="15"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[14]" msb="14" lsb="14"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[13]" msb="13" lsb="13"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[12]" msb="12" lsb="12"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[11]" msb="11" lsb="11"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[10]" msb="10" lsb="10"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[9]" msb="9" lsb="9"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[8]" msb="8" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_4-15_0" label="SAC[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_5" length="16">
+        <fields_condition/>
+        <fields_instance>Address Range Comparators</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_5-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_5-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>ARC[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>7:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more Address Range Comparators.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMACPAIRS.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>7</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Address Range Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Address Range Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_5-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_5-7_0" label="ARC[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_6" length="16">
+        <fields_condition/>
+        <fields_instance>Context Identifier Comparators</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_6-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_6-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>CID[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>7:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more Context Identifier Comparators.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMCIDC.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>7</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Context Identifier Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Context Identifier Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_6-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_6-7_0" label="CID[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+    <partial_fieldset>
+      <fields id="fieldset_0-15_0_7" length="16">
+        <fields_condition/>
+        <fields_instance>Virtual Context Identifier Comparators</fields_instance>
+        <text_before_fields/>
+        <field id="fieldset_0-15_0_7-15_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+          <field_msb>15</field_msb>
+          <field_lsb>8</field_lsb>
+          <rel_range>15:8</rel_range>
+          <field_description order="before">
+            <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+          </field_description>
+        </field>
+        <field id="fieldset_0-15_0_7-7_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="True" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+          <field_name>VMID[&lt;m&gt;]</field_name>
+          <field_msb>7</field_msb>
+          <field_lsb>0</field_lsb>
+          <rel_range>7:0</rel_range>
+          <field_description order="before">
+            <para>Selects one or more Virtual Context Identifier Comparators.</para>
+          </field_description>
+          <field_description order="after">
+            <para>This bit is <arm-defined-word>RES0</arm-defined-word> if m &gt;= <register_link state="ext" id="ext-trcidr4.xml">TRCIDR4</register_link>.NUMVMIDC.</para>
+          </field_description>
+          <field_array_indexes index_variable="m" element_size="1" range_specifier="m">
+            <field_array_index>
+              <field_array_start>7</field_array_start>
+              <field_array_end>0</field_array_end>
+            </field_array_index>
+          </field_array_indexes>
+          <field_values>
+            <field_value_instance>
+              <field_value>0b0</field_value>
+              <field_value_description>
+                <para>Ignore Virtual Context Identifier Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+            <field_value_instance>
+              <field_value>0b1</field_value>
+              <field_value_description>
+                <para>Select Virtual Context Identifier Comparator &lt;m&gt;.</para>
+              </field_value_description>
+            </field_value_instance>
+          </field_values>
+          <field_resets>
+            <field_reset reset_type="Trace unit">
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_resets>
+        </field>
+        <text_after_fields/>
+      </fields>
+      <reg_fieldset length="16">
+        <fields_condition/>
+        <fieldat id="fieldset_0-15_0_7-15_8" msb="15" lsb="8"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[7]" msb="7" lsb="7"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[6]" msb="6" lsb="6"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[5]" msb="5" lsb="5"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[4]" msb="4" lsb="4"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[3]" msb="3" lsb="3"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[2]" msb="2" lsb="2"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[1]" msb="1" lsb="1"/>
+        <fieldat id="fieldset_0-15_0_7-7_0" label="VMID[0]" msb="0" lsb="0"/>
+      </reg_fieldset>
+    </partial_fieldset>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_22" msb="31" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" min="2" max="31"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>Must be programmed if any of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content><register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.RLDEVENT.TYPE == 0 and <register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.RLDEVENT.SEL == n.</content>
+</listitem><listitem><content><register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.RLDEVENT.TYPE == 1 and <register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.RLDEVENT.SEL == n/2.</content>
+</listitem><listitem><content><register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.CNTEVENT.TYPE == 0 and <register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.CNTEVENT.SEL == n.</content>
+</listitem><listitem><content><register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.CNTEVENT.TYPE == 1 and <register_link id="ext-trccntctlrn.xml" state="ext">TRCCNTCTLR&lt;a&gt;</register_link>.CNTEVENT.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT0.TYPE == 0 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT0.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT0.TYPE == 1 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT0.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT1.TYPE == 0 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT1.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT1.TYPE == 1 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT1.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT2.TYPE == 0 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT2.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT2.TYPE == 1 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT2.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT3.TYPE == 0 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT3.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT3.TYPE == 1 and <register_link state="ext" id="ext-trceventctl0r.xml">TRCEVENTCTL0R</register_link>.EVENT3.SEL == n/2.</content>
+</listitem><listitem><content><register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.B.TYPE == 0 and <register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.B.SEL = n.</content>
+</listitem><listitem><content><register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.B.TYPE == 1 and <register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.B.SEL = n/2.</content>
+</listitem><listitem><content><register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.F.TYPE == 0 and <register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.F.SEL = n.</content>
+</listitem><listitem><content><register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.F.TYPE == 1 and <register_link id="ext-trcseqevrn.xml" state="ext">TRCSEQEVR&lt;a&gt;</register_link>.F.SEL = n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trcseqrstevr.xml">TRCSEQRSTEVR</register_link>.RST.TYPE == 0 and <register_link state="ext" id="ext-trcseqrstevr.xml">TRCSEQRSTEVR</register_link>.RST.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trcseqrstevr.xml">TRCSEQRSTEVR</register_link>.RST.TYPE == 1 and <register_link state="ext" id="ext-trcseqrstevr.xml">TRCSEQRSTEVR</register_link>.RST.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trctsctlr.xml">TRCTSCTLR</register_link>.EVENT.TYPE == 0 and <register_link state="ext" id="ext-trctsctlr.xml">TRCTSCTLR</register_link>.EVENT.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trctsctlr.xml">TRCTSCTLR</register_link>.EVENT.TYPE == 1 and <register_link state="ext" id="ext-trctsctlr.xml">TRCTSCTLR</register_link>.EVENT.SEL == n/2.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trcvictlr.xml">TRCVICTLR</register_link>.EVENT.TYPE == 0 and <register_link state="ext" id="ext-trcvictlr.xml">TRCVICTLR</register_link>.EVENT.SEL == n.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trcvictlr.xml">TRCVICTLR</register_link>.EVENT.TYPE == 1 and <register_link state="ext" id="ext-trcvictlr.xml">TRCVICTLR</register_link>.EVENT.SEL == n/2.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Writes are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> if the trace unit is not in the Idle state.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

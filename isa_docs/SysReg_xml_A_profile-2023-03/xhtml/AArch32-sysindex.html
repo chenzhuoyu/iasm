@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><title>AArch32 Instructions</title><link rel="stylesheet" type="text/css" href="insn.css"/></head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="alphindextitle">AArch32 System Instructions</h1>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats12nsopr.html">ATS12NSOPR</a>:
+        Address Translate Stages 1 and 2 Non-secure Only PL1 Read</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats12nsopw.html">ATS12NSOPW</a>:
+        Address Translate Stages 1 and 2 Non-secure Only PL1 Write</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats12nsour.html">ATS12NSOUR</a>:
+        Address Translate Stages 1 and 2 Non-secure Only Unprivileged Read</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats12nsouw.html">ATS12NSOUW</a>:
+        Address Translate Stages 1 and 2 Non-secure Only Unprivileged Write</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cpr.html">ATS1CPR</a>:
+        Address Translate Stage 1 Current state PL1 Read</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cprp.html">ATS1CPRP</a>:
+        Address Translate Stage 1 Current state PL1 Read PAN</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cpw.html">ATS1CPW</a>:
+        Address Translate Stage 1 Current state PL1 Write</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cpwp.html">ATS1CPWP</a>:
+        Address Translate Stage 1 Current state PL1 Write PAN</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cur.html">ATS1CUR</a>:
+        Address Translate Stage 1 Current state Unprivileged Read</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1cuw.html">ATS1CUW</a>:
+        Address Translate Stage 1 Current state Unprivileged Write</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1hr.html">ATS1HR</a>:
+        Address Translate Stage 1 Hyp mode Read</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-ats1hw.html">ATS1HW</a>:
+        Address Translate Stage 1 Hyp mode Write</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-bpiall.html">BPIALL</a>:
+        Branch Predictor Invalidate All</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-bpiallis.html">BPIALLIS</a>:
+        Branch Predictor Invalidate All, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-bpimva.html">BPIMVA</a>:
+        Branch Predictor Invalidate by VA</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cfprctx.html">CFPRCTX</a>:
+        Control Flow Prediction Restriction by Context</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cosprctx.html">COSPRCTX</a>:
+        Clear Other Speculative Restriction by Context</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cp15dmb.html">CP15DMB</a>:
+        Data Memory Barrier System instruction</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cp15dsb.html">CP15DSB</a>:
+        Data Synchronization Barrier System instruction</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cp15isb.html">CP15ISB</a>:
+        Instruction Synchronization Barrier System instruction</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-cpprctx.html">CPPRCTX</a>:
+        Cache Prefetch Prediction Restriction by Context</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dccimvac.html">DCCIMVAC</a>:
+        Data Cache line Clean and Invalidate by VA to PoC</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dccisw.html">DCCISW</a>:
+        Data Cache line Clean and Invalidate by Set/Way</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dccmvac.html">DCCMVAC</a>:
+        Data Cache line Clean by VA to PoC</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dccmvau.html">DCCMVAU</a>:
+        Data Cache line Clean by VA to PoU</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dccsw.html">DCCSW</a>:
+        Data Cache line Clean by Set/Way</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dcimvac.html">DCIMVAC</a>:
+        Data Cache line Invalidate by VA to PoC</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dcisw.html">DCISW</a>:
+        Data Cache line Invalidate by Set/Way</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dtlbiall.html">DTLBIALL</a>:
+        Data TLB Invalidate All</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dtlbiasid.html">DTLBIASID</a>:
+        Data TLB Invalidate by ASID match</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dtlbimva.html">DTLBIMVA</a>:
+        Data TLB Invalidate by VA</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-dvprctx.html">DVPRCTX</a>:
+        Data Value Prediction Restriction by Context</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-iciallu.html">ICIALLU</a>:
+        Instruction Cache Invalidate All to PoU</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icialluis.html">ICIALLUIS</a>:
+        Instruction Cache Invalidate All to PoU, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-icimvau.html">ICIMVAU</a>:
+        Instruction Cache line Invalidate by VA to PoU</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-itlbiall.html">ITLBIALL</a>:
+        Instruction TLB Invalidate All</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-itlbiasid.html">ITLBIASID</a>:
+        Instruction TLB Invalidate by ASID match</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-itlbimva.html">ITLBIMVA</a>:
+        Instruction TLB Invalidate by VA</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiall.html">TLBIALL</a>:
+        TLB Invalidate All</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiallh.html">TLBIALLH</a>:
+        TLB Invalidate All, Hyp mode</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiallhis.html">TLBIALLHIS</a>:
+        TLB Invalidate All, Hyp mode, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiallis.html">TLBIALLIS</a>:
+        TLB Invalidate All, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiallnsnh.html">TLBIALLNSNH</a>:
+        TLB Invalidate All, Non-Secure Non-Hyp</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiallnsnhis.html">TLBIALLNSNHIS</a>:
+        TLB Invalidate All, Non-Secure Non-Hyp, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiasid.html">TLBIASID</a>:
+        TLB Invalidate by ASID match</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiasidis.html">TLBIASIDIS</a>:
+        TLB Invalidate by ASID match, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiipas2.html">TLBIIPAS2</a>:
+        TLB Invalidate by Intermediate Physical Address, Stage 2</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiipas2is.html">TLBIIPAS2IS</a>:
+        TLB Invalidate by Intermediate Physical Address, Stage 2, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiipas2l.html">TLBIIPAS2L</a>:
+        TLB Invalidate by Intermediate Physical Address, Stage 2, Last level</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbiipas2lis.html">TLBIIPAS2LIS</a>:
+        TLB Invalidate by Intermediate Physical Address, Stage 2, Last level, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimva.html">TLBIMVA</a>:
+        TLB Invalidate by VA</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvaa.html">TLBIMVAA</a>:
+        TLB Invalidate by VA, All ASID</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvaais.html">TLBIMVAAIS</a>:
+        TLB Invalidate by VA, All ASID, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvaal.html">TLBIMVAAL</a>:
+        TLB Invalidate by VA, All ASID, Last level</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvaalis.html">TLBIMVAALIS</a>:
+        TLB Invalidate by VA, All ASID, Last level, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvah.html">TLBIMVAH</a>:
+        TLB Invalidate by VA, Hyp mode</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvahis.html">TLBIMVAHIS</a>:
+        TLB Invalidate by VA, Hyp mode, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvais.html">TLBIMVAIS</a>:
+        TLB Invalidate by VA, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimval.html">TLBIMVAL</a>:
+        TLB Invalidate by VA, Last level</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvalh.html">TLBIMVALH</a>:
+        TLB Invalidate by VA, Last level, Hyp mode</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvalhis.html">TLBIMVALHIS</a>:
+        TLB Invalidate by VA, Last level, Hyp mode, Inner Shareable</span></p></div>
+    <div><p class="iformindex"><span class="insnheading"><a href="AArch32-tlbimvalis.html">TLBIMVALIS</a>:
+        TLB Invalidate by VA, Last level, Inner Shareable</span></p></div>
+  <hr/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:16</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+  
+</html>

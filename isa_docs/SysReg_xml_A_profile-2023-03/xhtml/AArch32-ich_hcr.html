@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ICH_HCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ICH_HCR, Interrupt Controller Hyp Control Register</h1><p>The ICH_HCR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls the environment for VMs.</p>
+      <h2>Configuration</h2><p>AArch32 System register ICH_HCR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-ich_hcr_el2.html">ICH_HCR_EL2[31:0]</a>.</p><p>This register is present only when EL2 is capable of using AArch32, FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented). Otherwise, direct accesses to ICH_HCR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>ICH_HCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="5"><a href="#fieldset_0-31_27">EOIcount</a></td><td class="lr" colspan="12"><a href="#fieldset_0-26_15">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">TDIR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13">TSEI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12">TALL1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">TALL0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">TC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">vSGIEOICount</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">VGrp1DIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">VGrp1EIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">VGrp0DIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">VGrp0EIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">NPIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">LRENPIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">UIE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">En</a></td></tr></tbody></table><h4 id="fieldset_0-31_27">EOIcount, bits [31:27]</h4><div class="field"><p>This field is incremented whenever a successful write to a virtual EOIR or DIR register would have resulted in a virtual interrupt deactivation.  That is either:</p>
+<ul>
+<li>A virtual write to EOIR with a valid interrupt identifier that is not in the LPI range (that is &lt; 8192) when EOI mode is zero and no List Register was found.
+</li><li>A virtual write to DIR with a valid interrupt identifier that is not in the LPI range (that is &lt; 8192) when EOI mode is one and no List Register was found.
+</li></ul>
+<p>This allows software to manage more active interrupts than there are implemented List Registers.</p>
+<p>It is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether a virtual write to EOIR that does not clear a bit in the Active Priorities registers (<a href="AArch32-ich_ap0rn.html">ICH_AP0R&lt;n&gt;</a>/<a href="AArch32-ich_ap1rn.html">ICH_AP1R&lt;n&gt;</a>) increments EOIcount. Permitted behaviors are:</p>
+<ul>
+<li>Increment EOIcount.
+</li><li>Leave EOIcount unchanged.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-26_15">Bits [26:15]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-14_14-1">TDIR, bit [14]<span class="condition"><br/>When FEAT_GICv3_TDIR is implemented:
+                        </span></h4><div class="field">
+      <p>Trap Non-secure EL1 writes to <a href="AArch32-icc_dir.html">ICC_DIR</a> and <a href="AArch32-icv_dir.html">ICV_DIR</a>.</p>
+    <table class="valuetable"><tr><th>TDIR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure EL1 writes of <a href="AArch32-icc_dir.html">ICC_DIR</a> and <a href="AArch32-icv_dir.html">ICV_DIR</a> are not trapped to EL2, unless trapped by other mechanisms.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure EL1 writes of <a href="AArch32-icv_dir.html">ICV_DIR</a> are trapped to EL2. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether Non-secure writes of <a href="AArch32-icc_dir.html">ICC_DIR</a> are trapped. Not trapping <a href="AArch32-icc_dir.html">ICC_DIR</a> writes is DEPRECATED.</p>
+        </td></tr></table>
+      <p>Arm deprecates not including this trap bit.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13">TSEI, bit [13]</h4><div class="field">
+      <p>Trap all locally generated SEIs. This bit allows the hypervisor to intercept locally generated SEIs that would otherwise be taken at Non-secure EL1.</p>
+    <table class="valuetable"><tr><th>TSEI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Locally generated SEIs do not cause a trap to EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Locally generated SEIs trap to EL2.</p>
+        </td></tr></table>
+      <p>If <a href="AArch32-ich_vtr.html">ICH_VTR</a>.SEIS is 0, this bit is <span class="arm-defined-word">RES0</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-12_12">TALL1, bit [12]</h4><div class="field">
+      <p>Trap all Non-secure EL1 accesses to ICC_* and ICV_* System registers for Group 1 interrupts to EL2.</p>
+    <table class="valuetable"><tr><th>TALL1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 1 interrupts proceed as normal.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 1 interrupts trap to EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-11_11">TALL0, bit [11]</h4><div class="field">
+      <p>Trap all Non-secure EL1 accesses to ICC_* and ICV_* System registers for Group 0 interrupts to EL2.</p>
+    <table class="valuetable"><tr><th>TALL0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 0 interrupts proceed as normal.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure EL1 accesses to ICC_* and ICV_* registers for Group 0 interrupts trap to EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-10_10">TC, bit [10]</h4><div class="field">
+      <p>Trap all Non-secure EL1 accesses to System registers that are common to Group 0 and Group 1 to EL2.</p>
+    <table class="valuetable"><tr><th>TC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Non-secure EL1 accesses to common registers proceed as normal.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure EL1 accesses to common registers trap to EL2.</p>
+        </td></tr></table>
+      <p>This affects accesses to <a href="AArch32-icc_sgi0r.html">ICC_SGI0R</a>, <a href="AArch32-icc_sgi1r.html">ICC_SGI1R</a>, <a href="AArch32-icc_asgi1r.html">ICC_ASGI1R</a>, <a href="AArch32-icc_ctlr.html">ICC_CTLR</a>, <a href="AArch32-icc_dir.html">ICC_DIR</a>, <a href="AArch32-icc_pmr.html">ICC_PMR</a>, <a href="AArch32-icc_rpr.html">ICC_RPR</a>, <a href="AArch32-icv_ctlr.html">ICV_CTLR</a>, <a href="AArch32-icv_dir.html">ICV_DIR</a>, <a href="AArch32-icv_pmr.html">ICV_PMR</a>, and <a href="AArch32-icv_rpr.html">ICV_RPR</a>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-9_9">Bit [9]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">vSGIEOICount, bit [8]<span class="condition"><br/>When FEAT_GICv4p1 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls whether deactivation of virtual SGIs can increment ICH_HCR_EL2.EOIcount</p>
+    <table class="valuetable"><tr><th>vSGIEOICount</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Deactivation of virtual SGIs can increment ICH_HCR.EOIcount.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Deactivation of virtual SGIs does not increment ICH_HCR.EOIcount.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7">VGrp1DIE, bit [7]</h4><div class="field">
+      <p>VM Group 1 Disabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 1 interrupts from the virtual CPU interface to the connected vPE is disabled:</p>
+    <table class="valuetable"><tr><th>VGrp1DIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt signaled when <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG1 is 0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-6_6">VGrp1EIE, bit [6]</h4><div class="field">
+      <p>VM Group 1 Enabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 1 interrupts from the virtual CPU interface to the connected vPE is enabled:</p>
+    <table class="valuetable"><tr><th>VGrp1EIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt signaled when <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG1 is 1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5">VGrp0DIE, bit [5]</h4><div class="field">
+      <p>VM Group 0 Disabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 0 interrupts from the virtual CPU interface to the connected vPE is disabled:</p>
+    <table class="valuetable"><tr><th>VGrp0DIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt signaled when <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG0 is 0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_4">VGrp0EIE, bit [4]</h4><div class="field">
+      <p>VM Group 0 Enabled Interrupt Enable. Enables the signaling of a maintenance interrupt while signaling of Group 0 interrupts from the virtual CPU interface to the connected vPE is enabled:</p>
+    <table class="valuetable"><tr><th>VGrp0EIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt signaled when <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG0 is 1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-3_3">NPIE, bit [3]</h4><div class="field">
+      <p>No Pending Interrupt Enable. Enables the signaling of a maintenance interrupt when there are no List registers with the State field set to <span class="binarynumber">0b01</span> (pending):</p>
+    <table class="valuetable"><tr><th>NPIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt signaled while the List registers contain no interrupts in the pending state.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-2_2">LRENPIE, bit [2]</h4><div class="field">
+      <p>List Register Entry Not Present Interrupt Enable. Enables the signaling of a maintenance interrupt while the virtual CPU interface does not have a corresponding valid List register entry for an EOI request:</p>
+    <table class="valuetable"><tr><th>LRENPIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt is asserted while the EOIcount field is not 0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1">UIE, bit [1]</h4><div class="field">
+      <p>Underflow Interrupt Enable. Enables the signaling of a maintenance interrupt when the List registers are empty, or hold only one valid entry:</p>
+    <table class="valuetable"><tr><th>UIE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Maintenance interrupt disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Maintenance interrupt is asserted if none, or only one, of the List register entries is marked as a valid interrupt.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-0_0">En, bit [0]</h4><div class="field">
+      <p>Enable. Global enable bit for the virtual CPU interface:</p>
+    <table class="valuetable"><tr><th>En</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Virtual CPU interface operation disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Virtual CPU interface operation enabled.</p>
+        </td></tr></table><p>When this field is set to 0:</p>
+<ul>
+<li>The virtual CPU interface does not signal any maintenance interrupts.
+</li><li>The virtual CPU interface does not signal any virtual interrupts.
+</li><li>A read of <a href="AArch32-icv_iar0.html">ICV_IAR0</a>, <a href="AArch32-icv_iar1.html">ICV_IAR1</a>, <a href="ext-gicv_iar.html">GICV_IAR</a> or <a href="ext-gicv_aiar.html">GICV_AIAR</a> returns a spurious interrupt ID.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing ICH_HCR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b1100</td><td>0b1011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_HCR;
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_HCR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b1100</td><td>0b1011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_HCR = R[t];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_HCR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

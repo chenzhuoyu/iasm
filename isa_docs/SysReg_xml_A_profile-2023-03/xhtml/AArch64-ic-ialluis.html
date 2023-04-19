@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>IC IALLUIS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">IC IALLUIS, Instruction Cache Invalidate All to PoU, Inner Shareable</h1><p>The IC IALLUIS characteristics are:</p><h2>Purpose</h2>
+        <p>Invalidate all instruction caches in the Inner Shareable domain of the PE executing the instruction to the Point of Unification.</p>
+      <h2>Configuration</h2><p>AArch64 System instruction IC IALLUIS performs the same function as AArch32 System instruction <a href="AArch32-icialluis.html">ICIALLUIS</a>.</p><h2>Attributes</h2>
+        <p>IC IALLUIS is a 64-bit System instruction.</p>
+      <h2>Field descriptions</h2><p>This instruction has no applicable fields.</p><p>The value in the register specified by &lt;Xt&gt; is ignored.</p><div class="access_mechanisms"><h2>Executing IC IALLUIS</h2>
+        <p>The Rt field should be set to <span class="binarynumber">0b11111</span>. If the Rt field is not set to <span class="binarynumber">0b11111</span>, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether:</p>
+
+      
+        <ul>
+<li>
+<p>The instruction is <span class="arm-defined-word">UNDEFINED</span>.</p>
+
+</li><li>
+<p>The instruction behaves as if the Rt field is set to <span class="binarynumber">0b11111</span>.</p>
+
+</li></ul>
+      <p>Accesses to this instruction use the following encodings in the System instruction encoding space:</p><h4 class="assembler">IC IALLUIS{, &lt;Xt&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b000</td><td>0b0111</td><td>0b0001</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TPU == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TICAB == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.ICIALLUIS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.IC(CacheOpScope_ALLUIS);
+elsif PSTATE.EL == EL2 then
+    AArch64.IC(CacheOpScope_ALLUIS);
+elsif PSTATE.EL == EL3 then
+    AArch64.IC(CacheOpScope_ALLUIS);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

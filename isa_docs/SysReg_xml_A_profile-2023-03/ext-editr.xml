@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>EDITR</reg_short_name>
+        
+        <reg_long_name>External Debug Instruction Transfer Register</reg_long_name>
+
+        <power_domain_text>EDITR is in the Core power domain</power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0x084</hexnumber></reg_offset>
+    <reg_instance>EDITR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>WI</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus()</reg_access_level>
+          <reg_access_type>WO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Used in Debug state for passing instructions to the PE for execution.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Debug registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>EDITR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When AArch32 is supported and in AArch32 state</fields_condition>
+  <fields_instance>in AArch32 state</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>hw2</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>31:16</rel_range>
+    <field_description order="before"><para>Second halfword of the T32 instruction to be executed on the PE. When EDITR contains a 16-bit T32 instruction, this field is ignored. For more information, see <xref browsertext="'Behavior in Debug state'" filename="H_debug_state.fm" linkend="BABGECFE"/>.</para>
+<note><para>The hw2 field is displayed on the left. This is not the usual convention for display of T32 instruction halfwords.</para></note></field_description>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>hw1</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before"><para>First halfword of the T32 instruction to be executed on the PE.</para>
+<note><para>The hw1 field is displayed on the right. This is not the usual convention for display of T32 instruction halfwords.</para></note></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="32">
+  <fields_condition>When AArch64 is supported and in AArch64 state</fields_condition>
+  <fields_instance>in AArch64 state</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_1-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_shortdesc>A64 instruction to be executed on the PE</field_shortdesc>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>A64 instruction to be executed on the PE.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When AArch32 is supported and in AArch32 state</fields_condition>
+  <fieldat id="fieldset_0-31_16" msb="31" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When AArch64 is supported and in AArch64 state</fields_condition>
+  <fieldat id="fieldset_1-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If <register_link state="ext" id="ext-edscr.xml">EDSCR</register_link>.ITE == 0 when the PE exits Debug state on receiving a Restart request trigger event, the behavior of any instruction issued through the ITR in Normal access mode that has not completed execution is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>, and must do one of the following:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>It must complete execution in Debug state before the PE executes the restart sequence.</content>
+</listitem><listitem><content>It must complete execution in Non-debug state before the PE executes the restart sequence.</content>
+</listitem><listitem><content>It must be abandoned. This means that the instruction does not execute. Any registers or memory accessed by the instruction are left in an <arm-defined-word>UNKNOWN</arm-defined-word> state.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>EDITR ignores writes if the PE is in Non-debug state.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

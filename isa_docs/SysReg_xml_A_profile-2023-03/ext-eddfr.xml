@@ -1,0 +1,403 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>EDDFR</reg_short_name>
+        
+        <reg_long_name>External Debug Feature Register</reg_long_name>
+
+        <power_domain_text>The power domain of EDDFR is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word></power_domain_text>
+
+
+      
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>Debug</reg_component>
+    <reg_offset><hexnumber>0xD28</hexnumber></reg_offset>
+    <reg_instance>EDDFR</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When IsCorePowered() and !DoubleLockStatus()</reg_access_level>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>IMPDEF</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides top level information about the debug system.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <note><para>Debuggers must use <register_link state="ext" id="ext-eddevarch.xml">EDDEVARCH</register_link> to determine the Debug architecture version.</para></note>
+      </purpose_text>
+      <purpose_text>
+        <para>For general information about the interpretation of the ID registers, see <xref browsertext="'Principles of the ID scheme for fields in ID registers'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABFAFHI"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>EDDFR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>63</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>63:60</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-59_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ExtTrcBuff</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>59:56</rel_range>
+    <field_description order="before">
+      <para>Trace Buffer External Mode Extension. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If <xref browsertext="FEAT_TRBE" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_TRBE"/> is not implemented, the only permitted value is <binarynumber>0b0000</binarynumber>.</para>
+<para><xref browsertext="FEAT_TRBE_EXT" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_EXT"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.ExtTrcBuff.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Trace Buffer Extension not implemented or Trace Buffer External Mode not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Trace Buffer Extension implemented and Trace Buffer External Mode implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-55_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>55</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>55:44</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-43_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TraceFilt</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>43:40</rel_range>
+    <field_description order="before">
+      <para>Armv8.4 Self-hosted Trace Extension version. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_TRF" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.Trace"/> implements the functionality added by <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.4, the permitted values are <binarynumber>0b0000</binarynumber> and <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Armv8.4 Self-hosted Trace Extension is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Armv8.4 Self-hosted Trace Extension is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-39_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>39</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>39:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CTX_CMPs</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Number of breakpoints that are context-aware, minus 1.</para>
+    </field_description>
+    <field_description order="after"><para>The value of this field is never greater than EDDFR.BRPs.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.CTX_CMPs.</para>
+<para>If <xref browsertext="FEAT_Debugv8p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_Debugv8p9"/> is implemented and 16 or more breakpoints that are context-aware are implemented, this field reads as <binarynumber>0b1111</binarynumber>.</para></field_description>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SEBEP</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.SEBEP or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>WRPs</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Number of watchpoints, minus 1.</para>
+    </field_description>
+    <field_description order="after"><para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.WRPs.</para>
+<para>If <xref browsertext="FEAT_Debugv8p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_Debugv8p9"/> is implemented and 16 or more watchpoints are implemented, this field reads as <binarynumber>0b1111</binarynumber>.</para>
+<para>The value of <binarynumber>0b0000</binarynumber> is reserved.</para>
+<note><para>Only watchpoints 0 to 15 can be accessed in AArch32 state.</para></note></field_description>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMSS</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>This field either has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.PMSS or reads as zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BRPs</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Number of breakpoints, minus 1.</para>
+    </field_description>
+    <field_description order="after"><para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.BRPs.</para>
+<para>If <xref browsertext="FEAT_Debugv8p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_Debugv8p9"/> is implemented and 16 or more breakpoints are implemented, this field reads as <binarynumber>0b1111</binarynumber>.</para>
+<para>The value of <binarynumber>0b0000</binarynumber> is reserved.</para>
+<note><para>Only breakpoints 0 to 15 can be accessed in AArch32 state.</para></note></field_description>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMUVer</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before"><para>Performance Monitors Extension version.</para>
+<para>This field does not follow the standard ID scheme, but uses the alternative ID scheme described in <xref browsertext="'Alternative ID scheme used for the Performance Monitors Extension version'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABDFEID"/></para>
+<para>Defined values are:</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.PMU"/> implements the functionality identified by the value <binarynumber>0b0100</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p4" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.PMU"/> implements the functionality identified by the value <binarynumber>0b0101</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p5" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.PMU"/> implements the functionality identified by the value <binarynumber>0b0110</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p7" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.PMU"/> implements the functionality identified by the value <binarynumber>0b0111</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p8" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3p8"/> implements the functionality identified by the value <binarynumber>0b1000</binarynumber>.</para>
+<para><xref browsertext="FEAT_PMUv3p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3p9"/> implements the functionality identified by the value <binarynumber>0b1001</binarynumber>.</para>
+<para>From Armv8.1, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b0001</binarynumber> is not permitted.</para>
+<para>From Armv8.4, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b0100</binarynumber> is not permitted.</para>
+<para>From Armv8.5, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b0101</binarynumber> is not permitted.</para>
+<para>From Armv8.7, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b0110</binarynumber> is not permitted.</para>
+<para>From Armv8.8, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b0111</binarynumber> is not permitted.</para>
+<para>From Armv8.9, if <xref browsertext="FEAT_PMUv3" filename="A_armv8_architecture_extensions.fm" linkend="v8.0.PMUv3"/> is implemented, the value <binarynumber>0b1000</binarynumber> is not permitted.</para>
+<para>In an implementation that supports AArch64, this field has the same value as <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.PMUVer.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Performance Monitors Extension not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Performance Monitors Extension, PMUv3 implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0100</field_value>
+        <field_value_description><para>PMUv3 for Armv8.1. As <binarynumber>0b0001</binarynumber>, and adds support for:</para>
+<list type="unordered">
+<listitem><content>Extended 16-bit PMU.PMEVTYPER&lt;n&gt;_EL0.evtCount field.</content>
+</listitem><listitem><content>If EL2 is implemented, the <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMD control.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>PMUv3 for Armv8.4. As <binarynumber>0b0100</binarynumber>, and adds support for the <register_link state="AArch64" id="AArch64-pmmir_el1.xml">PMMIR_EL1</register_link> register.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description><para>PMUv3 for Armv8.5. As <binarynumber>0b0101</binarynumber>, and adds support for:</para>
+<list type="unordered">
+<listitem><content>64-bit event counters.</content>
+</listitem><listitem><content>If EL2 is implemented, the <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HCCD control.</content>
+</listitem><listitem><content>If EL3 is implemented, the <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.SCCD control.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description><para>PMUv3 for Armv8.7. As <binarynumber>0b0110</binarynumber>, and adds support for:</para>
+<list type="unordered">
+<listitem><content>The PMU.PMCR_EL0.FZO and, if EL2 is implemented, <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMFZO controls.</content>
+</listitem><listitem><content>If EL3 is implemented, the <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.{MPMX,MCCD} controls.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1000</field_value>
+        <field_value_description><para>PMUv3 for Armv8.8. As <binarynumber>0b0111</binarynumber>, and:</para>
+<list type="unordered">
+<listitem><content>Extends the Common event number space to include <hexnumber>0x0040</hexnumber> to <hexnumber>0x00BF</hexnumber> and <hexnumber>0x4040</hexnumber> to <hexnumber>0x40BF</hexnumber>.</content>
+</listitem><listitem><content>Removes the <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> behaviors if a reserved or unimplemented PMU event number is selected.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1001</field_value>
+        <field_value_description><para>PMUv3 for Armv8.9. As <binarynumber>0b1000</binarynumber>, and:</para>
+<list type="unordered">
+<listitem><content>Updates the definitions of existing PMU events.</content>
+</listitem><listitem><content>Adds support for the <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.UEN control and the PMUACR_EL1 register.</content>
+</listitem><listitem><content>Adds support for the <register_link state="ext" id="ext-edecr.xml">EDECR</register_link>.PME control.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description>
+          <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> form of performance monitors supported, PMUv3 not supported. Arm does not recommend this value for new implementations.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TraceVer</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Trace support. Indicates whether System register interface to a trace unit is implemented. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>A value of <binarynumber>0b0000</binarynumber> only indicates that no System register interface to a trace unit is implemented. A trace unit might nevertheless be implemented without a System register interface.</para>
+<para>In an Armv8-A implementation that supports AArch64, this field returns the value of <register_link state="AArch64" id="AArch64-id_aa64dfr0_el1.xml">ID_AA64DFR0_EL1</register_link>.TraceVer.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Trace unit System registers not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Trace unit System registers implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_60" msb="63" lsb="60"/>
+  <fieldat id="fieldset_0-59_56" msb="59" lsb="56"/>
+  <fieldat id="fieldset_0-55_44" msb="55" lsb="44"/>
+  <fieldat id="fieldset_0-43_40" msb="43" lsb="40"/>
+  <fieldat id="fieldset_0-39_32" msb="39" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

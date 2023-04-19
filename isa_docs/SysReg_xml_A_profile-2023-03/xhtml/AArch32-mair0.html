@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MAIR0</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MAIR0, Memory Attribute Indirection Register 0</h1><p>The MAIR0 characteristics are:</p><h2>Purpose</h2>
+        <p>Along with <a href="AArch32-mair1.html">MAIR1</a>, provides the memory attribute encodings corresponding to the possible AttrIndx values in a Long-descriptor format translation table entry for stage 1 translations.</p>
+
+      
+        <p>AttrIndx[2] indicates the MAIR register to be used:</p>
+
+      
+        <ul>
+<li>When AttrIndx[2] is 0, MAIR0 is used.
+</li><li>When AttrIndx[2] is 1, <a href="AArch32-mair1.html">MAIR1</a> is used.
+</li></ul>
+      <h2>Configuration</h2><p>AArch32 System register MAIR0 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-mair_el1.html">MAIR_EL1[31:0]</a> when EL3 is not implemented or EL3 is using AArch64.</p><p>AArch32 System register MAIR0 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-prrr.html">PRRR[31:0]</a> when EL3 is not implemented or EL3 is using AArch64.</p><p>AArch32 System register MAIR0 bits [31:0] (MAIR0_NS) are architecturally mapped to AArch32 System register <a href="AArch32-prrr.html">PRRR[31:0]</a> (PRRR_NS) when EL3 is using AArch32.</p><p>AArch32 System register MAIR0 bits [31:0] (MAIR0_S) are architecturally mapped to AArch32 System register <a href="AArch32-prrr.html">PRRR[31:0]</a> (PRRR_S) when EL3 is using AArch32.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to MAIR0 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>MAIR0 and <a href="AArch32-prrr.html">PRRR</a> are the same register, with a different view depending on the value of <a href="AArch32-ttbcr.html">TTBCR</a>.EAE:</p>
+
+      
+        <ul>
+<li>When it is set to 0, the register is as described in <a href="AArch32-prrr.html">PRRR</a>.
+</li><li>When it is set to 1, the register is as described in MAIR0.
+</li></ul>
+
+      
+        <p>When EL3 is using AArch32, write access to MAIR0(S) is disabled when the CP15SDISABLE signal is asserted HIGH.</p>
+      <h2>Attributes</h2>
+        <p>MAIR0 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><h3>When TTBCR.EAE == 1:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_0">Attr3</a></td><td class="lr" colspan="8"><a href="#fieldset_0-31_0">Attr2</a></td><td class="lr" colspan="8"><a href="#fieldset_0-31_0">Attr1</a></td><td class="lr" colspan="8"><a href="#fieldset_0-31_0">Attr0</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">Attr&lt;n&gt;, bits [8n+7:8n], for n = 3 to 0</h4><div class="field"><p>The memory attribute encoding for an AttrIndx[2:0] entry in a Long descriptor format translation table entry, where:</p>
+<ul>
+<li>AttrIndx[2:0] gives the value of &lt;n&gt; in Attr&lt;n&gt;.
+</li><li>AttrIndx[2] defines which MAIR to access. Attr7 to Attr4 are in MAIR1, and Attr3 to Attr0 are in MAIR0.
+</li></ul>
+<p>Bits [7:4] are encoded as follows:</p>
+<table class="valuetable"><thead><tr><th>Attr&lt;n&gt;[7:4]</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0000</span></td><td>Device memory. See encoding of Attr&lt;n&gt;[3:0] for the type of Device memory.</td></tr><tr><td>0b00RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Outer Write-Through Transient.</td></tr><tr><td><span class="binarynumber">0b0100</span></td><td>Normal memory, Outer Non-cacheable.</td></tr><tr><td>0b01RW, RW not <span class="binarynumber">0b00</span></td><td>Normal memory, Outer Write-Back Transient.</td></tr><tr><td>0b10RW</td><td>Normal memory, Outer Write-Through Non-transient.</td></tr><tr><td>0b11RW</td><td>Normal memory, Outer Write-Back Non-transient.</td></tr></tbody></table>
+<p>R = Outer Read-Allocate policy, W = Outer Write-Allocate policy.</p>
+<p>The meaning of bits [3:0] depends on the value of bits [7:4]:</p>
+<table class="valuetable"><thead><tr><th>Attr&lt;n&gt;[3:0]</th><th>Meaning when Attr&lt;n&gt;[7:4] is <span class="binarynumber">0b0000</span></th><th>Meaning when Attr&lt;n&gt;[7:4] is not <span class="binarynumber">0b0000</span></th></tr></thead><tbody><tr><td><span class="binarynumber">0b0000</span></td><td>Device-nGnRnE memory</td><td><span class="arm-defined-word">UNPREDICTABLE</span></td></tr><tr><td>0b00RW, RW not <span class="binarynumber">0b00</span></td><td><span class="arm-defined-word">UNPREDICTABLE</span></td><td>Normal memory, Inner Write-Through Transient</td></tr><tr><td><span class="binarynumber">0b0100</span></td><td>Device-nGnRE memory</td><td>Normal memory, Inner Non-cacheable</td></tr><tr><td>0b01RW, RW not <span class="binarynumber">0b00</span></td><td><span class="arm-defined-word">UNPREDICTABLE</span></td><td>Normal memory, Inner Write-Back Transient</td></tr><tr><td><span class="binarynumber">0b1000</span></td><td>Device-nGRE memory</td><td>Normal memory, Inner Write-Through Non-transient (RW=<span class="binarynumber">0b00</span>)</td></tr><tr><td>0b10RW, RW not <span class="binarynumber">0b00</span></td><td><span class="arm-defined-word">UNPREDICTABLE</span></td><td>Normal memory, Inner Write-Through Non-transient</td></tr><tr><td><span class="binarynumber">0b1100</span></td><td>Device-GRE memory</td><td>Normal memory, Inner Write-Back Non-transient (RW=<span class="binarynumber">0b00</span>)</td></tr><tr><td>0b11RW, RW not <span class="binarynumber">0b00</span></td><td><span class="arm-defined-word">UNPREDICTABLE</span></td><td>Normal memory, Inner Write-Back Non-transient</td></tr></tbody></table>
+<p>R = Inner Read-Allocate policy, W = Inner Write-Allocate policy.</p>
+<p>The R and W bits in some Attr&lt;n&gt; fields have the following meanings:</p>
+<table class="valuetable"><thead><tr><th>R or W</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td>No Allocate</td></tr><tr><td><span class="binarynumber">0b1</span></td><td>Allocate</td></tr></tbody></table>
+<p>When <span class="xref">FEAT_XS</span> is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing MAIR0</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1010</td><td>0b0010</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0_NS;
+        else
+            R[t] = PRRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0;
+        else
+            R[t] = PRRR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0_NS;
+        else
+            R[t] = PRRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR0;
+        else
+            R[t] = PRRR;
+elsif PSTATE.EL == EL3 then
+    if TTBCR.EAE == '1' then
+        if SCR.NS == '0' then
+            R[t] = MAIR0_S;
+        else
+            R[t] = MAIR0_NS;
+    else
+        if SCR.NS == '0' then
+            R[t] = PRRR_S;
+        else
+            R[t] = PRRR_NS;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1010</td><td>0b0010</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR0_NS = R[t];
+        else
+            PRRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR0 = R[t];
+        else
+            PRRR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR0_NS = R[t];
+        else
+            PRRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR0 = R[t];
+        else
+            PRRR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if TTBCR.EAE == '1' then
+            if SCR.NS == '0' then
+                MAIR0_S = R[t];
+            else
+                MAIR0_NS = R[t];
+        else
+            if SCR.NS == '0' then
+                PRRR_S = R[t];
+            else
+                PRRR_NS = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

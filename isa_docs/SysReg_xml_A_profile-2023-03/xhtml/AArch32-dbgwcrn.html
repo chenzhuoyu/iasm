@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>DBGWCR&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">DBGWCR&lt;n&gt;, Debug Watchpoint Control Registers, n = 0 - 15</h1><p>The DBGWCR&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Holds control information for a watchpoint. Forms watchpoint n together with value register <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>.</p>
+      <h2>Configuration</h2><p>AArch32 System register DBGWCR&lt;n&gt; bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-dbgwcrn_el1.html">DBGWCR&lt;n&gt;_EL1[31:0]</a>.</p><p>AArch32 System register DBGWCR&lt;n&gt; bits [31:0] are architecturally mapped to External register <a href="ext-dbgwcrn_el1.html">DBGWCR&lt;n&gt;_EL1[31:0]</a>.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to DBGWCR&lt;n&gt; are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If watchpoint n is not implemented then accesses to this register are <span class="arm-defined-word">UNDEFINED</span>.</p>
+      <h2>Attributes</h2>
+        <p>DBGWCR&lt;n&gt; is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="3"><a href="#fieldset_0-31_29">RES0</a></td><td class="lr" colspan="5"><a href="#fieldset_0-28_24">MASK</a></td><td class="lr" colspan="3"><a href="#fieldset_0-23_21">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">WT</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">LBN</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">SSC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13">HMC</a></td><td class="lr" colspan="8"><a href="#fieldset_0-12_5">BAS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-4_3">LSC</a></td><td class="lr" colspan="2"><a href="#fieldset_0-2_1">PAC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">E</a></td></tr></tbody></table><div class="text_before_fields">
+    <p>When the E field is zero, all the other fields in the register are ignored.</p>
+  </div><h4 id="fieldset_0-31_29">Bits [31:29]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-28_24">MASK, bits [28:24]</h4><div class="field">
+      <p>Address Mask. Only objects up to 2GB can be watched using a single mask.</p>
+    <table class="valuetable"><tr><th>MASK</th><th>Meaning</th></tr><tr><td class="bitfield">0b00000</td><td>
+          <p>No mask.</p>
+        </td></tr><tr><td class="bitfield">0b00011..0b11111</td><td>
+          <p>Number of address bits masked.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Indicates the number of masked address bits, from <span class="binarynumber">0b00011</span> masking 3 address bits (<span class="hexnumber">0x00000007</span> mask for address) to <span class="binarynumber">0b11111</span> masking 31 address bits (<span class="hexnumber">0x7FFFFFFF</span> mask for address).</p>
+<p>If programmed with a reserved value, the watchpoint behaves as if either:</p>
+<ul>
+<li>DBGWCR&lt;n&gt;.MASK has been programmed with a defined value, which might be 0 (no mask), other than for a direct read of DBGWCR&lt;n&gt;.
+</li><li>The watchpoint is disabled.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_21">Bits [23:21]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">WT, bit [20]</h4><div class="field">
+      <p>Watchpoint type. Possible values are:</p>
+    <table class="valuetable"><tr><th>WT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Unlinked data address match.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Linked data address match.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_16">LBN, bits [19:16]</h4><div class="field">
+      <p>Linked Breakpoint Number. For Linked data address watchpoints, this specifies the index of the Context-matching breakpoint linked to.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_14">SSC, bits [15:14]</h4><div class="field"><p>Security state control. Determines the Security states under which a Watchpoint debug event for watchpoint n is generated. This field must be interpreted along with the HMC and PAC fields.</p>
+<p>For more information, see <span class="xref">'Execution conditions for which a watchpoint generates Watchpoint exceptions'</span>, and <span class="xref">'Reserved DBGWCR&lt;n&gt;.{SSC, HMC, PAC} values'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_13">HMC, bit [13]</h4><div class="field"><p>Higher mode control. Determines the debug perspective for deciding when a Watchpoint debug event for watchpoint n is generated. This field must be interpreted along with the SSC and PAC fields.</p>
+<p>For more information on the operation of the SSC, HMC, and PAC fields, see <span class="xref">'Execution conditions for which a watchpoint generates Watchpoint exceptions'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_5">BAS, bits [12:5]</h4><div class="field"><p>Byte address select. Each bit of this field selects whether a byte from within the word or double-word addressed by <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a> is being watched.</p>
+<table class="valuetable"><thead><tr><th>BAS</th><th>Description</th></tr></thead><tbody><tr><td><span class="binarynumber">0bxxxxxxx1</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a></td></tr><tr><td><span class="binarynumber">0bxxxxxx1x</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+1</td></tr><tr><td><span class="binarynumber">0bxxxxx1xx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+2</td></tr><tr><td><span class="binarynumber">0bxxxx1xxx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+3</td></tr></tbody></table>
+<p>In cases where <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a> addresses a double-word:</p>
+<table class="valuetable"><thead><tr><th>BAS</th><th>Description, if <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>[2] == 0</th></tr></thead><tbody><tr><td><span class="binarynumber">0bxxx1xxxx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+4</td></tr><tr><td><span class="binarynumber">0bxx1xxxxx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+5</td></tr><tr><td><span class="binarynumber">0bx1xxxxxx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+6</td></tr><tr><td><span class="binarynumber">0b1xxxxxxx</span></td><td>Match byte at <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>+7</td></tr></tbody></table>
+<p>If <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>[2] == 1, only BAS[3:0] are used and BAS[7:4] are ignored. Arm deprecates setting <a href="AArch32-dbgwvrn.html">DBGWVR&lt;n&gt;</a>[2] == 1.</p>
+<p>The valid values for BAS are nonzero binary numbers all of whose set bits are contiguous. All other values are reserved and must not be used by software. See <span class="xref">'Reserved DBGWCR&lt;n&gt;.BAS values'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_3">LSC, bits [4:3]</h4><div class="field">
+      <p>Load/store control. This field enables watchpoint matching on the type of access being made. Possible values of this field are:</p>
+    <table class="valuetable"><tr><th>LSC</th><th>Meaning</th></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Match instructions that load from a watchpointed address.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Match instructions that store to a watchpointed address.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Match instructions that load from or store to a watchpointed address.</p>
+        </td></tr></table>
+      <p>All other values are reserved, but must behave as if the watchpoint is disabled. Software must not rely on this property as the behavior of reserved values might change in a future revision of the architecture.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_1">PAC, bits [2:1]</h4><div class="field"><p>Privilege of access control. Determines the Exception level or levels at which a Watchpoint debug event for watchpoint n is generated. This field must be interpreted along with the SSC and HMC fields.</p>
+<p>For more information on the operation of the SSC, HMC, and PAC fields, see <span class="xref">'Execution conditions for which a watchpoint generates Watchpoint exceptions'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">E, bit [0]</h4><div class="field">
+      <p>Enable watchpoint n. Possible values are:</p>
+    <table class="valuetable"><tr><th>E</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Watchpoint disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Watchpoint enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing DBGWCR&lt;n&gt;</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1110</td><td>0b000</td><td>0b0000</td><td>m[3:0]</td><td>0b111</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;3:0&gt;);
+
+if m &gt;= NUM_WATCHPOINTS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGWCR[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGWCR[m];
+elsif PSTATE.EL == EL3 then
+    if DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        R[t] = DBGWCR[m];
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1110</td><td>0b000</td><td>0b0000</td><td>m[3:0]</td><td>0b111</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;3:0&gt;);
+
+if m &gt;= NUM_WATCHPOINTS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.&lt;TDE,TDA&gt; != '00' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x05);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.&lt;TDE,TDA&gt; != '00' then
+        AArch32.TakeHypTrapException(0x05);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGWCR[m] = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x05);
+    elsif DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGWCR[m] = R[t];
+elsif PSTATE.EL == EL3 then
+    if DBGOSLSR.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR.TDA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        DBGWCR[m] = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

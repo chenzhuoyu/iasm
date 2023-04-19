@@ -1792,15 +1792,15 @@ func extract(sf, op21, N, o0, Rm, imms, Rn, Rd uint32) uint32 {
 }
 
 // float2fix: Conversion between floating-point and fixed-point
-func float2fix(sf, S, ptype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
+func float2fix(sf, S, ftype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
     if sf &^ 0x1 != 0 {
         panic("float2fix: invalid sf")
     }
     if S &^ 0x1 != 0 {
         panic("float2fix: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("float2fix: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("float2fix: invalid ftype")
     }
     if rmode &^ 0x3 != 0 {
         panic("float2fix: invalid rmode")
@@ -1820,7 +1820,7 @@ func float2fix(sf, S, ptype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
     ret := uint32(0x1e000000)
     ret |= sf << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= rmode << 19
     ret |= opcode << 16
     ret |= scale << 10
@@ -1830,15 +1830,15 @@ func float2fix(sf, S, ptype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
 }
 
 // float2int: Conversion between floating-point and integer
-func float2int(sf, S, ptype, rmode, opcode, Rn, Rd uint32) uint32 {
+func float2int(sf, S, ftype, rmode, opcode, Rn, Rd uint32) uint32 {
     if sf &^ 0x1 != 0 {
         panic("float2int: invalid sf")
     }
     if S &^ 0x1 != 0 {
         panic("float2int: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("float2int: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("float2int: invalid ftype")
     }
     if rmode &^ 0x3 != 0 {
         panic("float2int: invalid rmode")
@@ -1855,7 +1855,7 @@ func float2int(sf, S, ptype, rmode, opcode, Rn, Rd uint32) uint32 {
     ret := uint32(0x1e200000)
     ret |= sf << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= rmode << 19
     ret |= opcode << 16
     ret |= Rn << 5
@@ -1864,15 +1864,15 @@ func float2int(sf, S, ptype, rmode, opcode, Rn, Rd uint32) uint32 {
 }
 
 // floatccmp: Floating-point conditional compare
-func floatccmp(M, S, ptype, Rm, cond, Rn, op, nzcv uint32) uint32 {
+func floatccmp(M, S, ftype, Rm, cond, Rn, op, nzcv uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatccmp: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatccmp: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatccmp: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatccmp: invalid ftype")
     }
     if Rm &^ 0x1f != 0 {
         panic("floatccmp: invalid Rm")
@@ -1892,7 +1892,7 @@ func floatccmp(M, S, ptype, Rm, cond, Rn, op, nzcv uint32) uint32 {
     ret := uint32(0x1e200400)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= Rm << 16
     ret |= cond << 12
     ret |= Rn << 5
@@ -1902,15 +1902,15 @@ func floatccmp(M, S, ptype, Rm, cond, Rn, op, nzcv uint32) uint32 {
 }
 
 // floatcmp: Floating-point compare
-func floatcmp(M, S, ptype, Rm, op, Rn, opcode2 uint32) uint32 {
+func floatcmp(M, S, ftype, Rm, op, Rn, opcode2 uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatcmp: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatcmp: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatcmp: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatcmp: invalid ftype")
     }
     if Rm &^ 0x1f != 0 {
         panic("floatcmp: invalid Rm")
@@ -1927,7 +1927,7 @@ func floatcmp(M, S, ptype, Rm, op, Rn, opcode2 uint32) uint32 {
     ret := uint32(0x1e202000)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= Rm << 16
     ret |= op << 14
     ret |= Rn << 5
@@ -1936,15 +1936,15 @@ func floatcmp(M, S, ptype, Rm, op, Rn, opcode2 uint32) uint32 {
 }
 
 // floatdp1: Floating-point data-processing (1 source)
-func floatdp1(M, S, ptype, opcode, Rn, Rd uint32) uint32 {
+func floatdp1(M, S, ftype, opcode, Rn, Rd uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatdp1: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatdp1: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatdp1: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatdp1: invalid ftype")
     }
     if opcode &^ 0x3f != 0 {
         panic("floatdp1: invalid opcode")
@@ -1958,7 +1958,7 @@ func floatdp1(M, S, ptype, opcode, Rn, Rd uint32) uint32 {
     ret := uint32(0x1e204000)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= opcode << 15
     ret |= Rn << 5
     ret |= Rd
@@ -1966,15 +1966,15 @@ func floatdp1(M, S, ptype, opcode, Rn, Rd uint32) uint32 {
 }
 
 // floatdp2: Floating-point data-processing (2 source)
-func floatdp2(M, S, ptype, Rm, opcode, Rn, Rd uint32) uint32 {
+func floatdp2(M, S, ftype, Rm, opcode, Rn, Rd uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatdp2: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatdp2: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatdp2: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatdp2: invalid ftype")
     }
     if Rm &^ 0x1f != 0 {
         panic("floatdp2: invalid Rm")
@@ -1991,7 +1991,7 @@ func floatdp2(M, S, ptype, Rm, opcode, Rn, Rd uint32) uint32 {
     ret := uint32(0x1e200800)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= Rm << 16
     ret |= opcode << 12
     ret |= Rn << 5
@@ -2000,15 +2000,15 @@ func floatdp2(M, S, ptype, Rm, opcode, Rn, Rd uint32) uint32 {
 }
 
 // floatdp3: Floating-point data-processing (3 source)
-func floatdp3(M, S, ptype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
+func floatdp3(M, S, ftype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatdp3: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatdp3: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatdp3: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatdp3: invalid ftype")
     }
     if o1 &^ 0x1 != 0 {
         panic("floatdp3: invalid o1")
@@ -2031,7 +2031,7 @@ func floatdp3(M, S, ptype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
     ret := uint32(0x1f000000)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= o1 << 21
     ret |= Rm << 16
     ret |= o0 << 15
@@ -2042,15 +2042,15 @@ func floatdp3(M, S, ptype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
 }
 
 // floatimm: Floating-point immediate
-func floatimm(M, S, ptype, imm8, imm5, Rd uint32) uint32 {
+func floatimm(M, S, ftype, imm8, imm5, Rd uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatimm: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatimm: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatimm: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatimm: invalid ftype")
     }
     if imm8 &^ 0xff != 0 {
         panic("floatimm: invalid imm8")
@@ -2064,7 +2064,7 @@ func floatimm(M, S, ptype, imm8, imm5, Rd uint32) uint32 {
     ret := uint32(0x1e201000)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= imm8 << 13
     ret |= imm5 << 5
     ret |= Rd
@@ -2072,15 +2072,15 @@ func floatimm(M, S, ptype, imm8, imm5, Rd uint32) uint32 {
 }
 
 // floatsel: Floating-point conditional select
-func floatsel(M, S, ptype, Rm, cond, Rn, Rd uint32) uint32 {
+func floatsel(M, S, ftype, Rm, cond, Rn, Rd uint32) uint32 {
     if M &^ 0x1 != 0 {
         panic("floatsel: invalid M")
     }
     if S &^ 0x1 != 0 {
         panic("floatsel: invalid S")
     }
-    if ptype &^ 0x3 != 0 {
-        panic("floatsel: invalid ptype")
+    if ftype &^ 0x3 != 0 {
+        panic("floatsel: invalid ftype")
     }
     if Rm &^ 0x1f != 0 {
         panic("floatsel: invalid Rm")
@@ -2097,7 +2097,7 @@ func floatsel(M, S, ptype, Rm, cond, Rn, Rd uint32) uint32 {
     ret := uint32(0x1e200c00)
     ret |= M << 31
     ret |= S << 29
-    ret |= ptype << 22
+    ret |= ftype << 22
     ret |= Rm << 16
     ret |= cond << 12
     ret |= Rn << 5

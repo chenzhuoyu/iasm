@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMIDR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMIDR_EL1, MPAM ID Register (EL1)</h1><p>The MPAMIDR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Indicates the presence and maximum PARTID and PMG values supported in the implementation. It also indicates whether the implementation supports MPAM virtualization.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_MPAM is implemented. Otherwise, direct accesses to MPAMIDR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>MPAMIDR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="2"><a href="#fieldset_0-63_62">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-61_61">HAS_SDEFLT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-60_60">HAS_FORCE_NS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-59_59">SP4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-58_58">HAS_TIDR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-57_57">HAS_ALTSP</a></td><td class="lr" colspan="17"><a href="#fieldset_0-56_40">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_0-39_32">PMG_MAX</a></td></tr><tr class="firstrow"><td class="lr" colspan="11"><a href="#fieldset_0-31_21">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-20_18-1">VPMR_MAX</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">HAS_HCR</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">RES0</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">PARTID_MAX</a></td></tr></tbody></table><div class="text_before_fields">
+    <p>MPAMIDR_EL1 indicates the MPAM implementation parameters of the PE.</p>
+  </div><h4 id="fieldset_0-63_62">Bits [63:62]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-61_61">HAS_SDEFLT, bit [61]</h4><div class="field">
+      <p>HAS_SDEFLT indicates support for <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.SDEFLT bit. Defined values are:</p>
+    <table class="valuetable"><tr><th>HAS_SDEFLT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The SDEFLT bit is not implemented in <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The SDEFLT bit is implemented in <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.</p>
+        </td></tr></table>
+      <p>When <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.SDEFLT == 1, accesses from the Secure Execution state use the default PARTID, PARTID == 0.</p>
+    </div><h4 id="fieldset_0-60_60">HAS_FORCE_NS, bit [60]</h4><div class="field">
+      <p>HAS_FORCE_NS indicates support for <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.FORCE_NS bit. Defined values are:</p>
+    <table class="valuetable"><tr><th>HAS_FORCE_NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The FORCE_NS bit is not implemented in <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The FORCE_NS bit is implemented in <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.</p>
+        </td></tr></table>
+      <p>When <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a>.FORCE_NS == 1, accesses from the Secure Execution state have MPAM_NS == 1.</p>
+    </div><h4 id="fieldset_0-59_59">SP4, bit [59]</h4><div class="field">
+      <p>Supports 4 MPAM PARTID spaces.</p>
+    <table class="valuetable"><tr><th>SP4</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>MPAM supports 2 PARTID spaces.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>MPAM supports 4 PARTID spaces.</p>
+        </td></tr></table></div><h4 id="fieldset_0-58_58">HAS_TIDR, bit [58]</h4><div class="field">
+      <p>HAS_TIDR indicates support for <a href="AArch64-mpam2_el2.html">MPAM2_EL2</a>.TIDR bit. Defined values are:</p>
+    <table class="valuetable"><tr><th>HAS_TIDR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The TIDR bit is not implemented in <a href="AArch64-mpam2_el2.html">MPAM2_EL2</a>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The TIDR bit is implemented in <a href="AArch64-mpam2_el2.html">MPAM2_EL2</a>.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>Arm recommends that when the MPAM version is MPAM v0.1 or MPAM v1.1, MPAMIDR_EL1.HAS_TIDR is 1 and that the MPAM2_EL2.TIDR field is implemented.</p>
+      </div>
+    </div><h4 id="fieldset_0-57_57">HAS_ALTSP, bit [57]</h4><div class="field">
+      <p>HAS_ALTSP indicates support for alternative PARTID spaces.</p>
+    <table class="valuetable"><tr><th>HAS_ALTSP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Alternative PARTID spaces are not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Alternative PARTID spaces are implemented with control bits in <a href="AArch64-mpam3_el3.html">MPAM3_EL3</a> and <a href="AArch64-mpam2_el2.html">MPAM2_EL2</a>.</p>
+        </td></tr></table></div><h4 id="fieldset_0-56_40">Bits [56:40]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-39_32">PMG_MAX, bits [39:32]</h4><div class="field">
+      <p>The largest value of PMG that the implementation can generate. The PMG_I and PMG_D fields of every MPAMn_ELx must implement at least enough bits to represent PMG_MAX.</p>
+    </div><h4 id="fieldset_0-31_21">Bits [31:21]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_18-1">VPMR_MAX, bits [20:18]<span class="condition"><br/>When MPAMIDR_EL1.HAS_HCR == 1:
+                        </span></h4><div class="field">
+      <p>Indicates the maximum register index n for the MPAMVPM&lt;n&gt;_EL2 registers.</p>
+    </div><h4 id="fieldset_0-20_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, RAZ.</p>
+    </div><h4 id="fieldset_0-17_17">HAS_HCR, bit [17]</h4><div class="field">
+      <p>HAS_HCR indicates that the PE implementation supports MPAM virtualization, including <a href="AArch64-mpamhcr_el2.html">MPAMHCR_EL2</a>, <a href="AArch64-mpamvpmv_el2.html">MPAMVPMV_EL2</a>, and MPAMVPM&lt;n&gt;_EL2 with n in the range 0 to VPMR_MAX. Must be 0 if EL2 is not implemented in either Security state.</p>
+    <table class="valuetable"><tr><th>HAS_HCR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>MPAM virtualization is not supported.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>MPAM virtualization is supported.</p>
+        </td></tr></table></div><h4 id="fieldset_0-16_16">Bit [16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-15_0">PARTID_MAX, bits [15:0]</h4><div class="field">
+      <p>The largest value of PARTID that the implementation can generate. The PARTID_I and PARTID_D fields of every MPAMn_ELx must implement at least enough bits to represent PARTID_MAX.</p>
+    </div><div class="access_mechanisms"><h2>Accessing MPAMIDR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MPAMIDR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1010</td><td>0b0100</td><td>0b100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif EL2Enabled() &amp;&amp; MPAMIDR_EL1.HAS_HCR == '1' &amp;&amp; MPAMHCR_EL2.TRAP_MPAMIDR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MPAMIDR_EL1.HAS_TIDR == '1' &amp;&amp; MPAM2_EL2.TIDR == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = MPAMIDR_EL1;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; MPAM3_EL3.TRAPLOWER == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MPAMIDR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MPAMIDR_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

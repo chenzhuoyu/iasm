@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CNTV_TVAL</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CNTV_TVAL, Counter-timer Virtual Timer TimerValue register</h1><p>The CNTV_TVAL characteristics are:</p><h2>Purpose</h2>
+        <p>Holds the timer value for the virtual timer.</p>
+      <h2>Configuration</h2><p>AArch32 System register CNTV_TVAL bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-cntv_tval_el0.html">CNTV_TVAL_EL0[31:0]</a>.</p><p>This register is present only when AArch32 is supported. Otherwise, direct accesses to CNTV_TVAL are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>CNTV_TVAL is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-31_0">TimerValue</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">TimerValue, bits [31:0]</h4><div class="field"><p>The TimerValue view of the virtual timer.</p>
+<p>On a read of this register:</p>
+<ul>
+<li>If <a href="AArch32-cntv_ctl.html">CNTV_CTL</a>.ENABLE is 0, the value returned is <span class="arm-defined-word">UNKNOWN</span>.
+</li><li>If <a href="AArch32-cntv_ctl.html">CNTV_CTL</a>.ENABLE is 1, the value returned is (<a href="AArch32-cntv_cval.html">CNTV_CVAL</a> - <a href="AArch32-cntvct.html">CNTVCT</a>).
+</li></ul>
+<p>On a write of this register, <a href="AArch32-cntv_cval.html">CNTV_CVAL</a> is set to (<a href="AArch32-cntvct.html">CNTVCT</a> + TimerValue), where TimerValue is treated as a signed 32-bit integer.</p>
+<p>When <a href="AArch32-cntp_ctl.html">CNTP_CTL</a>.ENABLE is 1, the timer condition is met when (<a href="AArch32-cntvct.html">CNTVCT</a> - <a href="AArch32-cntp_cval.html">CNTP_CVAL</a>) is greater than or equal to zero. This means that TimerValue acts like a 32-bit downcounter timer. When the timer condition is met:</p>
+<ul>
+<li><a href="AArch32-cntv_ctl.html">CNTV_CTL</a>.ISTATUS is set to 1.
+</li><li>If <a href="AArch32-cntv_ctl.html">CNTV_CTL</a>.IMASK is 0, an interrupt is generated.
+</li></ul>
+<p>When <a href="AArch32-cntv_ctl.html">CNTV_CTL</a>.ENABLE is 0, the timer condition is not met, but <a href="AArch32-cntvct.html">CNTVCT</a> continues to count, so the TimerValue view appears to continue to count down.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing CNTV_TVAL</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1110</td><td>0b0011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CNTKCTL_EL1.EL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; CNTKCTL.PL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CNTHCTL_EL2.EL0VTEN == '0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '0' &amp;&amp; IsFeatureImplemented(FEAT_SEL2) then
+        if CNTHVS_CTL_EL2.ENABLE == '0' then
+            R[t] = bits(32) UNKNOWN;
+        else
+            R[t] = (CNTHVS_CVAL_EL2 - PhysicalCountInt())&lt;31:0&gt;;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '1' then
+        if CNTHV_CTL_EL2.ENABLE == '0' then
+            R[t] = bits(32) UNKNOWN;
+        else
+            R[t] = (CNTHV_CVAL_EL2 - PhysicalCountInt())&lt;31:0&gt;;
+    else
+        if CNTV_CTL.ENABLE == '0' then
+            R[t] = bits(32) UNKNOWN;
+        elsif HaveEL(EL2) &amp;&amp; !ELUsingAArch32(EL2) then
+            R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF_EL2))&lt;31:0&gt;;
+        elsif HaveEL(EL2) &amp;&amp; ELUsingAArch32(EL2) then
+            R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF))&lt;31:0&gt;;
+        else
+            R[t] = (CNTV_CVAL - PhysicalCountInt())&lt;31:0&gt;;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    else
+        if CNTV_CTL.ENABLE == '0' then
+            R[t] = bits(32) UNKNOWN;
+        elsif HaveEL(EL2) &amp;&amp; !ELUsingAArch32(EL2) then
+            R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF_EL2))&lt;31:0&gt;;
+        elsif HaveEL(EL2) &amp;&amp; ELUsingAArch32(EL2) then
+            R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF))&lt;31:0&gt;;
+        else
+            R[t] = (CNTV_CVAL - PhysicalCountInt())&lt;31:0&gt;;
+elsif PSTATE.EL == EL2 then
+    if CNTV_CTL.ENABLE == '0' then
+        R[t] = bits(32) UNKNOWN;
+    else
+        R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF))&lt;31:0&gt;;
+elsif PSTATE.EL == EL3 then
+    if CNTV_CTL.ENABLE == '0' then
+        R[t] = bits(32) UNKNOWN;
+    elsif HaveEL(EL2) then
+        R[t] = (CNTV_CVAL - (PhysicalCountInt() - CNTVOFF))&lt;31:0&gt;;
+    else
+        R[t] = (CNTV_CVAL - PhysicalCountInt())&lt;31:0&gt;;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1110</td><td>0b0011</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if !ELUsingAArch32(EL1) &amp;&amp; !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CNTKCTL_EL1.EL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; CNTKCTL.PL0VTEN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CNTHCTL_EL2.EL0VTEN == '0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '0' &amp;&amp; IsFeatureImplemented(FEAT_SEL2) then
+        CNTHVS_CVAL_EL2 = SignExtend(R[t], 64) + PhysicalCountInt();
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCR_EL3.NS == '1' then
+        CNTHV_CVAL_EL2 = SignExtend(R[t], 64) + PhysicalCountInt();
+    else
+        if HaveEL(EL2) &amp;&amp; !ELUsingAArch32(EL2) then
+            CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF_EL2;
+        elsif HaveEL(EL2) &amp;&amp; ELUsingAArch32(EL2) then
+            CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF;
+        else
+            CNTV_CVAL = SignExtend(R[t], 64) + PhysicalCountInt();
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CNTHCTL_EL2.EL1TVT == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    else
+        if HaveEL(EL2) &amp;&amp; !ELUsingAArch32(EL2) then
+            CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF_EL2;
+        elsif HaveEL(EL2) &amp;&amp; ELUsingAArch32(EL2) then
+            CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF;
+        else
+            CNTV_CVAL = SignExtend(R[t], 64) + PhysicalCountInt();
+elsif PSTATE.EL == EL2 then
+    CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF;
+elsif PSTATE.EL == EL3 then
+    if HaveEL(EL2) then
+        CNTV_CVAL = (SignExtend(R[t], 64) + PhysicalCountInt()) - CNTVOFF;
+    else
+        CNTV_CVAL = SignExtend(R[t], 64) + PhysicalCountInt();
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:05; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

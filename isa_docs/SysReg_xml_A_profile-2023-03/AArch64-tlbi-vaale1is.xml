@@ -1,0 +1,325 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="False" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TLBI VAALE1IS, TLBI VAALE1ISNXS</reg_short_name>
+        
+        <reg_long_name>TLB Invalidate by VA, All ASID, Last Level, EL1, Inner Shareable</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Invalidates cached copies of translation table entries from TLBs that meet all the following requirements:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>
+<para>The entry is a 64-bit stage 1 translation table entry, from the final level of the translation table walk.</para>
+<para>Or if FEAT_D128 is implemented, and the entry is a 128-bit stage 1 translation table entry, from the final level of the translation table walk, if TTL[3:2] is <binarynumber>0b00</binarynumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>When EL2 is implemented and enabled in the current Security state:</para>
+<list type="unordered">
+<listitem><content>If <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} is not {1, 1}, the entry would be used with the current VMID and would be required to translate the specified VA using the EL1&amp;0 translation regime for the Security state.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.{E2H, TGE} is {1, 1}, the entry would be required to translate the specified VA using the EL2&amp;0 translation regime for the Security state.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>When EL2 is not implemented or is disabled in the current Security state, the entry would be required to translate the specified VA using the EL1&amp;0 translation regime for the Security state.</para>
+</content>
+</listitem></list>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The Security state is indicated by the value of 
+<register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.NS if <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is not implemented, or <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.{NSE, NS} if <xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The invalidation applies to all PEs in the same Inner Shareable shareability domain as the PE that executes this System instruction.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <note><para>From Armv8.4, when 
+a TLB maintenance instruction is generated to the Secure EL1&amp;0 translation regime and is defined to pass a VMID argument, or would be defined to pass a VMID argument if <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2==1, then:</para><list type="unordered"><listitem><content>A PE with <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2==1 is not architecturally required to invalidate any entries in the Secure EL1&amp;0 translation of a PE in the same required shareability domain with <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2==0.</content></listitem><listitem><content>A PE with <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2==0 is not architecturally required to invalidate any entries in the Secure EL1&amp;0 translation of a PE in the same required shareability domain with <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.EEL2==1.</content></listitem><listitem><content>A PE is architecturally required to invalidate all relevant entries in the Secure EL1&amp;0 translation of a System MMU in the same required shareability domain with a VMID of 0.</content></listitem></list></note>
+      </purpose_text>
+      <purpose_text>
+        <note><para>For the EL1&amp;0 and EL2&amp;0 translation regimes, the invalidation applies to both global entries and non-global entries with any ASID.</para></note>
+      </purpose_text>
+      <purpose_text>
+        <para>If <xref browsertext="FEAT_XS" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.XS"/> is implemented, the nXS variant of this System instruction is defined.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>Both variants perform the same invalidation, but the TLBI System instruction without the nXS qualifier waits for all memory accesses using in-scope old translation information to complete before it is considered complete.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The TLBI System instruction with the nXS qualifier is considered complete when the subset of these memory accesses with XS attribute set to 0 are complete.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>TLB maintenance instructions</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TLBI VAALE1IS, TLBI VAALE1ISNXS is a 64-bit System instruction.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>63:48</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-47_44-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TTL</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Translation Table Level. Indicates the level of the translation table walk that holds the leaf entry for the address being invalidated.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If an incorrect value of the TTL field is specified for the entry being invalidated by the instruction, then no entries are required by the architecture to be invalidated from the TLB.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00xx</field_value>
+        <field_value_description>
+          <para>No information supplied as to the translation table level. Hardware must assume that the entry can be from any level. In this case, TTL&lt;1:0&gt; is <arm-defined-word>RES0</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01xx</field_value>
+        <field_value_description><para>The entry comes from a 4KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, level 0. Otherwise, treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : Level 1.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10xx</field_value>
+        <field_value_description><para>The entry comes from a 16KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : Reserved. Treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : If <xref browsertext="FEAT_LPA2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.LPA2"/> is implemented, level 1. Otherwise, treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11xx</field_value>
+        <field_value_description><para>The entry comes from a 64KB translation granule. The level of walk for the leaf level <binarynumber>0bxx</binarynumber> is encoded as:</para>
+<para><binarynumber>0b00</binarynumber> : Reserved. Treat as if TTL&lt;3:2&gt; is <binarynumber>0b00</binarynumber>.</para>
+<para><binarynumber>0b01</binarynumber> : Level 1.</para>
+<para><binarynumber>0b10</binarynumber> : Level 2.</para>
+<para><binarynumber>0b11</binarynumber> : Level 3.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_TTL is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-47_44-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-43_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VA[55:12]</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>43:0</rel_range>
+    <field_description order="before"><para>Bits[55:12] of the virtual address to match. Any appropriate TLB entries that match the VA will be affected by this System instruction, regardless of the ASID.</para>
+<para>If the TLB maintenance instructions are targeting a translation regime that is using AArch32, and so has a VA of only 32 bits, then the software must treat bits[55:32] as <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>The treatment of the low-order bits of this field depends on the translation granule size, as follows:</para>
+<list type="unordered">
+<listitem><content>
+<para>Where a 4KB translation granule is being used, all bits are valid and used for the invalidation.</para>
+</content>
+</listitem><listitem><content>
+<para>Where a 16KB translation granule is being used, bits [1:0] of this field are <arm-defined-word>RES0</arm-defined-word> and ignored when the instruction is executed, because VA[13:12] have no effect on the operation of the instruction.</para>
+</content>
+</listitem><listitem><content>
+<para>Where a 64KB translation granule is being used, bits [3:0] of this field are <arm-defined-word>RES0</arm-defined-word> and ignored when the instruction is executed, because VA[15:12] have no effect on the operation of the instruction.</para>
+</content>
+</listitem></list></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_48" msb="63" lsb="48"/>
+  <fieldat id="fieldset_0-47_44-1" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_0" msb="43" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="TLBI VAALE1IS" type="SystemAccessor">
+            <encoding>
+            <access_instruction>TLBI VAALE1IS{, &lt;Xt&gt;}</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1000"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b111"/>
+            </encoding>
+            <access_permission>
+                <ps name="TLBI" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TTLB == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TTLBIS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.TLBIVAALE1IS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        if IsFeatureImplemented(FEAT_XS) &amp;&amp; IsFeatureImplemented(FEAT_HCX) &amp;&amp; IsHCRXEL2Enabled() &amp;&amp; HCRX_EL2.FnXS == '1' then
+            AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+        else
+            AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_AllAttr, X[t, 64]);
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.&lt;E2H,TGE&gt; == '11' then
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL2), Regime_EL20, VMID_NONE, Shareability_ISH, TLBILevel_Last, TLBI_AllAttr, X[t, 64]);
+    else
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_AllAttr, X[t, 64]);
+elsif PSTATE.EL == EL3 then
+    if HCR_EL2.&lt;E2H,TGE&gt; == '11' then
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL2), Regime_EL20, VMID_NONE, Shareability_ISH, TLBILevel_Last, TLBI_AllAttr, X[t, 64]);
+    else
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_AllAttr, X[t, 64]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="TLBI VAALE1ISNXS" type="SystemAccessor">
+            <encoding>
+            <access_instruction>TLBI VAALE1ISNXS{, &lt;Xt&gt;}</access_instruction>
+                
+                <enc n="op0" v="0b01"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b0011"/>
+                
+                <enc n="op2" v="0b111"/>
+            </encoding>
+            <access_permission>
+                <ps name="TLBI" sections="1" secttype="access_permission">
+                <pstext>
+if !IsFeatureImplemented(FEAT_XS) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TTLB == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.TTLBIS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; IsFeatureImplemented(FEAT_HCX) &amp;&amp; (!IsHCRXEL2Enabled() || HCRX_EL2.FGTnXS == '0') &amp;&amp; HFGITR_EL2.TLBIVAALE1IS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+elsif PSTATE.EL == EL2 then
+    if HCR_EL2.&lt;E2H,TGE&gt; == '11' then
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL2), Regime_EL20, VMID_NONE, Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+    else
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+elsif PSTATE.EL == EL3 then
+    if HCR_EL2.&lt;E2H,TGE&gt; == '11' then
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL2), Regime_EL20, VMID_NONE, Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+    else
+        AArch64.TLBI_VAA(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_ISH, TLBILevel_Last, TLBI_ExcludeXS, X[t, 64]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

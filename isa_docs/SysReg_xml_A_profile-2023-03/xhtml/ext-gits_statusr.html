@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GITS_STATUSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GITS_STATUSR, ITS Error Reporting Status Register</h1><p>The GITS_STATUSR characteristics are:</p><h2>Purpose</h2>
+        <p>Provides software with a mechanism to detect:</p>
+
+      
+        <ul>
+<li>Accesses to reserved locations.
+</li><li>Writes to read-only locations.
+</li><li>Reads of write-only locations.
+</li><li>Unmapped MSIs.
+</li></ul>
+      <h2>Configuration</h2><p>There are no configuration notes.</p><h2>Attributes</h2>
+        <p>GITS_STATUSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="22"><a href="#fieldset_0-31_10">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-9_6">Syndrome</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">Overflow</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">UMSI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">WROD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">RWOD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">WRD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">RRD</a></td></tr></tbody></table><h4 id="fieldset_0-31_10">Bits [31:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_6">Syndrome, bits [9:6]</h4><div class="field">
+      <p>Syndrome for the MSI that set GITS_STATUSR.UMSI to 1.</p>
+    <table class="valuetable"><tr><th>Syndrome</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Unknown reason.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>DeviceID out of range.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>DeviceID unmapped.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>EventID out of range.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>EventID unmapped.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Collection unmapped.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>vPEID unmapped.</p>
+        </td></tr></table><p>An implementation might not support reporting all syndromes, and might report <span class="binarynumber">0b0000</span> for any cause.</p>
+<p>This field is <span class="arm-defined-word">UNKNOWN</span> when GITS_STATUSR.UMSI is 0.</p></div><h4 id="fieldset_0-5_5">Overflow, bit [5]</h4><div class="field">
+      <p>Reports whether an unmapped MSI has been received while GITS_STATUSR.UMSI is 1.</p>
+    <table class="valuetable"><tr><th>Overflow</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No unmapped MSIs have been received since GITS_STATUSR.UMSI set to 1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>At least one unmapped MSIs have been received since GITS_STATUSR.UMSI set to 1.</p>
+        </td></tr></table><p>A software write of 1 to the bit clears it. A write of any other value is ignored.</p>
+<p>If <a href="ext-gits_typer.html">GITS_TYPER</a>.UMSI is 0, this field is <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-4_4">UMSI, bit [4]</h4><div class="field"><p>Reports whether an unmapped MSI has been received</p>
+<p>An unmapped MSI is defined as an MSI arriving at <a href="ext-gits_translater.html">GITS_TRANSLATER</a> for which there is insufficient mapping information for it to be forwarded to a Redistributor.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether an INT command can be reported as an unmapped MSI.</p><table class="valuetable"><tr><th>UMSI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>No unmapped MSIs have been received.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Unmapped MSI received.</p>
+        </td></tr></table><p>A software write of 1 to the bit clears it. A write of any other value is ignored.</p>
+<p>If <a href="ext-gits_typer.html">GITS_TYPER</a>.UMSI is 0, this field is <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-3_3">WROD, bit [3]</h4><div class="field">
+      <p>Write to an RO location.</p>
+    <table class="valuetable"><tr><th>WROD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Normal operation.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A write to an RO location has been detected.</p>
+        </td></tr></table>
+      <p>When a violation is detected, software must write 1 to this register to reset it.</p>
+    </div><h4 id="fieldset_0-2_2">RWOD, bit [2]</h4><div class="field">
+      <p>Read of a WO location.</p>
+    <table class="valuetable"><tr><th>RWOD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Normal operation.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A read of a WO location has been detected.</p>
+        </td></tr></table>
+      <p>When a violation is detected, software must write 1 to this register to reset it.</p>
+    </div><h4 id="fieldset_0-1_1">WRD, bit [1]</h4><div class="field">
+      <p>Write to a reserved location.</p>
+    <table class="valuetable"><tr><th>WRD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Normal operation.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A write to a reserved location has been detected.</p>
+        </td></tr></table>
+      <p>When a violation is detected, software must write 1 to this register to reset it.</p>
+    </div><h4 id="fieldset_0-0_0">RRD, bit [0]</h4><div class="field">
+      <p>Read of a reserved location.</p>
+    <table class="valuetable"><tr><th>RRD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Normal operation.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>A read of a reserved location has been detected.</p>
+        </td></tr></table>
+      <p>When a violation is detected, software must write 1 to this register to reset it.</p>
+    </div><h2>Accessing GITS_STATUSR</h2>
+        <p>This is an optional register. If the register is not implemented, the location is RAZ/WI.</p>
+      <h4>GITS_STATUSR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC ITS control</td><td><span class="hexnumber">0x0040</span></td><td>GITS_STATUSR</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

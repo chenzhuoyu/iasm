@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CPTR_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CPTR_EL3, Architectural Feature Trap Register (EL3)</h1><p>The CPTR_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls trapping to EL3 of accesses to <a href="AArch32-cpacr.html">CPACR</a>, <a href="AArch64-cpacr_el1.html">CPACR_EL1</a>, <a href="AArch32-hcptr.html">HCPTR</a>, <a href="AArch64-cptr_el2.html">CPTR_EL2</a>, trace, Activity Monitor, 
+SME, Streaming SVE, 
+SVE, 
+and Advanced SIMD and floating-point functionality.</p>
+      <h2>Configuration</h2><p>This register is present only when EL3 is implemented. Otherwise, direct accesses to CPTR_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>CPTR_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">TCPAC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30-1">TAM</a></td><td class="lr" colspan="9"><a href="#fieldset_0-29_21">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">TTA</a></td><td class="lr" colspan="7"><a href="#fieldset_0-19_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">ESM</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">TFP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">EZ</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">TCPAC, bit [31]</h4><div class="field"><p>Traps all of the following to EL3, from both Execution states and any Security state.</p>
+<ul>
+<li>EL2 accesses to <a href="AArch64-cptr_el2.html">CPTR_EL2</a>, reported using ESR_ELx.EC value <span class="hexnumber">0x18</span>, or <a href="AArch32-hcptr.html">HCPTR</a>, reported using ESR_ELx.EC value <span class="hexnumber">0x03</span>.
+</li><li>EL2 and EL1 accesses to <a href="AArch64-cpacr_el1.html">CPACR_EL1</a> reported using ESR_ELx.EC value <span class="hexnumber">0x18</span>, or <a href="AArch32-cpacr.html">CPACR</a> reported using ESR_ELx.EC value <span class="hexnumber">0x03</span>.
+</li></ul>
+<p>When CPTR_EL3.TCPAC is:</p><table class="valuetable"><tr><th>TCPAC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL2 accesses to the <a href="AArch64-cptr_el2.html">CPTR_EL2</a> or <a href="AArch32-hcptr.html">HCPTR</a>, and EL2 and EL1 accesses to the <a href="AArch64-cpacr_el1.html">CPACR_EL1</a> or <a href="AArch32-cpacr.html">CPACR</a>, are trapped to EL3, unless they are trapped by <a href="AArch64-cptr_el2.html">CPTR_EL2</a>.TCPAC.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30-1">TAM, bit [30]<span class="condition"><br/>When FEAT_AMUv1 is implemented:
+                        </span></h4><div class="field"><p>Trap Activity Monitor access. Traps EL2, EL1, and EL0 accesses to all Activity Monitor registers to EL3.</p>
+<p>Accesses to the Activity Monitors registers are trapped as follows:</p>
+<ul>
+<li>
+<p>In AArch64 state, the following registers are trapped to EL3 and reported with ESR_ELx.EC value <span class="hexnumber">0x18</span>:</p>
+<ul>
+<li><a href="AArch64-amuserenr_el0.html">AMUSERENR_EL0</a>, <a href="AArch64-amcfgr_el0.html">AMCFGR_EL0</a>, <a href="AArch64-amcgcr_el0.html">AMCGCR_EL0</a>, <a href="AArch64-amcntenclr0_el0.html">AMCNTENCLR0_EL0</a>, <a href="AArch64-amcntenclr1_el0.html">AMCNTENCLR1_EL0</a>, <a href="AArch64-amcntenset0_el0.html">AMCNTENSET0_EL0</a>, <a href="AArch64-amcntenset1_el0.html">AMCNTENSET1_EL0</a>, <a href="AArch64-amcr_el0.html">AMCR_EL0</a>, <a href="AArch64-amevcntr0n_el0.html">AMEVCNTR0&lt;n&gt;_EL0</a>, <a href="AArch64-amevcntr1n_el0.html">AMEVCNTR1&lt;n&gt;_EL0</a>, <a href="AArch64-amevtyper0n_el0.html">AMEVTYPER0&lt;n&gt;_EL0</a>, and <a href="AArch64-amevtyper1n_el0.html">AMEVTYPER1&lt;n&gt;_EL0</a>.
+</li></ul>
+
+</li><li>
+<p>In AArch32 state, accesses with MRC or MCR to the following registers reported with ESR_ELx.EC value <span class="hexnumber">0x03</span>:</p>
+<ul>
+<li><a href="AArch32-amuserenr.html">AMUSERENR</a>, <a href="AArch32-amcfgr.html">AMCFGR</a>, <a href="AArch32-amcgcr.html">AMCGCR</a>, <a href="AArch32-amcntenclr0.html">AMCNTENCLR0</a>, <a href="AArch32-amcntenclr1.html">AMCNTENCLR1</a>, <a href="AArch32-amcntenset0.html">AMCNTENSET0</a>, <a href="AArch32-amcntenset1.html">AMCNTENSET1</a>, <a href="AArch32-amcr.html">AMCR</a>, <a href="AArch32-amevtyper0n.html">AMEVTYPER0&lt;n&gt;</a>, and <a href="AArch32-amevtyper1n.html">AMEVTYPER1&lt;n&gt;</a>.
+</li></ul>
+
+</li><li>
+<p>In AArch32 state, accesses with MRRC or MCRR to the following registers, reported with ESR_ELx.EC value <span class="hexnumber">0x04</span>:</p>
+<ul>
+<li><a href="AArch32-amevcntr0n.html">AMEVCNTR0&lt;n&gt;</a>, <a href="AArch32-amevcntr1n.html">AMEVCNTR1&lt;n&gt;</a>.
+</li></ul>
+
+</li></ul><table class="valuetable"><tr><th>TAM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Accesses from EL2, EL1, and EL0 to Activity Monitor registers are not trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Accesses from EL2, EL1, and EL0 to Activity Monitor registers are trapped to EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_21">Bits [29:21]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">TTA, bit [20]</h4><div class="field"><p>Traps System register accesses. Accesses to the trace registers, from all Exception levels, any Security state, and both Execution states are trapped to EL3 as follows:</p>
+<ul>
+<li>
+<p>In AArch64 state, Trace registers with op0=2, op1=1, and CRn&lt;<span class="binarynumber">0b1000</span> are trapped to EL3 and reported using EC syndrome value <span class="hexnumber">0x18</span>.</p>
+
+</li><li>
+<p>In AArch32 state, accesses using MCR or MRC to the Trace registers with cpnum=14, opc1=1, and CRn&lt;<span class="binarynumber">0b1000</span> are reported using EC syndrome value <span class="hexnumber">0x05</span>.</p>
+
+</li></ul><table class="valuetable"><tr><th>TTA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Any System register access to the trace registers is trapped to EL3, unless it is trapped by <a href="AArch32-cpacr.html">CPACR</a>.TRCDIS, <a href="AArch64-cpacr_el1.html">CPACR_EL1</a>.TTA, or <a href="AArch64-cptr_el2.html">CPTR_EL2</a>.TTA.</p>
+        </td></tr></table><p>If System register access to trace functionality is not supported, this bit is <span class="arm-defined-word">RES0</span>.</p>
+<div class="note"><span class="note-header">Note</span><p>The ETMv4 architecture and ETE do not permit EL0 to access the trace registers. If the trace unit implements FEAT_ETMv4 or FEAT_ETE, EL0 accesses to the trace registers are <span class="arm-defined-word">UNDEFINED</span>, and any resulting exception is higher priority than this trap exception.</p><p>EL3 does not provide traps on trace register accesses through the Memory-mapped interface.</p></div><p>System register accesses to the trace registers can have side-effects. When a System register access is trapped, no side-effects occur before the exception is taken, see <span class="xref">'Configurable instruction controls'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_13">Bits [19:13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">ESM, bit [12]<span class="condition"><br/>When FEAT_SME is implemented:
+                        </span></h4><div class="field"><p>Traps execution of SME instructions, SVE instructions when FEAT_SVE is not implemented or the PE is in Streaming SVE mode, and instructions that directly access the <a href="AArch64-smcr_el1.html">SMCR_EL1</a>, <a href="AArch64-smcr_el2.html">SMCR_EL2</a>, <a href="AArch64-smcr_el3.html">SMCR_EL3</a>, <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>, <a href="AArch64-smprimap_el2.html">SMPRIMAP_EL2</a>, or <a href="AArch64-svcr.html">SVCR</a> System registers, from all Exception levels and any Security state, to EL3.</p>
+<p>When instructions that directly access the <a href="AArch64-svcr.html">SVCR</a> System register are trapped with reference to this control, the <span class="instruction">MSR SVCRSM</span>, <span class="instruction">MSR SVCRZA</span>, and <span class="instruction">MSR SVCRSMZA</span> instructions are also trapped.</p>
+<p>When direct accesses to <a href="AArch64-smpri_el1.html">SMPRI_EL1</a> and <a href="AArch64-smprimap_el2.html">SMPRIMAP_EL2</a> are trapped, the exception is reported using an <a href="AArch64-esr_el3.html">ESR_EL3</a>.EC value of <span class="hexnumber">0x18</span>. Otherwise, the exception is reported using an <a href="AArch64-esr_el3.html">ESR_EL3</a>.EC value of <span class="hexnumber">0x1D</span>, with an ISS code of <span class="hexnumber">0x0000000</span>.</p>
+<p>This field does not affect whether Streaming SVE or SME register values are valid.</p>
+<p>A trap taken as a result of CPTR_EL3.ESM has precedence over a trap taken as a result of CPTR_EL3.TFP.</p><table class="valuetable"><tr><th>ESM</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control causes execution of these instructions at all Exception levels to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause execution of any instructions to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11">Bit [11]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10">TFP, bit [10]</h4><div class="field"><p>Traps execution of instructions which access the Advanced SIMD and floating-point functionality, from all Exception levels, any Security state, and both Execution states, to EL3.</p>
+<p>This includes the following registers, all reported using ESR_ELx.EC value <span class="hexnumber">0x07</span>:</p>
+<ul>
+<li><a href="AArch64-fpcr.html">FPCR</a>, <a href="AArch64-fpsr.html">FPSR</a>, <a href="AArch64-fpexc32_el2.html">FPEXC32_EL2</a>, and any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-S31 registers.
+</li><li><a href="AArch32-mvfr0.html">MVFR0</a>, <a href="AArch32-mvfr1.html">MVFR1</a>, <a href="AArch32-mvfr2.html">MVFR2</a>, <a href="AArch32-fpscr.html">FPSCR</a>, <a href="AArch32-fpexc.html">FPEXC</a>, and any of the SIMD and floating-point registers Q0-Q15, including their views as D0-D31 registers or S0-S31 registers.
+</li><li>VMSR accesses to <a href="AArch32-fpsid.html">FPSID</a>.
+</li></ul>
+<p>Permitted VMSR accesses to <a href="AArch32-fpsid.html">FPSID</a> are ignored, but for the purposes of this trap the architecture defines a VMSR access to the <a href="AArch32-fpsid.html">FPSID</a> from EL1 or higher as an access to a SIMD and floating-point register.</p>
+<p>Traps execution at all Exception levels of 
+SME and 
+SVE instructions 
+ to EL3 from any Security state.
+The exception is reported using ESR_ELx.EC value <span class="hexnumber">0x07</span>.</p>
+<p>A trap taken as a result of CPTR_EL3.ESM has precedence over a trap taken as a result of CPTR_EL3.TFP.</p>
+<p>A trap taken as a result of CPTR_EL3.EZ has precedence over a trap taken as a result of CPTR_EL3.TFP.</p>
+<p>Defined values are:</p><table class="valuetable"><tr><th>TFP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause execution of any instructions to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control causes execution of these instructions at  all Exception levels to be trapped.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p><a href="AArch64-fpexc32_el2.html">FPEXC32_EL2</a> is not accessible from EL0 using AArch64.</p>
+        <p><a href="AArch32-fpsid.html">FPSID</a>, <a href="AArch32-mvfr0.html">MVFR0</a>, <a href="AArch32-mvfr1.html">MVFR1</a>, and <a href="AArch32-fpexc.html">FPEXC</a> are not accessible from EL0 using AArch32.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9">Bit [9]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">EZ, bit [8]<span class="condition"><br/>When FEAT_SVE is implemented:
+                        </span></h4><div class="field"><p>Traps execution of SVE instructions when the PE is not in Streaming SVE mode, and instructions that directly access the <a href="AArch64-zcr_el3.html">ZCR_EL3</a>, <a href="AArch64-zcr_el2.html">ZCR_EL2</a>, or <a href="AArch64-zcr_el1.html">ZCR_EL1</a> System registers, from all Exception levels and any Security state, to EL3.</p>
+<p>The exception is reported using ESR_ELx.EC value <span class="hexnumber">0x19</span>.</p>
+<p>A trap taken as a result of CPTR_EL3.EZ has precedence over a trap taken as a result of CPTR_EL3.TFP.</p><table class="valuetable"><tr><th>EZ</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control causes execution of these instructions at  all Exception levels to be trapped.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause execution of any instructions to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_0">Bits [7:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing CPTR_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, CPTR_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0001</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = CPTR_EL3;
+                </p><h4 class="assembler">MSR CPTR_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0001</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    CPTR_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,751 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>BRBINFINJ_EL1</reg_short_name>
+        
+        <reg_long_name>Branch Record Buffer Information Injection Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_BRBE is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>The information of a Branch record for injection.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Branch Record Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>BRBINFINJ_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>BRBINFINJ_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_47" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>47</field_lsb>
+    <rel_range>63:47</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-46_46" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CCU</field_name>
+    <field_msb>46</field_msb>
+    <field_lsb>46</field_lsb>
+    <rel_range>46</rel_range>
+    <field_description order="before">
+      <para>The number of PE clock cycles since the last Branch record entry is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID != <binarynumber>0b00</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Indicates that the number of PE clock cycles since the last Branch record is indicated by BRBINFINJ_EL1.CC.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Indicates that the number of PE clock cycles since the last Branch record is <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When BRBINFINJ_EL1.VALID == 0b00</field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-45_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CC</field_name>
+    <field_msb>45</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>45:32</rel_range>
+    <field_description order="before"><para>The number of PE clock cycles since the last Branch record entry.</para>
+<para>The format of this field uses a mantissa and exponent to express the cycle count value, as follows:</para>
+<list type="unordered">
+<listitem><content>CC bits[7:0] indicate the mantissa M.</content>
+</listitem><listitem><content>CC bits[13:8] indicate the exponent E.</content>
+</listitem></list>
+<para>The cycle count is expressed using the following function:</para>
+<para><value> if IsZero(E) then UInt(M) else UInt('1':M:Zeros(UInt(E)-1)) </value></para>
+<para>If required, the cycle count is rounded to a multiple of 2<sup>(E-1)</sup> towards zero before being encoded.</para>
+<para>A value of all ones in both the mantissa and exponent indicates the cycle count value exceeded the size of the cycle counter.</para></field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID != <binarynumber>0b00</binarynumber>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>BRBINFINJ_EL1.CCU == 1</field_access_sublevel>
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b00</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-31_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>31:18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>LASTFAILED</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Indicates transaction failure or cancellation.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID != <binarynumber>0b00</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Indicates that no transactions in a non-prohibited region have failed or been canceled between the previous Branch record and this Branch record.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Indicates that at least one transaction in a non-prohibited region has failed or been canceled between the previous Branch record and this Branch record.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When BRBINFINJ_EL1.VALID == 0b00</field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_TME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>T</field_name>
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Transactional state.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID == <binarynumber>0b10</binarynumber> or BRBINFINJ_EL1.VALID == <binarynumber>0b11</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The branch or exception was not executed in Transactional state.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The branch or exception was executed in Transactional state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b00</field_access_sublevel>
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b01</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+    <fields_condition>When FEAT_TME is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-15_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>15:14</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-13_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TYPE</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>13:8</rel_range>
+    <field_description order="before">
+      <para>Branch type.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The value in this field is only valid when BRBINFINJ_EL1.VALID != <binarynumber>0b00</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000000</field_value>
+        <field_value_description>
+          <para>Unconditional direct branch, excluding Branch with link.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000001</field_value>
+        <field_value_description>
+          <para>Indirect branch, excluding Branch with link, Return from subroutine, and Exception return.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000010</field_value>
+        <field_value_description>
+          <para>Direct Branch with link.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000011</field_value>
+        <field_value_description>
+          <para>Indirect Branch with link.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000101</field_value>
+        <field_value_description>
+          <para>Return from subroutine.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b000111</field_value>
+        <field_value_description>
+          <para>Exception return.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001000</field_value>
+        <field_value_description>
+          <para>Conditional direct branch.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100001</field_value>
+        <field_value_description>
+          <para>Debug halt.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100010</field_value>
+        <field_value_description>
+          <para>Call.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100011</field_value>
+        <field_value_description>
+          <para>Trap.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100100</field_value>
+        <field_value_description>
+          <para>SError.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100110</field_value>
+        <field_value_description>
+          <para>Instruction debug.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100111</field_value>
+        <field_value_description>
+          <para>Data debug.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101010</field_value>
+        <field_value_description>
+          <para>Alignment.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101011</field_value>
+        <field_value_description>
+          <para>Inst Fault.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101100</field_value>
+        <field_value_description>
+          <para>Data Fault.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101110</field_value>
+        <field_value_description>
+          <para>IRQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101111</field_value>
+        <field_value_description>
+          <para>FIQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111001</field_value>
+        <field_value_description>
+          <para>Debug State Exit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When BRBINFINJ_EL1.VALID == 0b00</field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EL</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>7:6</rel_range>
+    <field_description order="before">
+      <para>The Exception Level at the target address.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID == <binarynumber>0b11</binarynumber> or BRBINFINJ_EL1.VALID == <binarynumber>0b01</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>EL1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>EL3.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_BRBEv1p1 is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b00</field_access_sublevel>
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b10</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MPRED</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Branch mispredict.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value in this field is only valid when BRBINFINJ_EL1.VALID == <binarynumber>0b11</binarynumber> or BRBINFINJ_EL1.VALID == <binarynumber>0b10</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Branch was correctly predicted or the result of the prediction was not captured.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Branch was incorrectly predicted.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level operand="OR">
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b00</field_access_sublevel>
+          <field_access_sublevel>BRBINFINJ_EL1.VALID == 0b01</field_access_sublevel>
+          <field_access_sublevel>BRBINFINJ_EL1.TYPE[5] == 1</field_access_sublevel>
+        </field_access_level>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_type>RW</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-4_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>4</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>4:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VALID</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>The Branch record is valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description><para>This Branch record is not valid.</para>
+<para>The values of following fields are not valid:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-brbtgtinj_el1.xml">BRBTGTINJ_EL1</register_link>.ADDRESS.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-brbsrcinj_el1.xml">BRBSRCINJ_EL1</register_link>.ADDRESS.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.MPRED.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.LASTFAILED.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.T.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.EL.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.TYPE.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.CC.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.CCU.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description><para>This Branch record is valid.</para>
+<para>The values of following fields are not valid:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-brbsrcinj_el1.xml">BRBSRCINJ_EL1</register_link>.ADDRESS.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.T.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.MPRED.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description><para>This Branch record is valid.</para>
+<para>The values of following fields are not valid:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-brbtgtinj_el1.xml">BRBTGTINJ_EL1</register_link>.ADDRESS.</content>
+</listitem><listitem><content>BRBINFINJ_EL1.EL.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>This Branch record is valid.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_47" msb="63" lsb="47"/>
+  <fieldat id="fieldset_0-46_46" msb="46" lsb="46"/>
+  <fieldat id="fieldset_0-45_32" msb="45" lsb="32"/>
+  <fieldat id="fieldset_0-31_18" msb="31" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16-1" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_14" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-13_8" msb="13" lsb="8"/>
+  <fieldat id="fieldset_0-7_6" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_2" msb="4" lsb="2"/>
+  <fieldat id="fieldset_0-1_0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS BRBINFINJ_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, BRBINFINJ_EL1</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b001"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.nBRBDATA == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = BRBINFINJ_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = BRBINFINJ_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = BRBINFINJ_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister BRBINFINJ_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR BRBINFINJ_EL1, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b10"/>
+                
+                <enc n="op1" v="0b001"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.nBRBDATA == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        BRBINFINJ_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        BRBINFINJ_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    BRBINFINJ_EL1 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

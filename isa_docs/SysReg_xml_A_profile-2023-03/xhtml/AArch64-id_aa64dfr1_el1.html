@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ID_AA64DFR1_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ID_AA64DFR1_EL1, AArch64 Debug Feature Register 1</h1><p>The ID_AA64DFR1_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides top level information about the debug system in AArch64.</p>
+      <h2>Configuration</h2><p>There are no configuration notes.</p><h2>Attributes</h2>
+        <p>ID_AA64DFR1_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_56-1">ABL_CMPs</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">DPFZS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">EBEP</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">ITE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">ABLE</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">PMICNTR</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">SPMU</a></td></tr><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">CTX_CMPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">WRPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-15_8">BRPs</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0-1">SYSPMUID</a></td></tr></tbody></table><h4 id="fieldset_0-63_56-1">ABL_CMPs, bits [63:56]<span class="condition"><br/>When FEAT_ABLE is implemented:
+                        </span></h4><div class="field">
+      <p>Number of breakpoints that support address linking, minus 1.</p>
+    <p>The values <span class="hexnumber">0x40</span> to <span class="hexnumber">0xFF</span> are reserved.</p>
+<p>The number of breakpoints that support address linking is never more than the number of watchpoints.</p></div><h4 id="fieldset_0-63_56-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_52">DPFZS, bits [55:52]</h4><div class="field">
+      <p>Behavior of the cycle counter when event counting is frozen by a Statistical Profiling management event. Defined values are:</p>
+    <table class="valuetable"><tr><th>DPFZS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The cycle counter <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> is never affected by <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.FZS.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The cycle counter <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> does not count when <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.DP is 1 and counting by event counters accessible to EL1 is frozen by the <a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.FZS mechanism.</p>
+        </td></tr></table><p>FEAT_SPEv1p2_DPFZS implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>If <span class="xref">FEAT_PMUv3p7</span> is not implemented or <span class="xref">FEAT_SPEv1p2</span> is not implemented, the only permitted value is <span class="binarynumber">0b0000</span>.</p>
+<p>If <span class="xref">FEAT_PMUv3p9</span> is implemented and <span class="xref">FEAT_SPEv1p4</span> are implemented, the only permitted value is <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-51_48">EBEP, bits [51:48]</h4><div class="field">
+      <p>Exception-based event profiling. Defined values are:</p>
+    <table class="valuetable"><tr><th>EBEP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Exception-based event profiling not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Exception-based event profiling implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>FEAT_EBEP implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-47_44">ITE, bits [47:44]</h4><div class="field">
+      <p>Instrumentation Trace Extension. Defined values are:</p>
+    <table class="valuetable"><tr><th>ITE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Instrumentation Trace Extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Instrumentation Trace Extension implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ITE</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-43_40">ABLE, bits [43:40]</h4><div class="field">
+      <p>Address Breakpoint Linking Extension. Defined values are:</p>
+    <table class="valuetable"><tr><th>ABLE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>Address Breakpoint Linking Extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Address Breakpoint Linking Extension implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_ABLE</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-39_36">PMICNTR, bits [39:36]</h4><div class="field">
+      <p>PMU fixed-function instruction counter. Defined values are:</p>
+    <table class="valuetable"><tr><th>PMICNTR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>PMU fixed-function instruction counter not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>PMU fixed-function instruction counter implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_PMUv3_ICNTR</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p>
+<p>If <span class="xref">FEAT_PMUv3</span> is not implemented, then the only permitted value is <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-35_32">SPMU, bits [35:32]</h4><div class="field">
+      <p>System PMU extension. Defined values are:</p>
+    <table class="valuetable"><tr><th>SPMU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>System PMU extension not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>System PMU extension implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p><span class="xref">FEAT_SPMU</span> implements the functionality identified by the value <span class="binarynumber">0b0001</span>.</p></div><h4 id="fieldset_0-31_24">CTX_CMPs, bits [31:24]</h4><div class="field">
+      <p>Number of breakpoints that are context-aware, minus 1. The value <span class="hexnumber">0x00</span> means that the number of breakpoints that are context-aware is described by <a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.CTX_CMPs. Otherwise, the value of this field is the number of breakpoints that are context-aware, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>CTX_CMPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.CTX_CMPs is the number of breakpoints that are context-aware, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of breakpoints that are context-aware minus 1.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>The value of this field is never greater than ID_AA64DFR1_EL1.BRPs.</p></div><h4 id="fieldset_0-23_16">WRPs, bits [23:16]</h4><div class="field">
+      <p>Number of watchpoints, minus 1. The value <span class="hexnumber">0x00</span> means that the number of watchpoints is described by <a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.WRPs. Otherwise, the value of this field is the number of watchpoints, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>WRPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.WRPs is the number of watchpoints, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of watchpoints minus 1.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-15_8">BRPs, bits [15:8]</h4><div class="field">
+      <p>Number of breakpoints, minus 1. The value <span class="hexnumber">0x00</span> means that the number of breakpoints is described by <a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.BRPs. Otherwise, the value of this field is the number of breakpoints, minus 1. Defined values are:</p>
+    <table class="valuetable"><tr><th>BRPs</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p><a href="AArch64-id_aa64dfr0_el1.html">ID_AA64DFR0_EL1</a>.BRPs is the number of breakpoints, minus 1.</p>
+        </td></tr><tr><td class="bitfield">0x01..0x3F</td><td>
+          <p>Number of breakpoints minus 1.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-7_0-1">SYSPMUID, bits [7:0]<span class="condition"><br/>When FEAT_SPMU is implemented:
+                        </span></h4><div class="field">
+      <p>System PMU ID. Indicates the largest permitted value that can be written to <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.SYSPMUSEL. Defined values are:</p>
+    <table class="valuetable"><tr><th>SYSPMUID</th><th>Meaning</th></tr><tr><td class="bitfield">0x00..0x1F</td><td>
+          <p>The largest supported value that can be written to <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.SYSPMUSEL.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>Since System PMUs might not be contiguously accessible, this field does not necessarily indicate the total number of accessible System PMUs.</p></div><h4 id="fieldset_0-7_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing ID_AA64DFR1_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ID_AA64DFR1_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b0000</td><td>0b0101</td><td>0b001</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64DFR1_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64DFR1_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64DFR1_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

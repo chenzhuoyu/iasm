@@ -1,0 +1,571 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>CPSR</reg_short_name>
+        
+        <reg_long_name>Current Program Status Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Holds PE status and control information.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Process state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>CPSR is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>N</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Negative condition flag. Set to bit[31] of the result of the last flag-setting instruction. If the result is regarded as a two's complement signed integer, then N is set to 1 if the result was negative, and N is set to 0 if the result was positive or zero.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Z</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before">
+      <para>Zero condition flag. Set to 1 if the result of the last flag-setting instruction was zero, and to 0 otherwise. A result of zero often indicates an equal result from a comparison.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>C</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before">
+      <para>Carry condition flag. Set to 1 if the last flag-setting instruction resulted in a carry condition, for example an unsigned overflow on an addition.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>V</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>Overflow condition flag. Set to 1 if the last flag-setting instruction resulted in an overflow condition, for example a signed overflow on an addition.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Q</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before">
+      <para>Cumulative saturation bit. Set to 1 to indicate that overflow or saturation occurred in some instructions.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-26_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>26:24</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SSBS</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Speculative Store Bypass Safe.</para>
+<para>Prohibits speculative loads or stores that might practically allow a cache timing side channel.</para>
+<para>A cache timing side channel might be exploited where a load or store uses an address that is derived from a register that is being loaded from memory using a load instruction speculatively read from a memory location. If PSTATE.SSBS is enabled, the address derived from the load instruction might be from earlier in the coherence order than the latest store to that memory location with the same virtual address.</para></field_description>
+    <field_description order="after">
+      <para>The value of this bit is usually set to the value described by the <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.DSSBS bit on exceptions to any mode except Hyp mode, and the value described by <register_link state="AArch32" id="AArch32-hsctlr.xml">HSCTLR</register_link>.DSSBS on exceptions to Hyp mode.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Hardware is not permitted to load or store speculatively in the manner described.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Hardware is permitted to load or store speculatively in the manner described.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm" impdef="true">
+        <field_reset_standard_text>ID</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SSBS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PAN</field_name>
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Privileged Access Never.</para>
+    </field_description>
+    <field_description order="after"><para>The value of this bit is usually preserved on taking an exception, except in the following situations:</para>
+<list type="unordered">
+<listitem><content>When the target of the exception is EL1, and the value of the <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.SPAN bit for the current Security state is 0, this bit is set to 1.</content>
+</listitem><listitem><content>When the target of the exception is EL3, from Secure state, and the value of the Secure <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.SPAN is 0, this bit is set to 1.</content>
+</listitem><listitem><content>When the target of the exception is EL3, from Non-secure state, this bit is set to 0 regardless of the value of the Secure <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>.SPAN bit.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The translation system is the same as Armv8.0.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Disables privileged read and write accesses to addresses accessible at EL0.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_PAN is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-22_22-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>DIT</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Data Independent Timing.</para>
+    </field_description>
+    <field_description order="after"><para>The data processing instructions affected by this bit are:</para>
+<list type="unordered">
+<listitem><content>
+<para>All cryptographic instructions. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>AESD</instruction>, <instruction>AESE</instruction>, <instruction>AESIMC</instruction>, <instruction>AESMC</instruction>, <instruction>SHA1C</instruction>, <instruction>SHA1H</instruction>, <instruction>SHA1M</instruction>, <instruction>SHA1P</instruction>, <instruction>SHA1SU0</instruction>, <instruction>SHA1SU1</instruction>, <instruction>SHA256H</instruction>, <instruction>SHA256H2</instruction>, <instruction>SHA256SU0</instruction>, and <instruction>SHA256SU1</instruction>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>A subset of the instructions that use the general-purpose register file. For these instructions, the effects of CPSR.DIT apply only if they do not use R15 as either their source or destination and pass their condition execution check. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>BFI</instruction>, <instruction>BFC</instruction>, <instruction>CLZ</instruction>, <instruction>CMN</instruction>, <instruction>CMP</instruction>, <instruction>MLA</instruction>, <instruction>MLAS</instruction>, <instruction>MLS</instruction>, <instruction>MOVT</instruction>, <instruction>MUL</instruction>, <instruction>MULS</instruction>, <instruction>NOP</instruction>, <instruction>PKHBT</instruction>, <instruction>PKHTB</instruction>, <instruction>RBIT</instruction>, <instruction>REV</instruction>, <instruction>REV16</instruction>, <instruction>REVSH</instruction>, <instruction>RRX</instruction>, <instruction>SADD16</instruction>, <instruction>SADD8</instruction>, <instruction>SASX</instruction>, <instruction>SBFX</instruction>, <instruction>SHADD16</instruction>, <instruction>SHADD8</instruction>, <instruction>SHASX</instruction>, <instruction>SHSAX</instruction>, <instruction>SHSUB16</instruction>, <instruction>SHSUB8</instruction>, <instruction>SMLAL**</instruction>, <instruction>SMLAW*</instruction>, <instruction>SMLSD*</instruction>, <instruction>SMMLA*</instruction>, <instruction>SMMLS*</instruction>, <instruction>SMMUL*</instruction>, <instruction>SMUAD*</instruction>, <instruction>SMUL*</instruction>, <instruction>SSAX</instruction>, <instruction>SSUB16</instruction>, <instruction>SSUB8</instruction>, <instruction>SXTAB*</instruction>, <instruction>SXTAH</instruction>, <instruction>SXTB*</instruction>, <instruction>SXTH</instruction>, <instruction>TEQ</instruction>, <instruction>TST</instruction>, <instruction>UADD*</instruction>, <instruction>UASX</instruction>, <instruction>UBFX</instruction>, <instruction>UHADD*</instruction>, <instruction>UHASX</instruction>, <instruction>UHSAX</instruction>, <instruction>UHSUB*</instruction>, <instruction>UMAAL</instruction>, <instruction>UMLAL</instruction>, <instruction>UMLALS</instruction>, <instruction>UMULL</instruction>, <instruction>UMULLS</instruction>, <instruction>USADA8</instruction>, <instruction>USAX</instruction>, <instruction>USUB*</instruction>, <instruction>UXTAB*</instruction>, <instruction>UXTAH</instruction>, <instruction>UXTB*</instruction>, <instruction>UXTH</instruction>, <instruction>ADC</instruction> (register-shifted register), <instruction>ADCS</instruction> (register-shifted register), <instruction>ADD</instruction> (register-shifted register), <instruction>ADDS</instruction> (register-shifted register), <instruction>AND</instruction> (register-shifted register), <instruction>ANDS</instruction> (register-shifted register), <instruction>ASR</instruction> (register-shifted register), <instruction>ASRS</instruction> (register-shifted register), <instruction>BIC</instruction> (register-shifted register), <instruction>BICS</instruction> (register-shifted register), <instruction>EOR</instruction> (register-shifted register), <instruction>EORS</instruction> (register-shifted register), <instruction>LSL</instruction> (register-shifted register), <instruction>LSLS</instruction> (register-shifted register), <instruction>LSR</instruction> (register-shifted register), <instruction>LSRS</instruction> (register-shifted register), <instruction>MOV</instruction> (register-shifted register), <instruction>MOVS</instruction> (register-shifted register), <instruction>MVN</instruction> (register-shifted register), <instruction>MVNS</instruction> (register-shifted register), <instruction>ORR</instruction> (register-shifted register), <instruction>ORRS</instruction> (register-shifted register), <instruction>ROR</instruction> (register-shifted register), <instruction>RORS</instruction> (register-shifted register), <instruction>RSB</instruction> (register-shifted register), <instruction>RSBS</instruction> (register-shifted register), <instruction>RSC</instruction> (register-shifted register), <instruction>RSCS</instruction> (register-shifted register), <instruction>SBC</instruction> (register-shifted register), <instruction>SBCS</instruction> (register-shifted register), <instruction>SUB</instruction> (register-shifted register), and <instruction>SUBS</instruction> (register-shifted register).</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>A subset of the instructions that use the general-purpose register file. For these instructions, the effects of CPSR.DIT apply only if they do not use R15 as either their source or destination. The effects of CPSR.DIT do not depend on these instructions passing their condition execution check. These instructions are:</para>
+<list type="unordered">
+<listitem><content>
+<para><instruction>ADC</instruction> (immediate), <instruction>ADC</instruction> (register), <instruction>ADCS</instruction> (immediate), <instruction>ADCS</instruction> (register), <instruction>ADD</instruction> (immediate), <instruction>ADD</instruction> (register), <instruction>ADDS</instruction> (immediate), <instruction>ADDS</instruction> (register), <instruction>AND</instruction> (immediate), <instruction>AND</instruction> (register), <instruction>ANDS</instruction> (immediate), <instruction>ANDS</instruction> (register), <instruction>ASR</instruction> (immediate), <instruction>ASR</instruction> (register), <instruction>ASRS</instruction> (immediate), <instruction>ASRS</instruction> (register), <instruction>BIC</instruction> (immediate), <instruction>BIC</instruction> (register), <instruction>BICS</instruction> (immediate), <instruction>BICS</instruction> (register), <instruction>EOR</instruction> (immediate), <instruction>EOR</instruction> (register), <instruction>EORS</instruction> (immediate), <instruction>EORS</instruction> (register), <instruction>LSL</instruction> (immediate), <instruction>LSL</instruction> (register), <instruction>LSLS</instruction> (immediate), <instruction>LSLS</instruction> (register), <instruction>LSR</instruction> (immediate), <instruction>LSR</instruction> (register), <instruction>LSRS</instruction> (immediate), <instruction>LSRS</instruction> (register), <instruction>MOV</instruction> (immediate), <instruction>MOV</instruction> (register), <instruction>MOVS</instruction> (immediate), <instruction>MOVS</instruction> (register), <instruction>MVN</instruction> (immediate), <instruction>MVN</instruction> (register), <instruction>MVNS</instruction> (immediate), <instruction>MVNS</instruction> (register), <instruction>ORR</instruction> (immediate), <instruction>ORR</instruction> (register), <instruction>ORRS</instruction> (immediate), <instruction>ORRS</instruction> (register), <instruction>ROR</instruction> (immediate), <instruction>ROR</instruction> (register), <instruction>RORS</instruction> (immediate), <instruction>RORS</instruction> (register), <instruction>RSB</instruction> (immediate), <instruction>RSB</instruction> (register), <instruction>RSBS</instruction> (immediate), <instruction>RSBS</instruction> (register), <instruction>RSC</instruction> (immediate), <instruction>RSC</instruction> (register), <instruction>RSCS</instruction> (immediate), <instruction>RSCS</instruction> (register), <instruction>SBC</instruction> (immediate), <instruction>SBC</instruction> (register), <instruction>SBCS</instruction> (immediate), <instruction>SBCS</instruction> (register), <instruction>SUB</instruction> (immediate), <instruction>SUB</instruction> (register), <instruction>SUBS</instruction> (immediate), and <instruction>SUBS</instruction> (register).</para>
+</content>
+</listitem><listitem><content>
+<para>If FEAT_CRC32 is implemented, <instruction>CRC32B</instruction>, <instruction>CRC32H</instruction>, <instruction>CRC32W</instruction>, <instruction>CRC32CB</instruction>, <instruction>CRC32CH</instruction>, and <instruction>CRC32CW</instruction>.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>A subset of the instructions that use the SIMD&amp;FP register file. For these instructions, the effects of CPSR.DIT apply only if they pass their condition execution check. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>VABA*</instruction>, <instruction>VABD*</instruction> (integer), <instruction>VADD</instruction> (integer), <instruction>VADDHN</instruction>, <instruction>VADDL</instruction>, <instruction>VADDW</instruction>, <instruction>VAND</instruction>, <instruction>VBIC</instruction>, <instruction>VBIF</instruction>, <instruction>VBIT</instruction>, <instruction>VBSL</instruction>, <instruction>VCLS</instruction>, <instruction>VCLZ</instruction>, <instruction>VCNT</instruction>, <instruction>VDUP</instruction>, <instruction>VEOR</instruction>, <instruction>VEXT</instruction>, <instruction>VHADD</instruction>, <instruction>VHSUB</instruction>, <instruction>VMAX</instruction> (integer), <instruction>VMIN</instruction> (integer), <instruction>VMLA</instruction> (integer), <instruction>VMLAL</instruction>, <instruction>VMLS</instruction> (integer), <instruction>VMLSL</instruction>, <instruction>VMOV</instruction>, <instruction>VMOVL</instruction>, <instruction>VMOVN</instruction>, <instruction>VMUL</instruction> (integer and polynomial), <instruction>VMULL</instruction> (integer and polynomial), <instruction>VMVN</instruction>, <instruction>VORN</instruction>, <instruction>VORR</instruction>, <instruction>VPADAL</instruction>, <instruction>VPADD</instruction> (integer), <instruction>VPADDL</instruction>, <instruction>VPMAX</instruction> (integer), <instruction>VPMIN</instruction> (integer), <instruction>VRADDHN</instruction>, <instruction>VREV*</instruction>, <instruction>VRHADD</instruction>, <instruction>VRSHL</instruction>, <instruction>VRSHR</instruction>, <instruction>VRSHRN</instruction>, <instruction>VRSRA</instruction>, <instruction>VRSUBHN</instruction>, <instruction>VSHL</instruction>, <instruction>VSHLL</instruction>, <instruction>VSHR</instruction>, <instruction>VSLI</instruction>, <instruction>VSRA</instruction>, <instruction>VSRI</instruction>, <instruction>VSUB</instruction> (integer), <instruction>VSUBHN</instruction>, <instruction>VSUBL</instruction>, <instruction>VSUBW</instruction>, <instruction>VSWP</instruction>, <instruction>VTBL</instruction>, <instruction>VTBX</instruction>, <instruction>VTRN</instruction>, <instruction>VTST</instruction>, <instruction>VUZP</instruction>, and <instruction>VZIP</instruction>.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>Another subset of the instructions that use the SIMD&amp;FP register file. For these instructions, the effects of CPSR.DIT apply only if they pass their condition execution check and apply only when the instructions are operating on integer vector elements. These instructions are:</para>
+<list type="unordered">
+<listitem><content><instruction>VABS</instruction>, <instruction>VCGE</instruction>, <instruction>VCGT</instruction>, <instruction>VCLE</instruction>, <instruction>VCLT</instruction>, <instruction>VMLA</instruction> (by scalar), <instruction>VMLS</instruction> (by scalar), and <instruction>VNEG</instruction>.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The architecture makes no statement about the timing properties of any instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The architecture requires that:</para>
+<list type="unordered">
+<listitem><content>
+<para>The timing of every load and store instruction is insensitive to the value of the data being loaded or stored.</para>
+</content>
+</listitem><listitem><content>
+<para>For certain data processing instructions, the instruction takes a time that is independent of:</para>
+<list type="unordered">
+<listitem><content>
+<para>The values of the data supplied in any of its registers.</para>
+</content>
+</listitem><listitem><content>
+<para>The values of the NZCV flags.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>For certain data processing instructions, the response of the instruction to asynchronous exceptions does not vary based on:</para>
+<list type="unordered">
+<listitem><content>
+<para>The values of the data supplied in any of its registers.</para>
+</content>
+</listitem><listitem><content>
+<para>The values of the NZCV flags.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DIT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-21_21-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>21</field_msb>
+    <field_lsb>21</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-20_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>20</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>GE</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Greater than or Equal flags, for parallel addition and subtraction.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>15:10</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>E</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Endianness state bit. Controls the load and store endianness for data accesses:</para>
+    </field_description>
+    <field_description order="after"><para>Instruction fetches ignore this bit.</para>
+<para>If an implementation does not provide Big-endian support, this bit is <arm-defined-word>RES0</arm-defined-word>. If it does not provide Little-endian support, this bit is <arm-defined-word>RES1</arm-defined-word>.</para>
+<para>If an implementation provides Big-endian support but only at EL0, this bit is <arm-defined-word>RES0</arm-defined-word> for an exception return to any Exception level other than EL0.</para>
+<para>Likewise, if it provides Little-endian support only at EL0, this bit is <arm-defined-word>RES1</arm-defined-word> for an exception return to any Exception level other than EL0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Little-endian operation</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Big-endian operation.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset>
+        <field_reset_special_text>
+          <para>When the reset value of the SCTLR.EE bit is defined by a configuration input signal, that value also applies to the CPSR.E bit on reset, and therefore applies to software execution from reset.</para>
+        </field_reset_special_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>A</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>SError interrupt mask bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Exception not masked.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Exception masked.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>IRQ mask bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Exception not masked.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Exception masked.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-6_6" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>6</rel_range>
+    <field_description order="before">
+      <para>FIQ mask bit.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Exception not masked.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Exception masked.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-5_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES1">
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-3_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>M</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Current PE mode.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>User.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>FIQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>IRQ.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0011</field_value>
+        <field_value_description>
+          <para>Supervisor.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0110</field_value>
+        <field_value_description>
+          <para>Monitor.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0111</field_value>
+        <field_value_description>
+          <para>Abort.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1010</field_value>
+        <field_value_description>
+          <para>Hyp.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1011</field_value>
+        <field_value_description>
+          <para>Undefined.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description>
+          <para>System.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_24" msb="26" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_22-1" msb="22" lsb="22"/>
+  <fieldat id="fieldset_0-21_21-1" msb="21" lsb="21"/>
+  <fieldat id="fieldset_0-20_20" msb="20" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_10" msb="15" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_0" msb="3" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>CPSR can be read using the MRS instruction and written using the MSR (register) or MSR (immediate) instructions.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

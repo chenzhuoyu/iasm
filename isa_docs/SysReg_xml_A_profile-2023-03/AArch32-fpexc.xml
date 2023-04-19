@@ -1,0 +1,687 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>FPEXC</reg_short_name>
+        
+        <reg_long_name>Floating-Point Exception Control register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-fpexc32_el2.xml">FPEXC32_EL2</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides a global enable for the implemented Advanced SIMD and floating-point functionality, and reports floating-point status information.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Floating-point registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>Implemented only if the implementation includes the Advanced SIMD and floating-point functionality.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>FPEXC is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_31" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EX</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>31</field_lsb>
+    <rel_range>31</rel_range>
+    <field_description order="before">
+      <para>Exception bit.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-30_30" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EN</field_name>
+    <field_msb>30</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>30</rel_range>
+    <field_description order="before"><para>Enables access to the Advanced SIMD and floating-point functionality from all Exception levels, except that setting this field to 0 does not disable the following:</para>
+<list type="unordered">
+<listitem><content>VMSR accesses to the <register_link state="AArch32" id="AArch32-fpexc.xml">FPEXC</register_link> or <register_link state="AArch32" id="AArch32-fpsid.xml">FPSID</register_link>.</content>
+</listitem><listitem><content>VMRS accesses from the <register_link state="AArch32" id="AArch32-fpexc.xml">FPEXC</register_link>, <register_link state="AArch32" id="AArch32-fpsid.xml">FPSID</register_link>, <register_link state="AArch32" id="AArch32-mvfr0.xml">MVFR0</register_link>, <register_link state="AArch32" id="AArch32-mvfr1.xml">MVFR1</register_link>, or <register_link state="AArch32" id="AArch32-mvfr2.xml">MVFR2</register_link>.</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>Execution of Advanced SIMD and floating-point instructions in AArch32 state can be disabled or trapped by the following controls:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-cpacr.xml">CPACR</register_link>.cp10, or, if executing at EL0, <register_link state="AArch64" id="AArch64-cpacr_el1.xml">CPACR_EL1</register_link>.FPEN.</content>
+</listitem><listitem><content>FPEXC.EN.</content>
+</listitem><listitem><content>If executing in Non-secure state:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TCP10, or if EL2 is using AArch64, <register_link state="AArch64" id="AArch64-cptr_el2.xml">CPTR_EL2</register_link>.TFP.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-nsacr.xml">NSACR</register_link>.cp10, or if EL3 is using AArch64, <register_link state="AArch64" id="AArch64-cptr_el3.xml">CPTR_EL3</register_link>.TFP.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>For Advanced SIMD instructions only:<list type="unordered">
+<listitem><content>CPACR.ASEDIS.</content>
+</listitem><listitem><content>If executing in Non-secure state, <register_link state="AArch32" id="AArch32-hcptr.xml">HCPTR</register_link>.TASE and <register_link state="AArch32" id="AArch32-nsacr.xml">NSACR</register_link>.NSASEDIS.</content>
+</listitem></list>
+</content>
+</listitem></list>
+<para>See the descriptions of the controls for more information.</para>
+<note><para>When executing at EL0 using AArch32:</para><list type="unordered"><listitem><content>If EL1 is using AArch64, then the Effective value of FPEXC.EN is 1. This includes when EL2 is using AArch64 and is enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, and the Effective value of <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.RW is 1.</content></listitem><listitem><content>If EL2 is using AArch64 and is enabled in the current Security state, <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE is 1, and the Effective value of <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.RW is 0, then it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the Effective value of FPEXC.EN is 1 or the value written to FPEXC.EN. However, Arm deprecates using the value of FPEXC.EN to determine behavior.</content></listitem></list></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to the <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>, and any of the SIMD and floating-point registers Q0-Q15, including their views as D0-D31 registers or S0-S31 registers, are <arm-defined-word>UNDEFINED</arm-defined-word> at all Exception levels.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>This control permits access to the Advanced SIMD and floating-point functionality at all Exception levels.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-29_29" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DEX</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>29</rel_range>
+    <field_description order="before"><para>Defined synchronous exception on floating-point execution.</para>
+<para>This field identifies whether a synchronous exception generated by the attempted execution of an instruction was generated by an unallocated encoding. The instruction must be in the encoding space that is identified by the pseudocode function ExecutingCP10or11Instr() returning TRUE. This field also indicates whether the FPEXC.TFV field is valid.</para>
+<para>The meaning of this bit is:</para></field_description>
+    <field_description order="after"><para>On an exception that sets this bit to 1 the exception-handling routine must clear this bit to 0.</para>
+<para>On an implementation that both does not support trapping of floating-point exceptions and implements the <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.{Stride, Len} fields as RAZ, this bit is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The exception was generated by the attempted execution of an unallocated instruction in the encoding space that is identified by the pseudocode function ExecutingCP10or11Instr(). If FPEXC.TFV is RW then it is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>. If FPEXC.{IDF, IXF, UFF, OFF, DZF, IOF} are RW then they are invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The exception was generated during the execution of an allocated encoding. FPEXC.TFV is valid and indicates the cause of the exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-28_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FP2V</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>28</rel_range>
+    <field_description order="before">
+      <para>FPINST2 instruction valid bit. From Armv8, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-27_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VV</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>27</rel_range>
+    <field_description order="before">
+      <para>VECITR valid bit. From Armv8, this bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RES0</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TFV</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before">
+      <para>Trapped Fault Valid bit. Valid only when the value of FPEXC.DEX is 1. When valid, it indicates the cause of the exception and therefore whether FPEXC.{IDF, IXF, UFF, OFF, DZF, IOF} are valid.</para>
+    </field_description>
+    <field_description order="after"><para>This bit returns a status value and ignores writes.</para>
+<para>When the value of FPEXC.DEX is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The exception was caused by the execution of a floating-point VABS, VADD, VDIV, VFMA, VFMS, VFNMA, VFNMS, VMLA, VMLS, VMOV, VMUL, VNEG, VNMLA, VNMLS, VNMUL, VSQRT, or VSUB instruction when one or both of <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.{Stride, Len} was nonzero. If FPEXC.{IDF, IXF, UFF, OFF, DZF, IOF} are RW then they are invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>FPEXC.{IDF, IXF, UFF, OFF, DZF, IOF} indicate the presence of trapped floating-point exceptions that had occurred at the time of the exception. Bits are set for all trapped exceptions that had occurred at the time of the exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+      <field_access_state>
+        <field_access_level>When an implementation implements FPSCR.LEN,STRIDE as RAZ</field_access_level>
+        <field_access_type>RAO/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-25_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>25:11</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-10_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>VECITR</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>10:8</rel_range>
+    <field_description order="before">
+      <para>Vector iteration count. From Armv8, this field is <arm-defined-word>RES1</arm-defined-word>.</para>
+    </field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_type>RES1</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDF</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>7</rel_range>
+    <field_description order="before">
+      <para>Input Denormal trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether an Input Denormal exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.IDE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>Input Denormal exceptions can occur only when <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.FZ is 1.</para>
+<note><para>A half-precision floating-point value that is flushed to zero because the value of <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.FZ16 is 1 does not generate an Input Denormal exception.</para></note><para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Input Denormal exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Input Denormal exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Input Denormal floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-6_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>6:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-4_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IXF</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>4</rel_range>
+    <field_description order="before">
+      <para>Inexact trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether an Inexact exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.IXE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Inexact exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Inexact exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Inexact floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-3_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UFF</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>3</rel_range>
+    <field_description order="before">
+      <para>Underflow trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether an Underflow exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.UFE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>Underflow trapped exceptions can occur:</para>
+<list type="unordered">
+<listitem><content>On half-precision data-processing instructions only when <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.FZ16 is 0.</content>
+</listitem><listitem><content>Otherwise only when <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.FZ is 0.</content>
+</listitem></list>
+<para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Underflow exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Underflow exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Underflow floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-2_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OFF</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>2</rel_range>
+    <field_description order="before">
+      <para>Overflow trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether an Overflow exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.OFE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Overflow exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Overflow exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Overflow floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DZF</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before">
+      <para>Divide by Zero trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether a Divide by Zero exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.DZE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Divide by Zero exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Divide by Zero exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Divide by Zero floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IOF</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Invalid Operation trapped exception bit. Valid only when the value of FPEXC.TFV is 1. When valid, it indicates whether an Invalid Operation exception occurred while <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.IOE was 1:</para>
+    </field_description>
+    <field_description order="after"><para>This bit must be cleared to 0 by the exception-handling routine.</para>
+<para>When the value of FPEXC.TFV is 0 and this bit is RW, this bit is invalid and <arm-defined-word>UNKNOWN</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Invalid Operation exception has not occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Invalid Operation exception has occurred.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Invalid Operation floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_31" msb="31" lsb="31"/>
+  <fieldat id="fieldset_0-30_30" msb="30" lsb="30"/>
+  <fieldat id="fieldset_0-29_29" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_11" msb="25" lsb="11"/>
+  <fieldat id="fieldset_0-10_8" msb="10" lsb="8"/>
+  <fieldat id="fieldset_0-7_7" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_5" msb="6" lsb="5"/>
+  <fieldat id="fieldset_0-4_4" msb="4" lsb="4"/>
+  <fieldat id="fieldset_0-3_3" msb="3" lsb="3"/>
+  <fieldat id="fieldset_0-2_2" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="VMRS FPEXC" type="SystemAccessor">
+            <encoding>
+            <access_instruction>VMRS{&lt;c&gt;}{&lt;q&gt;} &lt;Rt&gt;, &lt;spec_reg&gt;</access_instruction>
+                
+                <enc n="reg" v="0b1000"/>
+            </encoding>
+            <access_permission>
+                <ps name="VMRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif (ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || CPACR.cp10 == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x08);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = FPEXC;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x00);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        R[t] = FPEXC;
+elsif PSTATE.EL == EL3 then
+    if CPACR.cp10 == '00' then
+        UNDEFINED;
+    else
+        R[t] = FPEXC;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="VMSR FPEXC" type="SystemAccessor">
+            <encoding>
+            <access_instruction>VMSR{&lt;c&gt;}{&lt;q&gt;} &lt;spec_reg&gt;, &lt;Rt&gt;</access_instruction>
+                
+                <enc n="reg" v="0b1000"/>
+            </encoding>
+            <access_permission>
+                <ps name="VMSR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif (ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || CPACR.cp10 == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x08);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        FPEXC = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; ((ELUsingAArch32(EL3) &amp;&amp; SCR.NS == '1' &amp;&amp; NSACR.cp10 == '0') || HCPTR.TCP10 == '1') then
+        AArch32.TakeHypTrapException(0x00);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x07);
+    else
+        FPEXC = R[t];
+elsif PSTATE.EL == EL3 then
+    if CPACR.cp10 == '00' then
+        UNDEFINED;
+    else
+        FPEXC = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

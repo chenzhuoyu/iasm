@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>PMU</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMU</h1><p>The PMU characteristics are:</p><h2>Attributes</h2><p>PMU is a block of size: 4096 bytes</p><h2>Contents</h2><table class="info"><tr><th>Offset</th><th>Name</th><th>Accessor condition</th><th>Register condition</th><th>Most permissive access</th></tr><tr><td><span class="hexnumber">0x000 + (8 * n) for n in 30:0</span></td><td><a href="pmu.pmevcntrn_el0.html">PMEVCNTR&lt;n>_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x000 + (8 * n) for n in 30:0</span></td><td><a href="pmu.pmevcntrn_el0.html">PMEVCNTR&lt;n>_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p5 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x000 + (8 * n) for n in 30:0</span></td><td><a href="pmu.pmevcntrn_el0.html">PMEVCNTR&lt;n>_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p5 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x0F8</span></td><td><a href="pmu.pmccntr_el0.html">PMCCNTR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x0F8</span></td><td><a href="pmu.pmccntr_el0.html">PMCCNTR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x0FC</span></td><td><a href="pmu.pmccntr_el0.html">PMCCNTR_EL0[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x100</span></td><td><a href="pmu.pmicntr_el0.html">PMICNTR_EL0</a></td><td>
+                When FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x200</span></td><td><a href="pmu.pmpcsr.html">PMPCSR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x200</span></td><td><a href="pmu.pmpcsr.html">PMPCSR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x204</span></td><td><a href="pmu.pmpcsr.html">PMPCSR[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x208</span></td><td><a href="pmu.pmvcidsr.html">PMVCIDSR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x208</span></td><td><a href="pmu.pmcid1sr.html">PMCID1SR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x20C</span></td><td><a href="pmu.pmvidsr.html">PMVIDSR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented, FEAT_PCSRv8p2 is implemented and EL2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x220</span></td><td><a href="pmu.pmpcsr.html">PMPCSR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x220</span></td><td><a href="pmu.pmpcsr.html">PMPCSR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x224</span></td><td><a href="pmu.pmpcsr.html">PMPCSR[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x228</span></td><td><a href="pmu.pmccidsr.html">PMCCIDSR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x228</span></td><td><a href="pmu.pmcid1sr.html">PMCID1SR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and FEAT_PCSRv8p2 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x22C</span></td><td><a href="pmu.pmcid2sr.html">PMCID2SR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber"><del>0x230</del></span></td><td><a href="pmu.pmpcsctl.html"><del>PMPCSCTL</del></a></td><td><del>
+                When FEAT_PCSRv8p9 is implemented
+            </del></td><td><del>When FEAT_PCSRv8p9 is implemented</del></td><td class="pseudocode"><del>RW</del></td></tr><tr><td><span class="hexnumber">0x400 + (8 * n) for n in 30:0</span></td><td><a href="pmu.pmevtypern_el0.html">PMEVTYPER&lt;n>_EL0[63:0]</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x400 + (4 * n) for n in 30:0</span></td><td><a href="pmu.pmevtypern_el0.html">PMEVTYPER&lt;n>_EL0[31:0]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x47C</span></td><td><a href="pmu.pmccfiltr_el0.html">PMCCFILTR_EL0[31:0]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x480</span></td><td><a href="pmu.pmicfiltr_el0.html">PMICFILTR_EL0[31:0]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x4F8</span></td><td><a href="pmu.pmccfiltr_el0.html">PMCCFILTR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x500</span></td><td><a href="pmu.pmicfiltr_el0.html">PMICFILTR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x600 + (8 * n) for n in 30:0</span></td><td><a href="pmu.pmevcntsvrn_el1.html">PMEVCNTSVR&lt;n>_EL1</a></td><td>
+                When FEAT_PMUv3_SS is implemented
+            </td><td>When FEAT_PMUv3_SS is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x6F8</span></td><td><a href="pmu.pmccntsvr_el1.html">PMCCNTSVR_EL1</a></td><td>
+                When FEAT_PMUv3_SS is implemented
+            </td><td>When FEAT_PMUv3_SS is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x700</span></td><td><a href="pmu.pmicntsvr_el1.html">PMICNTSVR_EL1</a></td><td>
+                When FEAT_PMUv3_SS is implemented and FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented and FEAT_PMUv3_SS is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0x800 + (4 * n) for n in 63:0</span></td><td><a href="pmu.pmevfilt2rn.html">PMEVFILT2R&lt;n>[31:0]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements <ins>PMEVFILT2R</ins><del>PMFILT2R</del>&lt;n></td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0x800 + (8 * n) for n in 63:0</span></td><td><a href="pmu.pmevfilt2rn.html">PMEVFILT2R&lt;n>[63:0]</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements <ins>PMEVFILT2R</ins><del>PMFILT2R</del>&lt;n></td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xA00 + (4 * n) for n in 30:0</span></td><td><a href="pmu.pmevtypern_el0.html">PMEVTYPER&lt;n>_EL0[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and (FEAT_PMUv3_TH is implemented or FEAT_PMUv3p8 is implemented)
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xA7C</span></td><td><a href="pmu.pmccfiltr_el0.html">PMCCFILTR_EL0[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and (FEAT_PMUv3_TH is implemented or FEAT_PMUv3p8 is implemented)
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xA80</span></td><td><a href="pmu.pmicfiltr_el0.html">PMICFILTR_EL0[63:32]</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC00</span></td><td><a href="pmu.pmcntenset_el0.html">PMCNTENSET_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC00</span></td><td><a href="pmu.pmcntenset_el0.html">PMCNTENSET_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC10</span></td><td><a href="pmu.pmcnten.html">PMCNTEN</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC20</span></td><td><a href="pmu.pmcntenclr_el0.html">PMCNTENCLR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC20</span></td><td><a href="pmu.pmcntenclr_el0.html">PMCNTENCLR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC40</span></td><td><a href="pmu.pmintenset_el1.html">PMINTENSET_EL1</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC40</span></td><td><a href="pmu.pmintenset_el1.html">PMINTENSET_EL1</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC50</span></td><td><a href="pmu.pminten.html">PMINTEN</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC60</span></td><td><a href="pmu.pmintenclr_el1.html">PMINTENCLR_EL1</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC60</span></td><td><a href="pmu.pmintenclr_el1.html">PMINTENCLR_EL1</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC80</span></td><td><a href="pmu.pmovsclr_el0.html">PMOVSCLR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC80</span></td><td><a href="pmu.pmovsclr_el0.html">PMOVSCLR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xC90</span></td><td><a href="pmu.pmovs.html">PMOVS</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xCA0</span></td><td><a href="pmu.pmswinc_el0.html">PMSWINC_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and an implementation implements PMSWINC_EL0</td><td class="pseudocode">WO</td></tr><tr><td><span class="hexnumber">0xCA0</span></td><td><a href="pmu.pmzr_el0.html">PMZR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3p9 is implemented</td><td class="pseudocode">WO</td></tr><tr><td><span class="hexnumber">0xCC0</span></td><td><a href="pmu.pmovsset_el0.html">PMOVSSET_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xCC0</span></td><td><a href="pmu.pmovsset_el0.html">PMOVSSET_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xCE0</span></td><td><a href="pmu.pmcgcr0.html">PMCGCR0</a></td><td>
+                When FEAT_PMUv3_ICNTR is implemented
+            </td><td>When FEAT_PMUv3_ICNTR is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE00</span></td><td><a href="pmu.pmcfgr.html">PMCFGR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE00</span></td><td><a href="pmu.pmcfgr.html">PMCFGR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE04</span></td><td><a href="pmu.pmcr_el0.html">PMCR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xE08</span></td><td><a href="pmu.pmiidr.html">PMIIDR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When (FEAT_PMUv3_EXT32 is implemented and an implementation implements PMIIDR) or FEAT_PMUv3_EXT64 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE10</span></td><td><a href="pmu.pmcr_el0.html">PMCR_EL0</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xE20</span></td><td><a href="pmu.pmceid0.html">PMCEID0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE24</span></td><td><a href="pmu.pmceid1.html">PMCEID1</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE28</span></td><td><a href="pmu.pmceid2.html">PMCEID2</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p1 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE2C</span></td><td><a href="pmu.pmceid3.html">PMCEID3</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p1 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE30</span></td><td><a href="pmu.pmsscr_el1.html">PMSSCR_EL1</a></td><td>
+                When FEAT_PMUv3_SS is implemented
+            </td><td>When FEAT_PMUv3_SS is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE40</span></td><td><a href="pmu.pmmir.html">PMMIR</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented or FEAT_PMUv3p9 is implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PMUv3p4 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xE40</span></td><td><a href="pmu.pmmir.html">PMMIR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented
+            </td><td>When FEAT_PMUv3_EXT is implemented and FEAT_PMUv3p4 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber"><ins>0xE50</ins></span></td><td><a href="pmu.pmpcsctl.html"><ins>PMPCSCTL</ins></a></td><td><ins>
+                When FEAT_PCSRv8p9 is implemented
+            </ins></td><td><ins>When FEAT_PCSRv8p9 is implemented</ins></td><td class="pseudocode"><ins>RW</ins></td></tr><tr><td><span class="hexnumber">0xF00</span></td><td><a href="pmu.pmitctrl.html">PMITCTRL</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and an implementation implements PMITCTRL</td><td class="pseudocode">RW</td></tr><tr><td><span class="hexnumber">0xFA8</span></td><td><a href="pmu.pmdevaff.html">PMDEVAFF</a></td><td>
+                When FEAT_PMUv3_EXT64 is implemented
+            </td><td>When FEAT_PMUv3_EXT64 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFA8</span></td><td><a href="pmu.pmdevaff0.html">PMDEVAFF0</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFAC</span></td><td><a href="pmu.pmdevaff1.html">PMDEVAFF1</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFB0</span></td><td><a href="pmu.pmlar.html">PMLAR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">WO</td></tr><tr><td><span class="hexnumber">0xFB4</span></td><td><a href="pmu.pmlsr.html">PMLSR</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFB8</span></td><td><a href="pmu.pmauthstatus.html">PMAUTHSTATUS</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFBC</span></td><td><a href="pmu.pmdevarch.html">PMDEVARCH</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFC8</span></td><td><a href="pmu.pmdevid.html">PMDEVID</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFCC</span></td><td><a href="pmu.pmdevtype.html">PMDEVTYPE</a></td><td>
+                When FEAT_PMUv3_EXT32 is implemented
+            </td><td>When FEAT_PMUv3_EXT32 is implemented and an implementation implements PMDEVTYPE</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFD0</span></td><td><a href="pmu.pmpidr4.html">PMPIDR4</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR4</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFE0</span></td><td><a href="pmu.pmpidr0.html">PMPIDR0</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR0</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFE4</span></td><td><a href="pmu.pmpidr1.html">PMPIDR1</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR1</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFE8</span></td><td><a href="pmu.pmpidr2.html">PMPIDR2</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR2</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFEC</span></td><td><a href="pmu.pmpidr3.html">PMPIDR3</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR3</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFF0</span></td><td><a href="pmu.pmcidr0.html">PMCIDR0</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR0</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFF4</span></td><td><a href="pmu.pmcidr1.html">PMCIDR1</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR1</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFF8</span></td><td><a href="pmu.pmcidr2.html">PMCIDR2</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR2</td><td class="pseudocode">RO</td></tr><tr><td><span class="hexnumber">0xFFC</span></td><td><a href="pmu.pmcidr3.html">PMCIDR3</a></td><td>-</td><td>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR3</td><td class="pseudocode">RO</td></tr></table><p>Direct accesses to other offsets in this block are <span class="arm-defined-word">RES0</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>01</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

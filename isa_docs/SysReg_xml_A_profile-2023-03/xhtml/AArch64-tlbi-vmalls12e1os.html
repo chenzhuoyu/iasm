@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS, TLB Invalidate by VMID, All at Stage 1 and 2, EL1, Outer Shareable</h1><p>The TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS characteristics are:</p><h2>Purpose</h2>
+        <p>Invalidates cached copies of translation table entries from TLBs that meet all the following requirements:</p>
+
+      
+        <ul>
+<li>
+<p>The entry is a stage 1 or stage 2 translation table entry, from any level of the translation table walk.</p>
+
+</li><li>
+<p>If <span class="xref">FEAT_RME</span> is implemented, one of the following applies:</p>
+<ul>
+<li>If <a href="AArch64-scr_el3.html">SCR_EL3</a>.{NSE, NS} is {0, 0}, then:<ul>
+<li>The entry would be required to translate an address using the Secure EL1&amp;0 translation regime.
+</li><li>If <span class="xref">FEAT_SEL2</span> is implemented and enabled, the entry would be used with the current VMID.
+</li></ul>
+
+</li><li>If <a href="AArch64-scr_el3.html">SCR_EL3</a>.{NSE, NS} is {0, 1}, then:<ul>
+<li>The entry would be required to translate an address using the Non-secure EL1&amp;0 translation regime.
+</li><li>If Non-secure EL2 is implemented, the entry would be used with the current VMID.
+</li></ul>
+
+</li><li>If <a href="AArch64-scr_el3.html">SCR_EL3</a>.{NSE, NS} is {1, 1}, then:<ul>
+<li>The entry would be required to translate an address using the Realm EL1&amp;0 translation regime.
+</li><li>The entry would be used with the current VMID.
+</li></ul>
+
+</li></ul>
+
+</li><li>
+<p>If <span class="xref">FEAT_RME</span> is not implemented, one of the following applies:</p>
+<ul>
+<li>If <a href="AArch64-scr_el3.html">SCR_EL3</a>.NS is 0, then:<ul>
+<li>The entry would be required to translate an address using the Secure EL1&amp;0 translation regime.
+</li><li>If <span class="xref">FEAT_SEL2</span> is implemented and enabled, the entry would be used with the current VMID.
+</li></ul>
+
+</li><li>If <a href="AArch64-scr_el3.html">SCR_EL3</a>.NS is 1, then:<ul>
+<li>The entry would be required to translate an address using the Non-secure EL1&amp;0 translation regime.
+</li><li>If Non-secure EL2 is implemented, the entry would be used with the current VMID.
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+      
+        <p>The invalidation applies to all PEs in the same Outer Shareable shareability domain as the PE that executes this System instruction.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>When 
+a TLB maintenance instruction is generated to the Secure EL1&amp;0 translation regime and is defined to pass a VMID argument, or would be defined to pass a VMID argument if <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2==1, then:</p><ul><li>A PE with <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2==1 is not architecturally required to invalidate any entries in the Secure EL1&amp;0 translation of a PE in the same required shareability domain with <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2==0.</li><li>A PE with <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2==0 is not architecturally required to invalidate any entries in the Secure EL1&amp;0 translation of a PE in the same required shareability domain with <a href="AArch64-scr_el3.html">SCR_EL3</a>.EEL2==1.</li><li>A PE is architecturally required to invalidate all relevant entries in the Secure EL1&amp;0 translation of a System MMU in the same required shareability domain with a VMID of 0.</li></ul></div>
+      
+        <div class="note"><span class="note-header">Note</span><p>For the EL1&amp;0 translation regimes, the invalidation applies to both global entries and non-global entries with any ASID.</p></div>
+      
+        <p>If <span class="xref">FEAT_XS</span> is implemented, the nXS variant of this System instruction is defined.</p>
+
+      
+        <p>Both variants perform the same invalidation, but the TLBI System instruction without the nXS qualifier waits for all memory accesses using in-scope old translation information to complete before it is considered complete.</p>
+
+      
+        <p>The TLBI System instruction with the nXS qualifier is considered complete when the subset of these memory accesses with XS attribute set to 0 are complete.</p>
+      <h2>Configuration</h2><p>This instruction is present only when FEAT_TLBIOS is implemented. Otherwise, direct accesses to TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS is a 64-bit System instruction.</p>
+      <h2>Field descriptions</h2><p>This instruction has no applicable fields.</p><p>The value in the register specified by &lt;Xt&gt; is ignored.</p><div class="access_mechanisms"><h2>Executing TLBI VMALLS12E1OS, TLBI VMALLS12E1OSNXS</h2>
+        <p>The Rt field should be set to <span class="binarynumber">0b11111</span>. If the Rt field is not set to <span class="binarynumber">0b11111</span>, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether:</p>
+
+      
+        <ul>
+<li>
+<p>The instruction is <span class="arm-defined-word">UNDEFINED</span>.</p>
+
+</li><li>
+<p>The instruction behaves as if the Rt field is set to <span class="binarynumber">0b11111</span>.</p>
+
+</li></ul>
+      <p>Accesses to this instruction use the following encodings in the System instruction encoding space:</p><h4 class="assembler">TLBI VMALLS12E1OS{, &lt;Xt&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b100</td><td>0b1000</td><td>0b0001</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    AArch64.TLBI_VMALLS12(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_AllAttr);
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        AArch64.TLBI_VMALL(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_AllAttr);
+    else
+        AArch64.TLBI_VMALLS12(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_AllAttr);
+                </p><h4 class="assembler">TLBI VMALLS12E1OSNXS{, &lt;Xt&gt;}</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b100</td><td>0b1001</td><td>0b0001</td><td>0b110</td></tr></table><p class="pseudocode">
+if !IsFeatureImplemented(FEAT_XS) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    AArch64.TLBI_VMALLS12(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_ExcludeXS);
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        AArch64.TLBI_VMALL(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_ExcludeXS);
+    else
+        AArch64.TLBI_VMALLS12(SecurityStateAtEL(EL1), Regime_EL10, VMID[], Shareability_OSH, TLBI_ExcludeXS);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

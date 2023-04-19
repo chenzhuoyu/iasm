@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MDRAR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MDRAR_EL1, Monitor Debug ROM Address Register</h1><p>The MDRAR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Defines the base physical address of a 4KB-aligned memory-mapped debug component, usually a ROM table that locates and describes the memory-mapped debug components in the system. Armv8 deprecates any use of this register.</p>
+      <h2>Configuration</h2><p>AArch64 System register MDRAR_EL1 bits [63:0] are architecturally mapped to AArch32 System register <a href="AArch32-dbgdrar.html">DBGDRAR[63:0]</a>.</p><h2>Attributes</h2>
+        <p>MDRAR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-63_56">RES0</a></td><td class="lr" colspan="24"><a href="#fieldset_0-55_12">ROMADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-55_12">ROMADDR</a></td><td class="lr" colspan="10"><a href="#fieldset_0-11_2">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-1_0">Valid</a></td></tr></tbody></table><h4 id="fieldset_0-63_56">Bits [63:56]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-55_12">ROMADDR, bits [55:12]</h4><div class="field"><div class="partial_fieldset"><h3 id="fieldset_0-55_12_0">ROMADDR encoding when FEAT_D128 is implemented and MDRAR_EL1.Valid != 0b00</h3><table class="regdiagram"><thead><tr><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-55_12_0-43_0">ROMADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-55_12_0-43_0">ROMADDR</a></td></tr></tbody></table><h4 id="fieldset_0-55_12_0-43_0">ROMADDR, bits [43:0]</h4><div class="field"><p>Bits [55:12] of the ROM table physical address.</p>
+<p>Bits [11:0] of the ROM table physical address are zero.</p>
+<p>For implementations with fewer than 56 physical address bits, the corresponding upper bits of this field are <span class="arm-defined-word">RES0</span></p>
+<p>In an implementation that includes EL3, ROMADDR is an address in Non-secure PA space. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in Secure PA space. If FEAT_RME is implemented, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in the Root or Realm PA spaces.</p>
+<p>Arm strongly recommends that bits ROMADDR[(PAsize-1):32] are zero in any system where the implementation only supports execution in AArch32 state.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-55_12_1">ROMADDR encoding when FEAT_D128 is not implemented, FEAT_LPA is implemented and MDRAR_EL1.Valid != 0b00</h3><table class="regdiagram"><thead><tr><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-55_12_1-43_40">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_0-55_12_1-39_0">ROMADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-55_12_1-39_0">ROMADDR</a></td></tr></tbody></table><h4 id="fieldset_0-55_12_1-43_40">Bits [43:40]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-55_12_1-39_0">ROMADDR, bits [39:0]</h4><div class="field"><p>Bits [51:12] of the ROM table physical address.</p>
+<p>Bits [11:0] of the ROM table physical address are zero.</p>
+<p>For implementations with fewer than 52 physical address bits, the corresponding upper bits of this field are <span class="arm-defined-word">RES0</span></p>
+<p>In an implementation that includes EL3, ROMADDR is an address in Non-secure PA space. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in Secure PA space. If FEAT_RME is implemented, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in the Root or Realm PA spaces.</p>
+<p>Arm strongly recommends that bits ROMADDR[(PAsize-1):32] are zero in any system where the implementation only supports execution in AArch32 state.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-55_12_2">ROMADDR encoding when FEAT_D128 is not implemented, FEAT_LPA is not implemented and MDRAR_EL1.Valid != 0b00</h3><table class="regdiagram"><thead><tr><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-55_12_2-43_36">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_12_2-35_0">ROMADDR</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-55_12_2-35_0">ROMADDR</a></td></tr></tbody></table><h4 id="fieldset_0-55_12_2-43_36">Bits [43:36]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+          </div><h4 id="fieldset_0-55_12_2-35_0">ROMADDR, bits [35:0]</h4><div class="field"><p>Bits [39:12] of the ROM table physical address.</p>
+<p>Bits [11:0] of the ROM table physical address are zero.</p>
+<p>For implementations with fewer than 48 physical address bits, the corresponding upper bits of this field are <span class="arm-defined-word">RES0</span></p>
+<p>In an implementation that includes EL3, ROMADDR is an address in Non-secure PA space. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in Secure PA space. If FEAT_RME is implemented, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the ROM table is also accessible in Root or Realm PA spaces.</p>
+<p>Arm strongly recommends that bits ROMADDR[(PAsize-1):32] are zero in any system where the implementation only supports execution in AArch32 state.</p></div></div><div class="partial_fieldset"><h3 id="fieldset_0-55_12_3">ROMADDR encoding when MDRAR_EL1.Valid == 0b00</h3><table class="regdiagram"><thead><tr><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="12"><a href="#fieldset_0-55_12_3-43_0">UNKNOWN</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-55_12_3-43_0">UNKNOWN</a></td></tr></tbody></table><h4 id="fieldset_0-55_12_3-43_0">Bits [43:0]</h4><div class="field">
+            <p>Reserved, <span class="arm-defined-word">UNKNOWN</span>.</p>
+          </div></div></div><h4 id="fieldset_0-11_2">Bits [11:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_0">Valid, bits [1:0]</h4><div class="field">
+      <p>This field indicates whether the ROM Table address is valid.</p>
+    <table class="valuetable"><tr><th>Valid</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>ROM Table address is not valid. Software must ignore ROMADDR.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>ROM Table address is valid.</p>
+        </td></tr></table><p>Other values are reserved.</p>
+<p>Arm recommends implementations set this field to zero.</p></div><div class="access_mechanisms"><h2>Accessing MDRAR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, MDRAR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b000</td><td>0b0001</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.&lt;TDE,TDRA&gt; != '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDRAR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDRAR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MDRAR_EL1;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

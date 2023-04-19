@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SPMSCR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SPMSCR_EL1, System Performance Monitors Secure Control Register</h1><p>The SPMSCR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls observability of Secure events by System PMU &lt;s&gt;, and optionally controls Secure attributes for message signaled interrupts and Non-secure access to the performance monitor registers.</p>
+      <h2>Configuration</h2><p>This register is present only when Secure EL1 is implemented and FEAT_SPMU is implemented. Otherwise, direct accesses to SPMSCR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>SPMSCR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">RAO</a></td><td class="lr" colspan="26"><a href="#fieldset_0-30_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">NAO</a></td><td class="lr" colspan="3"><a href="#fieldset_0-3_1">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">SO</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">IMPLEMENTATION DEFINED, bits [63:32]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span> observation controls. Additional <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> bits to control certain types of filter or events by System PMU &lt;s&gt;.</p>
+    <p>The reset behavior of this field is:</p><ul><li>
+                        On a System PMU reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-31_31">Bit [31]</h4><div class="field">
+      <p>Reserved, RAO.</p>
+    <p>Indicates SPMSCR_EL1 is implemented by System PMU &lt;s&gt;.</p>
+<p>This field reads-as-one.</p></div><h4 id="fieldset_0-30_5">Bits [30:5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">NAO, bit [4]<span class="condition"><br/>When System PMU &lt;s&gt; can count or monitor non-attributable events:
+                        </span></h4><div class="field">
+      <p>Non-attributable Observation. Controls whether events or monitorable characteristics not attributable with any source can be monitored by System PMU &lt;s&gt;.</p>
+    <table class="valuetable"><tr><th>NAO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Events not attributable with any event source are not counted by System PMU &lt;s&gt;, unless overridden by SPMSCR_EL1.SO.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Counting non-attributable events by System PMU &lt;s&gt; is not prevented by this mechanism.</p>
+        </td></tr></table><p>When both <a href="AArch64-spmrootcr_el3.html">SPMROOTCR_EL3</a> and SPMSCR_EL1 are implemented, non-attributable events are counted only if both <a href="AArch64-spmrootcr_el3.html">SPMROOTCR_EL3</a>.NAO is 1 and SPMSCR_EL1.{NAO, SO} is nonzero.</p>
+<p>SPMSCR_EL1.NAO has the opposite reset polarity to <a href="AArch64-spmrootcr_el3.html">SPMROOTCR_EL3</a>.NAO.</p>
+<p>This field is optional if Root and Realm states are not implemented. When this field is not implemented, System PMU &lt;s&gt; behaves as if SPMSCR_EL1.NAO is 0, and whether events or monitorable characteristics not attributable with any source can be monitored is controlled by SPMSCR_EL1.SO.</p><p>The reset behavior of this field is:</p><ul><li>On a System PMU reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_1">Bits [3:1]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0">SO, bit [0]</h4><div class="field">
+      <p>Secure Observation. Controls whether events or monitorable characteristics attributable to a Secure event source can be monitored by System PMU &lt;s&gt;.</p>
+    <table class="valuetable"><tr><th>SO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Events attributable to a Secure event source are not counted by System PMU &lt;s&gt;.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Counting events by System PMU &lt;s&gt; that are attributable to a Secure event source is not prevented by this mechanism.</p>
+        </td></tr></table>
+      <p>Also controls whether events or monitorable characteristics not attributable with any source can be monitored by System PMU &lt;s&gt;. See SPMSCR_EL1.NAO.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a System PMU reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing SPMSCR_EL1</h2>
+        <p>To access SPMSCR_EL1 for System PMU &lt;s&gt;, set <a href="AArch64-spmselr_el0.html">SPMSELR_EL0</a>.SYSPMUSEL to s.</p>
+
+      
+        <p>SPMSCR_EL1 reads-as-zero and ignores writes if any of the following are true:</p>
+
+      
+        <ul>
+<li>System PMU &lt;s&gt; is not implemented.
+</li><li>System PMU &lt;s&gt; does not implement SPMSCR_EL1.
+</li></ul>
+
+      
+        <p>SPMSCR_EL1 is <span class="arm-defined-word">UNDEFINED</span> if accessed in Non-secure or Realm state.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SPMSCR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b111</td><td>0b1001</td><td>0b1110</td><td>0b111</td></tr></table><p class="pseudocode">
+if IsCurrentSecurityState(SS_NonSecure) || (IsFeatureImplemented(FEAT_RME) &amp;&amp; IsCurrentSecurityState(SS_Realm)) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGRTR2_EL2.nSPMSCR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; == '00' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)];
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)];
+                </p><h4 class="assembler">MSR SPMSCR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b111</td><td>0b1001</td><td>0b1110</td><td>0b111</td></tr></table><p class="pseudocode">
+if IsCurrentSecurityState(SS_NonSecure) || (IsFeatureImplemented(FEAT_RME) &amp;&amp; IsCurrentSecurityState(SS_Realm)) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HaveEL(EL3) &amp;&amp; SCR_EL3.FGTEn2 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT2) &amp;&amp; HDFGWTR2_EL2.nSPMSCR_EL1 == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.EnSPM == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; SPMACCESSR_EL2&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)] = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.EnPM2 == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; SPMACCESSR_EL3&lt;(UInt(SPMSELR_EL0.SYSPMUSEL) * 2) + 1:UInt(SPMSELR_EL0.SYSPMUSEL) * 2&gt; != '11' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)] = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    SPMSCR_EL1[UInt(SPMSELR_EL0.SYSPMUSEL)] = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

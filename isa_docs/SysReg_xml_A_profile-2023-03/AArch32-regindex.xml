@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE register_index SYSTEM 'reg_alphaindex.dtd'>
+<!--Copyright (c) 2010-2017 ARM Limited or its affiliates. All rights reserved.-->
+<!--This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by ARM and the party that ARM delivered this document to.-->
+<!--The data contained in this document is preliminary and subject to change or correction following further review.-->
+<?xml-stylesheet href="reg_alphaindex.xsl" type="text/xsl"?>
+<register_index>
+  <toptitle architecture="AArch32 Registers"/>
+  <register_links title="AArch32 System Registers">
+    <register_link heading="ACTLR" id="ACTLR" registerfile="AArch32-actlr.xml">Auxiliary Control Register</register_link>
+    <register_link heading="ACTLR2" id="ACTLR2" registerfile="AArch32-actlr2.xml">Auxiliary Control Register 2</register_link>
+    <register_link heading="ADFSR" id="ADFSR" registerfile="AArch32-adfsr.xml">Auxiliary Data Fault Status Register</register_link>
+    <register_link heading="AIDR" id="AIDR" registerfile="AArch32-aidr.xml">Auxiliary ID Register</register_link>
+    <register_link heading="AIFSR" id="AIFSR" registerfile="AArch32-aifsr.xml">Auxiliary Instruction Fault Status Register</register_link>
+    <register_link heading="AMAIR0" id="AMAIR0" registerfile="AArch32-amair0.xml">Auxiliary Memory Attribute Indirection Register 0</register_link>
+    <register_link heading="AMAIR1" id="AMAIR1" registerfile="AArch32-amair1.xml">Auxiliary Memory Attribute Indirection Register 1</register_link>
+    <register_link heading="AMCFGR" id="AMCFGR" registerfile="AArch32-amcfgr.xml">Activity Monitors Configuration Register</register_link>
+    <register_link heading="AMCGCR" id="AMCGCR" registerfile="AArch32-amcgcr.xml">Activity Monitors Counter Group Configuration Register</register_link>
+    <register_link heading="AMCNTENCLR0" id="AMCNTENCLR0" registerfile="AArch32-amcntenclr0.xml">Activity Monitors Count Enable Clear Register 0</register_link>
+    <register_link heading="AMCNTENCLR1" id="AMCNTENCLR1" registerfile="AArch32-amcntenclr1.xml">Activity Monitors Count Enable Clear Register 1</register_link>
+    <register_link heading="AMCNTENSET0" id="AMCNTENSET0" registerfile="AArch32-amcntenset0.xml">Activity Monitors Count Enable Set Register 0</register_link>
+    <register_link heading="AMCNTENSET1" id="AMCNTENSET1" registerfile="AArch32-amcntenset1.xml">Activity Monitors Count Enable Set Register 1</register_link>
+    <register_link heading="AMCR" id="AMCR" registerfile="AArch32-amcr.xml">Activity Monitors Control Register</register_link>
+    <register_link heading="AMEVCNTR0&lt;n&gt;" id="AMEVCNTR0&lt;n&gt;" registerfile="AArch32-amevcntr0n.xml">Activity Monitors Event Counter Registers 0</register_link>
+    <register_link heading="AMEVCNTR1&lt;n&gt;" id="AMEVCNTR1&lt;n&gt;" registerfile="AArch32-amevcntr1n.xml">Activity Monitors Event Counter Registers 1</register_link>
+    <register_link heading="AMEVTYPER0&lt;n&gt;" id="AMEVTYPER0&lt;n&gt;" registerfile="AArch32-amevtyper0n.xml">Activity Monitors Event Type Registers 0</register_link>
+    <register_link heading="AMEVTYPER1&lt;n&gt;" id="AMEVTYPER1&lt;n&gt;" registerfile="AArch32-amevtyper1n.xml">Activity Monitors Event Type Registers 1</register_link>
+    <register_link heading="AMUSERENR" id="AMUSERENR" registerfile="AArch32-amuserenr.xml">Activity Monitors User Enable Register</register_link>
+    <register_link heading="APSR" id="APSR" registerfile="AArch32-apsr.xml">Application Program Status Register</register_link>
+    <register_link heading="CCSIDR" id="CCSIDR" registerfile="AArch32-ccsidr.xml">Current Cache Size ID Register</register_link>
+    <register_link heading="CCSIDR2" id="CCSIDR2" registerfile="AArch32-ccsidr2.xml">Current Cache Size ID Register 2</register_link>
+    <register_link heading="CLIDR" id="CLIDR" registerfile="AArch32-clidr.xml">Cache Level ID Register</register_link>
+    <register_link heading="CNTFRQ" id="CNTFRQ" registerfile="AArch32-cntfrq.xml">Counter-timer Frequency register</register_link>
+    <register_link heading="CNTHCTL" id="CNTHCTL" registerfile="AArch32-cnthctl.xml">Counter-timer Hyp Control register</register_link>
+    <register_link heading="CNTHPS_CTL" id="CNTHPS_CTL" registerfile="AArch32-cnthps_ctl.xml">Counter-timer Secure Physical Timer Control Register (EL2)</register_link>
+    <register_link heading="CNTHPS_CVAL" id="CNTHPS_CVAL" registerfile="AArch32-cnthps_cval.xml">Counter-timer Secure Physical Timer CompareValue Register (EL2)</register_link>
+    <register_link heading="CNTHPS_TVAL" id="CNTHPS_TVAL" registerfile="AArch32-cnthps_tval.xml">Counter-timer Secure Physical Timer TimerValue Register (EL2)</register_link>
+    <register_link heading="CNTHP_CTL" id="CNTHP_CTL" registerfile="AArch32-cnthp_ctl.xml">Counter-timer Hyp Physical Timer Control register</register_link>
+    <register_link heading="CNTHP_CVAL" id="CNTHP_CVAL" registerfile="AArch32-cnthp_cval.xml">Counter-timer Hyp Physical CompareValue register</register_link>
+    <register_link heading="CNTHP_TVAL" id="CNTHP_TVAL" registerfile="AArch32-cnthp_tval.xml">Counter-timer Hyp Physical Timer TimerValue register</register_link>
+    <register_link heading="CNTHVS_CTL" id="CNTHVS_CTL" registerfile="AArch32-cnthvs_ctl.xml">Counter-timer Secure Virtual Timer Control Register (EL2)</register_link>
+    <register_link heading="CNTHVS_CVAL" id="CNTHVS_CVAL" registerfile="AArch32-cnthvs_cval.xml">Counter-timer Secure Virtual Timer CompareValue Register (EL2)</register_link>
+    <register_link heading="CNTHVS_TVAL" id="CNTHVS_TVAL" registerfile="AArch32-cnthvs_tval.xml">Counter-timer Secure Virtual Timer TimerValue Register (EL2)</register_link>
+    <register_link heading="CNTHV_CTL" id="CNTHV_CTL" registerfile="AArch32-cnthv_ctl.xml">Counter-timer Virtual Timer Control register (EL2)</register_link>
+    <register_link heading="CNTHV_CVAL" id="CNTHV_CVAL" registerfile="AArch32-cnthv_cval.xml">Counter-timer Virtual Timer CompareValue register (EL2)</register_link>
+    <register_link heading="CNTHV_TVAL" id="CNTHV_TVAL" registerfile="AArch32-cnthv_tval.xml">Counter-timer Virtual Timer TimerValue register (EL2)</register_link>
+    <register_link heading="CNTKCTL" id="CNTKCTL" registerfile="AArch32-cntkctl.xml">Counter-timer Kernel Control register</register_link>
+    <register_link heading="CNTPCT" id="CNTPCT" registerfile="AArch32-cntpct.xml">Counter-timer Physical Count register</register_link>
+    <register_link heading="CNTPCTSS" id="CNTPCTSS" registerfile="AArch32-cntpctss.xml">Counter-timer Self-Synchronized Physical Count register</register_link>
+    <register_link heading="CNTP_CTL" id="CNTP_CTL" registerfile="AArch32-cntp_ctl.xml">Counter-timer Physical Timer Control register</register_link>
+    <register_link heading="CNTP_CVAL" id="CNTP_CVAL" registerfile="AArch32-cntp_cval.xml">Counter-timer Physical Timer CompareValue register</register_link>
+    <register_link heading="CNTP_TVAL" id="CNTP_TVAL" registerfile="AArch32-cntp_tval.xml">Counter-timer Physical Timer TimerValue register</register_link>
+    <register_link heading="CNTVCT" id="CNTVCT" registerfile="AArch32-cntvct.xml">Counter-timer Virtual Count register</register_link>
+    <register_link heading="CNTVCTSS" id="CNTVCTSS" registerfile="AArch32-cntvctss.xml">Counter-timer Self-Synchronized Virtual Count register</register_link>
+    <register_link heading="CNTVOFF" id="CNTVOFF" registerfile="AArch32-cntvoff.xml">Counter-timer Virtual Offset register</register_link>
+    <register_link heading="CNTV_CTL" id="CNTV_CTL" registerfile="AArch32-cntv_ctl.xml">Counter-timer Virtual Timer Control register</register_link>
+    <register_link heading="CNTV_CVAL" id="CNTV_CVAL" registerfile="AArch32-cntv_cval.xml">Counter-timer Virtual Timer CompareValue register</register_link>
+    <register_link heading="CNTV_TVAL" id="CNTV_TVAL" registerfile="AArch32-cntv_tval.xml">Counter-timer Virtual Timer TimerValue register</register_link>
+    <register_link heading="CONTEXTIDR" id="CONTEXTIDR" registerfile="AArch32-contextidr.xml">Context ID Register</register_link>
+    <register_link heading="CPACR" id="CPACR" registerfile="AArch32-cpacr.xml">Architectural Feature Access Control Register</register_link>
+    <register_link heading="CPSR" id="CPSR" registerfile="AArch32-cpsr.xml">Current Program Status Register</register_link>
+    <register_link heading="CSSELR" id="CSSELR" registerfile="AArch32-csselr.xml">Cache Size Selection Register</register_link>
+    <register_link heading="CTR" id="CTR" registerfile="AArch32-ctr.xml">Cache Type Register</register_link>
+    <register_link heading="DACR" id="DACR" registerfile="AArch32-dacr.xml">Domain Access Control Register</register_link>
+    <register_link heading="DBGAUTHSTATUS" id="DBGAUTHSTATUS" registerfile="AArch32-dbgauthstatus.xml">Debug Authentication Status register</register_link>
+    <register_link heading="DBGBCR&lt;n&gt;" id="DBGBCR&lt;n&gt;" registerfile="AArch32-dbgbcrn.xml">Debug Breakpoint Control Registers</register_link>
+    <register_link heading="DBGBVR&lt;n&gt;" id="DBGBVR&lt;n&gt;" registerfile="AArch32-dbgbvrn.xml">Debug Breakpoint Value Registers</register_link>
+    <register_link heading="DBGBXVR&lt;n&gt;" id="DBGBXVR&lt;n&gt;" registerfile="AArch32-dbgbxvrn.xml">Debug Breakpoint Extended Value Registers</register_link>
+    <register_link heading="DBGCLAIMCLR" id="DBGCLAIMCLR" registerfile="AArch32-dbgclaimclr.xml">Debug CLAIM Tag Clear register</register_link>
+    <register_link heading="DBGCLAIMSET" id="DBGCLAIMSET" registerfile="AArch32-dbgclaimset.xml">Debug CLAIM Tag Set register</register_link>
+    <register_link heading="DBGDCCINT" id="DBGDCCINT" registerfile="AArch32-dbgdccint.xml">DCC Interrupt Enable Register</register_link>
+    <register_link heading="DBGDEVID" id="DBGDEVID" registerfile="AArch32-dbgdevid.xml">Debug Device ID register 0</register_link>
+    <register_link heading="DBGDEVID1" id="DBGDEVID1" registerfile="AArch32-dbgdevid1.xml">Debug Device ID register 1</register_link>
+    <register_link heading="DBGDEVID2" id="DBGDEVID2" registerfile="AArch32-dbgdevid2.xml">Debug Device ID register 2</register_link>
+    <register_link heading="DBGDIDR" id="DBGDIDR" registerfile="AArch32-dbgdidr.xml">Debug ID Register</register_link>
+    <register_link heading="DBGDRAR" id="DBGDRAR" registerfile="AArch32-dbgdrar.xml">Debug ROM Address Register</register_link>
+    <register_link heading="DBGDSAR" id="DBGDSAR" registerfile="AArch32-dbgdsar.xml">Debug Self Address Register</register_link>
+    <register_link heading="DBGDSCRext" id="DBGDSCRext" registerfile="AArch32-dbgdscrext.xml">Debug Status and Control Register, External View</register_link>
+    <register_link heading="DBGDSCRint" id="DBGDSCRint" registerfile="AArch32-dbgdscrint.xml">Debug Status and Control Register, Internal View</register_link>
+    <register_link heading="DBGDTRRXext" id="DBGDTRRXext" registerfile="AArch32-dbgdtrrxext.xml">Debug OS Lock Data Transfer Register, Receive, External View</register_link>
+    <register_link heading="DBGDTRRXint" id="DBGDTRRXint" registerfile="AArch32-dbgdtrrxint.xml">Debug Data Transfer Register, Receive</register_link>
+    <register_link heading="DBGDTRTXext" id="DBGDTRTXext" registerfile="AArch32-dbgdtrtxext.xml">Debug OS Lock Data Transfer Register, Transmit</register_link>
+    <register_link heading="DBGDTRTXint" id="DBGDTRTXint" registerfile="AArch32-dbgdtrtxint.xml">Debug Data Transfer Register, Transmit</register_link>
+    <register_link heading="DBGOSDLR" id="DBGOSDLR" registerfile="AArch32-dbgosdlr.xml">Debug OS Double Lock Register</register_link>
+    <register_link heading="DBGOSECCR" id="DBGOSECCR" registerfile="AArch32-dbgoseccr.xml">Debug OS Lock Exception Catch Control Register</register_link>
+    <register_link heading="DBGOSLAR" id="DBGOSLAR" registerfile="AArch32-dbgoslar.xml">Debug OS Lock Access Register</register_link>
+    <register_link heading="DBGOSLSR" id="DBGOSLSR" registerfile="AArch32-dbgoslsr.xml">Debug OS Lock Status Register</register_link>
+    <register_link heading="DBGPRCR" id="DBGPRCR" registerfile="AArch32-dbgprcr.xml">Debug Power Control Register</register_link>
+    <register_link heading="DBGVCR" id="DBGVCR" registerfile="AArch32-dbgvcr.xml">Debug Vector Catch Register</register_link>
+    <register_link heading="DBGWCR&lt;n&gt;" id="DBGWCR&lt;n&gt;" registerfile="AArch32-dbgwcrn.xml">Debug Watchpoint Control Registers</register_link>
+    <register_link heading="DBGWFAR" id="DBGWFAR" registerfile="AArch32-dbgwfar.xml">Debug Watchpoint Fault Address Register</register_link>
+    <register_link heading="DBGWVR&lt;n&gt;" id="DBGWVR&lt;n&gt;" registerfile="AArch32-dbgwvrn.xml">Debug Watchpoint Value Registers</register_link>
+    <register_link heading="DFAR" id="DFAR" registerfile="AArch32-dfar.xml">Data Fault Address Register</register_link>
+    <register_link heading="DFSR" id="DFSR" registerfile="AArch32-dfsr.xml">Data Fault Status Register</register_link>
+    <register_link heading="DISR" id="DISR" registerfile="AArch32-disr.xml">Deferred Interrupt Status Register</register_link>
+    <register_link heading="DLR" id="DLR" registerfile="AArch32-dlr.xml">Debug Link Register</register_link>
+    <register_link heading="DSPSR" id="DSPSR" registerfile="AArch32-dspsr.xml">Debug Saved Program Status Register</register_link>
+    <register_link heading="DSPSR2" id="DSPSR2" registerfile="AArch32-dspsr2.xml">Debug Saved Process State Register 2</register_link>
+    <register_link heading="ELR_hyp" id="ELR_hyp" registerfile="AArch32-elr_hyp.xml">Exception Link Register (Hyp mode)</register_link>
+    <register_link heading="ERRIDR" id="ERRIDR" registerfile="AArch32-erridr.xml">Error Record ID Register</register_link>
+    <register_link heading="ERRSELR" id="ERRSELR" registerfile="AArch32-errselr.xml">Error Record Select Register</register_link>
+    <register_link heading="ERXADDR" id="ERXADDR" registerfile="AArch32-erxaddr.xml">Selected Error Record Address Register</register_link>
+    <register_link heading="ERXADDR2" id="ERXADDR2" registerfile="AArch32-erxaddr2.xml">Selected Error Record Address Register 2</register_link>
+    <register_link heading="ERXCTLR" id="ERXCTLR" registerfile="AArch32-erxctlr.xml">Selected Error Record Control Register</register_link>
+    <register_link heading="ERXCTLR2" id="ERXCTLR2" registerfile="AArch32-erxctlr2.xml">Selected Error Record Control Register 2</register_link>
+    <register_link heading="ERXFR" id="ERXFR" registerfile="AArch32-erxfr.xml">Selected Error Record Feature Register</register_link>
+    <register_link heading="ERXFR2" id="ERXFR2" registerfile="AArch32-erxfr2.xml">Selected Error Record Feature Register 2</register_link>
+    <register_link heading="ERXMISC0" id="ERXMISC0" registerfile="AArch32-erxmisc0.xml">Selected Error Record Miscellaneous Register 0</register_link>
+    <register_link heading="ERXMISC1" id="ERXMISC1" registerfile="AArch32-erxmisc1.xml">Selected Error Record Miscellaneous Register 1</register_link>
+    <register_link heading="ERXMISC2" id="ERXMISC2" registerfile="AArch32-erxmisc2.xml">Selected Error Record Miscellaneous Register 2</register_link>
+    <register_link heading="ERXMISC3" id="ERXMISC3" registerfile="AArch32-erxmisc3.xml">Selected Error Record Miscellaneous Register 3</register_link>
+    <register_link heading="ERXMISC4" id="ERXMISC4" registerfile="AArch32-erxmisc4.xml">Selected Error Record Miscellaneous Register 4</register_link>
+    <register_link heading="ERXMISC5" id="ERXMISC5" registerfile="AArch32-erxmisc5.xml">Selected Error Record Miscellaneous Register 5</register_link>
+    <register_link heading="ERXMISC6" id="ERXMISC6" registerfile="AArch32-erxmisc6.xml">Selected Error Record Miscellaneous Register 6</register_link>
+    <register_link heading="ERXMISC7" id="ERXMISC7" registerfile="AArch32-erxmisc7.xml">Selected Error Record Miscellaneous Register 7</register_link>
+    <register_link heading="ERXSTATUS" id="ERXSTATUS" registerfile="AArch32-erxstatus.xml">Selected Error Record Primary Status Register</register_link>
+    <register_link heading="FCSEIDR" id="FCSEIDR" registerfile="AArch32-fcseidr.xml">FCSE Process ID register</register_link>
+    <register_link heading="FPEXC" id="FPEXC" registerfile="AArch32-fpexc.xml">Floating-Point Exception Control register</register_link>
+    <register_link heading="FPSCR" id="FPSCR" registerfile="AArch32-fpscr.xml">Floating-Point Status and Control Register</register_link>
+    <register_link heading="FPSID" id="FPSID" registerfile="AArch32-fpsid.xml">Floating-Point System ID register</register_link>
+    <register_link heading="HACR" id="HACR" registerfile="AArch32-hacr.xml">Hyp Auxiliary Configuration Register</register_link>
+    <register_link heading="HACTLR" id="HACTLR" registerfile="AArch32-hactlr.xml">Hyp Auxiliary Control Register</register_link>
+    <register_link heading="HACTLR2" id="HACTLR2" registerfile="AArch32-hactlr2.xml">Hyp Auxiliary Control Register 2</register_link>
+    <register_link heading="HADFSR" id="HADFSR" registerfile="AArch32-hadfsr.xml">Hyp Auxiliary Data Fault Status Register</register_link>
+    <register_link heading="HAIFSR" id="HAIFSR" registerfile="AArch32-haifsr.xml">Hyp Auxiliary Instruction Fault Status Register</register_link>
+    <register_link heading="HAMAIR0" id="HAMAIR0" registerfile="AArch32-hamair0.xml">Hyp Auxiliary Memory Attribute Indirection Register 0</register_link>
+    <register_link heading="HAMAIR1" id="HAMAIR1" registerfile="AArch32-hamair1.xml">Hyp Auxiliary Memory Attribute Indirection Register 1</register_link>
+    <register_link heading="HCPTR" id="HCPTR" registerfile="AArch32-hcptr.xml">Hyp Architectural Feature Trap Register</register_link>
+    <register_link heading="HCR" id="HCR" registerfile="AArch32-hcr.xml">Hyp Configuration Register</register_link>
+    <register_link heading="HCR2" id="HCR2" registerfile="AArch32-hcr2.xml">Hyp Configuration Register 2</register_link>
+    <register_link heading="HDCR" id="HDCR" registerfile="AArch32-hdcr.xml">Hyp Debug Control Register</register_link>
+    <register_link heading="HDFAR" id="HDFAR" registerfile="AArch32-hdfar.xml">Hyp Data Fault Address Register</register_link>
+    <register_link heading="HIFAR" id="HIFAR" registerfile="AArch32-hifar.xml">Hyp Instruction Fault Address Register</register_link>
+    <register_link heading="HMAIR0" id="HMAIR0" registerfile="AArch32-hmair0.xml">Hyp Memory Attribute Indirection Register 0</register_link>
+    <register_link heading="HMAIR1" id="HMAIR1" registerfile="AArch32-hmair1.xml">Hyp Memory Attribute Indirection Register 1</register_link>
+    <register_link heading="HPFAR" id="HPFAR" registerfile="AArch32-hpfar.xml">Hyp IPA Fault Address Register</register_link>
+    <register_link heading="HRMR" id="HRMR" registerfile="AArch32-hrmr.xml">Hyp Reset Management Register</register_link>
+    <register_link heading="HSCTLR" id="HSCTLR" registerfile="AArch32-hsctlr.xml">Hyp System Control Register</register_link>
+    <register_link heading="HSR" id="HSR" registerfile="AArch32-hsr.xml">Hyp Syndrome Register</register_link>
+    <register_link heading="HSTR" id="HSTR" registerfile="AArch32-hstr.xml">Hyp System Trap Register</register_link>
+    <register_link heading="HTCR" id="HTCR" registerfile="AArch32-htcr.xml">Hyp Translation Control Register</register_link>
+    <register_link heading="HTPIDR" id="HTPIDR" registerfile="AArch32-htpidr.xml">Hyp Software Thread ID Register</register_link>
+    <register_link heading="HTRFCR" id="HTRFCR" registerfile="AArch32-htrfcr.xml">Hyp Trace Filter Control Register</register_link>
+    <register_link heading="HTTBR" id="HTTBR" registerfile="AArch32-httbr.xml">Hyp Translation Table Base Register</register_link>
+    <register_link heading="HVBAR" id="HVBAR" registerfile="AArch32-hvbar.xml">Hyp Vector Base Address Register</register_link>
+    <register_link heading="ICC_AP0R&lt;n&gt;" id="ICC_AP0R&lt;n&gt;" registerfile="AArch32-icc_ap0rn.xml">Interrupt Controller Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICC_AP1R&lt;n&gt;" id="ICC_AP1R&lt;n&gt;" registerfile="AArch32-icc_ap1rn.xml">Interrupt Controller Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICC_ASGI1R" id="ICC_ASGI1R" registerfile="AArch32-icc_asgi1r.xml">Interrupt Controller Alias Software Generated Interrupt Group 1 Register</register_link>
+    <register_link heading="ICC_BPR0" id="ICC_BPR0" registerfile="AArch32-icc_bpr0.xml">Interrupt Controller Binary Point Register 0</register_link>
+    <register_link heading="ICC_BPR1" id="ICC_BPR1" registerfile="AArch32-icc_bpr1.xml">Interrupt Controller Binary Point Register 1</register_link>
+    <register_link heading="ICC_CTLR" id="ICC_CTLR" registerfile="AArch32-icc_ctlr.xml">Interrupt Controller Control Register</register_link>
+    <register_link heading="ICC_DIR" id="ICC_DIR" registerfile="AArch32-icc_dir.xml">Interrupt Controller Deactivate Interrupt Register</register_link>
+    <register_link heading="ICC_EOIR0" id="ICC_EOIR0" registerfile="AArch32-icc_eoir0.xml">Interrupt Controller End Of Interrupt Register 0</register_link>
+    <register_link heading="ICC_EOIR1" id="ICC_EOIR1" registerfile="AArch32-icc_eoir1.xml">Interrupt Controller End Of Interrupt Register 1</register_link>
+    <register_link heading="ICC_HPPIR0" id="ICC_HPPIR0" registerfile="AArch32-icc_hppir0.xml">Interrupt Controller Highest Priority Pending Interrupt Register 0</register_link>
+    <register_link heading="ICC_HPPIR1" id="ICC_HPPIR1" registerfile="AArch32-icc_hppir1.xml">Interrupt Controller Highest Priority Pending Interrupt Register 1</register_link>
+    <register_link heading="ICC_HSRE" id="ICC_HSRE" registerfile="AArch32-icc_hsre.xml">Interrupt Controller Hyp System Register Enable register</register_link>
+    <register_link heading="ICC_IAR0" id="ICC_IAR0" registerfile="AArch32-icc_iar0.xml">Interrupt Controller Interrupt Acknowledge Register 0</register_link>
+    <register_link heading="ICC_IAR1" id="ICC_IAR1" registerfile="AArch32-icc_iar1.xml">Interrupt Controller Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICC_IGRPEN0" id="ICC_IGRPEN0" registerfile="AArch32-icc_igrpen0.xml">Interrupt Controller Interrupt Group 0 Enable register</register_link>
+    <register_link heading="ICC_IGRPEN1" id="ICC_IGRPEN1" registerfile="AArch32-icc_igrpen1.xml">Interrupt Controller Interrupt Group 1 Enable register</register_link>
+    <register_link heading="ICC_MCTLR" id="ICC_MCTLR" registerfile="AArch32-icc_mctlr.xml">Interrupt Controller Monitor Control Register</register_link>
+    <register_link heading="ICC_MGRPEN1" id="ICC_MGRPEN1" registerfile="AArch32-icc_mgrpen1.xml">Interrupt Controller Monitor Interrupt Group 1 Enable register</register_link>
+    <register_link heading="ICC_MSRE" id="ICC_MSRE" registerfile="AArch32-icc_msre.xml">Interrupt Controller Monitor System Register Enable register</register_link>
+    <register_link heading="ICC_PMR" id="ICC_PMR" registerfile="AArch32-icc_pmr.xml">Interrupt Controller Interrupt Priority Mask Register</register_link>
+    <register_link heading="ICC_RPR" id="ICC_RPR" registerfile="AArch32-icc_rpr.xml">Interrupt Controller Running Priority Register</register_link>
+    <register_link heading="ICC_SGI0R" id="ICC_SGI0R" registerfile="AArch32-icc_sgi0r.xml">Interrupt Controller Software Generated Interrupt Group 0 Register</register_link>
+    <register_link heading="ICC_SGI1R" id="ICC_SGI1R" registerfile="AArch32-icc_sgi1r.xml">Interrupt Controller Software Generated Interrupt Group 1 Register</register_link>
+    <register_link heading="ICC_SRE" id="ICC_SRE" registerfile="AArch32-icc_sre.xml">Interrupt Controller System Register Enable register</register_link>
+    <register_link heading="ICH_AP0R&lt;n&gt;" id="ICH_AP0R&lt;n&gt;" registerfile="AArch32-ich_ap0rn.xml">Interrupt Controller Hyp Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICH_AP1R&lt;n&gt;" id="ICH_AP1R&lt;n&gt;" registerfile="AArch32-ich_ap1rn.xml">Interrupt Controller Hyp Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICH_EISR" id="ICH_EISR" registerfile="AArch32-ich_eisr.xml">Interrupt Controller End of Interrupt Status Register</register_link>
+    <register_link heading="ICH_ELRSR" id="ICH_ELRSR" registerfile="AArch32-ich_elrsr.xml">Interrupt Controller Empty List Register Status Register</register_link>
+    <register_link heading="ICH_HCR" id="ICH_HCR" registerfile="AArch32-ich_hcr.xml">Interrupt Controller Hyp Control Register</register_link>
+    <register_link heading="ICH_LR&lt;n&gt;" id="ICH_LR&lt;n&gt;" registerfile="AArch32-ich_lrn.xml">Interrupt Controller List Registers</register_link>
+    <register_link heading="ICH_LRC&lt;n&gt;" id="ICH_LRC&lt;n&gt;" registerfile="AArch32-ich_lrcn.xml">Interrupt Controller List Registers</register_link>
+    <register_link heading="ICH_MISR" id="ICH_MISR" registerfile="AArch32-ich_misr.xml">Interrupt Controller Maintenance Interrupt State Register</register_link>
+    <register_link heading="ICH_VMCR" id="ICH_VMCR" registerfile="AArch32-ich_vmcr.xml">Interrupt Controller Virtual Machine Control Register</register_link>
+    <register_link heading="ICH_VTR" id="ICH_VTR" registerfile="AArch32-ich_vtr.xml">Interrupt Controller VGIC Type Register</register_link>
+    <register_link heading="ICV_AP0R&lt;n&gt;" id="ICV_AP0R&lt;n&gt;" registerfile="AArch32-icv_ap0rn.xml">Interrupt Controller Virtual Active Priorities Group 0 Registers</register_link>
+    <register_link heading="ICV_AP1R&lt;n&gt;" id="ICV_AP1R&lt;n&gt;" registerfile="AArch32-icv_ap1rn.xml">Interrupt Controller Virtual Active Priorities Group 1 Registers</register_link>
+    <register_link heading="ICV_BPR0" id="ICV_BPR0" registerfile="AArch32-icv_bpr0.xml">Interrupt Controller Virtual Binary Point Register 0</register_link>
+    <register_link heading="ICV_BPR1" id="ICV_BPR1" registerfile="AArch32-icv_bpr1.xml">Interrupt Controller Virtual Binary Point Register 1</register_link>
+    <register_link heading="ICV_CTLR" id="ICV_CTLR" registerfile="AArch32-icv_ctlr.xml">Interrupt Controller Virtual Control Register</register_link>
+    <register_link heading="ICV_DIR" id="ICV_DIR" registerfile="AArch32-icv_dir.xml">Interrupt Controller Deactivate Virtual Interrupt Register</register_link>
+    <register_link heading="ICV_EOIR0" id="ICV_EOIR0" registerfile="AArch32-icv_eoir0.xml">Interrupt Controller Virtual End Of Interrupt Register 0</register_link>
+    <register_link heading="ICV_EOIR1" id="ICV_EOIR1" registerfile="AArch32-icv_eoir1.xml">Interrupt Controller Virtual End Of Interrupt Register 1</register_link>
+    <register_link heading="ICV_HPPIR0" id="ICV_HPPIR0" registerfile="AArch32-icv_hppir0.xml">Interrupt Controller Virtual Highest Priority Pending Interrupt Register 0</register_link>
+    <register_link heading="ICV_HPPIR1" id="ICV_HPPIR1" registerfile="AArch32-icv_hppir1.xml">Interrupt Controller Virtual Highest Priority Pending Interrupt Register 1</register_link>
+    <register_link heading="ICV_IAR0" id="ICV_IAR0" registerfile="AArch32-icv_iar0.xml">Interrupt Controller Virtual Interrupt Acknowledge Register 0</register_link>
+    <register_link heading="ICV_IAR1" id="ICV_IAR1" registerfile="AArch32-icv_iar1.xml">Interrupt Controller Virtual Interrupt Acknowledge Register 1</register_link>
+    <register_link heading="ICV_IGRPEN0" id="ICV_IGRPEN0" registerfile="AArch32-icv_igrpen0.xml">Interrupt Controller Virtual Interrupt Group 0 Enable register</register_link>
+    <register_link heading="ICV_IGRPEN1" id="ICV_IGRPEN1" registerfile="AArch32-icv_igrpen1.xml">Interrupt Controller Virtual Interrupt Group 1 Enable register</register_link>
+    <register_link heading="ICV_PMR" id="ICV_PMR" registerfile="AArch32-icv_pmr.xml">Interrupt Controller Virtual Interrupt Priority Mask Register</register_link>
+    <register_link heading="ICV_RPR" id="ICV_RPR" registerfile="AArch32-icv_rpr.xml">Interrupt Controller Virtual Running Priority Register</register_link>
+    <register_link heading="ID_AFR0" id="ID_AFR0" registerfile="AArch32-id_afr0.xml">Auxiliary Feature Register 0</register_link>
+    <register_link heading="ID_DFR0" id="ID_DFR0" registerfile="AArch32-id_dfr0.xml">Debug Feature Register 0</register_link>
+    <register_link heading="ID_DFR1" id="ID_DFR1" registerfile="AArch32-id_dfr1.xml">Debug Feature Register 1</register_link>
+    <register_link heading="ID_ISAR0" id="ID_ISAR0" registerfile="AArch32-id_isar0.xml">Instruction Set Attribute Register 0</register_link>
+    <register_link heading="ID_ISAR1" id="ID_ISAR1" registerfile="AArch32-id_isar1.xml">Instruction Set Attribute Register 1</register_link>
+    <register_link heading="ID_ISAR2" id="ID_ISAR2" registerfile="AArch32-id_isar2.xml">Instruction Set Attribute Register 2</register_link>
+    <register_link heading="ID_ISAR3" id="ID_ISAR3" registerfile="AArch32-id_isar3.xml">Instruction Set Attribute Register 3</register_link>
+    <register_link heading="ID_ISAR4" id="ID_ISAR4" registerfile="AArch32-id_isar4.xml">Instruction Set Attribute Register 4</register_link>
+    <register_link heading="ID_ISAR5" id="ID_ISAR5" registerfile="AArch32-id_isar5.xml">Instruction Set Attribute Register 5</register_link>
+    <register_link heading="ID_ISAR6" id="ID_ISAR6" registerfile="AArch32-id_isar6.xml">Instruction Set Attribute Register 6</register_link>
+    <register_link heading="ID_MMFR0" id="ID_MMFR0" registerfile="AArch32-id_mmfr0.xml">Memory Model Feature Register 0</register_link>
+    <register_link heading="ID_MMFR1" id="ID_MMFR1" registerfile="AArch32-id_mmfr1.xml">Memory Model Feature Register 1</register_link>
+    <register_link heading="ID_MMFR2" id="ID_MMFR2" registerfile="AArch32-id_mmfr2.xml">Memory Model Feature Register 2</register_link>
+    <register_link heading="ID_MMFR3" id="ID_MMFR3" registerfile="AArch32-id_mmfr3.xml">Memory Model Feature Register 3</register_link>
+    <register_link heading="ID_MMFR4" id="ID_MMFR4" registerfile="AArch32-id_mmfr4.xml">Memory Model Feature Register 4</register_link>
+    <register_link heading="ID_MMFR5" id="ID_MMFR5" registerfile="AArch32-id_mmfr5.xml">Memory Model Feature Register 5</register_link>
+    <register_link heading="ID_PFR0" id="ID_PFR0" registerfile="AArch32-id_pfr0.xml">Processor Feature Register 0</register_link>
+    <register_link heading="ID_PFR1" id="ID_PFR1" registerfile="AArch32-id_pfr1.xml">Processor Feature Register 1</register_link>
+    <register_link heading="ID_PFR2" id="ID_PFR2" registerfile="AArch32-id_pfr2.xml">Processor Feature Register 2</register_link>
+    <register_link heading="IFAR" id="IFAR" registerfile="AArch32-ifar.xml">Instruction Fault Address Register</register_link>
+    <register_link heading="IFSR" id="IFSR" registerfile="AArch32-ifsr.xml">Instruction Fault Status Register</register_link>
+    <register_link heading="ISR" id="ISR" registerfile="AArch32-isr.xml">Interrupt Status Register</register_link>
+    <register_link heading="JIDR" id="JIDR" registerfile="AArch32-jidr.xml">Jazelle ID Register</register_link>
+    <register_link heading="JMCR" id="JMCR" registerfile="AArch32-jmcr.xml">Jazelle Main Configuration Register</register_link>
+    <register_link heading="JOSCR" id="JOSCR" registerfile="AArch32-joscr.xml">Jazelle OS Control Register</register_link>
+    <register_link heading="MAIR0" id="MAIR0" registerfile="AArch32-mair0.xml">Memory Attribute Indirection Register 0</register_link>
+    <register_link heading="MAIR1" id="MAIR1" registerfile="AArch32-mair1.xml">Memory Attribute Indirection Register 1</register_link>
+    <register_link heading="MIDR" id="MIDR" registerfile="AArch32-midr.xml">Main ID Register</register_link>
+    <register_link heading="MPIDR" id="MPIDR" registerfile="AArch32-mpidr.xml">Multiprocessor Affinity Register</register_link>
+    <register_link heading="MVBAR" id="MVBAR" registerfile="AArch32-mvbar.xml">Monitor Vector Base Address Register</register_link>
+    <register_link heading="MVFR0" id="MVFR0" registerfile="AArch32-mvfr0.xml">Media and VFP Feature Register 0</register_link>
+    <register_link heading="MVFR1" id="MVFR1" registerfile="AArch32-mvfr1.xml">Media and VFP Feature Register 1</register_link>
+    <register_link heading="MVFR2" id="MVFR2" registerfile="AArch32-mvfr2.xml">Media and VFP Feature Register 2</register_link>
+    <register_link heading="NMRR" id="NMRR" registerfile="AArch32-nmrr.xml">Normal Memory Remap Register</register_link>
+    <register_link heading="NSACR" id="NSACR" registerfile="AArch32-nsacr.xml">Non-Secure Access Control Register</register_link>
+    <register_link heading="PAR" id="PAR" registerfile="AArch32-par.xml">Physical Address Register</register_link>
+    <register_link heading="PMCCFILTR" id="PMCCFILTR" registerfile="AArch32-pmccfiltr.xml">Performance Monitors Cycle Count Filter Register</register_link>
+    <register_link heading="PMCCNTR" id="PMCCNTR" registerfile="AArch32-pmccntr.xml">Performance Monitors Cycle Count Register</register_link>
+    <register_link heading="PMCEID0" id="PMCEID0" registerfile="AArch32-pmceid0.xml">Performance Monitors Common Event Identification register 0</register_link>
+    <register_link heading="PMCEID1" id="PMCEID1" registerfile="AArch32-pmceid1.xml">Performance Monitors Common Event Identification register 1</register_link>
+    <register_link heading="PMCEID2" id="PMCEID2" registerfile="AArch32-pmceid2.xml">Performance Monitors Common Event Identification register 2</register_link>
+    <register_link heading="PMCEID3" id="PMCEID3" registerfile="AArch32-pmceid3.xml">Performance Monitors Common Event Identification register 3</register_link>
+    <register_link heading="PMCNTENCLR" id="PMCNTENCLR" registerfile="AArch32-pmcntenclr.xml">Performance Monitors Count Enable Clear register</register_link>
+    <register_link heading="PMCNTENSET" id="PMCNTENSET" registerfile="AArch32-pmcntenset.xml">Performance Monitors Count Enable Set register</register_link>
+    <register_link heading="PMCR" id="PMCR" registerfile="AArch32-pmcr.xml">Performance Monitors Control Register</register_link>
+    <register_link heading="PMEVCNTR&lt;n&gt;" id="PMEVCNTR&lt;n&gt;" registerfile="AArch32-pmevcntrn.xml">Performance Monitors Event Count Registers</register_link>
+    <register_link heading="PMEVTYPER&lt;n&gt;" id="PMEVTYPER&lt;n&gt;" registerfile="AArch32-pmevtypern.xml">Performance Monitors Event Type Registers</register_link>
+    <register_link heading="PMINTENCLR" id="PMINTENCLR" registerfile="AArch32-pmintenclr.xml">Performance Monitors Interrupt Enable Clear register</register_link>
+    <register_link heading="PMINTENSET" id="PMINTENSET" registerfile="AArch32-pmintenset.xml">Performance Monitors Interrupt Enable Set register</register_link>
+    <register_link heading="PMMIR" id="PMMIR" registerfile="AArch32-pmmir.xml">Performance Monitors Machine Identification Register</register_link>
+    <register_link heading="PMOVSR" id="PMOVSR" registerfile="AArch32-pmovsr.xml">Performance Monitors Overflow Flag Status Register</register_link>
+    <register_link heading="PMOVSSET" id="PMOVSSET" registerfile="AArch32-pmovsset.xml">Performance Monitors Overflow Flag Status Set register</register_link>
+    <register_link heading="PMSELR" id="PMSELR" registerfile="AArch32-pmselr.xml">Performance Monitors Event Counter Selection Register</register_link>
+    <register_link heading="PMSWINC" id="PMSWINC" registerfile="AArch32-pmswinc.xml">Performance Monitors Software Increment register</register_link>
+    <register_link heading="PMUSERENR" id="PMUSERENR" registerfile="AArch32-pmuserenr.xml">Performance Monitors User Enable Register</register_link>
+    <register_link heading="PMXEVCNTR" id="PMXEVCNTR" registerfile="AArch32-pmxevcntr.xml">Performance Monitors Selected Event Count Register</register_link>
+    <register_link heading="PMXEVTYPER" id="PMXEVTYPER" registerfile="AArch32-pmxevtyper.xml">Performance Monitors Selected Event Type Register</register_link>
+    <register_link heading="PRRR" id="PRRR" registerfile="AArch32-prrr.xml">Primary Region Remap Register</register_link>
+    <register_link heading="REVIDR" id="REVIDR" registerfile="AArch32-revidr.xml">Revision ID Register</register_link>
+    <register_link heading="RMR" id="RMR" registerfile="AArch32-rmr.xml">Reset Management Register</register_link>
+    <register_link heading="RVBAR" id="RVBAR" registerfile="AArch32-rvbar.xml">Reset Vector Base Address Register</register_link>
+    <register_link heading="SCR" id="SCR" registerfile="AArch32-scr.xml">Secure Configuration Register</register_link>
+    <register_link heading="SCTLR" id="SCTLR" registerfile="AArch32-sctlr.xml">System Control Register</register_link>
+    <register_link heading="SDCR" id="SDCR" registerfile="AArch32-sdcr.xml">Secure Debug Control Register</register_link>
+    <register_link heading="SDER" id="SDER" registerfile="AArch32-sder.xml">Secure Debug Enable Register</register_link>
+    <register_link heading="SPSR" id="SPSR" registerfile="AArch32-spsr.xml">Saved Program Status Register</register_link>
+    <register_link heading="SPSR_abt" id="SPSR_abt" registerfile="AArch32-spsr_abt.xml">Saved Program Status Register (Abort mode)</register_link>
+    <register_link heading="SPSR_fiq" id="SPSR_fiq" registerfile="AArch32-spsr_fiq.xml">Saved Program Status Register (FIQ mode)</register_link>
+    <register_link heading="SPSR_hyp" id="SPSR_hyp" registerfile="AArch32-spsr_hyp.xml">Saved Program Status Register (Hyp mode)</register_link>
+    <register_link heading="SPSR_irq" id="SPSR_irq" registerfile="AArch32-spsr_irq.xml">Saved Program Status Register (IRQ mode)</register_link>
+    <register_link heading="SPSR_mon" id="SPSR_mon" registerfile="AArch32-spsr_mon.xml">Saved Program Status Register (Monitor mode)</register_link>
+    <register_link heading="SPSR_svc" id="SPSR_svc" registerfile="AArch32-spsr_svc.xml">Saved Program Status Register (Supervisor mode)</register_link>
+    <register_link heading="SPSR_und" id="SPSR_und" registerfile="AArch32-spsr_und.xml">Saved Program Status Register (Undefined mode)</register_link>
+    <register_link heading="TCMTR" id="TCMTR" registerfile="AArch32-tcmtr.xml">TCM Type Register</register_link>
+    <register_link heading="TLBTR" id="TLBTR" registerfile="AArch32-tlbtr.xml">TLB Type Register</register_link>
+    <register_link heading="TPIDRPRW" id="TPIDRPRW" registerfile="AArch32-tpidrprw.xml">PL1 Software Thread ID Register</register_link>
+    <register_link heading="TPIDRURO" id="TPIDRURO" registerfile="AArch32-tpidruro.xml">PL0 Read-Only Software Thread ID Register</register_link>
+    <register_link heading="TPIDRURW" id="TPIDRURW" registerfile="AArch32-tpidrurw.xml">PL0 Read/Write Software Thread ID Register</register_link>
+    <register_link heading="TRFCR" id="TRFCR" registerfile="AArch32-trfcr.xml">Trace Filter Control Register</register_link>
+    <register_link heading="TTBCR" id="TTBCR" registerfile="AArch32-ttbcr.xml">Translation Table Base Control Register</register_link>
+    <register_link heading="TTBCR2" id="TTBCR2" registerfile="AArch32-ttbcr2.xml">Translation Table Base Control Register 2</register_link>
+    <register_link heading="TTBR0" id="TTBR0" registerfile="AArch32-ttbr0.xml">Translation Table Base Register 0</register_link>
+    <register_link heading="TTBR1" id="TTBR1" registerfile="AArch32-ttbr1.xml">Translation Table Base Register 1</register_link>
+    <register_link heading="VBAR" id="VBAR" registerfile="AArch32-vbar.xml">Vector Base Address Register</register_link>
+    <register_link heading="VDFSR" id="VDFSR" registerfile="AArch32-vdfsr.xml">Virtual SError Exception Syndrome Register</register_link>
+    <register_link heading="VDISR" id="VDISR" registerfile="AArch32-vdisr.xml">Virtual Deferred Interrupt Status Register</register_link>
+    <register_link heading="VMPIDR" id="VMPIDR" registerfile="AArch32-vmpidr.xml">Virtualization Multiprocessor ID Register</register_link>
+    <register_link heading="VPIDR" id="VPIDR" registerfile="AArch32-vpidr.xml">Virtualization Processor ID Register</register_link>
+    <register_link heading="VTCR" id="VTCR" registerfile="AArch32-vtcr.xml">Virtualization Translation Control Register</register_link>
+    <register_link heading="VTTBR" id="VTTBR" registerfile="AArch32-vttbr.xml">Virtualization Translation Table Base Register</register_link>
+  </register_links>
+  <timestamp>30/03/2023 19:16</timestamp>
+</register_index>

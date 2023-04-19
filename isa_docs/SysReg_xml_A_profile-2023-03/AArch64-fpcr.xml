@@ -1,0 +1,984 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>FPCR</reg_short_name>
+        
+        <reg_long_name>Floating-point Control Register</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-fpscr.xml">FPSCR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>26</mapped_from_startbit>
+    <mapped_from_endbit>15</mapped_from_endbit>
+    <mapped_to_startbit>26</mapped_to_startbit>
+    <mapped_to_endbit>15</mapped_to_endbit>
+    <mapped_from_rangeset output="26:15">
+      <range>
+        <msb>26</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="26:15">
+      <range>
+        <msb>26</msb>
+        <lsb>15</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-fpscr.xml">FPSCR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>12</mapped_from_startbit>
+    <mapped_from_endbit>8</mapped_from_endbit>
+    <mapped_to_startbit>12</mapped_to_startbit>
+    <mapped_to_endbit>8</mapped_to_endbit>
+    <mapped_from_rangeset output="12:8">
+      <range>
+        <msb>12</msb>
+        <lsb>8</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="12:8">
+      <range>
+        <msb>12</msb>
+        <lsb>8</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls floating-point behavior.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Floating-point registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the Len and Stride fields can be programmed to nonzero values, which will cause some AArch32 floating-point instruction encodings to be <arm-defined-word>UNDEFINED</arm-defined-word>, or whether these fields are RAZ.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>FPCR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>63:27</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AHP</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before">
+      <para>Alternative half-precision control bit.</para>
+    </field_description>
+    <field_description order="after"><para>This bit is used only for conversions between half-precision floating-point and other floating-point formats.</para>
+<para>The data-processing instructions added as part of the <xref browsertext="FEAT_FP16" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.FP16"/> extension always use the IEEE half-precision format, and ignore the value of this bit.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>IEEE half-precision format selected.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Alternative half-precision format selected.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-25_25" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DN</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>25</field_lsb>
+    <rel_range>25</rel_range>
+    <field_description order="before">
+      <para>Default NaN use for NaN propagation.</para>
+    </field_description>
+    <field_description order="after">
+      <para>The value of this bit controls both scalar and Advanced SIMD floating-point arithmetic.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>NaN operands propagate through to the output of a floating-point operation.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Any operation involving one or more NaNs returns the Default NaN.</para>
+<para>This bit has no effect on the output of FABS, FMAX*, FMIN*, and FNEG instructions, and a default NaN is never returned as a result of these instructions.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-24_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FZ</field_name>
+    <field_msb>24</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>24</rel_range>
+    <field_description order="before">
+      <para>Flushing denormalized numbers to zero control bit.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Flushing denormalized numbers to zero'" filename="A_introduction_to_the_armv8_architecture.fm" linkend="Chdbdeij"/> and the pseudocode of the floating-point instructions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>If FPCR.AH is 0, the flushing to zero of single-precision and double-precision denormalized inputs to, and outputs of, floating-point instructions not enabled by this control, but other factors might cause the input denormalized numbers to be flushed to zero.</para>
+<para>If FPCR.AH is 1, the flushing to zero of single-precision and double-precision denormalized outputs of floating-point instructions not enabled by this control, but other factors might cause the input denormalized numbers to be flushed to zero.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If FPCR.AH is 0, denormalized single-precision and double-precision inputs to, and outputs from, floating-point instructions are flushed to zero.</para>
+<para>If FPCR.AH is 1, denormalized single-precision and double-precision outputs from floating-point instructions are flushed to zero.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_22" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>RMode</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>22</field_lsb>
+    <rel_range>23:22</rel_range>
+    <field_description order="before">
+      <para>Rounding Mode control field.</para>
+    </field_description>
+    <field_description order="after"><para>The specified rounding mode is used by both scalar and Advanced SIMD floating-point instructions.</para>
+<para>If FPCR.AH is 1, then the following instructions use Round to Nearest mode regardless of the value of this bit:</para>
+<list type="unordered">
+<listitem><content>
+<para>The FRECPE, FRECPS, FRECPX, FRSQRTE, and FRSQRTS instructions.</para>
+</content>
+</listitem><listitem><content>
+<para>The BFCVT, BFCVTN, BFCVTN2, BFCVTNT, BFMLALB, and BFMLALT instructions.</para>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Round to Nearest (RN) mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Round towards Plus Infinity (RP) mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Round towards Minus Infinity (RM) mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Round towards Zero (RZ) mode.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-21_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Stride</field_name>
+    <field_msb>21</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>21:20</rel_range>
+    <field_description order="before"><para>This field has no function in AArch64 state, and nonzero values are ignored during execution in AArch64 state.</para>
+<para>This field is included only for context saving and restoration of the AArch32 <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.Stride field.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation implements FPSCR.LEN,STRIDE as RAZ</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FZ16</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Flushing denormalized numbers to zero control bit on half-precision data-processing instructions.</para>
+    </field_description>
+    <field_description order="after"><para>The value of this bit applies to both scalar and Advanced SIMD floating-point half-precision calculations.</para>
+<para>For more information, see <xref browsertext="'Flushing denormalized numbers to zero'" filename="A_introduction_to_the_armv8_architecture.fm" linkend="Chdbdeij"/> and the pseudocode of the floating-point instructions.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>For some instructions, this bit disables flushing to zero of inputs and outputs that are half-precision denormalized numbers.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Flushing denormalized numbers to zero enabled.</para>
+<para>For some instructions that do not convert a half-precision input to a higher precision output, this bit enables flushing to zero of inputs and outputs that are half-precision denormalized numbers.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_FP16 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Len</field_name>
+    <field_msb>18</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>18:16</rel_range>
+    <field_description order="before"><para>This field has no function in AArch64 state, and nonzero values are ignored during execution in AArch64 state.</para>
+<para>This field is included only for context saving and restoration of the AArch32 <register_link state="AArch32" id="AArch32-fpscr.xml">FPSCR</register_link>.Len field.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation implements FPSCR.LEN,STRIDE as RAZ</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-15_15" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDE</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>15</rel_range>
+    <field_description order="before">
+      <para>Input Denormal floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.IDE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IDC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IDC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Input Denormal floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-14_14" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>14</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-13_13-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EBF</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>The value of this bit controls the numeric behaviors of BFloat16 dot product calculations performed by the BFDOT, BFMMLA, BFMOPA, and BFMOPS instructions.
+If FEAT_SME2 is implemented, this also controls BFVDOT instruction.</para>
+<para>When <register_link state="AArch64" id="AArch64-id_aa64isar1_el1.xml">ID_AA64ISAR1_EL1</register_link>.BF16 and <register_link state="AArch64" id="AArch64-id_aa64zfr0_el1.xml">ID_AA64ZFR0_EL1</register_link>.BF16 are <binarynumber>0b0010</binarynumber>, the PE supports the FPCR.EBF field. Otherwise, FPCR.EBF is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>These instructions use the standard BFloat16 behaviors:</para>
+<list type="unordered">
+<listitem><content>Ignoring the FPCR.RMode control and using the rounding mode defined for BFloat16. For more information, see <xref browsertext="'Round to Odd mode'" filename="A_introduction_to_the_armv8_architecture.fm" linkend="BABDGEAD"/>.</content>
+</listitem><listitem><content>Flushing denormalized inputs and outputs to zero, as if the FPCR.FZ and FPCR.FIZ controls had the value '1'.</content>
+</listitem><listitem><content>Performing unfused multiplies and additions with intermediate rounding of all products and sums.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>These instructions use the extended BFloat16 behaviors:</para>
+<list type="unordered">
+<listitem><content>Supporting all four IEEE 754 rounding modes selected by the FPCR.RMode control.</content>
+</listitem><listitem><content>Optionally, flushing denormalized inputs and outputs to zero, as governed by the FPCR.FZ and FPCR.FIZ controls.</content>
+</listitem><listitem><content>Performing a fused two-way sum-of-products for each pair of adjacent BFloat16 elements, without intermediate rounding of the products, but rounding the single-precision sum before addition to the accumulator.</content>
+</listitem><listitem><content>Generating the default NaN as intermediate sum-of-products when any multiplier input is a NaN, or any product is infinity × 0.0, or there are infinite products with differing signs.</content>
+</listitem><listitem><content>Generating an intermediate sum-of-products of the same infinity when there are infinite products all with the same sign.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_EBF16 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-13_13-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>13</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-12_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IXE</field_name>
+    <field_msb>12</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>12</rel_range>
+    <field_description order="before">
+      <para>Inexact floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.IXE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IXC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IXC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Inexact floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>UFE</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before">
+      <para>Underflow floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.UFE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.UFC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs and Flush-to-zero is not enabled, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.UFC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Underflow floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-10_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OFE</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>10</rel_range>
+    <field_description order="before">
+      <para>Overflow floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.OFE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.OFC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.OFC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Overflow floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>DZE</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Divide by Zero floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.DZE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.DZC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.DZC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Divide by Zero floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IOE</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>Invalid Operation floating-point exception trap enable.</para>
+    </field_description>
+    <field_description order="after"><para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.IOE is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+<para>The Effective value of this bit controls both scalar and vector floating-point arithmetic.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Untrapped exception handling selected. If the floating-point exception occurs, the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IOC bit is set to 1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Trapped exception handling selected. If the floating-point exception occurs, the PE does not update the <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.IOC bit.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <field_access>
+      <field_access_state>
+        <field_access_level>When an implementation does not implement trapping of Invalid Operation floating-point exceptions</field_access_level>
+        <field_access_type>RAZ/WI</field_access_type>
+      </field_access_state>
+    </field_access>
+  </field>
+  <field id="fieldset_0-7_3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>3</field_lsb>
+    <rel_range>7:3</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-2_2-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>NEP</field_name>
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Controls how the output elements other than the lowest element of the vector are determined for Advanced SIMD scalar instructions.</para>
+    </field_description>
+    <field_description order="after">
+      <para>When the PE is in Streaming SVE mode, and FEAT_SME_FA64 is not implemented or not enabled, the value of FPCR.NEP is treated as 0 for all purposes other than a direct read or write of the FPCR.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Does not affect how the output elements other than the lowest are determined for Advanced SIMD scalar instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The output elements other than the lowest are taken from the following registers:</para>
+<list type="unordered">
+<listitem><content>
+<para>For 3-input scalar versions of the FMLA (by element) and FMLS (by element) instructions, the &lt;Hd&gt;, &lt;Sd&gt;, or &lt;Dd&gt; register.</para>
+</content>
+</listitem><listitem><content>
+<para>For 3-input versions of the FMADD, FMSUB, FNMADD, and FNMSUB instructions, the &lt;Ha&gt;, &lt;Sa&gt;, or &lt;Da&gt; register.</para>
+</content>
+</listitem><listitem><content>
+<para>For 2-input scalar versions of the FACGE, FACGT, FCMEQ (register), FCMGE (register), and FCMGT (register) instructions, the &lt;Hm&gt;, &lt;Sm&gt;, or &lt;Dm&gt; register.</para>
+</content>
+</listitem><listitem><content>
+<para>For 2-input scalar versions of the FABD, FADD (scalar), FDIV (scalar), FMAX (scalar), FMAXNM (scalar), FMIN (scalar), FMINNM (scalar), FMUL (by element), FMUL (scalar), FMULX (by element), FMULX, FNMUL (scalar), FRECPS, FRSQRTS, and FSUB (scalar) instructions, the &lt;Hn&gt;, &lt;Sn&gt;, or &lt;Dn&gt; register.</para>
+</content>
+</listitem><listitem><content>
+<para>For 1-input scalar versions of the following instructions, the &lt;Hd&gt;, &lt;Sd&gt;, or &lt;Dd&gt; register:</para>
+<list type="unordered">
+<listitem><content>
+<para>The (vector) versions of the FCVTAS, FCVTAU, FCVTMS, FCVTMU, FCVTNS, FCVTNU, FCVTPS, and FCVTPU instructions.</para>
+</content>
+</listitem><listitem><content>
+<para>The (vector, fixed-point) and (vector, integer) versions of the FCVTZS, FCVTZU, SCVTF, and UCVTF instructions.</para>
+</content>
+</listitem><listitem><content>
+<para>The (scalar) versions of the FABS, FNEG, FRINT32X, FRINT32Z, FRINT64X, FRINT64Z, FRINTA, FRINTI, FRINTM, FRINTN, FRINTP, FRINTX, FRINTZ, and FSQRT instructions.</para>
+</content>
+</listitem><listitem><content>
+<para>The (scalar, fixed-point) and (scalar, integer) versions of the SCVTF and UCVTF instructions.</para>
+</content>
+</listitem><listitem><content>
+<para>The BFCVT, FCVT, FCVTXN, FRECPE, FRECPX, and FRSQRTE instructions.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AFP is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-2_2-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>2</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-1_1-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>AH</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Alternate Handling. Controls alternate handling of floating-point numbers.</para>
+    </field_description>
+    <field_description order="after"><para>The Arm architecture supports two models for handling some of the corner cases of the floating-point behaviors, such as the nature of flushing of denormalized numbers, the detection of tininess and other exceptions and a range of other behaviors. The value of the FPCR.AH bit selects between these models.</para>
+<para>For more information on the FPCR.AH bit, see <xref browsertext="'Flushing denormalized numbers to zero'" filename="A_introduction_to_the_armv8_architecture.fm" linkend="Chdbdeij"/>, <xref browsertext="'Floating-point exceptions and exception traps'" filename="D_the_aarch64_system_level_programmers_model.fm" linkend="BEIJDDAG"/> and the pseudocode of the floating-point instructions.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AFP is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-1_1-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-0_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>FIZ</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Flush Inputs to Zero. Controls whether single-precision, double-precision and BFloat16 input operands that are denormalized numbers are flushed to zero.</para>
+    </field_description>
+    <field_description order="after">
+      <para>For more information, see <xref browsertext="'Flushing denormalized numbers to zero'" filename="A_introduction_to_the_armv8_architecture.fm" linkend="Chdbdeij"/> and the pseudocode of the floating-point instructions.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The flushing to zero of single-precision and double-precision denormalized inputs to floating-point instructions not enabled by this control, but other factors might cause the input denormalized numbers to be flushed to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Denormalized single-precision and double-precision inputs to most floating-point instructions flushed to zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_AFP is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-0_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_27" msb="63" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_25" msb="25" lsb="25"/>
+  <fieldat id="fieldset_0-24_24" msb="24" lsb="24"/>
+  <fieldat id="fieldset_0-23_22" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-21_20" msb="21" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_16" msb="18" lsb="16"/>
+  <fieldat id="fieldset_0-15_15" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_13-1" msb="13" lsb="13"/>
+  <fieldat id="fieldset_0-12_12" msb="12" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_3" msb="7" lsb="3"/>
+  <fieldat id="fieldset_0-2_2-1" msb="2" lsb="2"/>
+  <fieldat id="fieldset_0-1_1-1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0-1" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS FPCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, FPCR</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CPACR_EL1.FPEN != '11' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x00);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CPTR_EL2.FPEN != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        X[t, 64] = FPCR;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif CPACR_EL1.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL1, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        X[t, 64] = FPCR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        X[t, 64] = FPCR;
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.TFP == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        X[t, 64] = FPCR;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister FPCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR FPCR, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b000"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CPACR_EL1.FPEN != '11' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x00);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CPTR_EL2.FPEN != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        FPCR = X[t, 64];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif CPACR_EL1.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL1, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H != '1' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        FPCR = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TFP == '1' then
+        UNDEFINED;
+    elsif HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TFP == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.FPEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x07);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TFP == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        FPCR = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.TFP == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x07);
+    else
+        FPCR = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

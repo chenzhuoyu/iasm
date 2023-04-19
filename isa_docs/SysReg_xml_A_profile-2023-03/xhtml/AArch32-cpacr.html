@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CPACR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CPACR, Architectural Feature Access Control Register</h1><p>The CPACR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls access to trace, and to Advanced SIMD and floating-point functionality from EL0, EL1, and EL3.</p>
+
+      
+        <p>In an implementation that includes EL2, the CPACR has no effect on instructions executed at EL2.</p>
+      <h2>Configuration</h2><p>AArch32 System register CPACR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-cpacr_el1.html">CPACR_EL1[31:0]</a>.</p><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to CPACR are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>Bits in the <a href="AArch32-nsacr.html">NSACR</a> control Non-secure access to the CPACR fields. See the field descriptions for more information.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>In the register field descriptions, controls are described as applying at specified Privilege levels. This is because, in Secure state, a PL1 control:</p><ul><li>Applies to execution in a Secure EL3 mode when EL3 is using AArch32.</li><li>Applies to execution in a Secure EL1 mode when EL3 is using AArch64.</li></ul><p>See <span class="xref">'Security state, Exception levels, and AArch32 execution privilege'</span>.</p></div>
+      <h2>Attributes</h2>
+        <p>CPACR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">ASEDIS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-30_29">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">TRCDIS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-23_22">cp11</a></td><td class="lr" colspan="2"><a href="#fieldset_0-21_20">cp10</a></td><td class="lr" colspan="20"><a href="#fieldset_0-19_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">ASEDIS, bit [31]</h4><div class="field">
+      <p>Disables PL0 and PL1 execution of Advanced SIMD instructions.</p>
+    <table class="valuetable"><tr><th>ASEDIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control permits execution of Advanced SIMD instructions at PL0 and PL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>All instruction encodings that are Advanced SIMD instruction encodings, but are not also floating-point instruction encodings, are <span class="arm-defined-word">UNDEFINED</span> at PL0 and PL1.</p>
+        </td></tr></table><p>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>. Otherwise, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented as a RW field. If it is not implemented as a RW field, it is RAZ/WI.</p>
+<p>If EL3 is implemented and is using AArch32, and the value of <a href="AArch32-nsacr.html">NSACR</a>.NSASEDIS is 1, this field behaves as RAO/WI in Non-secure state, regardless of its actual value. This applies even if the field is implemented as RAZ/WI.</p>
+<p>For the list of instructions affected by this field, see <span class="xref">'Controls of Advanced SIMD operation that do not apply to floating-point operation'</span>.</p>
+<p>See the description of CPACR.cp10 for a list of other controls that can disable or trap execution of Advanced SIMD instructions in AArch32 state.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-30_29">Bits [30:29]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-28_28">TRCDIS, bit [28]</h4><div class="field">
+      <p>Traps PL0 and PL1 System register accesses to all implemented trace registers to Undefined mode.</p>
+    <table class="valuetable"><tr><th>TRCDIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control has no effect on PL0 and PL1 System register accesses to trace registers.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>PL0 and PL1 System register accesses to all implemented trace registers are trapped to Undefined mode.</p>
+        </td></tr></table><p>If the implementation does not include a trace unit, or does not include a System register interface to the trace unit registers, this field is <span class="arm-defined-word">RES0</span>. Otherwise, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is implemented as a RW field. If it is not implemented as a RW field, it is RAZ/WI.</p>
+<p>If EL3 is implemented and is using AArch32, and the value of <a href="AArch32-nsacr.html">NSACR</a>.NSTRCDIS is 1, this field behaves as RAO/WI in Non-secure state, regardless of its actual value. This applies even if the field is implemented as RAZ/WI.</p>
+<div class="note"><span class="note-header">Note</span><ul><li>The ETMv4 architecture and ETE do not permit EL0 to access the trace registers. If the trace unit implements FEAT_ETMv4 or FEAT_ETE, EL0 accesses to the trace registers are <span class="arm-defined-word">UNDEFINED</span>.</li><li>The Arm architecture does not provide traps on trace register accesses through the optional memory-mapped external debug interface.</li></ul></div><p>System register accesses to the trace registers can have side-effects. When a System register access is trapped, any side-effects that are normally associated with the access do not occur before the exception is taken.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_24">Bits [27:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_22">cp11, bits [23:22]</h4><div class="field"><p>The value of this field is ignored. If this field is programmed with a different value to the cp10 field then this field is <span class="arm-defined-word">UNKNOWN</span> on a direct read of the CPACR.</p>
+<p>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>In Non-secure state, if EL3 is implemented and is using AArch32, when the value of <a href="AArch32-nsacr.html">NSACR</a>.cp10 is 0, this field behaves as RAZ/WI, regardless of its actual value.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>EL3 is implemented</li><li>EL3 is using AArch32</li><li>!IsCurrentSecurityState(SS_Secure)</li><li>NSACR.cp10 == 0</li></ul></li></ul></div><h4 id="fieldset_0-21_20">cp10, bits [21:20]</h4><div class="field">
+      <p>Defines the access rights for the Advanced SIMD and floating-point functionality. Possible values of the field are:</p>
+    <table class="valuetable"><tr><th>cp10</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>PL0 and PL1 accesses to Advanced SIMD and floating-point registers or instructions are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>PL0 accesses to Advanced SIMD and floating-point registers or instructions are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Reserved. The effect of programming this field to this value is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>. See <span class="xref">'Handling of System register control fields for Advanced SIMD and floating-point operation'</span>.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>This control permits full access to the Advanced SIMD and floating-point functionality from PL0 and PL1.</p>
+        </td></tr></table><p>The Advanced SIMD and floating-point features controlled by these fields are:</p>
+<ul>
+<li>Execution of any floating-point or Advanced SIMD instruction.
+</li><li>Any access to the Advanced SIMD and floating-point registers D0-D31 and their views as S0-S31 and Q0-Q15.
+</li><li>Any access to the <a href="AArch32-fpscr.html">FPSCR</a>, <a href="AArch32-fpsid.html">FPSID</a>, <a href="AArch32-mvfr0.html">MVFR0</a>, <a href="AArch32-mvfr1.html">MVFR1</a>, <a href="AArch32-mvfr2.html">MVFR2</a>, or <a href="AArch32-fpexc.html">FPEXC</a> System registers.
+</li></ul>
+<div class="note"><span class="note-header">Note</span><p>The <a href="AArch32-cpacr.html">CPACR</a> has no effect on Advanced SIMD and floating-point accesses from PL2. These can be disabled by the <a href="AArch32-hcptr.html">HCPTR</a>.TCP10 field.</p></div><p>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>In Non-secure state, if EL3 is implemented and is using AArch32, when the value of <a href="AArch32-nsacr.html">NSACR</a>.cp10 is 0, this field behaves as RAZ/WI, regardless of its actual value.</p>
+<p>Execution of Advanced SIMD and floating-point instructions in AArch32 state can be disabled or trapped by the following controls:</p>
+<ul>
+<li>CPACR.cp10, or, if executing at EL0, <a href="AArch64-cpacr_el1.html">CPACR_EL1</a>.FPEN.
+</li><li><a href="AArch32-fpexc.html">FPEXC</a>.EN.
+</li><li>If executing in Non-secure state:<ul>
+<li><a href="AArch32-hcptr.html">HCPTR</a>.TCP10, or if EL2 is using AArch64, <a href="AArch64-cptr_el2.html">CPTR_EL2</a>.TFP.
+</li><li><a href="AArch32-nsacr.html">NSACR</a>.cp10, or if EL3 is using AArch64, <a href="AArch64-cptr_el3.html">CPTR_EL3</a>.TFP.
+</li></ul>
+
+</li><li>For Advanced SIMD instructions only:<ul>
+<li>CPACR.ASEDIS.
+</li><li>If executing in Non-secure state, <a href="AArch32-hcptr.html">HCPTR</a>.TASE and <a href="AArch32-nsacr.html">NSACR</a>.NSASEDIS.
+</li></ul>
+
+</li></ul>
+<p>See the descriptions of the controls for more information.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RAZ/WI</span> if
+                
+                    all of the following are true:
+                <ul><li>EL3 is implemented</li><li>EL3 is using AArch32</li><li>!IsCurrentSecurityState(SS_Secure)</li><li>NSACR.cp10 == 0</li></ul></li></ul></div><h4 id="fieldset_0-19_0">Bits [19:0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing CPACR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0001</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CPTR_EL2.TCPAC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCPTR.TCPAC == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = CPACR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = CPACR;
+elsif PSTATE.EL == EL3 then
+    R[t] = CPACR;
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0001</td><td>0b0000</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; CPTR_EL2.TCPAC == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCPTR.TCPAC == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        CPACR = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; CPTR_EL3.TCPAC == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        CPACR = R[t];
+elsif PSTATE.EL == EL3 then
+    CPACR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

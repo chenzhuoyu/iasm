@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICD_ICFGR&lt;n&gt;E</reg_short_name>
+        
+        <reg_long_name>Interrupt Configuration Registers (Extended SPI Range)</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_GICv3p1 is implemented</reg_condition>
+          <reg_array>
+              <reg_array_start>0</reg_array_start>
+              <reg_array_end>63</reg_array_end>
+         </reg_array>
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Distributor</reg_component>
+    <reg_frame>Dist_base</reg_frame>
+    <reg_offset><hexnumber>0x3000</hexnumber> + (4 * n)</reg_offset>
+    <reg_instance>GICD_ICFGR&lt;n&gt;E</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Determines whether the corresponding SPI in the extended SPI range is edge-triggered or level-sensitive.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Distributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>When GICD_TYPER.ESPI==0, these registers are <arm-defined-word>RES0</arm-defined-word>.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When GICD_TYPER.ESPI==1, the number of implemented GICD_ICFGR&lt;n&gt;E registers is ((GICD_TYPER.ESPI_range+1)*2). Registers are numbered from 0.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICD_ICFGR&lt;n&gt;E is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Int_config&lt;x&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Indicates whether the interrupt is level-sensitive or edge-triggered.</para>
+<para>Int_config[0] (bit[2x]) is <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_array_indexes index_variable="x" element_size="2" range_specifier="2x+1:2x">
+      <field_array_index>
+        <field_array_start>15</field_array_start>
+        <field_array_end>0</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Corresponding interrupt is level-sensitive.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Corresponding interrupt is edge-triggered.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" label="Int_config15" msb="31" lsb="30"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config14" msb="29" lsb="28"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config13" msb="27" lsb="26"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config12" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config11" msb="23" lsb="22"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config10" msb="21" lsb="20"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config9" msb="19" lsb="18"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config8" msb="17" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config7" msb="15" lsb="14"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config6" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config5" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config4" msb="9" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config3" msb="7" lsb="6"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config2" msb="5" lsb="4"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config1" msb="3" lsb="2"/>
+  <fieldat id="fieldset_0-31_0" label="Int_config0" msb="1" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+        <reg_variables>
+              <reg_variable variable="n" max="63"/>
+        </reg_variables>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>When affinity routing is not enabled for the Security state of an interrupt in GICD_ICFGR&lt;n&gt;E, the corresponding bit is <arm-defined-word>RES0</arm-defined-word>.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>When <register_link state="ext" id="ext-gicd_ctlr.xml">GICD_CTLR</register_link>.DS==0, a register bit that corresponds to a Group 0 or Secure Group 1 interrupt is RAZ/WI to Non-secure accesses.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>Bits corresponding to unimplemented interrupts are RAZ/WI.</para>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

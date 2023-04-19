@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>BRBSRC&lt;n&gt;_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">BRBSRC&lt;n&gt;_EL1, Branch Record Buffer Source Address Register &lt;n&gt;, n = 0 - 31</h1><p>The BRBSRC&lt;n&gt;_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>The source address of Branch record n + (<a href="AArch64-brbfcr_el1.html">BRBFCR_EL1</a>.BANK × 32).</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_BRBE is implemented. Otherwise, direct accesses to BRBSRC&lt;n&gt;_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>BRBSRC&lt;n&gt;_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">ADDRESS</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">ADDRESS</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">ADDRESS, bits [63:0]</h4><div class="field"><p>Source virtual address of the Branch record.</p>
+<p>When an indirect write occurs with a value with ADDRESS bits [63:P] being other than all zeroes or all ones, an <span class="arm-defined-word">UNKNOWN</span> value which is not all zeroes or all ones is written to bits [63:P]. P is defined as:</p>
+<ul>
+<li>56, when <span class="xref">FEAT_LVA3</span> is implemented.
+</li><li>52, when <span class="xref">FEAT_LVA</span> is implemented.
+</li><li>48, otherwise.
+</li></ul>
+<p>The value in bits [P-1:0] is the value written.</p>
+<p>When an indirect write occurs with a value with ADDRESS bits [63:P] being all zeroes or all ones, the written value is written to bits [63:0], and a read of the register returns the written value.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul><p>Accessing this field has the following behavior:</p><ul><li>
+            Access is <span class="access_level">RES0</span> if
+                
+                    any of the following are true:
+                <ul><li>BRBINF&lt;n&gt;_EL1.VALID == 0b00</li><li>BRBINF&lt;n&gt;_EL1.VALID == 0b01</li></ul></li><li>
+                Otherwise,
+                
+            access to this field
+            is <span class="access_level">RO</span>.</li></ul></div><div class="access_mechanisms"><h2>Accessing BRBSRC&lt;n&gt;_EL1</h2>
+        <p>BRBSRC&lt;n&gt;_EL1 is <span class="arm-defined-word">RES0</span> if n + (<a href="AArch64-brbfcr_el1.html">BRBFCR_EL1</a>.BANK × 32) &gt;= <a href="AArch64-brbidr0_el1.html">BRBIDR0_EL1</a>.NUMREC.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, BRBSRC&lt;m&gt;_EL1
+     ; Where m = 0-31</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b001</td><td>0b1000</td><td>m[3:0]</td><td>m[4]:0b01</td></tr></table><p class="pseudocode">
+integer m = UInt(op2&lt;2&gt;:CRm&lt;3:0&gt;);
+
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.nBRBDATA == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif m + (UInt(BRBFCR_EL1.BANK) * 32) &gt;= NUM_BRBE_RECORDS then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = BRBSRC_EL1[m];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        UNDEFINED;
+    elsif Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE != '11' &amp;&amp; SCR_EL3.NS == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.SBRBE == 'x0' &amp;&amp; SCR_EL3.NS == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif m + (UInt(BRBFCR_EL1.BANK) * 32) &gt;= NUM_BRBE_RECORDS then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = BRBSRC_EL1[m];
+elsif PSTATE.EL == EL3 then
+    if m + (UInt(BRBFCR_EL1.BANK) * 32) &gt;= NUM_BRBE_RECORDS then
+        X[t, 64] = Zeros(64);
+    else
+        X[t, 64] = BRBSRC_EL1[m];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

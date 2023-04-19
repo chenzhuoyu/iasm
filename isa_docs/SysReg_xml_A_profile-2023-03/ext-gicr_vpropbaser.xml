@@ -1,0 +1,735 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>GICR_VPROPBASER</reg_short_name>
+        
+        <reg_long_name>Virtual Redistributor Properties Base Address Register</reg_long_name>
+
+
+
+      
+      
+  <reg_address
+      external_access="False"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>GIC Redistributor</reg_component>
+    <reg_frame>VLPI_base</reg_frame>
+    <reg_offset><hexnumber>0x0070</hexnumber></reg_offset>
+    <reg_instance>GICR_VPROPBASER</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>In GICv4.0, specifies the base address of the memory that holds the virtual LPI Configuration table for the currently scheduled virtual machine.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>In GICv4.1, specifies the base address of the memory that holds the vPE Configuration table.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>GIC Redistributor registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>This register is provided in FEAT_GICv4 implementations only.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>GICR_VPROPBASER is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Valid</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before">
+      <para>This bit controls whether the vPE Configuration Table is valid.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The vPE Configuration table is not valid.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The vPE Configuration table is valid.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-62_62" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>62</field_msb>
+    <field_lsb>62</field_lsb>
+    <rel_range>62</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-61_59" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Entry_Size</field_name>
+    <field_msb>61</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>61:59</rel_range>
+    <field_description order="before"><para>Specifies the number 64-bit doublewords per table entry, minus one.</para>
+<para>This bit is read-only.</para></field_description>
+  </field>
+  <field id="fieldset_0-58_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OuterCache</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>58:56</rel_range>
+    <field_description order="before">
+      <para>Indicates the Outer Cacheability attributes of accesses to the table.</para>
+    </field_description>
+    <field_description order="after">
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Memory type defined in InnerCache field. For Normal memory, Outer Cacheability is the same as Inner Cacheability.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-55_55" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Indirect</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>55</field_lsb>
+    <rel_range>55</rel_range>
+    <field_description order="before">
+      <para>This field indicates whether GICR_VPROPBASER specifies a single, flat table or a two-level table where the first level contains a list of descriptors.</para>
+    </field_description>
+    <field_description order="after"><para>This field is RAZ/WI for GIC implementations that only support flat tables.</para>
+<para>If the supported vPEID width indicated by <register_link state="ext" id="ext-gicd_typer2.xml">GICD_TYPER2</register_link>.VIL and <register_link state="ext" id="ext-gicd_typer2.xml">GICD_TYPER2</register_link>.VID, and the smallest page size that is supported result in a single level table that requires multiple pages, then implementing this bit as RAZ/WI is deprecated.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Single Level. The Size field indicates the number of pages used to store data associated with each table entry.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Two Level. The Size field indicates the number of pages that contain an array of 64-bit descriptors to pages that are used to store the data associated with each table entry. A little endian memory order model is used.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-54_53" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Page_Size</field_name>
+    <field_msb>54</field_msb>
+    <field_lsb>53</field_lsb>
+    <rel_range>54:53</rel_range>
+    <field_description order="before">
+      <para>The following values indicate the size of page that the translation table uses:</para>
+    </field_description>
+    <field_description order="after">
+      <note>
+        <para>If the GIC implementation supports only a single, fixed page size, this field might be RO.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>4KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>16KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>64KB.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Reserved. Treated as <binarynumber>0b10</binarynumber>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-52_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Z</field_name>
+    <field_msb>52</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>52</rel_range>
+    <field_description order="before">
+      <para>When GICR_VPROPBASER.Valid is written from 0 to 1, GICR_VPROPBASER.Z indicates whether the vPE Configuration table is known to contain all zeros.</para>
+    </field_description>
+    <field_description order="after"><para>Setting GICR_VPROPBASER.Z to 0 causes the IRI to reload configuration from memory</para>
+<para>When GICR_VPROPBASER.Valid is written from 0 to 1, if GICR_VPROPBASER.Z==1 behavior is <arm-defined-word>UNPREDICTABLE</arm-defined-word> if the allocated memory does not contain all zeros.</para>
+<para>This field is WO, and reads as 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The vPE Configutation table is not zero, and contains live data.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The vPE Configuration table is zero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-51_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Physical_Address</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>51:12</rel_range>
+    <field_description order="before"><para>Bits [51:12] of the physical address containing the LPI Configuration table.</para>
+<para>In implementations supporting fewer than 52 bits of physical address, unimplemented upper bits are <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Shareability</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Indicates the Shareability attributes of accesses to the LPI Configuration table.</para>
+    </field_description>
+    <field_description order="after">
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Reserved. Treated as <binarynumber>0b00</binarynumber>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-9_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>InnerCache</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>9:7</rel_range>
+    <field_description order="before">
+      <para>Indicates the Inner Cacheability attributes of accesses to the LPI Configuration table.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-6_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Size</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>6:0</rel_range>
+    <field_description order="before"><para>The number of pages of physical memory allocated to the table, minus one.</para>
+<para><register_link state="ext" id="ext-gicr_vpropbaser.xml">GICR_VPROPBASER</register_link>.Page_Size specifies the size of each page.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>U</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition>When FEAT_GICv4 is implemented</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_1-63_59" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>59</field_lsb>
+    <rel_range>63:59</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-58_56" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>OuterCache</field_name>
+    <field_msb>58</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>58:56</rel_range>
+    <field_description order="before">
+      <para>Indicates the Outer Cacheability attributes of accesses to the LPI Configuration table.</para>
+    </field_description>
+    <field_description order="after">
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Memory type defined in InnerCache field. For Normal memory, Outer Cacheability is the same as Inner Cacheability.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Outer Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Outer Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-51_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Physical_Address</field_name>
+    <field_msb>51</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>51:12</rel_range>
+    <field_description order="before"><para>Bits [51:12] of the physical address containing the virtual LPI Configuration table.</para>
+<para>In implementations supporting fewer than 52 bits of physical address, unimplemented upper bits are <arm-defined-word>RES0</arm-defined-word>.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-11_10" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Shareability</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>11:10</rel_range>
+    <field_description order="before">
+      <para>Indicates the Shareability attributes of accesses to the LPI Configuration table.</para>
+    </field_description>
+    <field_description order="after">
+      <para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Non-shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Inner Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Outer Shareable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Reserved. Treated as <binarynumber>0b00</binarynumber>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-9_7" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>InnerCache</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>9:7</rel_range>
+    <field_description order="before">
+      <para>Indicates the Inner Cacheability attributes of accesses to the LPI Configuration table.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b000</field_value>
+        <field_value_description>
+          <para>Device-nGnRnE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b001</field_value>
+        <field_value_description>
+          <para>Normal Inner Non-cacheable.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b010</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b011</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b100</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b101</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b110</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-through.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b111</field_value>
+        <field_value_description>
+          <para>Normal Inner Cacheable Read-allocate, Write-allocate, Write-back.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_1-6_5" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>6:5</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_1-4_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>IDbits</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before"><para>The number of bits of virtual LPI INTID supported, minus one.</para>
+<para>If the value of this field is less than <binarynumber>0b1101</binarynumber>, indicating that the largest INTID is less than 8192 (the smallest LPI interrupt ID), the GIC will behave as if all virtual LPIs are out of range.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="GIC">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_GICv4p1 is implemented</fields_condition>
+  <fieldat id="fieldset_0-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_62" msb="62" lsb="62"/>
+  <fieldat id="fieldset_0-61_59" msb="61" lsb="59"/>
+  <fieldat id="fieldset_0-58_56" msb="58" lsb="56"/>
+  <fieldat id="fieldset_0-55_55" msb="55" lsb="55"/>
+  <fieldat id="fieldset_0-54_53" msb="54" lsb="53"/>
+  <fieldat id="fieldset_0-52_52" msb="52" lsb="52"/>
+  <fieldat id="fieldset_0-51_12" msb="51" lsb="12"/>
+  <fieldat id="fieldset_0-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_0-9_7" msb="9" lsb="7"/>
+  <fieldat id="fieldset_0-6_0" msb="6" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When FEAT_GICv4 is implemented</fields_condition>
+  <fieldat id="fieldset_1-63_59" msb="63" lsb="59"/>
+  <fieldat id="fieldset_1-58_56" msb="58" lsb="56"/>
+  <fieldat id="fieldset_1-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_1-51_12" msb="51" lsb="12"/>
+  <fieldat id="fieldset_1-11_10" msb="11" lsb="10"/>
+  <fieldat id="fieldset_1-9_7" msb="9" lsb="7"/>
+  <fieldat id="fieldset_1-6_5" msb="6" lsb="5"/>
+  <fieldat id="fieldset_1-4_0" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

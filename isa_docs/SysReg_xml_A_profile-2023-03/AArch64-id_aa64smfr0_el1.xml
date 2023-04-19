@@ -1,0 +1,544 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_AA64SMFR0_EL1</reg_short_name>
+        
+        <reg_long_name>SME Feature ID Register 0</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the implemented features of the AArch64 Scalable Matrix Extension.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>The fields in this register do not follow the standard ID scheme. See <xref browsertext="'Alternative ID scheme used for ID_AA64SMFR0_EL1'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABCEGGHG6"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <note><para>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <arm-defined-word>RES0</arm-defined-word> from EL1, EL2, and EL3.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_AA64SMFR0_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_63" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>FA64</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>63</field_lsb>
+    <rel_range>63</rel_range>
+    <field_description order="before">
+      <para>Indicates support for execution of the full A64 instruction set when the PE is in Streaming SVE mode. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>FEAT_SME_FA64 implements the functionality identified by the value <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Only those A64 instructions defined as being legal can be executed in Streaming SVE mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>All implemented A64 instructions are legal for execution in Streaming SVE mode, when enabled by <register_link state="AArch64" id="AArch64-smcr_el1.xml">SMCR_EL1</register_link>.FA64, <register_link state="AArch64" id="AArch64-smcr_el2.xml">SMCR_EL2</register_link>.FA64, and <register_link state="AArch64" id="AArch64-smcr_el3.xml">SMCR_EL3</register_link>.FA64.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-62_60" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>62</field_msb>
+    <field_lsb>60</field_lsb>
+    <rel_range>62:60</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-59_56-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SMEver</field_name>
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Indicates support for SME instructions when FEAT_SME is implemented. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If FEAT_SME is implemented
+and FEAT_SME2 is not implemented,
+the only permitted value is <binarynumber>0b0000</binarynumber>.</para>
+<para>If FEAT_SME2 is implemented
+and FEAT_SME2p1 is not implemented,
+the only permitted value is <binarynumber>0b0001</binarynumber>.</para>
+<para>FEAT_SME2p1 implements the functionality identified by <binarynumber>0b0010</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The mandatory SME instructions are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0000</binarynumber>, and adds the mandatory SME2 instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As <binarynumber>0b0001</binarynumber>, and adds the mandatory SME2.1 instructions.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When ID_AA64PFR1_EL1.SME != 0b0000</fields_condition>
+  </field>
+  <field id="fieldset_0-59_56-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>59</field_msb>
+    <field_lsb>56</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-55_52" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I16I64</field_name>
+    <field_msb>55</field_msb>
+    <field_lsb>52</field_lsb>
+    <rel_range>55:52</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate into 64-bit integer elements in the ZA array. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>FEAT_SME_I16I64 implements the functionality identified by the value <binarynumber>0b1111</binarynumber>.</para>
+<para>The only permitted values are <binarynumber>0b0000</binarynumber> and <binarynumber>0b1111</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate into 64-bit integer elements in the ZA array are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description><para>The variants of the ADDHA, ADDVA, SMOPA, SMOPS, SUMOPA, SUMOPS, UMOPA, UMOPS, USMOPA, and USMOPS instructions that accumulate into 64-bit integer tiles are implemented.</para>
+<para>When FEAT_SME2 is implemented, the variants of the ADD, ADDA, SDOT, SMLALL, SMLSLL, SUB, SUBA, SVDOT, UDOT, UMLALL, UMLSLL, and UVDOT instructions that accumulate into 64-bit integer elements in ZA array vectors are implemented.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-51_49" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>51</field_msb>
+    <field_lsb>49</field_lsb>
+    <rel_range>51:49</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-48_48" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F64F64</field_name>
+    <field_msb>48</field_msb>
+    <field_lsb>48</field_lsb>
+    <rel_range>48</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate into FP64 double-precision floating-point elements in the ZA array. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>FEAT_SME_F64F64 implements the functionality identified by the value <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate into double-precision floating-point elements in the ZA array are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The variants of the FMOPA and FMOPS instructions that accumulate into double-precision tiles are implemented.</para>
+<para>When FEAT_SME2 is implemented, the variants of the FADD, FMLA, FMLS, and FSUB instructions that accumulate into double-precision elements in ZA array vectors are implemented.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-47_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I16I32</field_name>
+    <field_msb>47</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>47:44</rel_range>
+    <field_description order="before">
+      <para>Indicates SME2 support for instructions that accumulate 16-bit outer products into 32-bit integer tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If FEAT_SME2 is implemented, the only permitted value is <binarynumber>0b0101</binarynumber>. Otherwise, the only permitted value is <binarynumber>0b0000</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate 16-bit outer products into 32-bit integer tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0101</field_value>
+        <field_value_description>
+          <para>The SMOPA (2-way), SMOPS (2-way), UMOPA (2-way), and UMOPS (2-way) instructions that accumulate 16-bit outer products into 32-bit integer tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-43_43" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>B16B16</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>43</rel_range>
+    <field_description order="before">
+      <para>Indicates support for SME2.1 non-widening BFloat16 instructions. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>FEAT_SVE_B16B16 implements the functionality identified by <binarynumber>0b1</binarynumber>.</para>
+<para>This field must indicate the same level of support as <register_link state="AArch64" id="AArch64-id_aa64zfr0_el1.xml">ID_AA64ZFR0_EL1</register_link>.B16B16.</para>
+<para>If FEAT_SME2p1 is implemented, the values <binarynumber>0b0</binarynumber> and <binarynumber>0b1</binarynumber> are permitted.</para>
+<para>Otherwise, the only permitted value is <binarynumber>0b0</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>SME2.1 non-widening BFloat16 instructions are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>SME2.1 BFADD, BFCLAMP, BFMAX, BFMAXNM, BFMIN, BFMINNM, BFMLA, BFMLS, BFMOPA, BFMOPS, and BFSUB instructions with BFloat16 operands and results are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-42_42" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F16F16</field_name>
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>42</rel_range>
+    <field_description order="before">
+      <para>Indicates support for SME2.1 non-widening half-precision floating-point instructions. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>FEAT_SME_F16F16 implements the functionality identified by <binarynumber>0b1</binarynumber>.</para>
+<para>If FEAT_SME2p1 is implemented, the values <binarynumber>0b0</binarynumber> and <binarynumber>0b1</binarynumber> are permitted.</para>
+<para>Otherwise, the only permitted value is <binarynumber>0b0</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>SME2.1 half-precision floating-point instructions are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>The following SME2.1 floating-point instructions are implemented:</para>
+<list type="unordered">
+<listitem><content>FMOPA and FMOPS instructions that accumulate half-precision outer-products into half-precision tiles.</content>
+</listitem><listitem><content>Multi-vector FADD, FMLA, FMLS, and FSUB instructions with half-precision operands and results.</content>
+</listitem><listitem><content>Multi-vector FCVT and FCVTL instructions that convert half-precision inputs to single-precision results.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-41_40" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>41:40</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-39_36" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>I8I32</field_name>
+    <field_msb>39</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>39:36</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate 8-bit integer outer products into 32-bit integer tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If FEAT_SME is implemented, the only permitted value is <binarynumber>0b1111</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate 8-bit outer products into 32-bit tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1111</field_value>
+        <field_value_description>
+          <para>The SMOPA, SMOPS, SUMOPA, SUMOPS, UMOPA, UMOPS, USMOPA, and USMOPS instructions that accumulate 8-bit outer products into 32-bit tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-35_35" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F16F32</field_name>
+    <field_msb>35</field_msb>
+    <field_lsb>35</field_lsb>
+    <rel_range>35</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate FP16 half-precision floating-point outer products into FP32 single-precision floating-point tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>If FEAT_SME is implemented, the only permitted value is <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate half-precision outer products into single-precision tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The FMOPA and FMOPS instructions that accumulate half-precision outer products into single-precision tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-34_34" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>B16F32</field_name>
+    <field_msb>34</field_msb>
+    <field_lsb>34</field_lsb>
+    <rel_range>34</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate BFloat16 outer products into FP32 single-precision floating-point tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>If FEAT_SME is implemented, the only permitted value is <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate BFloat16 outer products into single-precision tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The BFMOPA and BFMOPS instructions that accumulate BFloat16 outer products into single-precision tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-33_33" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>BI32I32</field_name>
+    <field_msb>33</field_msb>
+    <field_lsb>33</field_lsb>
+    <rel_range>33</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate thirty-two 1-bit binary outer products into 32-bit integer tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>If FEAT_SME2 is implemented, the only permitted value is <binarynumber>0b1</binarynumber>. Otherwise, the only permitted value is <binarynumber>0b0</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate 1-bit binary outer products into 32-bit integer tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The BMOPA and BMOPS instructions that accumulate 1-bit binary outer products into 32-bit integer tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-32_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>F32F32</field_name>
+    <field_msb>32</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>32</rel_range>
+    <field_description order="before">
+      <para>Indicates SME support for instructions that accumulate FP32 single-precision floating-point outer products into single-precision floating-point tiles. Defined values are:</para>
+    </field_description>
+    <field_description order="after">
+      <para>If FEAT_SME is implemented, the only permitted value is <binarynumber>0b1</binarynumber>.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Instructions that accumulate single-precision outer products into single-precision tiles are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The FMOPA and FMOPS instructions that accumulate single-precision outer products into single-precision tiles are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_63" msb="63" lsb="63"/>
+  <fieldat id="fieldset_0-62_60" msb="62" lsb="60"/>
+  <fieldat id="fieldset_0-59_56-1" msb="59" lsb="56"/>
+  <fieldat id="fieldset_0-55_52" msb="55" lsb="52"/>
+  <fieldat id="fieldset_0-51_49" msb="51" lsb="49"/>
+  <fieldat id="fieldset_0-48_48" msb="48" lsb="48"/>
+  <fieldat id="fieldset_0-47_44" msb="47" lsb="44"/>
+  <fieldat id="fieldset_0-43_43" msb="43" lsb="43"/>
+  <fieldat id="fieldset_0-42_42" msb="42" lsb="42"/>
+  <fieldat id="fieldset_0-41_40" msb="41" lsb="40"/>
+  <fieldat id="fieldset_0-39_36" msb="39" lsb="36"/>
+  <fieldat id="fieldset_0-35_35" msb="35" lsb="35"/>
+  <fieldat id="fieldset_0-34_34" msb="34" lsb="34"/>
+  <fieldat id="fieldset_0-33_33" msb="33" lsb="33"/>
+  <fieldat id="fieldset_0-32_32" msb="32" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>This register is read-only and can be accessed from EL1 and higher.</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>This register is only accessible from the AArch64 state.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_AA64SMFR0_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_AA64SMFR0_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0100"/>
+                
+                <enc n="op2" v="0b101"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_AA64SMFR0_EL1) || boolean IMPLEMENTATION_DEFINED "ID_AA64SMFR0_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_AA64SMFR0_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_AA64SMFR0_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_AA64SMFR0_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

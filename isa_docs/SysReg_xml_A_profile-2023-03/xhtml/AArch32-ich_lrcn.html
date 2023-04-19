@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ICH_LRC&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ICH_LRC&lt;n&gt;, Interrupt Controller List Registers, n = 0 - 15</h1><p>The ICH_LRC&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Provides interrupt context information for the virtual CPU interface.</p>
+      <h2>Configuration</h2><p>AArch32 System register ICH_LRC&lt;n&gt; bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-ich_lrn_el2.html">ICH_LR&lt;n&gt;_EL2[63:32]</a>.</p><p>This register is present only when EL2 is capable of using AArch32, FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented). Otherwise, direct accesses to ICH_LRC&lt;n&gt; are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>If list register n is not implemented, then accesses to this register are <span class="arm-defined-word">UNDEFINED</span>.</p>
+      <h2>Attributes</h2>
+        <p>ICH_LRC&lt;n&gt; is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="2"><a href="#fieldset_0-31_30">State</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">HW</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">Group</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">RES0</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16">Priority</a></td><td class="lr" colspan="3"><a href="#fieldset_0-15_13">RES0</a></td><td class="lr" colspan="13"><a href="#fieldset_0-12_0">pINTID</a></td></tr></tbody></table><h4 id="fieldset_0-31_30">State, bits [31:30]</h4><div class="field">
+      <p>The state of the interrupt:</p>
+    <table class="valuetable"><tr><th>State</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Invalid (Inactive).</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Pending.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Active.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Pending and active.</p>
+        </td></tr></table><p>The GIC updates these state bits as virtual interrupts proceed through the interrupt life cycle. Entries in the invalid state are ignored, except for the purpose of generating virtual maintenance interrupts.</p>
+<p>For hardware interrupts, the pending and active state is held in the physical Distributor rather than the virtual CPU interface. A hypervisor must only use the pending and active state for software originated interrupts, which are typically associated with virtual devices, or SGIs.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-29_29">HW, bit [29]</h4><div class="field">
+      <p>Indicates whether this virtual interrupt maps directly to a hardware interrupt, meaning that it corresponds to a physical interrupt. Deactivation of the virtual interrupt also causes the deactivation of the physical interrupt with the INTID that the pINTID field indicates.</p>
+    <table class="valuetable"><tr><th>HW</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The interrupt is triggered entirely by software. No notification is sent to the Distributor when the virtual interrupt is deactivated.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>The interrupt maps directly to a hardware interrupt. A deactivate interrupt request is sent to the Distributor when the virtual interrupt is deactivated, using the pINTID field from this register to indicate the physical INTID.</p>
+<p>If <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VEOIM is 0, this request corresponds to a write to <a href="AArch32-icc_eoir0.html">ICC_EOIR0</a> or <a href="AArch32-icc_eoir1.html">ICC_EOIR1</a>. Otherwise, it corresponds to a write to <a href="AArch32-icc_dir.html">ICC_DIR</a>.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-28_28">Group, bit [28]</h4><div class="field">
+      <p>Indicates the group for this virtual interrupt.</p>
+    <table class="valuetable"><tr><th>Group</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This is a Group 0 virtual interrupt. <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VFIQEn determines whether it is signaled as a virtual IRQ or as a virtual FIQ, and <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG0 enables signaling of this interrupt to the virtual machine.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>This is a Group 1 virtual interrupt, signaled as a virtual IRQ. <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VENG1 enables the signaling of this interrupt to the virtual machine.</p>
+<p>If <a href="AArch32-ich_vmcr.html">ICH_VMCR</a>.VCBPR is 0, then <a href="AArch32-icc_bpr1.html">ICC_BPR1</a> determines if a pending Group 1 interrupt has sufficient priority to preempt current execution. Otherwise, <a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a> determines preemption.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-27_24">Bits [27:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_16">Priority, bits [23:16]</h4><div class="field"><p>The priority of this interrupt.</p>
+<p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> how many bits of priority are implemented, though at least five bits must be implemented. Unimplemented bits are <span class="arm-defined-word">RES0</span> and start from bit[16] up to bit[18]. The number of implemented bits can be discovered from <a href="AArch32-ich_vtr.html">ICH_VTR</a>.PRIbits.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-15_13">Bits [15:13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_0">pINTID, bits [12:0]</h4><div class="field"><p>Physical INTID, for hardware interrupts.</p>
+<p>When ICH_LRC&lt;n&gt;.HW is 0 (there is no corresponding physical interrupt), this field has the following meaning:</p>
+<ul>
+<li>Bits[12:10] : <span class="arm-defined-word">RES0</span>.
+</li><li>Bit[9] : EOI. If this bit is 1, then when the interrupt identified by vINTID is deactivated, an EOI maintenance interrupt is asserted.
+</li><li>Bits[8:0] : Reserved, <span class="arm-defined-word">RES0</span>.
+</li></ul>
+<p>When ICH_LRC&lt;n&gt;.HW is 1 (there is a corresponding physical interrupt):</p>
+<ul>
+<li>This field indicates the physical INTID. This field is only required to implement enough bits to hold a valid value for the implemented INTID size. Any unused higher order bits are <span class="arm-defined-word">RES0</span>.
+</li><li>When <a href="AArch64-icc_ctlr_el1.html">ICC_CTLR_EL1</a>.ExtRange is 0, then bits[44:42] of this field are <span class="arm-defined-word">RES0</span>.
+</li><li>If the value of pINTID is not a valid INTID, behavior is <span class="arm-defined-word">UNPREDICTABLE</span>. If the value of pINTID indicates a PPI, this field applies to the PPI associated with this same physical PE ID as the virtual CPU interface requesting the deactivation.
+</li></ul>
+<p>A hardware physical identifier is only required in List Registers for interrupts that require deactivation. This means only 13 bits of Physical INTID are required, regardless of the number specified by <a href="AArch32-icc_ctlr.html">ICC_CTLR</a>.IDbits.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing ICH_LRC&lt;n&gt;</h2>
+        <p><a href="AArch32-ich_lrn.html">ICH_LR&lt;n&gt;</a> and ICH_LRC&lt;n&gt; can be updated independently.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b1100</td><td>0b111:m[3]</td><td>m[2:0]</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;0&gt;:opc2&lt;2:0&gt;);
+
+if m &gt;= NUM_GIC_LIST_REGS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_LRC[m];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        R[t] = ICH_LRC[m];
+                </p><h4 class="assembler">MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}
+     ; Where m = 0-15</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b100</td><td>0b1100</td><td>0b111:m[3]</td><td>m[2:0]</td></tr></table><p class="pseudocode">
+integer m = UInt(CRm&lt;0&gt;:opc2&lt;2:0&gt;);
+
+if m &gt;= NUM_GIC_LIST_REGS then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T12 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T12 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if ICC_HSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_LRC[m] = R[t];
+elsif PSTATE.EL == EL3 then
+    if ICC_MSRE.SRE == '0' then
+        UNDEFINED;
+    else
+        ICH_LRC[m] = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>EDECCR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">EDECCR, External Debug Exception Catch Control Register</h1><p>The EDECCR characteristics are:</p><h2>Purpose</h2>
+        <p>Controls Exception Catch debug events. For more information, see <span class="xref">'Exception Catch debug event'</span>.</p>
+      <h2>Configuration</h2><p>External register EDECCR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-oseccr_el1.html">OSECCR_EL1[31:0]</a>.</p><p>External register EDECCR bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-dbgoseccr.html">DBGOSECCR[31:0]</a>.</p><p>EDECCR is in the Core power domain.
+    </p><h2>Attributes</h2>
+        <p>EDECCR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="9"><a href="#fieldset_0-31_23">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">RLR2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">RLR1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20-1">RLR0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18-1">RLE2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17-1">RLE1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">RLE0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15">NSR3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-14_14-1">NSR2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">NSR1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">NSR0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">SR3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">SR2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">SR1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">SR0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">NSE3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">NSE2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">NSE1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">NSE0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">SE3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">SE2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">SE1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">SE0</a></td></tr></tbody></table><h4 id="fieldset_0-31_23">Bits [31:23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">RLR2, bit [22]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Realm EL2 in conjunction with EDECCR.RLE2.</p>
+    <table class="valuetable"><tr><th>RLR2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.RLE2 is 0, then Exception Catch debug events are disabled for Realm EL2.</p>
+<p>If EDECCR.RLE2 is 1, then Exception Catch debug events are enabled for exception entry and exception return to Realm EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.RLE2 is 0, then Exception Catch debug events are enabled for exception returns to Realm EL2.</p>
+<p>If EDECCR.RLE2 is 1, then Exception Catch debug events are enabled for exception entry to Realm EL2.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">RLR1, bit [21]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Realm EL1 in conjunction with EDECCR.RLE1.</p>
+    <table class="valuetable"><tr><th>RLR1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.RLE1 is 0, then Exception Catch debug events are disabled for Realm EL1.</p>
+<p>If EDECCR.RLE1 is 1, then Exception Catch debug events are enabled for exception entry and exception return to Realm EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.RLE1 is 0, then Exception Catch debug events are enabled for exception returns to Realm EL1.</p>
+<p>If EDECCR.RLE1 is 1, then Exception Catch debug events are enabled for exception entry to Realm EL1.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20-1">RLR0, bit [20]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Realm EL0.</p>
+    <table class="valuetable"><tr><th>RLR0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Realm EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for exception returns to Realm EL0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-20_20-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19">Bit [19]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18-1">RLE2, bit [18]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Realm EL2. Also controls exception catch on exception return to Realm EL2 in conjunction with EDECCR.RLR2.</p>
+    <table class="valuetable"><tr><th>RLE2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.RLR2 is 0, then Exception Catch debug events are disabled for Realm EL2.</p>
+<p>If EDECCR.RLR2 is 1, then Exception Catch debug events are enabled for exception returns to Realm EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.RLR2 is 0, then Exception Catch debug events are enabled for exception entry and exception return to Realm EL2.</p>
+<p>If EDECCR.RLR2 is 1, then Exception Catch debug events are enabled for exception entry to Realm EL2.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-18_18-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_17-1">RLE1, bit [17]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Realm EL1. Also controls exception catch on exception return to Realm EL1 in conjunction with EDECCR.RLR1.</p>
+    <table class="valuetable"><tr><th>RLE1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.RLR1 is 0, then Exception Catch debug events are disabled for Realm EL1.</p>
+<p>If EDECCR.RLR1 is 1, then Exception Catch debug events are enabled for exception returns to Realm EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.RLR1 is 0, then Exception Catch debug events are enabled for exception entry and exception return to Realm EL1.</p>
+<p>If EDECCR.RLR1 is 1, then Exception Catch debug events are enabled for exception entry to Realm EL1.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-17_17-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16">RLE0, bit [16]</h4><div class="field"><p>Access to this field is <span class="access_level">RES0</span>.</p></div><h4 id="fieldset_0-15_15">NSR3, bit [15]</h4><div class="field"><p>Access to this field is <span class="access_level">RES0</span>.</p></div><h4 id="fieldset_0-14_14-1">NSR2, bit [14]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Non-secure EL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Non-secure EL2 in conjunction with EDECCR.NSE2.</p>
+    <table class="valuetable"><tr><th>NSR2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.NSE2 is 0, then Exception Catch debug events are disabled for Non-secure EL2.</p>
+<p>If EDECCR.NSE2 is 1, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Non-secure EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.NSE2 is 0, then Exception Catch debug events are enabled for exception returns to Non-secure EL2.</p>
+<p>If EDECCR.NSE2 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Non-secure EL2.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-14_14-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">NSR1, bit [13]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Non-secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Non-secure EL1 in conjunction with EDECCR.NSE1.</p>
+    <table class="valuetable"><tr><th>NSR1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.NSE1 is 0, then Exception Catch debug events are disabled for Non-secure EL1.</p>
+<p>If EDECCR.NSE1 is 1, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Non-secure EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.NSE1 is 0, then Exception Catch debug events are enabled for exception returns to Non-secure EL1.</p>
+<p>If EDECCR.NSE1 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Non-secure EL1.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">NSR0, bit [12]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Non-secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Non-secure EL0.</p>
+    <table class="valuetable"><tr><th>NSR0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Non-secure EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for exception returns to Non-secure EL0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">SR3, bit [11]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to EL3 in conjunction with EDECCR.SE3.</p>
+    <table class="valuetable"><tr><th>SR3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SE3 is 0, then Exception Catch debug events are disabled for EL3.</p>
+<p>If EDECCR.SE3 is 1, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to EL3.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SE3 is 0, then Exception Catch debug events are enabled for exception returns to EL3.</p>
+<p>If EDECCR.SE3 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to EL3.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">SR2, bit [10]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and FEAT_SEL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Secure EL2 in conjunction with EDECCR.SE2.</p>
+    <table class="valuetable"><tr><th>SR2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SE2 is 0, then Exception Catch debug events are disabled for Secure EL2.</p>
+<p>If EDECCR.SE2 is 1, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Secure EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SE2 is 0, then Exception Catch debug events are enabled for exception returns to Secure EL2.</p>
+<p>If EDECCR.SE2 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Secure EL2.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">SR1, bit [9]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Secure EL1 in conjunction with EDECCR.SE1.</p>
+    <table class="valuetable"><tr><th>SR1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SE1 is 0, then Exception Catch debug events are disabled for Secure EL1.</p>
+<p>If EDECCR.SE1 is 1, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Secure EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SE1 is 0, then Exception Catch debug events are enabled for exception returns to Secure EL1.</p>
+<p>If EDECCR.SE1 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Secure EL1.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">SR0, bit [8]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Secure EL0 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception return to Secure EL0.</p>
+    <table class="valuetable"><tr><th>SR0</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Secure EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for exception returns to Secure EL0.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_7">NSE3, bit [7]</h4><div class="field"><p>Access to this field is <span class="access_level">RES0</span>.</p></div><h4 id="fieldset_0-6_6-1">NSE2, bit [6]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Non-secure EL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Non-secure EL2. Also controls exception catch on exception return to Non-secure EL2 in conjunction with EDECCR.NSR2.</p>
+    <table class="valuetable"><tr><th>NSE2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.NSR2 is 0, then Exception Catch debug events are disabled for Non-secure EL2.</p>
+<p>If EDECCR.NSR2 is 1, then Exception Catch debug events are enabled for exception returns to Non-secure EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.NSR2 is 0, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Non-secure EL2.</p>
+<p>If EDECCR.NSR2 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Non-secure EL2.</p></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether a reset entry to an Exception level will generate an Exception Catch debug event.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>When Non-secure EL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Coarse-grained exception catch for Non-secure EL2. Controls Exception Catch debug events for Non-secure EL2.</p>
+    <table class="valuetable"><tr><th>NSE2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Non-secure EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for Non-secure EL2.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-6_6-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">NSE1, bit [5]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Non-secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Non-secure EL1. Also controls exception catch on exception return to Non-secure EL1 in conjunction with EDECCR.NSR1.</p>
+    <table class="valuetable"><tr><th>NSE1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.NSR1 is 0, then Exception Catch debug events are disabled for Non-secure EL1.</p>
+<p>If EDECCR.NSR1 is 1, then Exception Catch debug events are enabled for exception returns to Non-secure EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.NSR1 is 0, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Non-secure EL1.</p>
+<p>If EDECCR.NSR1 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Non-secure EL1.</p></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether a reset entry to an Exception level will generate an Exception Catch debug event.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>When Non-secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Coarse-grained exception catch for Non-secure EL1. Controls Exception Catch debug events for Non-secure EL1.</p>
+    <table class="valuetable"><tr><th>NSE1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Non-secure EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for Non-secure EL1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4">NSE0, bit [4]</h4><div class="field"><p>Access to this field is <span class="access_level">RES0</span>.</p></div><h4 id="fieldset_0-3_3-1">SE3, bit [3]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to EL3. Also controls exception catch on exception return to EL3 in conjunction with EDECCR.SR3.</p>
+    <table class="valuetable"><tr><th>SE3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SR3 is 0, then Exception Catch debug events are disabled for EL3.</p>
+<p>If EDECCR.SR3 is 1, then Exception Catch debug events are enabled for exception returns to EL3.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SR3 is 0, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to EL3.</p>
+<p>If EDECCR.SR3 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to EL3.</p></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether a reset entry to an Exception level will generate an Exception Catch debug event.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>When FEAT_Debugv8p2 is not implemented and EL3 is implemented:
+                        </span></h4><div class="field">
+      <p>Coarse-grained exception catch for EL3. Controls Exception Catch debug events for EL3.</p>
+    <table class="valuetable"><tr><th>SE3</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-3_3-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">SE2, bit [2]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and FEAT_SEL2 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Secure EL2. Also controls exception catch on exception return to Secure EL2 in conjunction with EDECCR.SR2.</p>
+    <table class="valuetable"><tr><th>SE2</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SR2 is 0, then Exception Catch debug events are disabled for Secure EL2.</p>
+<p>If EDECCR.SR2 is 1, then Exception Catch debug events are enabled for exception returns to Secure EL2.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SR2 is 0, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Secure EL2.</p>
+<p>If EDECCR.SR2 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Secure EL2.</p></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether a reset entry to an Exception level will generate an Exception Catch debug event.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">SE1, bit [1]<span class="condition"><br/>When FEAT_Debugv8p2 is implemented and Secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Controls exception catch on exception entry to Secure EL1. Also controls exception catch on exception return to Secure EL1 in conjunction with EDECCR.SR1.</p>
+    <table class="valuetable"><tr><th>SE1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>If EDECCR.SR1 is 0, then Exception Catch debug events are disabled for Secure EL1.</p>
+<p>If EDECCR.SR1 is 1, then Exception Catch debug events are enabled for exception returns to Secure EL1.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If EDECCR.SR1 is 0, then Exception Catch debug events are enabled for exception entry, reset entry, and exception return to Secure EL1.</p>
+<p>If EDECCR.SR1 is 1, then Exception Catch debug events are enabled for exception entry and reset entry to Secure EL1.</p></td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether a reset entry to an Exception level will generate an Exception Catch debug event.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>When Secure EL1 is implemented:
+                        </span></h4><div class="field">
+      <p>Coarse-grained exception catch for Secure EL1. Controls Exception Catch debug events for Secure EL1.</p>
+    <table class="valuetable"><tr><th>SE1</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception Catch debug events are disabled for Secure EL1.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception Catch debug events are enabled for Secure EL1.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1-3"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0">SE0, bit [0]</h4><div class="field"><p>Access to this field is <span class="access_level">RES0</span>.</p></div><h2>Accessing EDECCR</h2><h4>EDECCR can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0x098</span></td><td>EDECCR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register generate an error response.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

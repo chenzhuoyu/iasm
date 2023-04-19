@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>NSACR</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">NSACR, Non-Secure Access Control Register</h1><p>The NSACR characteristics are:</p><h2>Purpose</h2><p>When EL3 is implemented and can use AArch32, defines the Non-secure access permissions to Trace, Advanced SIMD and floating-point functionality. Also includes <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> bits that can define Non-secure access permissions for <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> functionality.</p><h2>Configuration</h2><p>This register is present only when EL1 is capable of using AArch32. Otherwise, direct accesses to NSACR are <span class="arm-defined-word">UNDEFINED</span>.</p><div class="note"><span class="note-header">Note</span><p>In AArch64 state, the NSACR controls are replaced by controls in <a href="AArch64-cptr_el3.html">CPTR_EL3</a>.</p></div><h2>Attributes</h2><p>NSACR is a 32-bit register.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="11"><a href="#fieldset_0-31_21">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">NSTRCDIS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">RES0</a></td><td class="lr" colspan="3"><a href="#fieldset_0-18_16">IMPLEMENTATION DEFINED</a></td><td class="lr" colspan="1"><a href="#fieldset_0-15_15">NSASEDIS</a></td><td class="lr" colspan="3"><a href="#fieldset_0-14_12">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11">cp11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">cp10</a></td><td class="lr" colspan="10"><a href="#fieldset_0-9_0">RES0</a></td></tr></tbody></table><div class="text_before_fields"><p>If EL3 is implemented and is using AArch64 then:</p><ul><li>Any read of the NSACR from Non-secure EL2 or Non-secure EL1 returns a value of <span class="hexnumber">0x00000C00</span>.
+</li><li>Any read or write to NSACR from Secure EL1 is trapped as an exception to EL3.
+</li></ul><p>If EL3 is not implemented, then any read of the NSACR from EL2 or EL1 returns a value of <span class="hexnumber">0x00000C00</span>.</p></div><h4 id="fieldset_0-31_21">Bits [31:21]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-20_20">NSTRCDIS, bit [20]</h4><div class="field"><p>Disables Non-secure System register accesses to all implemented trace registers.</p><table class="valuetable"><tr><th>NSTRCDIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>This control has no effect on:</p><ul><li>System register access to implemented trace registers.
+</li><li>The behavior of <a href="AArch32-cpacr.html">CPACR</a>.TRCDIS and <a href="AArch32-hcptr.html">HCPTR</a>.TTA.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td><p>Non-secure System register accesses to all implemented trace registers are disabled, meaning:</p><ul><li><a href="AArch32-cpacr.html">CPACR</a>.TRCDIS behaves as RAO/WI in Non-secure state, regardless of its actual value.
+</li><li><a href="AArch32-hcptr.html">HCPTR</a>.TTA behaves as RAO/WI, regardless of its actual value.
+</li></ul></td></tr></table><p>The implementation of this field must correspond to the implementation of the <a href="AArch32-cpacr.html">CPACR</a>.TRCDIS field:</p><ul><li>If <a href="AArch32-cpacr.html">CPACR</a>.TRCDIS is RAZ/WI, this field is RAZ/WI.
+</li><li>If <a href="AArch32-cpacr.html">CPACR</a>.TRCDIS is RW, this field is RW.
+</li></ul><div class="note"><span class="note-header">Note</span><ul><li>The ETMv4 architecture and ETE do not permit EL0 to access the trace registers. If the trace unit implements FEAT_ETMv4 or FEAT_ETE, EL0 accesses to the trace registers are <span class="arm-defined-word">UNDEFINED</span>.</li><li>The Arm architecture does not provide Non-secure access controls on trace register accesses through the optional memory-mapped external debug interface.</li></ul></div><p>System register accesses to the trace registers can have side-effects. When a System register access is trapped, any side-effects that are normally associated with the access do not occur before the exception is taken.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-19_19">Bit [19]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-18_16">IMPLEMENTATION DEFINED, bits [18:16]</h4><div class="field"><p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p></div><h4 id="fieldset_0-15_15">NSASEDIS, bit [15]</h4><div class="field"><p>Disables Non-secure access to the Advanced SIMD functionality.</p><table class="valuetable"><tr><th>NSASEDIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>This control has no effect on:</p><ul><li>Non-secure access to Advanced SIMD functionality.
+</li><li>The behavior of <a href="AArch32-cpacr.html">CPACR</a>.ASEDIS and <a href="AArch32-hcptr.html">HCPTR</a>.TASE.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td><p>Non-secure access to the Advanced SIMD functionality is disabled, meaning:</p><ul><li><a href="AArch32-cpacr.html">CPACR</a>.ASEDIS behaves as RAO/WI in Non-secure state, regardless of its actual value.
+</li><li><a href="AArch32-hcptr.html">HCPTR</a>.TASE behaves as RAO/WI, regardless of its actual value.
+</li></ul></td></tr></table><p>The implementation of this field must correspond to the implementation of the <a href="AArch32-cpacr.html">CPACR</a>.ASEDIS field:</p><ul><li>If <a href="AArch32-cpacr.html">CPACR</a>.ASEDIS is <span class="arm-defined-word">RES0</span>, this field is <span class="arm-defined-word">RES0</span>. If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>.
+</li><li>If <a href="AArch32-cpacr.html">CPACR</a>.ASEDIS is RAZ/WI, this field is RAZ/WI.
+</li><li>If <a href="AArch32-cpacr.html">CPACR</a>.ASEDIS is RW, this field is RW.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-14_12">Bits [14:12]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-11_11">cp11, bit [11]</h4><div class="field"><p>The value of this field is ignored. If this field is programmed with a different value to the cp10 field then this field is <span class="arm-defined-word">UNKNOWN</span> on a direct read of the NSACR.</p><p>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10">cp10, bit [10]</h4><div class="field"><p>Enable Non-secure access to the Advanced SIMD and floating-point features. Possible values of the fields are:</p><table class="valuetable"><tr><th>cp10</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Advanced SIMD and floating-point features can be accessed only from Secure state. Any attempt to access this functionality from Non-secure state is <span class="arm-defined-word">UNDEFINED</span>.</p><p>When the PE is in Non-secure state:</p><ul><li>The <a href="AArch32-cpacr.html">CPACR</a>.{cp11, cp10} fields ignore writes and read as <span class="binarynumber">0b00</span>, access denied.
+</li><li>The <a href="AArch32-hcptr.html">HCPTR</a>.{TCP11, TCP10} fields behave as RAO/WI, regardless of their actual values.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td><p>Advanced SIMD and floating-point features can be accessed from both Security states.</p></td></tr></table><p>If Non-secure access to the Advanced SIMD and floating-point functionality is enabled, the <a href="AArch32-cpacr.html">CPACR</a> must be checked to determine the level of access that is permitted.</p><p>The Advanced SIMD and floating-point features controlled by these fields are:</p><ul><li>Execution of any floating-point or Advanced SIMD instruction.
+</li><li>Any access to the Advanced SIMD and floating-point registers D0-D31 and their views as S0-S31 and Q0-Q15.
+</li><li>Any access to the <a href="AArch32-fpscr.html">FPSCR</a>, <a href="AArch32-fpsid.html">FPSID</a>, <a href="AArch32-mvfr0.html">MVFR0</a>, <a href="AArch32-mvfr1.html">MVFR1</a>, <a href="AArch32-mvfr2.html">MVFR2</a>, or <a href="AArch32-fpexc.html">FPEXC</a> System registers.
+</li></ul><p>If the implementation does not include Advanced SIMD and floating-point functionality, this field is <span class="arm-defined-word">RES0</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_0">Bits [9:0]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><div class="access_mechanisms"><h2>Accessing NSACR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c>}{&lt;q>} &lt;coproc>, {#}&lt;opc1>, &lt;Rt>, &lt;CRn>, &lt;CRm>{, {#}&lt;opc2>}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0001</td><td>0b0001</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2> == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    elsif !HaveEL(EL3) || (!ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '1') then
+        R[t] = Zeros(20):'1100':Zeros(8);
+    else
+        R[t] = NSACR;
+elsif PSTATE.EL == EL2 then
+    if !HaveEL(EL3) || (!ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '1') then
+        R[t] = Zeros(20):'1100':Zeros(8);
+    else
+        R[t] = NSACR;
+elsif PSTATE.EL == EL3 then
+    R[t] = NSACR;
+                </p><h4 class="assembler">MCR{&lt;c>}{&lt;q>} &lt;coproc>, {#}&lt;opc1>, &lt;Rt>, &lt;CRn>, &lt;CRm>{, {#}&lt;opc2>}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b0001</td><td>0b0001</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T1 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T1 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif !ELUsingAArch32(EL2) &amp;&amp; SCR_EL3.&lt;NS,EEL2> == '01' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif !ELUsingAArch32(EL3) &amp;&amp; SCR_EL3.NS == '0' then
+        AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    if CP15SDISABLE2 == <ins>Signal_High</ins><del>HIGH</del> then
+        UNDEFINED;
+    else
+        NSACR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>01</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SMPRIMAP_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SMPRIMAP_EL2, Streaming Mode Priority Mapping Register</h1><p>The SMPRIMAP_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Maps the value in <a href="AArch64-smpri_el1.html">SMPRI_EL1</a> to a streaming execution priority value for instructions executed at EL1 and EL0 in the same Security states as EL2.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_SME is implemented. Otherwise, direct accesses to SMPRIMAP_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>When <a href="AArch64-smidr_el1.html">SMIDR_EL1</a>.SMPS is '0', this register is <span class="arm-defined-word">RES0</span>.</p>
+
+      
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+      <h2>Attributes</h2>
+        <p>SMPRIMAP_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-63_60">P15</a></td><td class="lr" colspan="4"><a href="#fieldset_0-59_56">P14</a></td><td class="lr" colspan="4"><a href="#fieldset_0-55_52">P13</a></td><td class="lr" colspan="4"><a href="#fieldset_0-51_48">P12</a></td><td class="lr" colspan="4"><a href="#fieldset_0-47_44">P11</a></td><td class="lr" colspan="4"><a href="#fieldset_0-43_40">P10</a></td><td class="lr" colspan="4"><a href="#fieldset_0-39_36">P9</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">P8</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">P7</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">P6</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">P5</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">P4</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">P3</a></td><td class="lr" colspan="4"><a href="#fieldset_0-11_8">P2</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">P1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">P0</a></td></tr></tbody></table><div class="text_before_fields"><p>When all of the following are true, the value in <a href="AArch64-smpri_el1.html">SMPRI_EL1</a> is mapped to a streaming execution priority using this register:</p>
+<ul>
+<li>The current Exception level is EL1 or EL0.
+</li><li>EL2 is implemented and enabled in the current Security state.
+</li><li><a href="AArch64-hcrx_el2.html">HCRX_EL2</a>.SMPME is '1'.
+</li></ul>
+<p>Otherwise, <a href="AArch64-smpri_el1.html">SMPRI_EL1</a> holds the streaming execution priority value.</p></div><h4 id="fieldset_0-63_60">P15, bits [63:60]</h4><div class="field"><p>Priority Mapping Entry 15. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '15'.</p>
+<p>This value is the highest streaming execution priority.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-59_56">P14, bits [59:56]</h4><div class="field">
+      <p>Priority Mapping Entry 14. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '14'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-55_52">P13, bits [55:52]</h4><div class="field">
+      <p>Priority Mapping Entry 13. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '13'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-51_48">P12, bits [51:48]</h4><div class="field">
+      <p>Priority Mapping Entry 12. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '12'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-47_44">P11, bits [47:44]</h4><div class="field">
+      <p>Priority Mapping Entry 11. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '11'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-43_40">P10, bits [43:40]</h4><div class="field">
+      <p>Priority Mapping Entry 10. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '10'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-39_36">P9, bits [39:36]</h4><div class="field">
+      <p>Priority Mapping Entry 9. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '9'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-35_32">P8, bits [35:32]</h4><div class="field">
+      <p>Priority Mapping Entry 8. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '8'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-31_28">P7, bits [31:28]</h4><div class="field">
+      <p>Priority Mapping Entry 7. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '7'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_24">P6, bits [27:24]</h4><div class="field">
+      <p>Priority Mapping Entry 6. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '6'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-23_20">P5, bits [23:20]</h4><div class="field">
+      <p>Priority Mapping Entry 5. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '5'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-19_16">P4, bits [19:16]</h4><div class="field">
+      <p>Priority Mapping Entry 4. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '4'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_12">P3, bits [15:12]</h4><div class="field">
+      <p>Priority Mapping Entry 3. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '3'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_8">P2, bits [11:8]</h4><div class="field">
+      <p>Priority Mapping Entry 2. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '2'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_4">P1, bits [7:4]</h4><div class="field">
+      <p>Priority Mapping Entry 1. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '1'.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_0">P0, bits [3:0]</h4><div class="field"><p>Priority Mapping Entry 0. This entry is used when priority mapping is supported and enabled, and the <a href="AArch64-smpri_el1.html">SMPRI_EL1</a>.Priority value is '0'.</p>
+<p>This value is the lowest streaming execution priority.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing SMPRIMAP_EL2</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SMPRIMAP_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0010</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        X[t, 64] = NVMem[0x1F8];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SMPRIMAP_EL2;
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.ESM == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = SMPRIMAP_EL2;
+                </p><h4 class="assembler">MSR SMPRIMAP_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b0001</td><td>0b0010</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.&lt;NV2,NV&gt; == '11' then
+        NVMem[0x1F8] = X[t, 64];
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SMPRIMAP_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.ESM == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        SMPRIMAP_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

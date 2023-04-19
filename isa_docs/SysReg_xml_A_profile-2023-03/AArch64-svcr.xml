@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>SVCR</reg_short_name>
+        
+        <reg_long_name>Streaming Vector Control Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when FEAT_SME is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Controls Streaming SVE mode and SME behavior.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Process state registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>SVCR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>2</field_lsb>
+    <rel_range>63:2</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-1_1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>ZA</field_name>
+    <field_msb>1</field_msb>
+    <field_lsb>1</field_lsb>
+    <rel_range>1</rel_range>
+    <field_description order="before"><para>Enables SME ZA storage.
+If FEAT_SME2 is implemented, also enables SME2 ZT0 storage.</para>
+<para>When this storage is disabled, execution of an instruction which can access it is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of {<hexnumber>0x1D</hexnumber>, <hexnumber>0x3</hexnumber>}.</para>
+<para>The possible values of this bit are:</para></field_description>
+    <field_description order="after"><para>When a write to SVCR.ZA changes the value of PSTATE.ZA from 0 to 1, all implemented bits of the storage are set to zero.</para>
+<para>Changes to this field do not have an effect on the SVE vector and predicate registers and <register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link>.</para>
+<para>A direct or indirect read of ZA appears to occur in program order relative to a direct write of SVCR, and to <instruction>MSR SVCRZA</instruction> and <instruction>MSR SVCRSMZA</instruction> instructions, without the need for explicit synchronization.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>SME ZA storage and, if implemented, ZT0 storage are
+invalid and not accessible.</para>
+<para>This control causes execution at any Exception level of instructions that can access this storage to be trapped.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>SME ZA storage and, if implemented, ZT0 storage are
+valid and accessible.</para>
+<para>This control does not cause execution of any instructions to be trapped.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-0_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>SM</field_name>
+    <field_msb>0</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Enables Streaming SVE mode.</para>
+<para>When the PE is in Streaming SVE mode, the Streaming SVE vector length (SVL) applies to SVE instructions, and execution at any Exception level of an instruction which is illegal in that mode is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of {<hexnumber>0x1D</hexnumber>, <hexnumber>0x1</hexnumber>}.</para>
+<para>When the PE is not in Streaming SVE mode, the SVE vector length (VL) applies to SVE instructions, and execution at any Exception level of an instruction which is only legal in that mode is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of {<hexnumber>0x1D</hexnumber>, <hexnumber>0x2</hexnumber>}.</para>
+<para>The possible values of this bit are:</para></field_description>
+    <field_description order="after"><para>When a write to SVCR.SM changes the value of PSTATE.SM, the following applies:</para>
+<list type="unordered">
+<listitem><content>When changed from 0 to 1, an entry to Streaming SVE mode is performed.</content>
+</listitem><listitem><content>When changed from 1 to 0, an exit from Streaming SVE mode is performed.</content>
+</listitem><listitem><content>All implemented bits of the SVE registers Z0-Z31, P0-P15, and FFR in the new mode are set to zero.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-fpsr.xml">FPSR</register_link> in the new mode is set to 0x0000_0000_0800_009f, in which all cumulative status bits are set to 1.</content>
+</listitem></list>
+<para>Changes to this field do not have an effect on SME ZA 
+storage or, if implemented, ZT0 
+storage.</para>
+<para>A direct or indirect read of SM appears to occur in program order relative to a direct write of SVCR, and to <instruction>MSR SVCRSM</instruction> and <instruction>MSR SVCRSMZA</instruction> instructions, without the need for explicit synchronization.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The PE is not in Streaming SVE mode.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The PE is in Streaming SVE mode.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_2" msb="63" lsb="2"/>
+  <fieldat id="fieldset_0-1_1" msb="1" lsb="1"/>
+  <fieldat id="fieldset_0-0_0" msb="0" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>SVCR is read/write and can be accessed from any Exception level.</para>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS SVCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, SVCR</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CPACR_EL1.SMEN != '11' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x1D);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CPTR_EL2.SMEN != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        X[t, 64] = Zeros(62):PSTATE.&lt;ZA,SM&gt;;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif CPACR_EL1.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL1, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        X[t, 64] = Zeros(62):PSTATE.&lt;ZA,SM&gt;;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        X[t, 64] = Zeros(62):PSTATE.&lt;ZA,SM&gt;;
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.ESM == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        X[t, 64] = Zeros(62):PSTATE.&lt;ZA,SM&gt;;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister SVCR" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SVCR, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b010"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; CPACR_EL1.SMEN != '11' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x1D);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; CPTR_EL2.SMEN != '11' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        SetPSTATE_SVCR(X[t, 32]);
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif CPACR_EL1.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL1, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        SetPSTATE_SVCR(X[t, 32]);
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.ESM == '0' then
+        UNDEFINED;
+    elsif HCR_EL2.E2H == '0' &amp;&amp; CPTR_EL2.TSM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HCR_EL2.E2H == '1' &amp;&amp; CPTR_EL2.SMEN == 'x0' then
+        AArch64.SystemAccessTrap(EL2, 0x1D);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.ESM == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        SetPSTATE_SVCR(X[t, 32]);
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.ESM == '0' then
+        AArch64.SystemAccessTrap(EL3, 0x1D);
+    else
+        SetPSTATE_SVCR(X[t, 32]);
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate SVCRSM" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SVCRSM, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b001x"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate SVCRZA" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SVCRZA, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b010x"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRimmediate SVCRSMZA" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR SVCRSMZA, #&lt;imm&gt;</access_instruction>
+                
+                <enc n="op0" v="0b00"/>
+                
+                <enc n="op1" v="0b011"/>
+                
+                <enc n="CRn" v="0b0100"/>
+                
+                <enc n="CRm" v="0b011x"/>
+                
+                <enc n="op2" v="0b011"/>
+            </encoding>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

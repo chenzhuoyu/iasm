@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MIDR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MIDR_EL1, Main ID Register</h1><p>The MIDR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides identification information for the PE, including an implementer code for the device and a device ID number.</p>
+      <h2>Configuration</h2><p>External register MIDR_EL1 bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-midr_el1.html">MIDR_EL1[31:0]</a>.</p><p>External register MIDR_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-midr.html">MIDR[31:0]</a>.</p><p>The power domain of MIDR_EL1 is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><h2>Attributes</h2>
+        <p>MIDR_EL1 is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24">Implementer</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">Variant</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">Architecture</a></td><td class="lr" colspan="12"><a href="#fieldset_0-15_4">PartNum</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">Revision</a></td></tr></tbody></table><h4 id="fieldset_0-31_24">Implementer, bits [31:24]</h4><div class="field">
+      <p>The Implementer code. This field must hold an implementer code that has been assigned by Arm. Assigned codes include the following:</p>
+    <table class="valuetable"><tr><th>Implementer</th><th>Meaning</th></tr><tr><td class="bitfield">0x00</td><td>
+          <p>Reserved for software use.</p>
+        </td></tr><tr><td class="bitfield">0x41</td><td>
+          <p>Arm Limited.</p>
+        </td></tr><tr><td class="bitfield">0x42</td><td>
+          <p>Broadcom Corporation.</p>
+        </td></tr><tr><td class="bitfield">0x43</td><td>
+          <p>Cavium Inc.</p>
+        </td></tr><tr><td class="bitfield">0x44</td><td>
+          <p>Digital Equipment Corporation.</p>
+        </td></tr><tr><td class="bitfield">0x46</td><td>
+          <p>Fujitsu Ltd.</p>
+        </td></tr><tr><td class="bitfield">0x49</td><td>
+          <p>Infineon Technologies AG.</p>
+        </td></tr><tr><td class="bitfield">0x4D</td><td>
+          <p>Motorola or Freescale Semiconductor Inc.</p>
+        </td></tr><tr><td class="bitfield">0x4E</td><td>
+          <p>NVIDIA Corporation.</p>
+        </td></tr><tr><td class="bitfield">0x50</td><td>
+          <p>Applied Micro Circuits Corporation.</p>
+        </td></tr><tr><td class="bitfield">0x51</td><td>
+          <p>Qualcomm Inc.</p>
+        </td></tr><tr><td class="bitfield">0x56</td><td>
+          <p>Marvell International Ltd.</p>
+        </td></tr><tr><td class="bitfield">0x69</td><td>
+          <p>Intel Corporation.</p>
+        </td></tr><tr><td class="bitfield">0xC0</td><td>
+          <p>Ampere Computing.</p>
+        </td></tr></table><p>Arm can assign codes that are not published in this manual. All values not assigned by Arm are reserved and must not be used.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-23_20">Variant, bits [23:20]</h4><div class="field">
+      <p>Variant number. Typically, this field is used to distinguish between different product variants, or major revisions of a product.</p>
+    
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-19_16">Architecture, bits [19:16]</h4><div class="field">
+      <p>Architecture version. Defined values are:</p>
+    <table class="valuetable"><tr><th>Architecture</th><th>Meaning</th></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>Armv4.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Armv4T.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Armv5 (obsolete).</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Armv5T.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Armv5TE.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Armv5TEJ.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Armv6.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>Architectural features are individually identified in the ID_* registers.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-15_4">PartNum, bits [15:4]</h4><div class="field"><p>Primary Part Number for the device.</p>
+<p>On processors implemented by Arm, if the top four bits of the primary part number are <span class="hexnumber">0x0</span> or <span class="hexnumber">0x7</span>, the variant and architecture are encoded differently.</p>
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-3_0">Revision, bits [3:0]</h4><div class="field">
+      <p>Revision number for the device.</p>
+    
+      <p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p>
+    <p>Access to this field is <span class="access_level">RO</span>.</p></div><h2>Accessing MIDR_EL1</h2><h4>MIDR_EL1 can be accessed through the external debug interface:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>Debug</td><td><span class="hexnumber">0xD00</span></td><td>MIDR_EL1</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When IsCorePowered() and !DoubleLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

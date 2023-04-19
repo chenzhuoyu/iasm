@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SDER32_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SDER32_EL3, AArch32 Secure Debug Enable Register</h1><p>The SDER32_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Allows access to the AArch32 register <a href="AArch32-sder.html">SDER</a> from AArch64 state only. Its value has no effect on execution in AArch64 state.</p>
+      <h2>Configuration</h2><p>AArch64 System register SDER32_EL3 bits [63:0] are architecturally mapped to AArch64 System register <a href="AArch64-sder32_el2.html">SDER32_EL2[63:0]</a> when EL2 is implemented and FEAT_SEL2 is implemented.</p><p>AArch64 System register SDER32_EL3 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-sder.html">SDER[31:0]</a>.</p><p>This register is present only when EL3 is implemented and EL1 is capable of using AArch32. Otherwise, direct accesses to SDER32_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>This register is ignored by the PE when one or more of the following are true:</p>
+
+      
+        <ul>
+<li>
+<p>The PE is in Non-secure state.</p>
+
+</li><li>
+<p>EL1 is using AArch64.</p>
+
+</li></ul>
+      <h2>Attributes</h2>
+        <p>SDER32_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_2">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="30"><a href="#fieldset_0-63_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">SUNIDEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">SUIDEN</a></td></tr></tbody></table><h4 id="fieldset_0-63_2">Bits [63:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">SUNIDEN, bit [1]</h4><div class="field">
+      <p>Secure User Non-Invasive Debug Enable.</p>
+    <table class="valuetable"><tr><th>SUNIDEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This bit has no effect on non-invasive debug.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-invasive debug is allowed in Secure EL0 using AArch32.</p>
+        </td></tr></table><p>When Secure EL1 is using AArch32, the forms of non-invasive debug affected by this control are:</p>
+<ul>
+<li>The PC Sample-based Profiling Extension. See About the PC Sample-based Profiling Extension.
+</li><li>When SelfHostedTraceEnabled() == FALSE, processor trace.
+</li><li>Performance Monitors.
+</li></ul>
+<p>When Secure EL1 is using AArch64, this bit has no effect.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">SUIDEN, bit [0]</h4><div class="field">
+      <p>Secure User Invasive Debug Enable.</p>
+    <table class="valuetable"><tr><th>SUIDEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This bit does not affect the generation of debug exceptions at Secure EL0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>If EL1 is using AArch32, debug exceptions from Secure EL0 are enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing SDER32_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SDER32_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if !HaveEL(EL3) || !HaveAArch32EL(EL1) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SDER32_EL3;
+                </p><h4 class="assembler">MSR SDER32_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0001</td><td>0b001</td></tr></table><p class="pseudocode">
+if !HaveEL(EL3) || !HaveAArch32EL(EL1) then
+    UNDEFINED;
+elsif PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    SDER32_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

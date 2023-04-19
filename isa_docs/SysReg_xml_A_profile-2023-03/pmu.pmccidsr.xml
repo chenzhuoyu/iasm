@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMCCIDSR</reg_short_name>
+        
+        <reg_long_name>CONTEXTIDR_ELx Sample Register</reg_long_name>
+
+
+        <reg_parent_link id="pmu.xml">PMU</reg_parent_link>
+
+      
+        <reg_condition otherwise="RES0">when FEAT_PMUv3_EXT is implemented</reg_condition>
+      
+
+
+    <reg_address
+        external_access="False"
+        mem_map_access="False"
+        block_access="True"
+        memory_access="True"
+        table_id="139930546058072"
+    >
+  
+  <reg_frame>PMU</reg_frame>
+  
+    
+    <reg_offset><hexnumber>0x228</hexnumber></reg_offset>
+    <reg_access>
+    
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered() or OSLockStatus()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RO</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Contains the sampled value of <register_link state="AArch64" id="AArch64-contextidr_el1.xml">CONTEXTIDR_EL1</register_link> and <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>, captured on reading PMU.PMPCSR.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If FEAT_PMUv3_EXT32 is implemented, the same content is present in the same location, and can be accessed using PMCID2SR[31:0] and PMCID1SR[31:0].</para>
+
+      </configuration_text>
+      <configuration_text>
+        <note><para>If <xref browsertext="FEAT_PCSRv8p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.PCSample"/> is not implemented, the PC Sample-based Profiling Extension can be implemented in the external debug register space, as indicated by the value of <register_link state="ext" id="ext-eddevid.xml">EDDEVID</register_link>.PCSample.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMCCIDSR is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CONTEXTIDR_EL2</field_name>
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before"><para>Context ID. The value of <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link> that is associated with the most recent PMU.PMPCSR sample. When the most recent PMU.PMPCSR sample is generated:</para>
+<list type="unordered">
+<listitem><content>If the PE is not executing at EL3, EL2 is using AArch64, and EL2 is enabled in the current Security state, then this field is set to the Context ID sampled from <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>.</content>
+</listitem><listitem><content>Otherwise, this field is set to an <arm-defined-word>UNKNOWN</arm-defined-word> value.</content>
+</listitem></list>
+<para>Because the value written to this field is an indirect read of <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>, it is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> whether this field is set to the original or new value if PMU.PMPCSR samples:</para>
+<list type="unordered">
+<listitem><content>An instruction that writes to <register_link state="AArch64" id="AArch64-contextidr_el2.xml">CONTEXTIDR_EL2</register_link>.</content>
+</listitem><listitem><content>The next Context synchronization event.</content>
+</listitem><listitem><content>Any instruction executed between these two instructions.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CONTEXTIDR_EL1</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Context ID. The value of <xref browsertext="CONTEXTIDR" filename="appx_registers_index.fm" linkend="BABFCJFG"/> that is associated with the most recent PMU.PMPCSR sample. When the most recent PMU.PMPCSR sample is generated:</para>
+<list type="unordered">
+<listitem><content>If EL1 is using AArch64, then the Context ID is sampled from <register_link state="AArch64" id="AArch64-contextidr_el1.xml">CONTEXTIDR_EL1</register_link>.</content>
+</listitem><listitem><content>If EL1 is using AArch32, then the Context ID is sampled from <register_link state="AArch32" id="AArch32-contextidr.xml">CONTEXTIDR</register_link>.</content>
+</listitem><listitem><content>If EL3 is implemented and is using AArch32, then <register_link state="AArch32" id="AArch32-contextidr.xml">CONTEXTIDR</register_link> is a banked register and this register samples the current banked copy of <register_link state="AArch32" id="AArch32-contextidr.xml">CONTEXTIDR</register_link> for the Security state that is associated with the most recent PMU.PMPCSR sample.</content>
+</listitem></list>
+<para>Because the value written to this register is an indirect read of <xref browsertext="CONTEXTIDR" filename="appx_registers_index.fm" linkend="BABFCJFG"/>, it is <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> whether this register is set to the original or new value if PMU.PMPCSR samples:</para>
+<list type="unordered">
+<listitem><content>An instruction that writes to <xref browsertext="CONTEXTIDR" filename="appx_registers_index.fm" linkend="BABFCJFG"/>.</content>
+</listitem><listitem><content>The next Context synchronization event.</content>
+</listitem><listitem><content>Any instruction executed between these two instructions.</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para><arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> extensions to external debug might make the value of this register <arm-defined-word>UNKNOWN</arm-defined-word>, see <xref browsertext="'Permitted behavior that might make the PC Sample-based profiling registers UNKNOWN'" filename="H_the_sample_based_profiling__.fm" linkend="BABCBGEF"/>.</para>
+      </access_permission_text>
+
+
+
+
+
+        <access_mechanism type="BlockAccessAbstract" table_id="139930546058072">
+        
+        
+        
+        <access_header>Accessible at offset 0x228 from PMU</access_header>
+        <access_condition>
+When FEAT_PMUv3_EXT64 is implemented
+        </access_condition>
+    </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

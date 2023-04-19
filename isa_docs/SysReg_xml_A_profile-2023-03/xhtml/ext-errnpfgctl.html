@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ERR&lt;n&gt;PFGCTL</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ERR&lt;n&gt;PFGCTL, Error Record &lt;n&gt; Pseudo-fault Generation Control Register, n = 0 - 65534</h1><p>The ERR&lt;n&gt;PFGCTL characteristics are:</p><h2>Purpose</h2>
+        <p>Enables controlled fault generation.</p>
+      <h2>Configuration</h2><p>This register is present only when error record &lt;n&gt; is implemented, the node implements the Common Fault Injection Model Extension (ERR&lt;n&gt;FR.INJ != 0b00) and error record &lt;n&gt; is the first error record owned by a node. Otherwise, direct accesses to ERR&lt;n&gt;PFGCTL are <span class="arm-defined-word">RES0</span>.</p>
+        <p><a href="ext-errnpfgf.html">ERR&lt;n&gt;PFGF</a> describes the Common Fault Injection features implemented by the node.</p>
+
+      
+        <p><a href="ext-errnfr.html">ERR&lt;n&gt;FR</a> describes the features implemented by the node.</p>
+      <h2>Attributes</h2>
+        <p>ERR&lt;n&gt;PFGCTL is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">CDNEN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30-1">R</a></td><td class="lr" colspan="17"><a href="#fieldset_0-29_13">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12-1">RAO/WI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">RAO/WI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10-1">PN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">ER</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">CI</a></td><td class="lr" colspan="2"><a href="#fieldset_0-7_6-1">CE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">DE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">UEO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">UER</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2-1">UEU</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1-1">UC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0-1">OF</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">CDNEN, bit [31]</h4><div class="field">
+      <p>Countdown Enable. Controls transfers of the value held in <a href="ext-errnpfgcdn.html">ERR&lt;n&gt;PFGCDN</a> to the Error Generation Counter and enables this counter.</p>
+    <table class="valuetable"><tr><th>CDNEN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The Error Generation Counter is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The Error Generation Counter is enabled. On a write of 1 to this field, the Error Generation Counter is set to <a href="ext-errnpfgcdn.html">ERR&lt;n&gt;PFGCDN</a>.CDN.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-30_30-1">R, bit [30]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Restart. Controls whether the Error Generation Counter restarts or stops counting on reaching zero.</p>
+    <table class="valuetable"><tr><th>R</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>On reaching zero, the Error Generation Counter will stop counting.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>On reaching zero, the Error Generation Counter is set to <a href="ext-errnpfgcdn.html">ERR&lt;n&gt;PFGCDN</a>.CDN.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_13">Bits [29:13]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12-1">Bit [12]<span class="condition"><br/>When the node supports this control and the node always sets ERR&lt;n&gt;STATUS.MV to 0b1 when an injected error is recorded:
+                        </span></h4><div class="field">
+      <p>Reserved, RAO/WI.</p>
+    </div><h4 id="fieldset_0-12_12-2"><span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Miscellaneous syndrome. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>MV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.MV is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-12_12-3"><span class="condition"><br/>When the node always sets ERR&lt;n&gt;STATUS.MV to 0b1 when an injected error is recorded and this field is RAO/WI:
+                        </span></h4><div class="field">
+      <p>Reserved, RAO/WI.</p>
+    </div><h4 id="fieldset_0-12_12-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-11_11-1">Bit [11]<span class="condition"><br/>When the node supports this control and the node always sets ERR&lt;n&gt;STATUS.AV to 0b1 when an injected error is recorded:
+                        </span></h4><div class="field">
+      <p>Reserved, RAO/WI.</p>
+    </div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Address syndrome. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>AV</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.AV is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On an Error recovery reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-3"><span class="condition"><br/>When the node always sets ERR&lt;n&gt;STATUS.AV to 0b1 when an injected error is recorded and this field is RAO/WI:
+                        </span></h4><div class="field">
+      <p>Reserved, RAO/WI.</p>
+    </div><h4 id="fieldset_0-11_11-4"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-10_10-1">PN, bit [10]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Poison flag. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>PN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.PN is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-10_10-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9-1">ER, bit [9]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Error Reported flag. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>ER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.ER is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">CI, bit [8]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Critical Error flag. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>CI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CI is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_6-1">CE, bits [7:6]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Corrected Error generation enable. Controls the type of injected Corrected error generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>CE</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>An injected Corrected error will not be generated by the fault injection feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>An injected non-specific Corrected error is generated in the fault injection state. <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CE is set to <span class="binarynumber">0b10</span> when the injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>An injected transient Corrected error is generated in the fault injection state. <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CE is set to <span class="binarynumber">0b01</span> when the injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>An injected persistent Corrected error is generated in the fault injection state. <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.CE is set to <span class="binarynumber">0b11</span> when the injected error is recorded.</p>
+        </td></tr></table><p>The set of permitted values for this field is defined by <a href="ext-errnpfgf.html">ERR&lt;n&gt;PFGF</a>.CE.</p>
+<p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_5-1">DE, bit [5]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Deferred Error generation enable. Controls whether an injected Deferred error is generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>DE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An injected Deferred error will not be generated by the fault generation feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An injected Deferred error is generated in the fault injection state.</p>
+        </td></tr></table>
+      <p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">UEO, bit [4]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Latent or Restartable Error generation enable. Controls whether an injected Latent or Restartable error is generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>UEO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An injected Latent or Restartable error will not be generated by the fault generation feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An injected Latent or Restartable error is generated in the fault injection state.</p>
+        </td></tr></table>
+      <p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">UER, bit [3]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Signaled or Recoverable Error generation enable. Controls whether an injected Signaled or Recoverable error is generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>UER</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An injected Signaled or Recoverable error will not be generated by the fault generation feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An injected Signaled or Recoverable error is generated in the fault injection state.</p>
+        </td></tr></table>
+      <p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2-1">UEU, bit [2]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Unrecoverable Error generation enable. Controls whether an injected Unrecoverable error is generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>UEU</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An injected Unrecoverable error will not be generated by the fault generation feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An injected Unrecoverable error is generated in the fault injection state.</p>
+        </td></tr></table>
+      <p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1-1">UC, bit [1]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Uncontainable Error generation enable. Controls whether an injected Uncontainable error is generated by the fault injection feature of the node.</p>
+    <table class="valuetable"><tr><th>UC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An injected Uncontainable error will not be generated by the fault generation feature of the node.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An injected Uncontainable error is generated in the fault injection state.</p>
+        </td></tr></table>
+      <p>The node enters the fault injection state when the Error Generation Counter decrements to zero. It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether the injected error is generated when the error is generated on an access to the component in the fault injection state and the data is not consumed.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-0_0-1">OF, bit [0]<span class="condition"><br/>When the node supports this control:
+                        </span></h4><div class="field">
+      <p>Overflow flag. The value written to <a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF when an injected error is recorded.</p>
+    <table class="valuetable"><tr><th>OF</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF is set to 0 when an injected error is recorded.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p><a href="ext-errnstatus.html">ERR&lt;n&gt;STATUS</a>.OF is set to 1 when an injected error is recorded.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Cold reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing ERR&lt;n&gt;PFGCTL</h2><h4>ERR&lt;n&gt;PFGCTL can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>RAS</td><td><span class="hexnumber">0x808</span> + (64 * n)</td><td>ERR&lt;n&gt;PFGCTL</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

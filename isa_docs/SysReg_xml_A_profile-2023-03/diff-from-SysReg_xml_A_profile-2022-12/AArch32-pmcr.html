@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>PMCR</title><link href="insn.css" rel="stylesheet" type="text/css"/></head><body><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMCR, Performance Monitors Control Register</h1><p>The PMCR characteristics are:</p><h2>Purpose</h2><p>Provides details of the Performance Monitors implementation, including the number of counters implemented, and configures and controls the counters.</p><h2>Configuration</h2><p>AArch32 System register PMCR bits [31:0] are architecturally mapped to AArch64 System register <a href="AArch64-pmcr_el0.html">PMCR_EL0[31:0]</a>.</p><p>AArch32 System register PMCR bits [<ins>10</ins><del>7</del>:0] are architecturally mapped to External register <a href="pmu.pmcr_el0.html">PMU.PMCR_EL0[<ins>10</ins><del>7</del>:0]</a>.</p><p>This register is present only when AArch32 is supported and FEAT_PMUv3 is implemented. Otherwise, direct accesses to PMCR are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2><p>PMCR is a 32-bit register.</p><h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="8"><a href="#fieldset_0-31_24-1">IMP</a></td><td class="lr" colspan="8"><a href="#fieldset_0-23_16-1">IDCODE</a></td><td class="lr" colspan="5"><a href="#fieldset_0-15_11">N</a></td><td class="lr" colspan="1"><a href="#fieldset_0-10_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9-1">FZO</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7-1">LP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">LC</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5-1">DP</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">X</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">D</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">P</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">E</a></td></tr></tbody></table><h4 id="fieldset_0-31_24-1">IMP, bits [31:24]<span class="condition"><br/>When FEAT_PMUv3p7 is not implemented:
+                        </span></h4><div class="field"><p>Implementer code.</p><p>If this field is zero, then PMCR.IDCODE is <span class="arm-defined-word">RES0</span> and software must use <a href="AArch32-midr.html">MIDR</a> to identify the PE.</p><p>Otherwise, this field and PMCR.IDCODE identify the PMU implementation to software. The implementer codes are allocated by Arm. A nonzero value has the same interpretation as <a href="AArch32-midr.html">MIDR</a>.Implementer.</p><p>Use of this field is deprecated.</p><p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-31_24-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, RAZ.</p></div><h4 id="fieldset_0-23_16-1">IDCODE, bits [23:16]<span class="condition"><br/>When PMCR.IMP != 0b00000000:
+                        </span></h4><div class="field"><p>Identification code. Use of this field is deprecated.</p><p>Each implementer must maintain a list of identification codes that are specific to the implementer. A specific implementation is identified by the combination of the implementer code and the identification code.</p><p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-23_16-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-15_11">N, bits [15:11]</h4><div class="field"><p>Indicates the number of event counters implemented. This value is in the range of <span class="binarynumber">0b00000</span>-<span class="binarynumber">0b11111</span>. If the value is <span class="binarynumber">0b00000</span>, then only <a href="AArch32-pmccntr.html">PMCCNTR</a> is implemented. If the value is <span class="binarynumber">0b11111</span>, then <a href="AArch32-pmccntr.html">PMCCNTR</a> and 31 event counters are implemented.</p><p>In an implementation that includes EL2:</p><ul><li><p>If EL2 is using AArch32, reads of this field from Non-secure EL1 and Non-secure EL0 return the value of <a href="AArch32-hdcr.html">HDCR</a>.HPMN.</p></li><li><p>If EL2 is using AArch64 and is enabled in the current Security state, reads of this field from EL1 and EL0 return the value of <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN.</p></li></ul><p>This field has an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</p><p>Access to this field is <span class="access_level">RO</span>.</p></div><h4 id="fieldset_0-10_10">Bit [10]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-9_9-1">FZO, bit [9]<span class="condition"><br/>When FEAT_PMUv3p7 is implemented:
+                        </span></h4><div class="field"><p>Freeze-on-overflow.</p><p>Stop event counters on overflow.</p><p>In the description of this field:</p><ul><li>If EL2 is implemented and is using AArch32, then PMN is <a href="AArch32-hdcr.html">HDCR</a>.HPMN.
+</li><li>If EL2 is implemented and is using AArch64, then PMN is <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN.
+</li><li>If EL2 is not implemented, then PMN is PMCR.N.
+</li></ul><table class="valuetable"><tr><th>FZO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Do not freeze on overflow.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Affected event counters do not count when <a href="AArch32-pmovsr.html">PMOVSR</a>[(PMN-1):0] is nonzero.</p></td></tr></table><p>The counters affected by this field are:</p><ul><li>If EL2 is implemented, event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a> for values of n less than PMN. This applies even when EL2 is disabled in the current Security state.
+</li><li>If EL2 is not implemented, all event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>.
+</li></ul><p>Other event counters and <a href="AArch32-pmccntr.html">PMCCNTR</a> are not affected by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_9-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-8_8">Bit [8]</h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-7_7-1">LP, bit [7]<span class="condition"><br/>When FEAT_PMUv3p5 is implemented:
+                        </span></h4><div class="field"><p>Long event counter enable.</p><p>Determines which event counter bit generates an overflow recorded by <a href="AArch32-pmovsr.html">PMOVSR</a>[n].</p><p>In the description of this field:</p><ul><li>If EL2 is implemented and is using AArch32, then PMN is <a href="AArch32-hdcr.html">HDCR</a>.HPMN.
+</li><li>If EL2 is implemented and is using AArch64, then PMN is <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN.
+</li><li>If EL2 is not implemented, then PMN is PMCR.N.
+</li></ul><table class="valuetable"><tr><th>LP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Affected counters overflow on unsigned overflow of <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>[31:0].</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Affected counters overflow on unsigned overflow of <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>[63:0].</p></td></tr></table><p>The counters affected by this field are:</p><ul><li>If EL2 is implemented, event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a> for values of n less than PMN. This applies even when EL2 is disabled in the current Security state.
+</li><li>If EL2 is not implemented, all event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>.
+</li></ul><p>Other event counters and <a href="AArch32-pmccntr.html">PMCCNTR</a> are not affected by this field.</p><p><a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>[63:32] is not accessible in AArch32 state.</p><p>If the highest implemented Exception level is using AArch32, it is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field is read/write or RAZ/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-7_7-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-6_6">LC, bit [6]</h4><div class="field"><p>Long cycle counter enable. Determines when unsigned overflow is recorded by the cycle counter overflow bit.</p><table class="valuetable"><tr><th>LC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Cycle counter overflow on increment that causes unsigned overflow of <a href="AArch32-pmccntr.html">PMCCNTR</a>[31:0].</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Cycle counter overflow on increment that causes unsigned overflow of <a href="AArch32-pmccntr.html">PMCCNTR</a>[63:0].</p></td></tr></table><p>Arm deprecates use of <a href="AArch32-pmcr.html">PMCR</a>.LC = 0.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-5_5-1">DP, bit [5]<span class="condition"><br/>When (FEAT_PMUv3p1 is implemented and EL2 is implemented) or EL3 is implemented:
+                        </span></h4><div class="field"><p>Disable cycle counter when event counting is prohibited.</p><table class="valuetable"><tr><th>DP</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is not affected by this mechanism.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is disabled in prohibited regions and when event counting is frozen:</p><ul><li>If <span class="xref">FEAT_PMUv3p1</span> is implemented, EL2 is implemented, and <a href="AArch32-hdcr.html">HDCR</a>.HPMD is 1, then cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is disabled at EL2.
+</li><li>If <span class="xref">FEAT_PMUv3p7</span> is implemented, EL3 is implemented and using AArch64, and <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.MPMX is 1, then cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is disabled at EL3.
+</li><li>If <span class="xref">FEAT_PMUv3p7</span> is implemented<del>,</del> and event counting is frozen by PMCR.FZO, then cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is disabled.
+</li><li>If EL3 is implemented, <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.SPME or <a href="AArch32-sdcr.html">SDCR</a>.SPME is 0, and either <span class="xref">FEAT_PMUv3p7</span> is not implemented, EL3 is using AArch32, or <a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.MPMX is 0, then cycle counting by <a href="AArch32-pmccntr.html">PMCCNTR</a> is disabled at EL3 and in Secure state.
+</li></ul></td></tr></table><p>The conditions when this field disables the cycle counter are the same as when event counting by an event counter <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a> is prohibited or frozen, when either EL2 is not implemented or n is less than <a href="AArch32-hdcr.html">HDCR</a>.HPMN.</p><p>For more information, see <span class="xref">'Prohibiting event and cycle counting'</span>.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-5_5-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-4_4-1">X, bit [4]<span class="condition"><br/>When the implementation includes a PMU event export bus:
+                        </span></h4><div class="field"><p>Enable export of events in an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> PMU event export bus.</p><table class="valuetable"><tr><th>X</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Do not export events.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Export events where not prohibited.</p></td></tr></table><p>This field enables the exporting of events over an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> PMU event export bus to another device, for example to an <span class="arm-defined-word">OPTIONAL</span> trace unit.</p><p>No events are exported when counting is prohibited.</p><p>This field does not affect the generation of Performance Monitors overflow interrupt requests or signaling to a cross-trigger interface (CTI) that can be implemented as signals exported from the PE.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field"><p>Reserved, RAZ/WI.</p></div><h4 id="fieldset_0-3_3">D, bit [3]</h4><div class="field"><p>Clock divider.</p><table class="valuetable"><tr><th>D</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>When enabled, <a href="AArch32-pmccntr.html">PMCCNTR</a> counts every clock cycle.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When enabled, <a href="AArch32-pmccntr.html">PMCCNTR</a> counts once every 64 clock cycles.</p></td></tr></table><p>If PMCR.LC == 1, this bit is ignored and the cycle counter counts every clock cycle.</p><p>Arm deprecates use of PMCR.D = 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-2_2">C, bit [2]</h4><div class="field"><p>Cycle counter reset. The effects of writing to this bit are:</p><table class="valuetable"><tr><th>C</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>No action.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Reset <a href="AArch32-pmccntr.html">PMCCNTR</a> to zero.</p></td></tr></table><div class="note"><span class="note-header">Note</span><p>Resetting <a href="AArch32-pmccntr.html">PMCCNTR</a> does not change the cycle counter overflow bit. If <span class="xref">FEAT_PMUv3p5</span> is implemented, the value of PMCR.LC is ignored, and bits [63:0] of the cycle counter are reset.</p></div><p>Access to this field is <span class="access_level">WO/RAZ</span>.</p></div><h4 id="fieldset_0-1_1">P, bit [1]</h4><div class="field"><p>Event counter reset.</p><p>In the description of this field:</p><ul><li><p>If EL2 is implemented and is using AArch32, PMN is <a href="AArch32-hdcr.html">HDCR</a>.HPMN.</p></li><li><p>If EL2 is implemented and is using AArch64, PMN is <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN.</p></li><li><p>If EL2 is not implemented, PMN is PMCR.N.</p></li></ul><table class="valuetable"><tr><th>P</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>No action.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>If n is in the range of affected event counters, resets each event counter <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a> to zero.</p></td></tr></table><p>The effects of writing to this bit are:</p><ul><li>If EL2 is implemented and enabled in the current Security state, in EL0 and EL1, if PMN is not 0, a write of 1 to this bit resets event counters in the range [0 .. (PMN-1)].
+</li><li>If EL2 is disabled in the current Security state, a write of 1 to this bit resets all the event counters.
+</li><li>In EL2 and EL3, a write of 1 to this bit resets all the event counters.
+</li><li>This field does not affect the operation of other event counters and <a href="AArch32-pmccntr.html">PMCCNTR</a>.
+</li></ul><div class="note"><span class="note-header">Note</span><p>Resetting the event counters does not change the event counter overflow bits.</p><p>If <span class="xref">FEAT_PMUv3p5</span> is implemented, the values of <a href="AArch32-hdcr.html">HDCR</a>.HLP and PMCR.LP are ignored and bits [63:0] of all affected event counters are reset.</p></div><p>Access to this field is <span class="access_level">WO/RAZ</span>.</p></div><h4 id="fieldset_0-0_0">E, bit [0]</h4><div class="field"><p>Enable.</p><p>In the description of this field:</p><ul><li>If EL2 is implemented and is using AArch32, then PMN is <a href="AArch32-hdcr.html">HDCR</a>.HPMN.
+</li><li>If EL2 is implemented and is using AArch64, then PMN is <a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN.
+</li><li>If EL2 is not implemented, then PMN is PMCR.N.
+</li></ul><table class="valuetable"><tr><th>E</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Affected counters are disabled and do not count.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Affected counters are enabled by <a href="AArch32-pmcntenset.html">PMCNTENSET</a>.</p></td></tr></table><p>The counters affected by this field are:</p><ul><li>If EL2 is implemented, event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a> for values of n less than PMN. This applies even when EL2 is disabled in the current Security state.
+</li><li>If EL2 is not implemented, all event counters <a href="AArch32-pmevcntrn.html">PMEVCNTR&lt;n></a>.
+</li><li>The cycle counter <a href="AArch32-pmccntr.html">PMCCNTR</a>.
+</li></ul><p>Other event counters are not affected by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing PMCR</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRC{&lt;c>}{&lt;q>} &lt;coproc>, {#}&lt;opc1>, &lt;Rt>, &lt;CRn>, &lt;CRm>{, {#}&lt;opc2>}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1001</td><td>0b1100</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; <ins>((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN> != '01') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; </ins>PMUSERENR_EL0.EN == '0<ins>'))</ins><del>'</del> then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE> != '11' &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPMCR == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPMCR == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCR;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPMCR == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPMCR == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCR;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        R[t] = PMCR;
+elsif PSTATE.EL == EL3 then
+    R[t] = PMCR;
+                </p><h4 class="assembler">MCR{&lt;c>}{&lt;q>} &lt;coproc>, {#}&lt;opc1>, &lt;Rt>, &lt;CRn>, &lt;CRm>{, {#}&lt;opc2>}</h4><table class="access_instructions"><tr><th>coproc</th><th>opc1</th><th>CRn</th><th>CRm</th><th>opc2</th></tr><tr><td>0b1111</td><td>0b000</td><td>0b1001</td><td>0b1100</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; <ins>((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN> != '01') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; </ins>PMUSERENR_EL0.EN == '0<ins>'))</ins><del>'</del> then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE> != '11' &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE> != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMCR_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPMCR == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPMCR == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCR = R[t];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPMCR == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPMCR == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCR = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        PMCR = R[t];
+elsif PSTATE.EL == EL3 then
+    PMCR = R[t];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions"><ins>30</ins><del>28</del>/03/2023 <ins>19</ins><del>16</del>:<ins>06</ins><del>02</del>; <ins>997dd0cf3258cacf72aa7cf7a885f19a4758c3af</ins><del>72747e43966d6b97dcbd230a1b3f0421d1ea3d94</del></p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p><div align="center" class="htmldiff_header"><table><tbody><tr><td class="old">(old) </td><td class="explain">htmldiff from-</td><td class="new">(new) </td></tr></tbody></table></div></body></html>

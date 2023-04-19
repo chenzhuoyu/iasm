@@ -1,0 +1,426 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MAIR1</reg_short_name>
+        
+        <reg_long_name>Memory Attribute Indirection Register 1</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when EL1 is capable of using AArch32</reg_condition>
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-mair_el1.xml">MAIR_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>32</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:32">
+      <range>
+        <msb>63</msb>
+        <lsb>32</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is not implemented or EL3 is using AArch64</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-nmrr.xml">NMRR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is not implemented or EL3 is using AArch64</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-nmrr.xml">NMRR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>MAIR1_NS</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>NMRR_NS</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is using AArch32</mapped_to_condition>
+      </reg_mapping>
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-nmrr.xml">NMRR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_from_sec_state>MAIR1_S</mapped_from_sec_state>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_to_sec_state>NMRR_S</mapped_to_sec_state>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+        <mapped_to_condition>when EL3 is using AArch32</mapped_to_condition>
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Along with <register_link state="AArch32" id="AArch32-mair0.xml">MAIR0</register_link>, provides the memory attribute encodings corresponding to the possible AttrIndx values in a Long-descriptor format translation table entry for stage 1 translations.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>AttrIndx[2] indicates the MAIR register to be used:</para>
+
+      </purpose_text>
+      <purpose_text>
+        <list type="unordered">
+<listitem><content>When AttrIndx[2] is 0, <register_link state="AArch32" id="AArch32-mair0.xml">MAIR0</register_link> is used.</content>
+</listitem><listitem><content>When AttrIndx[2] is 1, MAIR1 is used.</content>
+</listitem></list>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtual memory control registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>MAIR1 and <register_link state="AArch32" id="AArch32-nmrr.xml">NMRR</register_link> are the same register, with a different view depending on the value of <register_link state="AArch32" id="AArch32-ttbcr.xml">TTBCR</register_link>.EAE:</para>
+
+      </configuration_text>
+      <configuration_text>
+        <list type="unordered">
+<listitem><content>When it is set to 0, the register is as described in <register_link state="AArch32" id="AArch32-nmrr.xml">NMRR</register_link>.</content>
+</listitem><listitem><content>When it is set to 1, the register is as described in MAIR1.</content>
+</listitem></list>
+
+      </configuration_text>
+      <configuration_text>
+        <para>When EL3 is using AArch32, write access to MAIR1(S) is disabled when the CP15SDISABLE signal is asserted HIGH.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MAIR1 is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fields_instance>TTBCR.EAE==1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>Attr&lt;n&gt;</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>The memory attribute encoding for an AttrIndx[2:0] entry in a Long descriptor format translation table entry, where:</para>
+<list type="unordered">
+<listitem><content>AttrIndx[2:0] gives the value of &lt;n&gt; in Attr&lt;n&gt;.</content>
+</listitem><listitem><content>AttrIndx[2] defines which MAIR to access. Attr7 to Attr4 are in MAIR1, and Attr3 to Attr0 are in MAIR0.</content>
+</listitem></list>
+<para>Bits [7:4] are encoded as follows:</para>
+<table><tgroup cols="2"><thead><row><entry>Attr&lt;n&gt;[7:4]</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0000</binarynumber></entry><entry>Device memory. See encoding of Attr&lt;n&gt;[3:0] for the type of Device memory.</entry></row><row><entry>0b00RW, RW not <binarynumber>0b00</binarynumber></entry><entry>Normal memory, Outer Write-Through Transient.</entry></row><row><entry><binarynumber>0b0100</binarynumber></entry><entry>Normal memory, Outer Non-cacheable.</entry></row><row><entry>0b01RW, RW not <binarynumber>0b00</binarynumber></entry><entry>Normal memory, Outer Write-Back Transient.</entry></row><row><entry>0b10RW</entry><entry>Normal memory, Outer Write-Through Non-transient.</entry></row><row><entry>0b11RW</entry><entry>Normal memory, Outer Write-Back Non-transient.</entry></row></tbody></tgroup></table>
+<para>R = Outer Read-Allocate policy, W = Outer Write-Allocate policy.</para>
+<para>The meaning of bits [3:0] depends on the value of bits [7:4]:</para>
+<table><tgroup cols="3"><thead><row><entry>Attr&lt;n&gt;[3:0]</entry><entry>Meaning when Attr&lt;n&gt;[7:4] is <binarynumber>0b0000</binarynumber></entry><entry>Meaning when Attr&lt;n&gt;[7:4] is not <binarynumber>0b0000</binarynumber></entry></row></thead><tbody><row><entry><binarynumber>0b0000</binarynumber></entry><entry>Device-nGnRnE memory</entry><entry><arm-defined-word>UNPREDICTABLE</arm-defined-word></entry></row><row><entry>0b00RW, RW not <binarynumber>0b00</binarynumber></entry><entry><arm-defined-word>UNPREDICTABLE</arm-defined-word></entry><entry>Normal memory, Inner Write-Through Transient</entry></row><row><entry><binarynumber>0b0100</binarynumber></entry><entry>Device-nGnRE memory</entry><entry>Normal memory, Inner Non-cacheable</entry></row><row><entry>0b01RW, RW not <binarynumber>0b00</binarynumber></entry><entry><arm-defined-word>UNPREDICTABLE</arm-defined-word></entry><entry>Normal memory, Inner Write-Back Transient</entry></row><row><entry><binarynumber>0b1000</binarynumber></entry><entry>Device-nGRE memory</entry><entry>Normal memory, Inner Write-Through Non-transient (RW=<binarynumber>0b00</binarynumber>)</entry></row><row><entry>0b10RW, RW not <binarynumber>0b00</binarynumber></entry><entry><arm-defined-word>UNPREDICTABLE</arm-defined-word></entry><entry>Normal memory, Inner Write-Through Non-transient</entry></row><row><entry><binarynumber>0b1100</binarynumber></entry><entry>Device-GRE memory</entry><entry>Normal memory, Inner Write-Back Non-transient (RW=<binarynumber>0b00</binarynumber>)</entry></row><row><entry>0b11RW, RW not <binarynumber>0b00</binarynumber></entry><entry><arm-defined-word>UNPREDICTABLE</arm-defined-word></entry><entry>Normal memory, Inner Write-Back Non-transient</entry></row></tbody></tgroup></table>
+<para>R = Inner Read-Allocate policy, W = Inner Write-Allocate policy.</para>
+<para>The R and W bits in some Attr&lt;n&gt; fields have the following meanings:</para>
+<table><tgroup cols="2"><thead><row><entry>R or W</entry><entry>Meaning</entry></row></thead><tbody><row><entry><binarynumber>0b0</binarynumber></entry><entry>No Allocate</entry></row><row><entry><binarynumber>0b1</binarynumber></entry><entry>Allocate</entry></row></tbody></tgroup></table>
+<para>When <xref browsertext="FEAT_XS" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.XS"/> is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.</para></field_description>
+    <field_array_indexes index_variable="n" element_size="8" range_specifier="8(n-4)+7:8(n-4)">
+      <field_array_index>
+        <field_array_start>7</field_array_start>
+        <field_array_end>4</field_array_end>
+      </field_array_index>
+    </field_array_indexes>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fields_condition>When TTBCR.EAE == 1</fields_condition>
+  <fieldat id="fieldset_0-31_0" label="Attr7" msb="31" lsb="24"/>
+  <fieldat id="fieldset_0-31_0" label="Attr6" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-31_0" label="Attr5" msb="15" lsb="8"/>
+  <fieldat id="fieldset_0-31_0" label="Attr4" msb="7" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC NMRR-MAIR1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TRVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TRVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR1_NS;
+        else
+            R[t] = NMRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR1;
+        else
+            R[t] = NMRR;
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR1_NS;
+        else
+            R[t] = NMRR_NS;
+    else
+        if TTBCR.EAE == '1' then
+            R[t] = MAIR1;
+        else
+            R[t] = NMRR;
+elsif PSTATE.EL == EL3 then
+    if TTBCR.EAE == '1' then
+        if SCR.NS == '0' then
+            R[t] = MAIR1_S;
+        else
+            R[t] = MAIR1_NS;
+    else
+        if SCR.NS == '0' then
+            R[t] = NMRR_S;
+        else
+            R[t] = NMRR_NS;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR NMRR-MAIR1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1010"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T10 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T10 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TVM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TVM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR1_NS = R[t];
+        else
+            NMRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR1 = R[t];
+        else
+            NMRR = R[t];
+elsif PSTATE.EL == EL2 then
+    if HaveEL(EL3) &amp;&amp; ELUsingAArch32(EL3) then
+        if TTBCR.EAE == '1' then
+            MAIR1_NS = R[t];
+        else
+            NMRR_NS = R[t];
+    else
+        if TTBCR.EAE == '1' then
+            MAIR1 = R[t];
+        else
+            NMRR = R[t];
+elsif PSTATE.EL == EL3 then
+    if SCR.NS == '0' &amp;&amp; CP15SDISABLE == Signal_High then
+        UNDEFINED;
+    elsif SCR.NS == '0' &amp;&amp; CP15SDISABLE2 == Signal_High then
+        UNDEFINED;
+    else
+        if TTBCR.EAE == '1' then
+            if SCR.NS == '0' then
+                MAIR1_S = R[t];
+            else
+                MAIR1_NS = R[t];
+        else
+            if SCR.NS == '0' then
+                NMRR_S = R[t];
+            else
+                NMRR_NS = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MPAMCFG_EN_FLAGS</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">MPAMCFG_EN_FLAGS, MPAM Partition Configuration Enable Flags Register</h1><p>The MPAMCFG_EN_FLAGS characteristics are:</p><h2>Purpose</h2>
+        <p>Enable flags for 32 PARTIDs.</p>
+
+      
+        <p>MPAMCFG_EN_FLAGS_s gives read/write access to 32 Secure PARTIDs.
+MPAMCFG_EN_FLAGS_ns gives read/write access to 32 Non-secure PARTIDs.
+MPAMCFG_EN_FLAGS_rl gives read/write access to 32 Realm PARTIDs.
+MPAMCFG_EN_FLAGS_rt gives read/write access to 32 Root PARTIDs.</p>
+      <h2>Configuration</h2><p>The power domain of MPAMCFG_EN_FLAGS is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.
+    </p><p>This register is present only when (FEAT_MPAMv0p1 is implemented or FEAT_MPAMv1p1 is implemented) and MPAMF_IDR.HAS_ENDIS == 1. Otherwise, direct accesses to MPAMCFG_EN_FLAGS are <span class="arm-defined-word">RES0</span>.</p><h2>Attributes</h2>
+        <p>MPAMCFG_EN_FLAGS is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN31</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN30</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN29</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN28</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN27</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN26</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN25</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN24</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN23</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN22</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN21</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN20</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN19</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN18</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN17</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN16</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-31_0">EN0</a></td></tr></tbody></table><h4 id="fieldset_0-31_0">EN&lt;x&gt;, bit [x], for x = 31 to 0</h4><div class="field">
+      <p>PARTID Enable flags. The group of flags accessed is selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL &amp; <span class="hexnumber">0xFFE0</span> in bit [0] to (<a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL &amp; <span class="hexnumber">0xFFE0</span>) + 31 in bit [31].</p>
+    <table class="valuetable"><tr><th>EN&lt;x&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The PARTID is disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The PARTID is enabled.</p>
+        </td></tr></table><p>Each bit in <a href="ext-mpamcfg_en_flags.html">MPAMCFG_EN_FLAGS</a> gives access to the same state as controlled by <a href="ext-mpamcfg_en.html">MPAMCFG_EN</a> and <a href="ext-mpamcfg_dis.html">MPAMCFG_DIS</a>.</p>
+<p>Bits MPAMCFG_EN_FLAGS.EN&lt;x&gt;, where (<a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL &amp; <span class="hexnumber">0xFFE0</span>) + x is greater than <a href="ext-mpamf_idr.html">MPAMF_IDR</a>.PARTID_MAX, are not required to be implemented.</p>
+<p>As with other partitioning controls, the enable flag for PARTID 0 must be reset to <span class="binarynumber">0b1</span> (enabled).</p></div><h2>Accessing MPAMCFG_EN_FLAGS</h2>
+        <p>This register is within the MPAM feature page memory frames.</p>
+
+      
+        <p>In a system that supports Secure, Non-secure, Root, and Realm memory maps, there must be MPAM feature pages in all four address maps:</p>
+
+      
+        <ul>
+<li>MPAMCFG_EN_FLAGS_s must only be accessible from the Secure MPAM feature page.
+</li><li>MPAMCFG_EN_FLAGS_ns must only be accessible from the Non-secure MPAM feature page.
+</li><li>MPAMCFG_EN_FLAGS_rt must only be accessible from the Root MPAM feature page.
+</li><li>MPAMCFG_EN_FLAGS_rl must only be accessible from the Realm MPAM feature page.
+</li></ul>
+
+      
+        <p>MPAMCFG_EN_FLAGS_s, MPAMCFG_EN_FLAGS_ns, MPAMCFG_EN_FLAGS_rt, and MPAMCFG_EN_FLAGS_rl must be separate registers:</p>
+
+      
+        <ul>
+<li>The Secure instance (MPAMCFG_EN_FLAGS_s) accesses the PARTID enable used for Secure PARTIDs.
+</li><li>The Non-secure instance (MPAMCFG_EN_FLAGS_ns) accesses the PARTID enable used for Non-secure PARTIDs.
+</li><li>The Root instance (MPAMCFG_EN_FLAGS_rt) accesses the PARTID enable used for Root PARTIDs.
+</li><li>The Realm instance (MPAMCFG_EN_FLAGS_rl) accesses the PARTID enable used for Realm PARTIDs.
+</li></ul>
+
+      
+        <p>When RIS is implemented, loads and stores to MPAMCFG_EN_FLAGS access the PARTID enable configuration settings for the PARTID enable resource instance selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.RIS and the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When RIS is not implemented, loads and stores to MPAMCFG_EN_FLAGS access the PARTID enable configuration settings for the PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL.</p>
+
+      
+        <p>When PARTID narrowing is implemented, loads and stores to MPAMCFG_EN_FLAGS access the PARTID enable configuration settings for the internal PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 1.</p>
+
+      
+        <p>When PARTID narrowing is not implemented, loads and stores to MPAMCFG_EN_FLAGS access the PARTID enable configuration settings for the request PARTID selected by <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.PARTID_SEL, and <a href="ext-mpamcfg_part_sel.html">MPAMCFG_PART_SEL</a>.INTERNAL must be 0.</p>
+      <h4>MPAMCFG_EN_FLAGS can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_s</td><td><span class="hexnumber">0x0320</span></td><td>MPAMCFG_EN_FLAGS_s</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_ns</td><td><span class="hexnumber">0x0320</span></td><td>MPAMCFG_EN_FLAGS_ns</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rt</td><td><span class="hexnumber">0x0320</span></td><td>MPAMCFG_EN_FLAGS_rt</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>MPAM</td><td>MPAMF_BASE_rl</td><td><span class="hexnumber">0x0320</span></td><td>MPAMCFG_EN_FLAGS_rl</td></tr></table><p>When FEAT_RME is implemented, accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

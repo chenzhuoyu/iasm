@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CNTSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CNTSR, Counter Status Register</h1><p>The CNTSR characteristics are:</p><h2>Purpose</h2>
+        <p>Provides counter frequency status information.</p>
+      <h2>Configuration</h2><p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether CNTSR is implemented in the Core power domain or in the Debug power domain.
+    </p>
+        <p>For more information, see <span class="xref">'Power and reset domains for the system level implementation of the Generic Timer'</span>.</p>
+      <h2>Attributes</h2>
+        <p>CNTSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="14"><a href="#fieldset_0-31_18">RES0</a></td><td class="lr" colspan="10"><a href="#fieldset_0-17_8">FCACK</a></td><td class="lr" colspan="6"><a href="#fieldset_0-7_2">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">DBGH</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">RES0</a></td></tr></tbody></table><h4 id="fieldset_0-31_18">Bits [31:18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-17_8">FCACK, bits [17:8]</h4><div class="field">
+      <p>Frequency Change Acknowledge. Indicates the currently selected entry in the Frequency modes table, see <span class="xref">'The Frequency modes table'</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-7_2">Bits [7:2]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-1_1">DBGH, bit [1]</h4><div class="field">
+      <p>Indicates whether the counter is halted because the Halt-on-debug signal is asserted:</p>
+    <table class="valuetable"><tr><th>DBGH</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Counter is not halted.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Counter is halted.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Timer reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">Bit [0]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h2>Accessing CNTSR</h2>
+        <p>In a system that supports Secure and Non-secure memory maps the CNTControlBase frame, that includes this register, is implemented only in the Secure memory map.</p>
+      <h4>CNTSR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Frame</th><th>Offset</th><th>Instance</th></tr><tr><td>Timer</td><td>CNTControlBase</td><td><span class="hexnumber">0x004</span></td><td>CNTSR</td></tr></table><p>Accesses on this interface are <span class="access_level">RO</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

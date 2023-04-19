@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>COSP RCTX</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">COSP RCTX, Clear Other Speculative Restriction by Context</h1><p>The COSP RCTX characteristics are:</p><h2>Purpose</h2>
+        <p>Clear Other Speculative Prediction Restriction by Context applies to all prediction resources not managed by another of the speculation restriction System instructions.</p>
+
+      
+        <p>The actions of code in the target execution context or contexts appearing in program order before the instruction cannot exploitatively control any predictions occurring after the instruction is complete and synchronized.</p>
+
+      
+        <p>This instruction applies to all speculative access except:</p>
+
+      
+        <ul>
+<li>Cache Prefetch predictions.
+</li><li>Data Value predictions.
+</li><li>Control Flow predictions.
+</li></ul>
+
+      
+        <p>This instruction is guaranteed to be complete following a DSB that covers both read and write behavior on the same PE as executed the original restriction instruction, and a subsequent context synchronization event is required to ensure that the effect of the completion of the instructions is synchronized to the current execution.</p>
+
+      
+        <div class="note"><span class="note-header">Note</span><p>This instruction does not require the invalidation of Cache Allocation Resources so long as the behavior described for completion of this instruction is met by the implementation.</p><p>On some implementations the instruction is likely to take a significant number of cycles to execute. This instruction is expected to be used very rarely, such as on the roll-over of an ASID or VMID, but should not be used on every context switch.</p></div>
+      <h2>Configuration</h2><p>This instruction is present only when FEAT_SPECRES2 is implemented. Otherwise, direct accesses to COSP RCTX are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>COSP RCTX is a 64-bit System instruction.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="15"><a href="#fieldset_0-63_49">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-48_48">GVMID</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_32">VMID</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">NSE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26-1">NS</a></td><td class="lr" colspan="2"><a href="#fieldset_0-25_24">EL</a></td><td class="lr" colspan="7"><a href="#fieldset_0-23_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">GASID</a></td><td class="lr" colspan="16"><a href="#fieldset_0-15_0">ASID</a></td></tr></tbody></table><h4 id="fieldset_0-63_49">Bits [63:49]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-48_48">GVMID, bit [48]</h4><div class="field">
+      <p>Execution of this instruction applies to all VMIDs or a specified VMID.</p>
+    <table class="valuetable"><tr><th>GVMID</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Applies to specified VMID for an EL0 or EL1 target execution context.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Applies to all VMIDs for an EL0 or EL1 target execution context.</p>
+        </td></tr></table><p>For target execution contexts other than EL0 and EL1, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>If the instruction is executed at EL0 or EL1, this field has an Effective value of 0.</p>
+<p>If EL2 is not implemented or not enabled for the target Security state, this field is <span class="arm-defined-word">RES0</span>.</p></div><h4 id="fieldset_0-47_32">VMID, bits [47:32]</h4><div class="field"><p>Only applies when bit[48] is 0 and the target execution context is either:</p>
+<ul>
+<li>EL1.
+</li><li>EL0 when (<a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H==0 or <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE==0).
+</li></ul>
+<p>Otherwise this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>When the instruction is executed at EL1, this field is treated as the current VMID.</p>
+<p>When the instruction is executed at EL0 and (<a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H==0 or <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE==0), this field is treated as the current VMID.</p>
+<p>When the instruction is executed at EL0 and (<a href="AArch64-hcr_el2.html">HCR_EL2</a>.E2H==1 and <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TGE==1), this field is ignored.</p>
+<p>If EL2 is not implemented or not enabled for the target Security state, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>If the implementation supports 16 bits of VMID, then the upper 8 bits of the VMID must be written to 0 by software when the context being affected only uses 8 bits.</p></div><h4 id="fieldset_0-31_28">Bits [31:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-27_27-1">NSE, bit [27]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with the NS field, selects the Security state.</p>
+<p>For a description of the values derived by evaluating NS and NSE together, see COSP_RCTX.NS.</p></div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26-1">NS, bit [26]<span class="condition"><br/>When FEAT_RME is implemented:
+                        </span></h4><div class="field"><p>Together with the NSE field, selects the Security state. Defined values are:</p>
+<table class="valuetable"><thead><tr><th>NSE</th><th>NS</th><th>Meaning</th></tr></thead><tbody><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b0</span></td><td>When Secure state is implemented, Secure. Otherwise reserved.</td></tr><tr><td><span class="binarynumber">0b0</span></td><td><span class="binarynumber">0b1</span></td><td>Non-secure.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b0</span></td><td>Root.</td></tr><tr><td><span class="binarynumber">0b1</span></td><td><span class="binarynumber">0b1</span></td><td>Realm.</td></tr></tbody></table><p>Some Effective values are determined by the current Security state:</p>
+<ul>
+<li>When executed in Secure state, the <span class="xref">Effective value</span> of NSE is 0.
+</li><li>When executed in Non-secure state, the <span class="xref">Effective value</span> of {NSE, NS} is {0, 1}.
+</li><li>When executed in Realm state, the <span class="xref">Effective value</span> of {NSE, NS} is {1, 1}.
+</li></ul>
+<p>This instruction is treated as a NOP when executed at EL3 and either:</p>
+<ul>
+<li>COSP_RCTX.{NSE, NS} selects a reserved value.
+</li><li>COSP_RCTX.{NSE, NS} == {1, 0} and COSP_RCTX.EL has a value other than <span class="binarynumber">0b11</span>.
+</li></ul></div><h4 id="fieldset_0-26_26-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Security State. Defined values are:</p>
+    <table class="valuetable"><tr><th>NS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Secure state.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Non-secure state.</p>
+        </td></tr></table>
+      <p>When executed in Non-secure state, the <span class="xref">Effective value</span> of NS is 1.</p>
+    </div><h4 id="fieldset_0-25_24">EL, bits [25:24]</h4><div class="field">
+      <p>Exception Level. Indicates the Exception level of the target execution context.</p>
+    <table class="valuetable"><tr><th>EL</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>EL0.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>EL1.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>EL2.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>EL3.</p>
+        </td></tr></table>
+      <p>If the instruction is executed at an Exception level lower than the specified level, or is specified to apply to a combination of Exception level and Security state that is not implemented, this instruction is treated as a NOP.</p>
+    </div><h4 id="fieldset_0-23_17">Bits [23:17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16">GASID, bit [16]</h4><div class="field">
+      <p>Execution of this instruction applies to all ASIDs or a specified ASID.</p>
+    <table class="valuetable"><tr><th>GASID</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Applies to specified ASID for an EL0 target execution context.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Applies to all ASIDs for an EL0 target execution context.</p>
+        </td></tr></table><p>For target execution contexts other than EL0, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>If the instruction is executed at EL0, this field has an Effective value of 0.</p></div><h4 id="fieldset_0-15_0">ASID, bits [15:0]</h4><div class="field"><p>Only applies for an EL0 target execution context and when bit[16] is 0.</p>
+<p>Otherwise, this field is <span class="arm-defined-word">RES0</span>.</p>
+<p>When the instruction is executed at EL0, this field is treated as the current ASID.</p>
+<p>If the implementation supports 16 bits of ASID, then the upper 8 bits of the ASID must be written to 0 by software when the context being affected only uses 8 bits.</p></div><div class="access_mechanisms"><h2>Executing COSP RCTX</h2><p>Accesses to this instruction use the following encodings in the System instruction encoding space:</p><h4 class="assembler">COSP RCTX, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b01</td><td>0b011</td><td>0b0111</td><td>0b0011</td><td>0b110</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    if !(EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11') &amp;&amp; SCTLR_EL1.EnRCTX == '0' then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.COSPRCTX == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; == '11' &amp;&amp; SCTLR_EL2.EnRCTX == '0' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.RestrictPrediction(X[t, 64], RestrictType_Other);
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HFGITR_EL2.COSPRCTX == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        AArch64.RestrictPrediction(X[t, 64], RestrictType_Other);
+elsif PSTATE.EL == EL2 then
+    AArch64.RestrictPrediction(X[t, 64], RestrictType_Other);
+elsif PSTATE.EL == EL3 then
+    AArch64.RestrictPrediction(X[t, 64], RestrictType_Other);
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

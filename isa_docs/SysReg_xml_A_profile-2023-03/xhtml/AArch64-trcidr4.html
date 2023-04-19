@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TRCIDR4</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">TRCIDR4, ID Register 4</h1><p>The TRCIDR4 characteristics are:</p><h2>Purpose</h2>
+        <p>Returns the tracing capabilities of the trace unit.</p>
+      <h2>Configuration</h2><p>AArch64 System register TRCIDR4 bits [31:0] are architecturally mapped to External register <a href="ext-trcidr4.html">TRCIDR4[31:0]</a>.</p><p>This register is present only when FEAT_ETE is implemented and FEAT_TRC_SR is implemented. Otherwise, direct accesses to TRCIDR4 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>TRCIDR4 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="4"><a href="#fieldset_0-31_28">NUMVMIDC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-27_24">NUMCIDC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-23_20">NUMSSCC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">NUMRSPAIR</a></td><td class="lr" colspan="4"><a href="#fieldset_0-15_12">NUMPC</a></td><td class="lr" colspan="3"><a href="#fieldset_0-11_9">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8-1">SUPPDAC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-7_4">NUMDVC</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">NUMACPAIRS</a></td></tr></tbody></table><h4 id="fieldset_0-63_32">Bits [63:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_28">NUMVMIDC, bits [31:28]</h4><div class="field">
+      <p>Indicates the number of Virtual Context Identifier Comparators that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMVMIDC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Virtual Context Identifier Comparators are available.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has one Virtual Context Identifier Comparator.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has two Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has three Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has four Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has five Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has six Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has seven Virtual Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has eight Virtual Context Identifier Comparators.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-27_24">NUMCIDC, bits [27:24]</h4><div class="field">
+      <p>Indicates the number of Context Identifier Comparators that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMCIDC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Context Identifier Comparators are available.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has one Context Identifier Comparator.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has two Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has three Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has four Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has five Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has six Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has seven Context Identifier Comparators.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has eight Context Identifier Comparators.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-23_20">NUMSSCC, bits [23:20]</h4><div class="field">
+      <p>Indicates the number of Single-shot Comparator Controls that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMSSCC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Single-shot Comparator Controls are available.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has one Single-shot Comparator Control.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has two Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has three Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has four Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has five Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has six Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has seven Single-shot Comparator Controls.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has eight Single-shot Comparator Controls.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-19_16">NUMRSPAIR, bits [19:16]</h4><div class="field">
+      <p>Indicates the number of resource selector pairs that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMRSPAIR</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>The implementation has zero resource selectors.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has two resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has three resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has four resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has five resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has six resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has seven resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has eight resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has nine resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1001</td><td>
+          <p>The implementation has ten resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>The implementation has eleven resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>The implementation has twelve resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1100</td><td>
+          <p>The implementation has thirteen resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1101</td><td>
+          <p>The implementation has fourteen resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1110</td><td>
+          <p>The implementation has fifteen resource selector pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>The implementation has sixteen resource selector pairs.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-15_12">NUMPC, bits [15:12]</h4><div class="field">
+      <p>Indicates the number of PE Comparator Inputs that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMPC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No PE Comparator Inputs are available.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has one PE Comparator Input.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has two PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has three PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has four PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has five PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has six PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has seven PE Comparator Inputs.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has eight PE Comparator Inputs.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><h4 id="fieldset_0-11_9">Bits [11:9]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-8_8-1">SUPPDAC, bit [8]<span class="condition"><br/>When TRCIDR4.NUMACPAIRS != 0b0000:
+                        </span></h4><div class="field">
+      <p>Indicates whether data address comparisons are implemented. Data address comparisons are not implemented in ETE and are reserved for other trace architectures. Allocated in other trace architectures.</p>
+    <table class="valuetable"><tr><th>SUPPDAC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Data address comparisons not implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Data address comparisons implemented.</p>
+        </td></tr></table>
+      <p>This field reads as 0.</p>
+    </div><h4 id="fieldset_0-8_8-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-7_4">NUMDVC, bits [7:4]</h4><div class="field">
+      <p>Indicates the number of data value comparators. Data value comparators are not implemented in ETE and are reserved for other trace architectures. Allocated in other trace architectures.</p>
+    <table class="valuetable"><tr><th>NUMDVC</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>One data value comparator implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>Two data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Three data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>Four data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>Five data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Six data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Seven data value comparators implemented.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>Eight data value comparators implemented.</p>
+        </td></tr></table><p>All other values are reserved.</p>
+<p>This field reads as <span class="binarynumber">0b0000</span>.</p></div><h4 id="fieldset_0-3_0">NUMACPAIRS, bits [3:0]</h4><div class="field">
+      <p>Indicates the number of Address Comparator pairs that are available for tracing.</p>
+    <table class="valuetable"><tr><th>NUMACPAIRS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>No Address Comparator pairs are available.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>The implementation has one Address Comparator pair.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>The implementation has two Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>The implementation has three Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0100</td><td>
+          <p>The implementation has four Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0101</td><td>
+          <p>The implementation has five Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>The implementation has six Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>The implementation has seven Address Comparator pairs.</p>
+        </td></tr><tr><td class="bitfield">0b1000</td><td>
+          <p>The implementation has eight Address Comparator pairs.</p>
+        </td></tr></table>
+      <p>All other values are reserved.</p>
+    </div><div class="access_mechanisms"><h2>Accessing TRCIDR4</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, TRCIDR4</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b10</td><td>0b001</td><td>0b0000</td><td>0b1100</td><td>0b111</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPACR_EL1.TTA == '1' then
+        AArch64.SystemAccessTrap(EL1, 0x18);
+    elsif EL2Enabled() &amp;&amp; CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.TRCID == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCIDR4;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; CPTR_EL3.TTA == '1' then
+        UNDEFINED;
+    elsif CPTR_EL2.TTA == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; CPTR_EL3.TTA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCIDR4;
+elsif PSTATE.EL == EL3 then
+    if CPTR_EL3.TTA == '1' then
+        AArch64.SystemAccessTrap(EL3, 0x18);
+    elsif !ELUsingAArch32(EL1) &amp;&amp; IsFeatureImplemented(FEAT_TRBE_EXT) &amp;&amp; OSLSR_EL1.OSLK == '0' &amp;&amp; HaltingAllowed() &amp;&amp; EDSCR2.TTA == '1' then
+        Halt(DebugHalt_SoftwareAccess);
+    else
+        X[t, 64] = TRCIDR4;
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

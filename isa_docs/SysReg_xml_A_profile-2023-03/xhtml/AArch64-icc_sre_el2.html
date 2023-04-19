@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ICC_SRE_EL2</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">ICC_SRE_EL2, Interrupt Controller System Register Enable Register (EL2)</h1><p>The ICC_SRE_EL2 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls whether the System register interface or the memory-mapped interface to the GIC CPU interface is used for EL2.</p>
+      <h2>Configuration</h2><p>AArch64 System register ICC_SRE_EL2 is architecturally mapped to AArch32 System register <a href="AArch32-icc_hsre.html">ICC_HSRE</a>.</p><p>This register is present only when FEAT_GICv3 is implemented and (EL2 is implemented or EL3 is implemented). Otherwise, direct accesses to ICC_SRE_EL2 are <span class="arm-defined-word">UNDEFINED</span>.</p>
+        <p>If EL2 is not implemented, this register is <span class="arm-defined-word">RES0</span> from EL3.</p>
+
+      
+        <p>This register has no effect if EL2 is not enabled in the current Security state.</p>
+      <h2>Attributes</h2>
+        <p>ICC_SRE_EL2 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_4">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="28"><a href="#fieldset_0-63_4">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">Enable</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">DIB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">DFB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">SRE</a></td></tr></tbody></table><h4 id="fieldset_0-63_4">Bits [63:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3">Enable, bit [3]</h4><div class="field">
+      <p>Enable. Enables lower Exception level access to <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a>.</p>
+    <table class="valuetable"><tr><th>Enable</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When EL2 is implemented and enabled in the current Security state, EL1 accesses to <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a> trap to EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL1 accesses to <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a> do not trap to EL2.</p>
+        </td></tr></table><p>If ICC_SRE_EL2.SRE is RAO/WI, an implementation is permitted to make the Enable bit RAO/WI.</p>
+<p>If ICC_SRE_EL2.SRE is 0, the Enable bit behaves as 1 for all purposes other than reading the value of the bit.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2">DIB, bit [2]</h4><div class="field">
+      <p>Disable IRQ bypass.</p>
+    <table class="valuetable"><tr><th>DIB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>IRQ bypass enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>IRQ bypass disabled.</p>
+        </td></tr></table><p>If EL3 is implemented and <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS is 0, this field is a read-only alias of <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB.</p>
+<p>If EL3 is implemented and <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS is 1, this field is a read/write alias of <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DIB.</p>
+<p>In systems that do not support IRQ bypass, this bit is RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1">DFB, bit [1]</h4><div class="field">
+      <p>Disable FIQ bypass.</p>
+    <table class="valuetable"><tr><th>DFB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>FIQ bypass enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>FIQ bypass disabled.</p>
+        </td></tr></table><p>If EL3 is implemented and <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS is 0, this field is a read-only alias of <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DFB.</p>
+<p>If EL3 is implemented and <a href="ext-gicd_ctlr.html">GICD_CTLR</a>.DS is 1, this field is a read/write alias of <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.DFB.</p>
+<p>In systems that do not support FIQ bypass, this bit is RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-0_0">SRE, bit [0]</h4><div class="field">
+      <p>System Register Enable.</p>
+    <table class="valuetable"><tr><th>SRE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The memory-mapped interface must be used. Access at EL2 to any ICH_* or ICC_* register other than <a href="AArch64-icc_sre_el1.html">ICC_SRE_EL1</a> or ICC_SRE_EL2, is trapped to EL2.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The System register interface to the ICH_* registers and the EL1 and EL2 ICC_* registers is enabled for EL2.</p>
+        </td></tr></table><p>If software changes this bit from 1 to 0, the results are <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+<p>If an implementation supports only a System register interface to the GIC CPU interface, this bit is RAO/WI.</p>
+<p>If EL3 is implemented and <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.SRE==0 this bit is RAZ/WI. If <a href="AArch64-icc_sre_el3.html">ICC_SRE_EL3</a>.SRE is changed from zero to one, this bit becomes <span class="arm-defined-word">UNKNOWN</span>.</p>
+<p>If Realm Management Extension is implemented, this field is RAO/WI.</p>
+<p>FEAT_GICv3 implementations that do not require GICv2 compatibility might choose to make this bit RAO/WI, but this is only allowed if ICC_SRE_EL3.SRE is also RAO/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing ICC_SRE_EL2</h2>
+        <p>Execution with <a href="AArch64-icc_sre_el2.html">ICC_SRE_EL2</a>.SRE set to 0 might make some System registers <span class="arm-defined-word">UNKNOWN</span>.</p>
+      <p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, ICC_SRE_EL2</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b1001</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ICC_SRE_EL3.Enable == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; ICC_SRE_EL3.Enable == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = ICC_SRE_EL2;
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        UNDEFINED;
+    else
+        X[t, 64] = ICC_SRE_EL2;
+                </p><h4 class="assembler">MSR ICC_SRE_EL2, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b100</td><td>0b1100</td><td>0b1001</td><td>0b101</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; ICC_SRE_EL3.Enable == '0' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; ICC_SRE_EL3.Enable == '0' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        ICC_SRE_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    if !EL2Enabled() then
+        UNDEFINED;
+    else
+        ICC_SRE_EL2 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

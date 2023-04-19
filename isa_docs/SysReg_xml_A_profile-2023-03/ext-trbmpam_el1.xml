@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register is_register="True" is_internal="False" is_banked="False" is_stub_entry="False">
+      <reg_short_name>TRBMPAM_EL1</reg_short_name>
+        
+        <reg_long_name>Trace Buffer MPAM Configuration Register</reg_long_name>
+
+        <power_domain_text>TRBMPAM_EL1 is in the Core power domain</power_domain_text>
+
+
+      
+        <reg_condition otherwise="RES0">when FEAT_TRBE_EXT is implemented and FEAT_TRBE_MPAM is implemented</reg_condition>
+      
+  <reg_address
+      external_access="True"
+    mem_map_access="True"
+      power_domain="None"
+  >
+    <reg_component>TRBE</reg_component>
+    <reg_offset><hexnumber>0x040</hexnumber></reg_offset>
+    <reg_instance>TRBMPAM_EL1</reg_instance>
+    <reg_access>
+      
+        
+      <reg_access_state>
+          <reg_access_level>When DoubleLockStatus(), or !IsCorePowered(), or OSLockStatus() or !AllowExternalTraceBufferAccess()</reg_access_level>
+          <reg_access_type>ERROR</reg_access_type>
+      </reg_access_state>
+        
+      <reg_access_state>
+          <reg_access_type>RW</reg_access_type>
+      </reg_access_state>
+    </reg_access>
+</reg_address>
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-trbmpam_el1.xml">TRBMPAM_EL1</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>63</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>63</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="63:0">
+      <range>
+        <msb>63</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Defines the PARTID, PMG, and MPAM_SP values used by the trace buffer unit in external mode.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Trace Buffer Extension registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>TRBMPAM_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_instance>TRBMPAM_EL1</fields_instance>
+  <text_before_fields/>
+  <field id="fieldset_0-63_27" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>63:27</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-26_26" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EN</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>26</rel_range>
+    <field_description order="before">
+      <para>Enable. Enables use of non-default MPAM values.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field is ignored by the PE when <function>SelfHostedTraceEnabled</function><value>()</value> == TRUE.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Use default MPAM values.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Use TRBMPAM_EL1.{PARTID, PMG, MPAM_SP}.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-25_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>MPAM_SP</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>25:24</rel_range>
+    <field_description order="before">
+      <para>Partition Identifier space. Selects the PARTID space.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>If the Trace Buffer Unit is using external mode and either TRBMPAM_EL1.MPAM_SP is set to reserved value, or the <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> authentication interface prohibits invasive debug of the Security state corresponding to the Partition Identifier space selected by TRBMPAM_EL1.MPAM_SP, then when the Trace Buffer Unit receives trace data from the trace unit, it does not write the trace data to memory and generates a trace buffer management event. That is, if any of the following apply:</para>
+<list type="unordered">
+<listitem><content><function>ExternalInvasiveDebugEnabled</function><value>()</value> == FALSE.</content>
+</listitem><listitem><content>Secure state is implemented, <function>ExternalSecureInvasiveDebugEnabled</function><value>()</value> == FALSE and TRBMPAM_EL1.MPAM_SP is <binarynumber>0b00</binarynumber>.</content>
+</listitem><listitem><content><xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, <function>ExternalRootInvasiveDebugEnabled</function><value>()</value> == FALSE, and TRBMPAM_EL1.MPAM_SP is <binarynumber>0b10</binarynumber>.</content>
+</listitem><listitem><content><xref browsertext="FEAT_RME" filename="A_armv9_architecture_extensions.fm" linkend="FEAT_RME"/> is implemented, <function>ExternalRealmInvasiveDebugEnabled</function><value>()</value> == FALSE, and TRBMPAM_EL1.MPAM_SP is <binarynumber>0b11</binarynumber>.</content>
+</listitem></list>
+<para>This field is ignored by the PE when <function>SelfHostedTraceEnabled</function><value>()</value> == TRUE.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>PARTID is in the Secure PARTID space.</para>
+        </field_value_description>
+        <field_value_condition>When Secure state is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>PARTID is in the Non-secure PARTID space.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>PARTID is in the Root PARTID space.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>PARTID is in the Realm PARTID space.</para>
+        </field_value_description>
+        <field_value_condition>When FEAT_RME is implemented</field_value_condition>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-23_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PMG</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>23:16</rel_range>
+    <field_description order="before">
+      <para>Performance Monitoring Group. Selects the PMG.</para>
+    </field_description>
+    <field_description order="after"><para>Only sufficient low-order bits are required to represent the <register_link state="ext" id="ext-trbdevid1.xml">TRBDEVID1</register_link>.PMG_MAX. Higher-order bits are <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>This field is ignored by the PE when <function>SelfHostedTraceEnabled</function><value>()</value> == TRUE.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-15_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>PARTID</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>15:0</rel_range>
+    <field_description order="before">
+      <para>Partition Identifier. Selects the PARTID.</para>
+    </field_description>
+    <field_description order="after"><para>Only sufficient low-order bits are required to represent the <register_link state="ext" id="ext-trbdevid1.xml">TRBDEVID1</register_link>.PARTID_MAX. Higher-order bits are <arm-defined-word>RES0</arm-defined-word>.</para>
+<para>This field is ignored by the PE when <function>SelfHostedTraceEnabled</function><value>()</value> == TRUE.</para></field_description>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_27" msb="63" lsb="27"/>
+  <fieldat id="fieldset_0-26_26" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_24" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_16" msb="23" lsb="16"/>
+  <fieldat id="fieldset_0-15_0" msb="15" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>The PE might ignore a write to TRBMPAM_EL1 if any of the following apply:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content><register_link state="ext" id="ext-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.E == <binarynumber>0b1</binarynumber> and the Trace Buffer Unit is using Self-hosted mode.</content>
+</listitem><listitem><content><register_link state="ext" id="ext-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>.XE == <binarynumber>0b1</binarynumber> and the Trace Buffer Unit is using External mode.</content>
+</listitem></list>
+      </access_permission_text>
+
+
+
+
+
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

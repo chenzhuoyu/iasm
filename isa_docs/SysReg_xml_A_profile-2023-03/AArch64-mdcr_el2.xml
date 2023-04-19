@@ -1,0 +1,1507 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>MDCR_EL2</reg_short_name>
+        
+        <reg_long_name>Monitor Debug Configuration Register (EL2)</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-hdcr.xml">HDCR</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides EL2 configuration options for self-hosted debug and the Performance Monitors Extension.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+            <reg_group>Virtualization registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <para>If EL2 is not implemented, this register is <arm-defined-word>RES0</arm-defined-word> from EL3.</para>
+
+      </configuration_text>
+      <configuration_text>
+        <para>This register has no effect if EL2 is not enabled in the current Security state.</para>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>MDCR_EL2 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <text_before_fields/>
+  <field id="fieldset_0-63_44" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>44</field_lsb>
+    <rel_range>63:44</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-43_43-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EBWE</field_name>
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Extended Breakpoint and Watchpoint Enable. Enables use of additional breakpoints or watchpoints.</para>
+    </field_description>
+    <field_description order="after"><para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether this field is implemented or is <arm-defined-word>RES0</arm-defined-word> when 16 or fewer breakpoints are implemented, 16 or fewer watchpoints are implemented, and <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link> is implemented as RAZ/WI.</para>
+<para>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is 1, other than for a direct read of the register.</para>
+<para>This field is ignored by the PE and treated as zero when EL3 is implemented and <register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.EBWE is 0.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description><para>The Effective value of <register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.EMBWE is 0.</para>
+<para>The Effective value of <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link>.BANK is zero at EL2.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>The Effective values of <register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.EMBWE and <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link>.BANK are not affected by this field.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_Debugv8p9 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-43_43-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>43</field_msb>
+    <field_lsb>43</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-42_42" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>42</field_msb>
+    <field_lsb>42</field_lsb>
+    <rel_range>42</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-41_40-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PMEE</field_name>
+    <field_msb>41</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Performance Monitors Exception Enable. Controls the generation of <signal>PMUIRQ</signal> signal and PMU exception at EL0, EL1, and EL2.</para>
+    </field_description>
+    <field_description order="after"><para>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is <binarynumber>0b01</binarynumber>, other than for a direct read of the register.</para>
+<para>This field is ignored by the PE when all of the following are true:</para>
+<list type="unordered">
+<listitem><content>EL3 is implemented.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-mdcr_el3.xml">MDCR_EL3</register_link>.PMEE != <binarynumber>0b01</binarynumber>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para><signal>PMUIRQ</signal> signal is enabled, and PMU exception is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para><signal>PMUIRQ</signal> signal and PMU exception are both controlled by <register_link state="AArch64" id="AArch64-pmecr_el1.xml">PMECR_EL1</register_link>.PMEE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para><signal>PMUIRQ</signal> signal is disabled, and PMU exception is disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para><signal>PMUIRQ</signal> signal is disabled, and PMU exception is enabled.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_EBEP is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-41_40-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>41</field_msb>
+    <field_lsb>40</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-39_37" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>39</field_msb>
+    <field_lsb>37</field_lsb>
+    <rel_range>39:37</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-36_36-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPMFZS</field_name>
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hyp Performance Monitors Freeze-on-SPE event. Stop counters when <register_link state="AArch64" id="AArch64-pmblimitr_el1.xml">PMBLIMITR_EL1</register_link>.{PMFZ, E} == {1, 1} and <register_link state="AArch64" id="AArch64-pmbsr_el1.xml">PMBSR_EL1</register_link>.S == 1.</para>
+    </field_description>
+    <field_description order="after"><para>The counters affected by this field are event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n greater than or equal to MDCR_EL2.HPMN and less than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N. This applies even when EL2 is disabled in the current Security state.</para>
+<para>Other event counters, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>, and, if <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link> are not affected by this field.</para>
+<para>If MDCR_EL2.HPMN is equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then this field has no effect.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Do not freeze on Statistical Profiling Buffer Management event.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affected counters do not count following a Statistical Profiling Buffer Management event.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPEv1p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-36_36-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>36</field_msb>
+    <field_lsb>36</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-35_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>35</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>35:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_30-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>PMSSE</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Performance Monitors Snapshot Enable. Controls the generation of Capture events.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If EL2 is not implemented or EL2 is disabled in the current Security state, then the Effective value of this field is <binarynumber>0b01</binarynumber>, other than for a direct read of the register.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description>
+          <para>Capture events are disabled.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b01</field_value>
+        <field_value_description>
+          <para>Capture events are controlled by <register_link state="AArch64" id="AArch64-pmecr_el1.xml">PMECR_EL1</register_link>.SSE.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Capture events are enabled and prohibited.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Capture events are enabled and allowed.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_conditions>
+          <field_reset_condition condition="EL3 is not implemented">
+            <field_reset>
+              <field_reset_number>0</field_reset_number>
+            </field_reset>
+          </field_reset_condition>
+          <field_reset_condition>
+            <field_reset>
+              <field_reset_standard_text>AU</field_reset_standard_text>
+            </field_reset>
+          </field_reset_condition>
+        </field_reset_conditions>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3_SS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-31_30-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>31</field_msb>
+    <field_lsb>30</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPMFZO</field_name>
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hyp Performance Monitors Freeze-on-overflow. Stop event counters on overflow.</para>
+    </field_description>
+    <field_description order="after"><para>The counters affected by this field are event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n greater than or equal to MDCR_EL2.HPMN and less than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N. This applies even when EL2 is disabled in the current Security state.</para>
+<para>Other event counters, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>, and, if <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link> are not affected by this field.</para>
+<para>If MDCR_EL2.HPMN is equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then this field has no effect.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Do not freeze on overflow.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affected counters do not count when <register_link state="AArch64" id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</register_link>[(<register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N-1):MDCR_EL2.HPMN] is nonzero.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p7 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-29_29-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>29</field_msb>
+    <field_lsb>29</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>MTPME</field_name>
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Multi-threaded PMU Enable. Enables use of the <register_link state="AArch64" id="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</register_link>.MT bits.</para>
+    </field_description>
+    <field_description order="after">
+      <para>If <xref browsertext="FEAT_MTPMU" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.MTPMU"/> is disabled for any other PE in the system that has the same level 1 Affinity as the PE, it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the PE behaves as if this field is 0.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para><xref browsertext="FEAT_MTPMU" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.MTPMU"/> is disabled. The Effective value of <register_link state="AArch64" id="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</register_link>.MT is zero.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para><register_link state="AArch64" id="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</register_link>.MT bits not affected by this field.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Cold">
+        <field_reset_number>1</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_MTPMU is implemented and EL3 is not implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-28_28-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>28</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TDCC</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap DCC. Traps use of the Debug Comms Channel at EL1 and EL0 to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>The DCC registers trapped by this control are:</para>
+<para>AArch64: <register_link state="AArch64" id="AArch64-osdtrrx_el1.xml">OSDTRRX_EL1</register_link>, <register_link state="AArch64" id="AArch64-osdtrtx_el1.xml">OSDTRTX_EL1</register_link>, <register_link state="AArch64" id="AArch64-mdccsr_el0.xml">MDCCSR_EL0</register_link>, <register_link state="AArch64" id="AArch64-mdccint_el1.xml">MDCCINT_EL1</register_link>, and, when the PE is in Non-debug state, <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link>, <register_link state="AArch64" id="AArch64-dbgdtrrx_el0.xml">DBGDTRRX_EL0</register_link>, and <register_link state="AArch64" id="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</register_link>.</para>
+<para>AArch32: <register_link state="AArch32" id="AArch32-dbgdtrrxext.xml">DBGDTRRXext</register_link>, <register_link state="AArch32" id="AArch32-dbgdtrtxext.xml">DBGDTRTXext</register_link>, <register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link>, <register_link state="AArch32" id="AArch32-dbgdccint.xml">DBGDCCINT</register_link>, and, when the PE is in Non-debug state, <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</para>
+<para>The traps are reported with EC syndrome value:</para>
+<list type="unordered">
+<listitem><content><hexnumber>0x05</hexnumber> for trapped AArch32 <instruction>MRC</instruction> and <instruction>MCR</instruction> accesses with <value>coproc</value> == <binarynumber>0b1110</binarynumber>.</content>
+</listitem><listitem><content><hexnumber>0x06</hexnumber> for trapped AArch32 <instruction>LDC</instruction> to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link> and <instruction>STC</instruction> from <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link>.</content>
+</listitem><listitem><content><hexnumber>0x18</hexnumber> for trapped AArch64 <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses.</content>
+</listitem></list>
+<para>When the PE is in Debug state, MDCR_EL2.TDCC does not trap any accesses to:</para>
+<para>AArch64: <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link>, <register_link state="AArch64" id="AArch64-dbgdtrrx_el0.xml">DBGDTRRX_EL0</register_link>, and <register_link state="AArch64" id="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</register_link>.</para>
+<para>AArch32: <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any register accesses to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the current Security state, accesses to the DCC registers at EL1 and EL0 generate a Trap exception to EL2, unless the access also generates a higher priority exception.</para>
+<para>Traps on the DCC data transfer registers are ignored when the PE is in Debug state.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_FGT is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-27_27-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>27</field_msb>
+    <field_lsb>27</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HLP</field_name>
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hypervisor Long Event Counter Enable. Determines which event counter bit generates an overflow recorded by <register_link state="AArch32" id="AArch32-pmovsr.xml">PMOVSR</register_link>[n].</para>
+    </field_description>
+    <field_description order="after"><para>The counters affected by this field are event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n greater than or equal to MDCR_EL2.HPMN and less than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N. This applies even when EL2 is disabled in the current Security state.</para>
+<para>Other event counters, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>, and, if <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link> are not affected by this field.</para>
+<para>If MDCR_EL2.HPMN is equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then this field has no effect.</para>
+<para>For more information see the description of MDCR_EL2.HPMN.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Affected counters overflow on increment that causes unsigned overflow of <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[31:0].</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affected counters overflow on increment that causes unsigned overflow of <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[63:0].</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p5 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-26_26-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>26</field_msb>
+    <field_lsb>26</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-25_24-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>E2TB</field_name>
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before"><para>EL2 Trace Buffer.</para>
+<para>If EL2 is implemented and enabled in the Trace Buffer owning Security state, controls the owning translation regime.</para>
+<para>If EL2 is implemented and enabled in the current Security state, controls access to Trace Buffer control registers from EL1.</para></field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In AArch64 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-trbbaser_el1.xml">TRBBASER_EL1</register_link>, <register_link state="AArch64" id="AArch64-trblimitr_el1.xml">TRBLIMITR_EL1</register_link>, <register_link state="AArch64" id="AArch64-trbmar_el1.xml">TRBMAR_EL1</register_link>, <register_link state="AArch64" id="AArch64-trbptr_el1.xml">TRBPTR_EL1</register_link>, <register_link state="AArch64" id="AArch64-trbsr_el1.xml">TRBSR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-trbtrg_el1.xml">TRBTRG_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_TRBE_MPAM" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_TRBE_MPAM"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-trbmpam_el1.xml">TRBMPAM_EL1</register_link>.</content>
+</listitem></list>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</para>
+<para>Trapped instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the Trace Buffer owning Security state, then the Trace Buffer owning Exception level is EL2. Otherwise, the Trace Buffer owning Exception level is EL1 and, if <function>TraceBufferEnabled</function><value>()</value> == TRUE, tracing is prohibited at EL2.</para>
+<para>If EL2 is implemented and enabled in the current Security state, accesses to Trace Buffer control registers at EL1 generate a Trap exception to EL2.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description><para>Trace Buffer owning Exception level is EL1. If <function>TraceBufferEnabled</function><value>()</value> == TRUE, then tracing is prohibited at EL2.</para>
+<para>If EL2 is implemented and enabled in the current Security state, accesses to Trace Buffer control registers at EL1 generate a Trap exception to EL2.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Trace Buffer owning Exception level is EL1. If <function>TraceBufferEnabled</function><value>()</value> == TRUE, then tracing is prohibited at EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRBE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-25_24-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>25</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HCCD</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hypervisor Cycle Counter Disable. Prohibits <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> from counting at EL2.</para>
+    </field_description>
+    <field_description order="after">
+      <para>This field does not affect the CPU_CYCLES event or any other event that counts cycles.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Cycle counting by <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is not affected by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Cycle counting by <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is prohibited at EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p5 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-23_23-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>23</field_msb>
+    <field_lsb>23</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-22_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>22</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>22:20</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-19_19-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TTRF</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Traps use of the Trace Filter Control registers at EL1 to EL2, as follows:</para>
+<list type="unordered">
+<listitem><content>
+<para>Access to <register_link state="AArch64" id="AArch64-trfcr_el1.xml">TRFCR_EL1</register_link> is trapped to EL2, reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>Access to <register_link state="AArch32" id="AArch32-trfcr.xml">TRFCR</register_link> is trapped to EL2, reported using EC syndrome value <hexnumber>0x03</hexnumber>.</para>
+</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses to the specified registers at EL1 are not affected by this control.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses to the specified registers at EL1 generate a trap exception to EL2 when EL2 is enabled in the current Security state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_TRF is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-19_19-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>19</field_msb>
+    <field_lsb>19</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-18_18" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>18</field_msb>
+    <field_lsb>18</field_lsb>
+    <rel_range>18</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-17_17-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPMD</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Guest Performance Monitors Disable. Controls PMU operation at EL2.</para>
+    </field_description>
+    <field_description order="after"><para>The counters affected by this field are:</para>
+<list type="unordered">
+<listitem><content>Event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n less than MDCR_EL2.HPMN.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, the instruction counter <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link>.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 1, the cycle counter <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>.</content>
+</listitem></list>
+<para>Other event counters are not affected by this field.</para>
+<para>When <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 0, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is not affected by this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Counters are not affected by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>Affected counters are prohibited from counting at EL2.</para>
+<para>If <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 1, then <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is disabled at EL2. Otherwise, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is not affected by this mechanism.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p1 is implemented and FEAT_Debugv8p2 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPMD</field_name>
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Guest Performance Monitors Disable. Controls PMU operation at EL2 when <function>ExternalSecureNoninvasiveDebugEnabled</function><value>()</value> is FALSE.</para>
+    </field_description>
+    <field_description order="after"><para>If <function>ExternalSecureNoninvasiveDebugEnabled</function><value>()</value> is TRUE then the event counters and <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> are not affected by this field.</para>
+<para>Otherwise, the counters affected by this field are:</para>
+<list type="unordered">
+<listitem><content>Event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n less than MDCR_EL2.HPMN.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 1, the cycle counter, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>.</content>
+</listitem></list>
+<para>Other event counters are not affected by this field. When <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 0, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is not affected by this field.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Counters are not affected by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If <function>ExternalSecureNoninvasiveDebugEnabled</function><value>()</value> is FALSE then all the following apply:</para>
+<list type="unordered">
+<listitem><content>Affected event counters are prohibited from counting at EL2.</content>
+</listitem><listitem><content>If <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.DP is 1, then <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is disabled at EL2. Otherwise, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link> is not affected by this mechanism.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_number>0</field_reset_number>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3p1 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-17_17-3" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>17</field_msb>
+    <field_lsb>17</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-16_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>16</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>16</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-15_15-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>EnSPM</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Enable access to System PMU registers. When disabled, accesses to System PMU registers generate a trap to EL2.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are: <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-spmaccessr_el1.xml">SPMACCESSR_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmcfgr_el1.xml">SPMCFGR_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmcgcrn_el1.xml">SPMCGCR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmcntenclr_el0.xml">SPMCNTENCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmcntenset_el0.xml">SPMCNTENSET_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmcr_el0.xml">SPMCR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmdevaff_el1.xml">SPMDEVAFF_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmdevarch_el1.xml">SPMDEVARCH_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmevcntrn_el0.xml">SPMEVCNTR&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevfilt2rn_el0.xml">SPMEVFILT2R&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevfiltrn_el0.xml">SPMEVFILTR&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmevtypern_el0.xml">SPMEVTYPER&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmiidr_el1.xml">SPMIIDR_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmintenclr_el1.xml">SPMINTENCLR_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmintenset_el1.xml">SPMINTENSET_EL1</register_link>, <register_link state="AArch64" id="AArch64-spmovsclr_el0.xml">SPMOVSCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmovsset_el0.xml">SPMOVSSET_EL0</register_link>, <register_link state="AArch64" id="AArch64-spmscr_el1.xml">SPMSCR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-spmselr_el0.xml">SPMSELR_EL0</register_link>.</para>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</para>
+<para>Trapped instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified System PMU registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified System PMU registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPMU is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-15_15-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>15</field_msb>
+    <field_lsb>15</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TPMS</field_name>
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap Performance Monitor Sampling. Enables a trap to EL2 on accesses of SPE registers.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmscr_el1.xml">PMSCR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmsevfr_el1.xml">PMSEVFR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmsfcr_el1.xml">PMSFCR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmsicr_el1.xml">PMSICR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmsirr_el1.xml">PMSIRR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-pmslatfr_el1.xml">PMSLATFR_EL1</register_link>.</content>
+</listitem><listitem><content><instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-pmsidr_el1.xml">PMSIDR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_SPEv1p2" filename="A_armv8_architecture_extensions.fm" linkend="v8.7.SPE"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmsnevfr_el1.xml">PMSNEVFR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_SPE_FDS" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_SPE_FDS"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmsdsfr_el1.xml">PMSDSFR_EL1</register_link>.</content>
+</listitem></list>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</para>
+<para>Trapped instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified SPE registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified SPE registers at EL1 are trapped to EL2, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-14_14-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>14</field_msb>
+    <field_lsb>14</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-13_12-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>E2PB</field_name>
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>EL2 Profiling Buffer. If EL2 is implemented and enabled in the Profiling Buffer owning Security state, this field controls the owning translation regime. If EL2 is implemented and enabled in the current Security state, this field controls access to Profiling Buffer control registers from EL1.</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>The Profiling Buffer control registers trapped by this control are: <register_link state="AArch64" id="AArch64-pmblimitr_el1.xml">PMBLIMITR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmbptr_el1.xml">PMBPTR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-pmbsr_el1.xml">PMBSR_EL1</register_link>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b00</field_value>
+        <field_value_description><para>If EL2 is implemented and enabled in the Profiling Buffer owning Security state, the Profiling Buffer uses the EL2 or EL2&amp;0 stage 1 translation regime. Otherwise the Profiling Buffer uses the EL1&amp;0 stage 1 translation regime.</para>
+<para>If EL2 is implemented and enabled in the current Security state, accesses to Profiling Buffer control registers at EL1 generate a Trap exception to EL2.</para></field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b10</field_value>
+        <field_value_description>
+          <para>Profiling Buffer uses the EL1&amp;0 stage 1 translation regime. If EL2 is implemented and enabled in the current Security state, accesses to Profiling Buffer control registers at EL1 generate a Trap exception to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b11</field_value>
+        <field_value_description>
+          <para>Profiling Buffer uses the EL1&amp;0 stage 1 translation regime. Accesses to Profiling Buffer control registers at EL1 are not trapped to EL2.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_SPE is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-13_12-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>13</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>1:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-11_11" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDRA</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>11</field_lsb>
+    <rel_range>11</rel_range>
+    <field_description order="before"><para>Trap Debug ROM Address register access. Traps System register accesses to the Debug ROM registers to EL2 when EL2 is enabled in the current Security state as follows:</para>
+<list type="unordered">
+<listitem><content>If EL1 is using AArch64 state, accesses to <register_link state="AArch64" id="AArch64-mdrar_el1.xml">MDRAR_EL1</register_link> are trapped to EL2, reported using EC syndrome value <hexnumber>0x18</hexnumber>.</content>
+</listitem><listitem><content>If EL0 or EL1 is using AArch32 state, MRC or MCR accesses to the following registers are trapped to EL2, reported using EC syndrome value <hexnumber>0x05</hexnumber> and MRRC or MCRR accesses are trapped to EL2, reported using EC syndrome value <hexnumber>0x0C</hexnumber>:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-dbgdrar.xml">DBGDRAR</register_link>, <register_link state="AArch32" id="AArch32-dbgdsar.xml">DBGDSAR</register_link>.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><para>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.TDE == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1.</content>
+</listitem></list>
+<note><para>EL2 does not provide traps on debug register accesses through the optional memory-mapped external debug interfaces.</para></note><para>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>EL0 and EL1 System register accesses to the Debug ROM registers are trapped to EL2 when EL2 is enabled in the current Security state, unless it is trapped by the following:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>.UDCCdis.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>.TDCC.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-10_10-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TDOSA</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap debug OS-related register access. Traps EL1 System register accesses to the powerdown debug registers to EL2, from both Execution states as follows:</para>
+<list type="unordered">
+<listitem><content>In AArch64 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <hexnumber>0x18</hexnumber>:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-oslar_el1.xml">OSLAR_EL1</register_link>, <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>, <register_link state="AArch64" id="AArch64-osdlr_el1.xml">OSDLR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-dbgprcr_el1.xml">DBGPRCR_EL1</register_link>.</content>
+</listitem><listitem><content>Any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> register with similar functionality that the implementation specifies as trapped by this bit.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>In AArch32 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <hexnumber>0x05</hexnumber>:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>, <register_link state="AArch32" id="AArch32-dbgoslar.xml">DBGOSLAR</register_link>, <register_link state="AArch32" id="AArch32-dbgosdlr.xml">DBGOSDLR</register_link>, and <register_link state="AArch32" id="AArch32-dbgprcr.xml">DBGPRCR</register_link>.</content>
+</listitem><listitem><content>Any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> register with similar functionality that the implementation specifies as trapped by this bit.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_description order="after"><note><para>These registers are not accessible at EL0.</para></note><para>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.TDE == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1.</content>
+</listitem></list>
+<para>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL1 System register accesses to the powerdown debug registers are trapped to EL2 when EL2 is enabled in the current Security state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_DoubleLock is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-10_10-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TDOSA</field_name>
+    <field_msb>10</field_msb>
+    <field_lsb>10</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap debug OS-related register access. Traps EL1 System register accesses to the powerdown debug registers to EL2, from both Execution states as follows:</para>
+<list type="unordered">
+<listitem><content>
+<para>In AArch64 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <hexnumber>0x18</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch64" id="AArch64-oslar_el1.xml">OSLAR_EL1</register_link>, <register_link state="AArch64" id="AArch64-oslsr_el1.xml">OSLSR_EL1</register_link>, and <register_link state="AArch64" id="AArch64-dbgprcr_el1.xml">DBGPRCR_EL1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>Any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> register with similar functionality that the implementation specifies as trapped by this bit.</para>
+</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>
+<para>In AArch32 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value <hexnumber>0x05</hexnumber>:</para>
+<list type="unordered">
+<listitem><content>
+<para><register_link state="AArch32" id="AArch32-dbgoslsr.xml">DBGOSLSR</register_link>, <register_link state="AArch32" id="AArch32-dbgoslar.xml">DBGOSLAR</register_link>, and <register_link state="AArch32" id="AArch32-dbgprcr.xml">DBGPRCR</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>Any <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> register with similar functionality that the implementation specifies as trapped by this bit.</para>
+</content>
+</listitem></list>
+</content>
+</listitem></list>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether accesses to <register_link state="AArch64" id="AArch64-osdlr_el1.xml">OSDLR_EL1</register_link> are trapped.</para>
+<para>It is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether accesses to <register_link state="AArch32" id="AArch32-dbgosdlr.xml">DBGOSDLR</register_link> are trapped.</para></field_description>
+    <field_description order="after"><note><para>These registers are not accessible at EL0.</para></note><para>This field is treated as being 1 for all purposes other than a direct read when one or more of the following are true:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.TDE == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1.</content>
+</listitem></list>
+<note><para>EL2 does not provide traps on debug register accesses through the optional memory-mapped external debug interfaces.</para></note><para>System register accesses to the debug registers might have side-effects. When a System register access is trapped to EL2, no side-effects occur before the exception is taken to EL2.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>EL1 System register accesses to the powerdown debug registers are trapped to EL2 when EL2 is enabled in the current Security state.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-9_9" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDA</field_name>
+    <field_msb>9</field_msb>
+    <field_lsb>9</field_lsb>
+    <rel_range>9</rel_range>
+    <field_description order="before">
+      <para>Trap accesses of debug System registers. Enables a trap to EL2 on accesses of debug System registers.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-dbgauthstatus_el1.xml">DBGAUTHSTATUS_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgbcrn_el1.xml">DBGBCR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgbvrn_el1.xml">DBGBVR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgclaimclr_el1.xml">DBGCLAIMCLR_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgclaimset_el1.xml">DBGCLAIMSET_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgwcrn_el1.xml">DBGWCR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-dbgwvrn_el1.xml">DBGWVR&lt;n&gt;_EL1</register_link>, <register_link state="AArch64" id="AArch64-mdccint_el1.xml">MDCCINT_EL1</register_link>, <register_link state="AArch64" id="AArch64-mdccsr_el0.xml">MDCCSR_EL0</register_link>, <register_link state="AArch64" id="AArch64-mdscr_el1.xml">MDSCR_EL1</register_link>, <register_link state="AArch64" id="AArch64-osdtrrx_el1.xml">OSDTRRX_EL1</register_link>, <register_link state="AArch64" id="AArch64-osdtrtx_el1.xml">OSDTRTX_EL1</register_link>, and <register_link state="AArch64" id="AArch64-oseccr_el1.xml">OSECCR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_Debugv8p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_Debugv8p9"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link>.</content>
+</listitem><listitem><content>In Non-debug state, <instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-dbgdtrrx_el0.xml">DBGDTRRX_EL0</register_link> and <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</register_link> and <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link>.</content>
+</listitem></list>
+<para>In AArch32 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content>
+<para><instruction>MRC</instruction> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgauthstatus.xml">DBGAUTHSTATUS</register_link>, <register_link state="AArch32" id="AArch32-dbgbcrn.xml">DBGBCR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgbvrn.xml">DBGBVR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgbxvrn.xml">DBGBXVR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgclaimclr.xml">DBGCLAIMCLR</register_link>, <register_link state="AArch32" id="AArch32-dbgclaimset.xml">DBGCLAIMSET</register_link>, <register_link state="AArch32" id="AArch32-dbgdccint.xml">DBGDCCINT</register_link>, <register_link state="AArch32" id="AArch32-dbgdevid.xml">DBGDEVID</register_link>, <register_link state="AArch32" id="AArch32-dbgdevid1.xml">DBGDEVID1</register_link>, <register_link state="AArch32" id="AArch32-dbgdevid2.xml">DBGDEVID2</register_link>, <register_link state="AArch32" id="AArch32-dbgdidr.xml">DBGDIDR</register_link>, <register_link state="AArch32" id="AArch32-dbgdscrext.xml">DBGDSCRext</register_link>, <register_link state="AArch32" id="AArch32-dbgdscrint.xml">DBGDSCRint</register_link>, <register_link state="AArch32" id="AArch32-dbgdtrrxext.xml">DBGDTRRXext</register_link>, <register_link state="AArch32" id="AArch32-dbgdtrtxext.xml">DBGDTRTXext</register_link>, <register_link state="AArch32" id="AArch32-dbgoseccr.xml">DBGOSECCR</register_link>, <register_link state="AArch32" id="AArch32-dbgvcr.xml">DBGVCR</register_link>, <register_link state="AArch32" id="AArch32-dbgwcrn.xml">DBGWCR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-dbgwfar.xml">DBGWFAR</register_link>, and <register_link state="AArch32" id="AArch32-dbgwvrn.xml">DBGWVR&lt;n&gt;</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><instruction>STC</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <instruction>LDC</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>In Non-debug state, <instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</para>
+</content>
+</listitem></list>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</para>
+<para>Trapped AArch64 instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+<para>Trapped AArch32 instructions are reported using EC syndrome value <hexnumber>0x05</hexnumber> for <instruction>MRC</instruction> and <instruction>MCR</instruction> accesses, and <hexnumber>0x06</hexnumber> for <instruction>LDC</instruction> and <instruction>STC</instruction> accesses.</para>
+<para>The following instructions are not trapped in Debug state:</para>
+<list type="unordered">
+<listitem><content>AArch64 <instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-dbgdtrrx_el0.xml">DBGDTRRX_EL0</register_link> and <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-dbgdtrtx_el0.xml">DBGDTRTX_EL0</register_link> and <register_link state="AArch64" id="AArch64-dbgdtr_el0.xml">DBGDTR_EL0</register_link>.</content>
+</listitem><listitem><content>AArch32 <instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrrxint.xml">DBGDTRRXint</register_link> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-dbgdtrtxint.xml">DBGDTRTXint</register_link>.</content>
+</listitem></list>
+<para>If 16 or fewer breakpoints and 16 or fewer watchpoints are implemented, and <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link> is implemented as RAZ/WI, then it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether AArch64 accesses to <register_link state="AArch64" id="AArch64-mdselr_el1.xml">MDSELR_EL1</register_link> are trapped to EL2 when MDCR_EL2.TDA is 1.</para>
+<para>This field is ignored by the PE and treated as one when any of the following are true:</para>
+<list type="unordered">
+<listitem><content>MDCR_EL2.TDE == 1.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified debug System registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified debug System registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-8_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>TDE</field_name>
+    <field_msb>8</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>8</rel_range>
+    <field_description order="before">
+      <para>Trap Debug Exceptions. Controls routing of Debug exceptions, and defines the debug target Exception level, EL<sub>D</sub>.</para>
+    </field_description>
+    <field_description order="after"><para>For more information, see <xref browsertext="'Routing debug exceptions'" filename="D_aarch64_self_hosted_debug.fm" linkend="D2BEICGGIG"/>.</para>
+<para>This field is treated as being 1 for all purposes other than a direct read when <register_link state="AArch64" id="AArch64-hcr_el2.xml">HCR_EL2</register_link>.TGE == 1.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>The debug target Exception level is EL1.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>If EL2 is enabled for the current Effective value of <register_link state="AArch64" id="AArch64-scr_el3.xml">SCR_EL3</register_link>.NS, the debug target Exception level is EL2, otherwise the debug target Exception level is EL1.</para>
+<para>The MDCR_EL2.{TDRA, TDOSA, TDA} fields are treated as being 1 for all purposes other than returning the result of a direct read of the register.</para></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+  </field>
+  <field id="fieldset_0-7_7-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPME</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Hyp Enable.</para>
+    </field_description>
+    <field_description order="after"><para>The counters affected by this field are event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> for values of n greater than or equal to MDCR_EL2.HPMN and less than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N. This applies even when EL2 is disabled in the current Security state.</para>
+<para>Other event counters, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>, and, if <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link> are not affected by this field.</para>
+<para>If MDCR_EL2.HPMN is equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then this field has no effect.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Affected counters are disabled and do not count.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Affected counters are enabled by <register_link state="AArch64" id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</register_link>.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-7_7-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>7</field_msb>
+    <field_lsb>7</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TPM</field_name>
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Trap accesses of PMU registers. Enables a trap to EL2 on accesses of PMU registers.</para>
+    </field_description>
+    <field_description order="after"><para>In AArch64 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content><instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmccfiltr_el0.xml">PMCCFILTR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</register_link>, <register_link state="AArch64" id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmselr_el0.xml">PMSELR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmswinc_el0.xml">PMSWINC_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>, <register_link state="AArch64" id="AArch64-pmxevcntr_el0.xml">PMXEVCNTR_EL0</register_link>, and <register_link state="AArch64" id="AArch64-pmxevtyper_el0.xml">PMXEVTYPER_EL0</register_link>.</content>
+</listitem><listitem><content><instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-pmceid0_el0.xml">PMCEID0_EL0</register_link> and <register_link state="AArch64" id="AArch64-pmceid1_el0.xml">PMCEID1_EL0</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p4" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.PMU"/> is implemented, <instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-pmmir_el1.xml">PMMIR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p9" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3p9"/> is implemented, <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmzr_el0.xml">PMZR_EL0</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3_ICNTR" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_ICNTR"/> is implemented, <instruction>MRS</instruction> accesses to <register_link state="AArch64" id="AArch64-pmicfiltr_el0.xml">PMICFILTR_EL0</register_link> and <register_link state="AArch64" id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</register_link>.</content>
+</listitem><listitem><content>If FEAT_EBEP is implemented or <xref browsertext="FEAT_PMUv3_SS" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_SS"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmecr_el1.xml">PMECR_EL1</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_SEBEP" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_SEBEP"/> is implemented, <instruction>MRS</instruction> and <instruction>MSR</instruction> accesses to <register_link state="AArch64" id="AArch64-pmiar_el1.xml">PMIAR_EL1</register_link>.</content>
+</listitem></list>
+<para>In AArch32 state, the instructions affected by this control are:</para>
+<list type="unordered">
+<listitem><content>
+<para><instruction>MRC</instruction> and <instruction>MCR</instruction> accesses to <register_link state="AArch32" id="AArch32-pmccfiltr.xml">PMCCFILTR</register_link>, <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>, <register_link state="AArch32" id="AArch32-pmcntenclr.xml">PMCNTENCLR</register_link>, <register_link state="AArch32" id="AArch32-pmcntenset.xml">PMCNTENSET</register_link>, <register_link state="AArch32" id="AArch32-pmcr.xml">PMCR</register_link>, <register_link state="AArch32" id="AArch32-pmevcntrn.xml">PMEVCNTR&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link>, <register_link state="AArch32" id="AArch32-pmintenclr.xml">PMINTENCLR</register_link>, <register_link state="AArch32" id="AArch32-pmintenset.xml">PMINTENSET</register_link>, <register_link state="AArch32" id="AArch32-pmovsr.xml">PMOVSR</register_link>, <register_link state="AArch32" id="AArch32-pmovsset.xml">PMOVSSET</register_link>, <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>, <register_link state="AArch32" id="AArch32-pmswinc.xml">PMSWINC</register_link>, <register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>, <register_link state="AArch32" id="AArch32-pmxevcntr.xml">PMXEVCNTR</register_link>, and <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-pmceid0.xml">PMCEID0</register_link> and <register_link state="AArch32" id="AArch32-pmceid1.xml">PMCEID1</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para><instruction>MRRC</instruction> and <instruction>MCRR</instruction> accesses to <register_link state="AArch32" id="AArch32-pmccntr.xml">PMCCNTR</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_PMUv3p1" filename="A_armv8_architecture_extensions.fm" linkend="v8.1.PMU"/> is implemented, <instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-pmceid2.xml">PMCEID2</register_link> and <register_link state="AArch32" id="AArch32-pmceid3.xml">PMCEID3</register_link>.</para>
+</content>
+</listitem><listitem><content>
+<para>If <xref browsertext="FEAT_PMUv3p4" filename="A_armv8_architecture_extensions.fm" linkend="v8.4.PMU"/> is implemented, <instruction>MRC</instruction> accesses to <register_link state="AArch32" id="AArch32-pmmir.xml">PMMIR</register_link>.</para>
+</content>
+</listitem></list>
+<para>Unless the instruction generates a higher priority exception, trapped instructions generate an exception to EL2.</para>
+<para>Trapped AArch64 instructions are reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+<para>Trapped AArch32 instructions are reported using EC syndrome value <hexnumber>0x03</hexnumber> for <instruction>MRC</instruction> and <instruction>MCR</instruction> accesses, and <hexnumber>0x04</hexnumber> for <instruction>MRRC</instruction> and <instruction>MCRR</instruction> accesses.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>Accesses of the specified PMU registers are not trapped by this mechanism.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description>
+          <para>Accesses of the specified PMU registers at EL1 and EL0 are trapped to EL2, unless the instruction generates a higher priority exception.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-6_6-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>6</field_msb>
+    <field_lsb>6</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>TPMCR</field_name>
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before"><para>Trap <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link> or <register_link state="AArch32" id="AArch32-pmcr.xml">PMCR</register_link> accesses. Traps EL0 and EL1 accesses to EL2, when EL2 is enabled in the current Security state, as follows:</para>
+<list type="unordered">
+<listitem><content>
+<para>In AArch64 state, accesses to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link> are trapped to EL2, reported using EC syndrome value <hexnumber>0x18</hexnumber>.</para>
+</content>
+</listitem><listitem><content>
+<para>In AArch32 state, accesses to <register_link state="AArch32" id="AArch32-pmcr.xml">PMCR</register_link> are trapped to EL2, reported using EC syndrome value <hexnumber>0x03</hexnumber>.</para>
+</content>
+</listitem></list></field_description>
+    <field_description order="after">
+      <note>
+        <para>EL2 does not provide traps on Performance Monitor register accesses through the optional memory-mapped external debug interface.</para>
+      </note>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0</field_value>
+        <field_value_description>
+          <para>This control does not cause any instructions to be trapped.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b1</field_value>
+        <field_value_description><para>EL0 and EL1 accesses to the specified registers are trapped to EL2 when EL2 is enabled in the current Security state, unless they are trapped by the following:</para>
+<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>.EN.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.EN.</content>
+</listitem></list></field_value_description>
+      </field_value_instance>
+    </field_values>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_standard_text>AU</field_reset_standard_text>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-5_5-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>5</field_msb>
+    <field_lsb>5</field_lsb>
+    <rel_range>0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <field id="fieldset_0-4_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>HPMN</field_name>
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Defines the number of event counters <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> and, if <xref browsertext="FEAT_PMUv3_SS" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_SS"/> is implemented, snapshot registers <register_link state="AArch64" id="AArch64-pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</register_link>, that are accessible from EL1 and from EL0 if permitted.</para>
+    </field_description>
+    <field_description order="after"><para>MDCR_EL2.HPMN divides the event counters into a first range and a second range.</para>
+<para>If MDCR_EL2.HPMN is not 0 and is less than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then event counters [0..(MDCR_EL2.HPMN-1)] are in the first range, and the remaining event counters [MDCR_EL2.HPMN..(<register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N-1)] are in the second range.</para>
+<para>If <xref browsertext="FEAT_HPMN0" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_HPMN0"/> is implemented and MDCR_EL2.HPMN is 0, then all event counters are in the second range and none are in the first range.</para>
+<para>If MDCR_EL2.HPMN is equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N, then all event counters are in the first range and none are in the second range.</para>
+<para>For an event counter <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> in the first range:</para>
+<list type="unordered">
+<listitem><content>The counter is accessible from EL1, EL2, and EL3.</content>
+</listitem><listitem><content>The counter is accessible from EL0 if permitted by <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link> and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>, or by <register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p5" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.PMU"/> is implemented, <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.LP or <register_link state="AArch32" id="AArch32-pmcr.xml">PMCR</register_link>.LP determines whether the counter overflow flag is set on unsigned overflow of <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[31:0] or <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[63:0].</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.E and <register_link state="AArch64" id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</register_link>[n] enable the operation of the event counter.</content>
+</listitem></list>
+<para>For an event counter <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link> in the second range:</para>
+<list type="unordered">
+<listitem><content>The counter is accessible from EL2 and EL3.</content>
+</listitem><listitem><content>If EL2 is disabled in the current Security state, the event counter is also accessible from EL1, and from EL0 if permitted by <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link> and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>, or by <register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>.</content>
+</listitem><listitem><content>If <xref browsertext="FEAT_PMUv3p5" filename="A_armv8_architecture_extensions.fm" linkend="v8.5.PMU"/> is implemented, MDCR_EL2.HLP determines whether the counter overflow flag is set on unsigned overflow of <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[31:0] or <register_link state="AArch64" id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</register_link>[63:0].</content>
+</listitem><listitem><content>MDCR_EL2.HPME and <register_link state="AArch64" id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</register_link>[n] enable the operation of the event counter.</content>
+</listitem></list>
+<para>If <xref browsertext="FEAT_PMUv3_SS" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_PMUv3_SS"/> is implemented:</para>
+<list type="unordered">
+<listitem><content>
+<para>For an event counter snapshot register <register_link state="AArch64" id="AArch64-pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</register_link> in the first range, the register is accessible from EL1, EL2, and EL3.</para>
+</content>
+</listitem><listitem><content>
+<para>For an event counter snapshot register <register_link state="AArch64" id="AArch64-pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</register_link> in the second range, the register is accessible from EL2 and EL3. If EL2 is disabled in the current Security state, the event counter is also accessible from EL1.</para>
+</content>
+</listitem></list>
+<para>Values greater than <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N are reserved. If <xref browsertext="FEAT_HPMN0" filename="A_armv8_architecture_extensions.fm" linkend="FEAT_HPMN0"/> is not implemented then the value 0 is reserved.</para>
+<para>If this field is set to a reserved value, then the following <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word> behaviors apply:</para>
+<list type="unordered">
+<listitem><content>The value returned by a direct read of MDCR_EL2.HPMN is <arm-defined-word>UNKNOWN</arm-defined-word>.</content>
+</listitem><listitem><content>Either:<list type="unordered">
+<listitem><content>An <arm-defined-word>UNKNOWN</arm-defined-word> number of counters are reserved for EL2 and EL3 use. That is, the PE behaves as if MDCR_EL2.HPMN is set to an <arm-defined-word>UNKNOWN</arm-defined-word> nonzero value less than or equal to <register_link state="AArch64" id="AArch64-pmcr_el0.xml">PMCR_EL0</register_link>.N.</content>
+</listitem><listitem><content>All counters are reserved for EL2 and EL3 use, meaning no counters are accessible from EL1 and EL0 when EL2 is enabled in the current Security state.</content>
+</listitem></list>
+</content>
+</listitem></list></field_description>
+    <field_resets>
+      <field_reset reset_type="Warm">
+        <field_reset_other_field>
+          <field_reset_other_field_regname state="AArch64">PMCR_EL0</field_reset_other_field_regname>
+          <field_reset_other_field_fieldname>N</field_reset_other_field_fieldname>
+        </field_reset_other_field>
+      </field_reset>
+    </field_resets>
+    <fields_condition>When FEAT_PMUv3 is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-4_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>4</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>4:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fieldat id="fieldset_0-63_44" msb="63" lsb="44"/>
+  <fieldat id="fieldset_0-43_43-1" msb="43" lsb="43"/>
+  <fieldat id="fieldset_0-42_42" msb="42" lsb="42"/>
+  <fieldat id="fieldset_0-41_40-1" msb="41" lsb="40"/>
+  <fieldat id="fieldset_0-39_37" msb="39" lsb="37"/>
+  <fieldat id="fieldset_0-36_36-1" msb="36" lsb="36"/>
+  <fieldat id="fieldset_0-35_32" msb="35" lsb="32"/>
+  <fieldat id="fieldset_0-31_30-1" msb="31" lsb="30"/>
+  <fieldat id="fieldset_0-29_29-1" msb="29" lsb="29"/>
+  <fieldat id="fieldset_0-28_28-1" msb="28" lsb="28"/>
+  <fieldat id="fieldset_0-27_27-1" msb="27" lsb="27"/>
+  <fieldat id="fieldset_0-26_26-1" msb="26" lsb="26"/>
+  <fieldat id="fieldset_0-25_24-1" msb="25" lsb="24"/>
+  <fieldat id="fieldset_0-23_23-1" msb="23" lsb="23"/>
+  <fieldat id="fieldset_0-22_20" msb="22" lsb="20"/>
+  <fieldat id="fieldset_0-19_19-1" msb="19" lsb="19"/>
+  <fieldat id="fieldset_0-18_18" msb="18" lsb="18"/>
+  <fieldat id="fieldset_0-17_17-1" msb="17" lsb="17"/>
+  <fieldat id="fieldset_0-16_16" msb="16" lsb="16"/>
+  <fieldat id="fieldset_0-15_15-1" msb="15" lsb="15"/>
+  <fieldat id="fieldset_0-14_14-1" msb="14" lsb="14"/>
+  <fieldat id="fieldset_0-13_12-1" msb="13" lsb="12"/>
+  <fieldat id="fieldset_0-11_11" msb="11" lsb="11"/>
+  <fieldat id="fieldset_0-10_10-1" msb="10" lsb="10"/>
+  <fieldat id="fieldset_0-9_9" msb="9" lsb="9"/>
+  <fieldat id="fieldset_0-8_8" msb="8" lsb="8"/>
+  <fieldat id="fieldset_0-7_7-1" msb="7" lsb="7"/>
+  <fieldat id="fieldset_0-6_6-1" msb="6" lsb="6"/>
+  <fieldat id="fieldset_0-5_5-1" msb="5" lsb="5"/>
+  <fieldat id="fieldset_0-4_0-1" msb="4" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS MDCR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, MDCR_EL2</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = MDCR_EL2;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = MDCR_EL2;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MSRregister MDCR_EL2" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MSR MDCR_EL2, &lt;Xt&gt;</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b100"/>
+                
+                <enc n="CRn" v="0b0001"/>
+                
+                <enc n="CRm" v="0b0001"/>
+                
+                <enc n="op2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MSRregister" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; HCR_EL2.NV == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TDA == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TDA == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        MDCR_EL2 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    MDCR_EL2 = X[t, 64];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

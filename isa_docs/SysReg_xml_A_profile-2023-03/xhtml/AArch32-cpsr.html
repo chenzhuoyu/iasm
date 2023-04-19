@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CPSR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">CPSR, Current Program Status Register</h1><p>The CPSR characteristics are:</p><h2>Purpose</h2>
+        <p>Holds PE status and control information.</p>
+      <h2>Configuration</h2><p>This register is present only when AArch32 is supported. Otherwise, direct accesses to CPSR are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>CPSR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">N</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30">Z</a></td><td class="lr" colspan="1"><a href="#fieldset_0-29_29">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-28_28">V</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27">Q</a></td><td class="lr" colspan="3"><a href="#fieldset_0-26_24">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23-1">SSBS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">PAN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">DIT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">RES0</a></td><td class="lr" colspan="4"><a href="#fieldset_0-19_16">GE</a></td><td class="lr" colspan="6"><a href="#fieldset_0-15_10">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-9_9">E</a></td><td class="lr" colspan="1"><a href="#fieldset_0-8_8">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-7_7">I</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6">F</a></td><td class="lr" colspan="1"><a href="#fieldset_0-5_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4">RES1</a></td><td class="lr" colspan="4"><a href="#fieldset_0-3_0">M</a></td></tr></tbody></table><h4 id="fieldset_0-31_31">N, bit [31]</h4><div class="field">
+      <p>Negative condition flag. Set to bit[31] of the result of the last flag-setting instruction. If the result is regarded as a two's complement signed integer, then N is set to 1 if the result was negative, and N is set to 0 if the result was positive or zero.</p>
+    </div><h4 id="fieldset_0-30_30">Z, bit [30]</h4><div class="field">
+      <p>Zero condition flag. Set to 1 if the result of the last flag-setting instruction was zero, and to 0 otherwise. A result of zero often indicates an equal result from a comparison.</p>
+    </div><h4 id="fieldset_0-29_29">C, bit [29]</h4><div class="field">
+      <p>Carry condition flag. Set to 1 if the last flag-setting instruction resulted in a carry condition, for example an unsigned overflow on an addition.</p>
+    </div><h4 id="fieldset_0-28_28">V, bit [28]</h4><div class="field">
+      <p>Overflow condition flag. Set to 1 if the last flag-setting instruction resulted in an overflow condition, for example a signed overflow on an addition.</p>
+    </div><h4 id="fieldset_0-27_27">Q, bit [27]</h4><div class="field">
+      <p>Cumulative saturation bit. Set to 1 to indicate that overflow or saturation occurred in some instructions.</p>
+    </div><h4 id="fieldset_0-26_24">Bits [26:24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23-1">SSBS, bit [23]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field"><p>Speculative Store Bypass Safe.</p>
+<p>Prohibits speculative loads or stores that might practically allow a cache timing side channel.</p>
+<p>A cache timing side channel might be exploited where a load or store uses an address that is derived from a register that is being loaded from memory using a load instruction speculatively read from a memory location. If PSTATE.SSBS is enabled, the address derived from the load instruction might be from earlier in the coherence order than the latest store to that memory location with the same virtual address.</p><table class="valuetable"><tr><th>SSBS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Hardware is not permitted to load or store speculatively in the manner described.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Hardware is permitted to load or store speculatively in the manner described.</p>
+        </td></tr></table>
+      <p>The value of this bit is usually set to the value described by the <a href="AArch32-sctlr.html">SCTLR</a>.DSSBS bit on exceptions to any mode except Hyp mode, and the value described by <a href="AArch32-hsctlr.html">HSCTLR</a>.DSSBS on exceptions to Hyp mode.</p>
+    <p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-23_23-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">PAN, bit [22]<span class="condition"><br/>When FEAT_PAN is implemented:
+                        </span></h4><div class="field">
+      <p>Privileged Access Never.</p>
+    <table class="valuetable"><tr><th>PAN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The translation system is the same as Armv8.0.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Disables privileged read and write accesses to addresses accessible at EL0.</p>
+        </td></tr></table><p>The value of this bit is usually preserved on taking an exception, except in the following situations:</p>
+<ul>
+<li>When the target of the exception is EL1, and the value of the <a href="AArch32-sctlr.html">SCTLR</a>.SPAN bit for the current Security state is 0, this bit is set to 1.
+</li><li>When the target of the exception is EL3, from Secure state, and the value of the Secure <a href="AArch32-sctlr.html">SCTLR</a>.SPAN is 0, this bit is set to 1.
+</li><li>When the target of the exception is EL3, from Non-secure state, this bit is set to 0 regardless of the value of the Secure <a href="AArch32-sctlr.html">SCTLR</a>.SPAN bit.
+</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">DIT, bit [21]<span class="condition"><br/>When FEAT_DIT is implemented:
+                        </span></h4><div class="field">
+      <p>Data Independent Timing.</p>
+    <table class="valuetable"><tr><th>DIT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The architecture makes no statement about the timing properties of any instructions.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>The architecture requires that:</p>
+<ul>
+<li>
+<p>The timing of every load and store instruction is insensitive to the value of the data being loaded or stored.</p>
+
+</li><li>
+<p>For certain data processing instructions, the instruction takes a time that is independent of:</p>
+<ul>
+<li>
+<p>The values of the data supplied in any of its registers.</p>
+
+</li><li>
+<p>The values of the NZCV flags.</p>
+
+</li></ul>
+
+</li><li>
+<p>For certain data processing instructions, the response of the instruction to asynchronous exceptions does not vary based on:</p>
+<ul>
+<li>
+<p>The values of the data supplied in any of its registers.</p>
+
+</li><li>
+<p>The values of the NZCV flags.</p>
+
+</li></ul>
+
+</li></ul></td></tr></table><p>The data processing instructions affected by this bit are:</p>
+<ul>
+<li>
+<p>All cryptographic instructions. These instructions are:</p>
+<ul>
+<li><span class="instruction">AESD</span>, <span class="instruction">AESE</span>, <span class="instruction">AESIMC</span>, <span class="instruction">AESMC</span>, <span class="instruction">SHA1C</span>, <span class="instruction">SHA1H</span>, <span class="instruction">SHA1M</span>, <span class="instruction">SHA1P</span>, <span class="instruction">SHA1SU0</span>, <span class="instruction">SHA1SU1</span>, <span class="instruction">SHA256H</span>, <span class="instruction">SHA256H2</span>, <span class="instruction">SHA256SU0</span>, and <span class="instruction">SHA256SU1</span>.
+</li></ul>
+
+</li><li>
+<p>A subset of the instructions that use the general-purpose register file. For these instructions, the effects of CPSR.DIT apply only if they do not use R15 as either their source or destination and pass their condition execution check. These instructions are:</p>
+<ul>
+<li><span class="instruction">BFI</span>, <span class="instruction">BFC</span>, <span class="instruction">CLZ</span>, <span class="instruction">CMN</span>, <span class="instruction">CMP</span>, <span class="instruction">MLA</span>, <span class="instruction">MLAS</span>, <span class="instruction">MLS</span>, <span class="instruction">MOVT</span>, <span class="instruction">MUL</span>, <span class="instruction">MULS</span>, <span class="instruction">NOP</span>, <span class="instruction">PKHBT</span>, <span class="instruction">PKHTB</span>, <span class="instruction">RBIT</span>, <span class="instruction">REV</span>, <span class="instruction">REV16</span>, <span class="instruction">REVSH</span>, <span class="instruction">RRX</span>, <span class="instruction">SADD16</span>, <span class="instruction">SADD8</span>, <span class="instruction">SASX</span>, <span class="instruction">SBFX</span>, <span class="instruction">SHADD16</span>, <span class="instruction">SHADD8</span>, <span class="instruction">SHASX</span>, <span class="instruction">SHSAX</span>, <span class="instruction">SHSUB16</span>, <span class="instruction">SHSUB8</span>, <span class="instruction">SMLAL**</span>, <span class="instruction">SMLAW*</span>, <span class="instruction">SMLSD*</span>, <span class="instruction">SMMLA*</span>, <span class="instruction">SMMLS*</span>, <span class="instruction">SMMUL*</span>, <span class="instruction">SMUAD*</span>, <span class="instruction">SMUL*</span>, <span class="instruction">SSAX</span>, <span class="instruction">SSUB16</span>, <span class="instruction">SSUB8</span>, <span class="instruction">SXTAB*</span>, <span class="instruction">SXTAH</span>, <span class="instruction">SXTB*</span>, <span class="instruction">SXTH</span>, <span class="instruction">TEQ</span>, <span class="instruction">TST</span>, <span class="instruction">UADD*</span>, <span class="instruction">UASX</span>, <span class="instruction">UBFX</span>, <span class="instruction">UHADD*</span>, <span class="instruction">UHASX</span>, <span class="instruction">UHSAX</span>, <span class="instruction">UHSUB*</span>, <span class="instruction">UMAAL</span>, <span class="instruction">UMLAL</span>, <span class="instruction">UMLALS</span>, <span class="instruction">UMULL</span>, <span class="instruction">UMULLS</span>, <span class="instruction">USADA8</span>, <span class="instruction">USAX</span>, <span class="instruction">USUB*</span>, <span class="instruction">UXTAB*</span>, <span class="instruction">UXTAH</span>, <span class="instruction">UXTB*</span>, <span class="instruction">UXTH</span>, <span class="instruction">ADC</span> (register-shifted register), <span class="instruction">ADCS</span> (register-shifted register), <span class="instruction">ADD</span> (register-shifted register), <span class="instruction">ADDS</span> (register-shifted register), <span class="instruction">AND</span> (register-shifted register), <span class="instruction">ANDS</span> (register-shifted register), <span class="instruction">ASR</span> (register-shifted register), <span class="instruction">ASRS</span> (register-shifted register), <span class="instruction">BIC</span> (register-shifted register), <span class="instruction">BICS</span> (register-shifted register), <span class="instruction">EOR</span> (register-shifted register), <span class="instruction">EORS</span> (register-shifted register), <span class="instruction">LSL</span> (register-shifted register), <span class="instruction">LSLS</span> (register-shifted register), <span class="instruction">LSR</span> (register-shifted register), <span class="instruction">LSRS</span> (register-shifted register), <span class="instruction">MOV</span> (register-shifted register), <span class="instruction">MOVS</span> (register-shifted register), <span class="instruction">MVN</span> (register-shifted register), <span class="instruction">MVNS</span> (register-shifted register), <span class="instruction">ORR</span> (register-shifted register), <span class="instruction">ORRS</span> (register-shifted register), <span class="instruction">ROR</span> (register-shifted register), <span class="instruction">RORS</span> (register-shifted register), <span class="instruction">RSB</span> (register-shifted register), <span class="instruction">RSBS</span> (register-shifted register), <span class="instruction">RSC</span> (register-shifted register), <span class="instruction">RSCS</span> (register-shifted register), <span class="instruction">SBC</span> (register-shifted register), <span class="instruction">SBCS</span> (register-shifted register), <span class="instruction">SUB</span> (register-shifted register), and <span class="instruction">SUBS</span> (register-shifted register).
+</li></ul>
+
+</li><li>
+<p>A subset of the instructions that use the general-purpose register file. For these instructions, the effects of CPSR.DIT apply only if they do not use R15 as either their source or destination. The effects of CPSR.DIT do not depend on these instructions passing their condition execution check. These instructions are:</p>
+<ul>
+<li>
+<p><span class="instruction">ADC</span> (immediate), <span class="instruction">ADC</span> (register), <span class="instruction">ADCS</span> (immediate), <span class="instruction">ADCS</span> (register), <span class="instruction">ADD</span> (immediate), <span class="instruction">ADD</span> (register), <span class="instruction">ADDS</span> (immediate), <span class="instruction">ADDS</span> (register), <span class="instruction">AND</span> (immediate), <span class="instruction">AND</span> (register), <span class="instruction">ANDS</span> (immediate), <span class="instruction">ANDS</span> (register), <span class="instruction">ASR</span> (immediate), <span class="instruction">ASR</span> (register), <span class="instruction">ASRS</span> (immediate), <span class="instruction">ASRS</span> (register), <span class="instruction">BIC</span> (immediate), <span class="instruction">BIC</span> (register), <span class="instruction">BICS</span> (immediate), <span class="instruction">BICS</span> (register), <span class="instruction">EOR</span> (immediate), <span class="instruction">EOR</span> (register), <span class="instruction">EORS</span> (immediate), <span class="instruction">EORS</span> (register), <span class="instruction">LSL</span> (immediate), <span class="instruction">LSL</span> (register), <span class="instruction">LSLS</span> (immediate), <span class="instruction">LSLS</span> (register), <span class="instruction">LSR</span> (immediate), <span class="instruction">LSR</span> (register), <span class="instruction">LSRS</span> (immediate), <span class="instruction">LSRS</span> (register), <span class="instruction">MOV</span> (immediate), <span class="instruction">MOV</span> (register), <span class="instruction">MOVS</span> (immediate), <span class="instruction">MOVS</span> (register), <span class="instruction">MVN</span> (immediate), <span class="instruction">MVN</span> (register), <span class="instruction">MVNS</span> (immediate), <span class="instruction">MVNS</span> (register), <span class="instruction">ORR</span> (immediate), <span class="instruction">ORR</span> (register), <span class="instruction">ORRS</span> (immediate), <span class="instruction">ORRS</span> (register), <span class="instruction">ROR</span> (immediate), <span class="instruction">ROR</span> (register), <span class="instruction">RORS</span> (immediate), <span class="instruction">RORS</span> (register), <span class="instruction">RSB</span> (immediate), <span class="instruction">RSB</span> (register), <span class="instruction">RSBS</span> (immediate), <span class="instruction">RSBS</span> (register), <span class="instruction">RSC</span> (immediate), <span class="instruction">RSC</span> (register), <span class="instruction">RSCS</span> (immediate), <span class="instruction">RSCS</span> (register), <span class="instruction">SBC</span> (immediate), <span class="instruction">SBC</span> (register), <span class="instruction">SBCS</span> (immediate), <span class="instruction">SBCS</span> (register), <span class="instruction">SUB</span> (immediate), <span class="instruction">SUB</span> (register), <span class="instruction">SUBS</span> (immediate), and <span class="instruction">SUBS</span> (register).</p>
+
+</li><li>
+<p>If FEAT_CRC32 is implemented, <span class="instruction">CRC32B</span>, <span class="instruction">CRC32H</span>, <span class="instruction">CRC32W</span>, <span class="instruction">CRC32CB</span>, <span class="instruction">CRC32CH</span>, and <span class="instruction">CRC32CW</span>.</p>
+
+</li></ul>
+
+</li><li>
+<p>A subset of the instructions that use the SIMD&amp;FP register file. For these instructions, the effects of CPSR.DIT apply only if they pass their condition execution check. These instructions are:</p>
+<ul>
+<li><span class="instruction">VABA*</span>, <span class="instruction">VABD*</span> (integer), <span class="instruction">VADD</span> (integer), <span class="instruction">VADDHN</span>, <span class="instruction">VADDL</span>, <span class="instruction">VADDW</span>, <span class="instruction">VAND</span>, <span class="instruction">VBIC</span>, <span class="instruction">VBIF</span>, <span class="instruction">VBIT</span>, <span class="instruction">VBSL</span>, <span class="instruction">VCLS</span>, <span class="instruction">VCLZ</span>, <span class="instruction">VCNT</span>, <span class="instruction">VDUP</span>, <span class="instruction">VEOR</span>, <span class="instruction">VEXT</span>, <span class="instruction">VHADD</span>, <span class="instruction">VHSUB</span>, <span class="instruction">VMAX</span> (integer), <span class="instruction">VMIN</span> (integer), <span class="instruction">VMLA</span> (integer), <span class="instruction">VMLAL</span>, <span class="instruction">VMLS</span> (integer), <span class="instruction">VMLSL</span>, <span class="instruction">VMOV</span>, <span class="instruction">VMOVL</span>, <span class="instruction">VMOVN</span>, <span class="instruction">VMUL</span> (integer and polynomial), <span class="instruction">VMULL</span> (integer and polynomial), <span class="instruction">VMVN</span>, <span class="instruction">VORN</span>, <span class="instruction">VORR</span>, <span class="instruction">VPADAL</span>, <span class="instruction">VPADD</span> (integer), <span class="instruction">VPADDL</span>, <span class="instruction">VPMAX</span> (integer), <span class="instruction">VPMIN</span> (integer), <span class="instruction">VRADDHN</span>, <span class="instruction">VREV*</span>, <span class="instruction">VRHADD</span>, <span class="instruction">VRSHL</span>, <span class="instruction">VRSHR</span>, <span class="instruction">VRSHRN</span>, <span class="instruction">VRSRA</span>, <span class="instruction">VRSUBHN</span>, <span class="instruction">VSHL</span>, <span class="instruction">VSHLL</span>, <span class="instruction">VSHR</span>, <span class="instruction">VSLI</span>, <span class="instruction">VSRA</span>, <span class="instruction">VSRI</span>, <span class="instruction">VSUB</span> (integer), <span class="instruction">VSUBHN</span>, <span class="instruction">VSUBL</span>, <span class="instruction">VSUBW</span>, <span class="instruction">VSWP</span>, <span class="instruction">VTBL</span>, <span class="instruction">VTBX</span>, <span class="instruction">VTRN</span>, <span class="instruction">VTST</span>, <span class="instruction">VUZP</span>, and <span class="instruction">VZIP</span>.
+</li></ul>
+
+</li><li>
+<p>Another subset of the instructions that use the SIMD&amp;FP register file. For these instructions, the effects of CPSR.DIT apply only if they pass their condition execution check and apply only when the instructions are operating on integer vector elements. These instructions are:</p>
+<ul>
+<li><span class="instruction">VABS</span>, <span class="instruction">VCGE</span>, <span class="instruction">VCGT</span>, <span class="instruction">VCLE</span>, <span class="instruction">VCLT</span>, <span class="instruction">VMLA</span> (by scalar), <span class="instruction">VMLS</span> (by scalar), and <span class="instruction">VNEG</span>.
+</li></ul>
+
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">Bit [20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_16">GE, bits [19:16]</h4><div class="field">
+      <p>Greater than or Equal flags, for parallel addition and subtraction.</p>
+    </div><h4 id="fieldset_0-15_10">Bits [15:10]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-9_9">E, bit [9]</h4><div class="field">
+      <p>Endianness state bit. Controls the load and store endianness for data accesses:</p>
+    <table class="valuetable"><tr><th>E</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Little-endian operation</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Big-endian operation.</p>
+        </td></tr></table><p>Instruction fetches ignore this bit.</p>
+<p>If an implementation does not provide Big-endian support, this bit is <span class="arm-defined-word">RES0</span>. If it does not provide Little-endian support, this bit is <span class="arm-defined-word">RES1</span>.</p>
+<p>If an implementation provides Big-endian support but only at EL0, this bit is <span class="arm-defined-word">RES0</span> for an exception return to any Exception level other than EL0.</p>
+<p>Likewise, if it provides Little-endian support only at EL0, this bit is <span class="arm-defined-word">RES1</span> for an exception return to any Exception level other than EL0.</p><p>When the reset value of the SCTLR.EE bit is defined by a configuration input signal, that value also applies to the CPSR.E bit on reset, and therefore applies to software execution from reset.</p></div><h4 id="fieldset_0-8_8">A, bit [8]</h4><div class="field">
+      <p>SError interrupt mask bit.</p>
+    <table class="valuetable"><tr><th>A</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception not masked.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception masked.</p>
+        </td></tr></table></div><h4 id="fieldset_0-7_7">I, bit [7]</h4><div class="field">
+      <p>IRQ mask bit.</p>
+    <table class="valuetable"><tr><th>I</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception not masked.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception masked.</p>
+        </td></tr></table></div><h4 id="fieldset_0-6_6">F, bit [6]</h4><div class="field">
+      <p>FIQ mask bit.</p>
+    <table class="valuetable"><tr><th>F</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Exception not masked.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Exception masked.</p>
+        </td></tr></table></div><h4 id="fieldset_0-5_5">Bit [5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4">Bit [4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-3_0">M, bits [3:0]</h4><div class="field">
+      <p>Current PE mode.</p>
+    <table class="valuetable"><tr><th>M</th><th>Meaning</th></tr><tr><td class="bitfield">0b0000</td><td>
+          <p>User.</p>
+        </td></tr><tr><td class="bitfield">0b0001</td><td>
+          <p>FIQ.</p>
+        </td></tr><tr><td class="bitfield">0b0010</td><td>
+          <p>IRQ.</p>
+        </td></tr><tr><td class="bitfield">0b0011</td><td>
+          <p>Supervisor.</p>
+        </td></tr><tr><td class="bitfield">0b0110</td><td>
+          <p>Monitor.</p>
+        </td></tr><tr><td class="bitfield">0b0111</td><td>
+          <p>Abort.</p>
+        </td></tr><tr><td class="bitfield">0b1010</td><td>
+          <p>Hyp.</p>
+        </td></tr><tr><td class="bitfield">0b1011</td><td>
+          <p>Undefined.</p>
+        </td></tr><tr><td class="bitfield">0b1111</td><td>
+          <p>System.</p>
+        </td></tr></table></div><div class="access_mechanisms"><h2>Accessing CPSR</h2>
+        <p>CPSR can be read using the MRS instruction and written using the MSR (register) or MSR (immediate) instructions.</p>
+      </div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

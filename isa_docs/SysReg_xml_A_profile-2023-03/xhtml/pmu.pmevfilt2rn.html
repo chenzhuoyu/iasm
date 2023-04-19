@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMEVFILT2R&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMEVFILT2R&lt;n&gt;, Performance Monitors Event Filter Registers, n = 0 - 63</h1><p>The PMEVFILT2R&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Provides additional <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> configuration controls for PMU counters.</p>
+
+      
+        <p>Each PMEVFILT2R&lt;n&gt; register can provide additional configuration controls for a PMU counter, where:</p>
+
+      
+        <ul>
+<li>For values of n less than 31, if event counter n is implemented, then the controls are for PMU event counter &lt;n&gt;.
+</li><li>For n equal to 31, the controls are for the cycle counter, <a href="ext-pmccntr_el0.html">PMCCNTR_EL0</a>.
+</li><li>For n equal to 32, if FEAT_PMUv3_ICNTR is implemented, the controls are for the instruction counter, <a href="ext-pmicntr_el0.html">PMICNTR_EL0</a>.
+</li><li>For all other values of n, PMEVFILT2R&lt;n&gt; is not implemented.
+</li></ul>
+
+      
+        <p>Although this mapping is recommended, it is not required and the function of each register is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_PMUv3_EXT is implemented and an implementation implements PMEVFILT2R&lt;n&gt;. Otherwise, direct accesses to PMEVFILT2R&lt;n&gt; are <span class="arm-defined-word">RES0</span>.</p>
+        <p>PMEVFILT2R&lt;n&gt; is in the Core power domain.</p>
+
+      
+        <p>If PMEVFILT2R&lt;n&gt; is not implemented:</p>
+
+      
+        <ul>
+<li>When IsCorePowered() &amp;&amp; !DoubleLockStatus() &amp;&amp; !OSLockStatus() &amp;&amp; AllowExternalPMUAccess(), accesses are <span class="arm-defined-word">RES0</span>.
+</li><li>Otherwise, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether accesses to this register are <span class="arm-defined-word">RES0</span> or generate an error response.
+</li></ul>
+      <h2>Attributes</h2>
+        <p>PMEVFILT2R&lt;n&gt; is a:</p>
+
+      
+        <ul>
+<li>64-bit register when FEAT_PMUv3_EXT64 is implemented
+</li><li>32-bit register otherwise
+</li></ul>
+      <p>This  register is part of the <a href="pmu.html">PMU</a> block.</p><h2>Field descriptions</h2><h3>When FEAT_PMUv3_EXT64 is implemented:</h3><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_0-63_0">IMPLEMENTATION DEFINED, bits [63:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><h3>Otherwise:</h3><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_1-31_0">IMPLEMENTATION DEFINED</a></td></tr></tbody></table><h4 id="fieldset_1-31_0">IMPLEMENTATION DEFINED, bits [31:0]</h4><div class="field">
+      <p><span class="arm-defined-word">IMPLEMENTATION DEFINED</span>.</p>
+    </div><div class="access_mechanisms"><h2>Accessing PMEVFILT2R&lt;n&gt;</h2>
+        <div class="note"><span class="note-header">Note</span><p>SoftwareLockStatus() depends on the type of access attempted and AllowExternalPMUAccess() has a new definition from Armv8.4. Refer to the Pseudocode definitions for more information.</p></div>
+      <p>Accesses to this register use the following encodings:</p><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT32 is implemented
+        </span><br/>[31:0] Accessible at offset 0x800 + (4 * n) from PMU</h4><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table><h4 class="assembler"><span class="condition">
+When FEAT_PMUv3_EXT64 is implemented
+        </span><br/>[63:0] Accessible at offset 0x800 + (8 * n) from PMU</h4><ul><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and SoftwareLockStatus(), accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When IsCorePowered(), !DoubleLockStatus(), !OSLockStatus() and !SoftwareLockStatus(), accesses to this register are <span class="access_level">RW</span>.
+          </li><li>Otherwise, accesses to this register are <span class="access_level">IMPDEF</span>.
+          </li></ul><table class="access_instructions"><tr/><tr/></table></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

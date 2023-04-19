@@ -18,7 +18,7 @@ from collections import OrderedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-DOC_FILE       = 'isa_docs/ISA_A64_xml_A_profile-2022-12_OPT/onebigfile.xml'
+DOC_FILE       = 'isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/onebigfile.xml'
 MAX_TEXT_WIDTH = 80
 MAX_LINE_WIDTH = 120
 
@@ -610,8 +610,9 @@ class Mop(StrEnum):
 class Sym(StrEnum):
     CSYNC        = 'CSYNC'
     DSYNC        = 'DSYNC'
-    PRFOP        = 'sa_prfop'
     RCTX         = 'RCTX'
+    X16          = 'X16'
+    PRFOP        = 'sa_prfop'
     RPRFOP       = 'sa_rprfop'
     OPTION       = 'sa_option'
     OPTION_NXS   = 'sa_option_1'
@@ -833,6 +834,10 @@ class AsmTemplate:
         Sym.RCTX: (
             'RCTX option',
             ['RCTX'],
+        ),
+        Sym.X16: (
+            'register X16',
+            ['X16'],
         ),
         Sym.PRFOP: (
             'prefetch option',
@@ -1560,8 +1565,9 @@ class OnceDict(OrderedDict):
 SYM_CHECKS = {
     Sym.CSYNC        : '%s == CSYNC',
     Sym.DSYNC        : '%s == DSYNC',
-    Sym.PRFOP        : 'isBasicPrf(%s)',
     Sym.RCTX         : '%s == RCTX',
+    Sym.X16          : '%s == X16',
+    Sym.PRFOP        : 'isBasicPrf(%s)',
     Sym.RPRFOP       : 'isRangePrf(%s)',
     Sym.OPTION       : 'isOption(%s)',
     Sym.OPTION_NXS   : 'isOptionNXS(%s)',
@@ -1578,27 +1584,27 @@ SYM_CHECKS = {
 }
 
 IMM_CHECKS = {
-    'CRm'                             : 'isUimm4(%s)',
-    'CRm:Encoding:Hints:Index:by:op2' : 'isUimm7(%s)',
-    'N:immr:imms'                     : 'isMask64(%s)',
-    'Q:imm4'                          : 'isExtIndex(v0, %s)',
-    'a:b:c:d:e:f:g:h'                 : 'isUimm8(%s)',
-    'b40:b5'                          : 'isUimm6(%s)',
-    'imm5'                            : 'isUimm5(%s)',
-    'imm6'                            : 'isUimm6(%s)',
-    'imm12'                           : 'isImm12(%s)',
-    'imm16'                           : 'isUimm16(%s)',
-    'immh:immb'                       : 'isFpBits(%s)',
-    'immr'                            : 'isUimm6(%s)',
-    'immr:imms'                       : 'isMask32(%s)',
-    'imms'                            : 'isUimm6(%s)',
-    'mask'                            : 'isUimm4(%s)',
-    'nzcv'                            : 'isUimm4(%s)',
-    'op1'                             : 'isUimm3(%s)',
-    'op2'                             : 'isUimm3(%s)',
-    'scale'                           : 'isFpBits(%s)',
-    'uimm4'                           : 'isUimm4(%s)',
-    'uimm6'                           : 'isUimm6(%s)',
+    'CRm'             : 'isUimm4(%s)',
+    'CRm:op2'         : 'isUimm7(%s)',
+    'N:immr:imms'     : 'isMask64(%s)',
+    'Q:imm4'          : 'isExtIndex(v0, %s)',
+    'a:b:c:d:e:f:g:h' : 'isUimm8(%s)',
+    'b40:b5'          : 'isUimm6(%s)',
+    'imm5'            : 'isUimm5(%s)',
+    'imm6'            : 'isUimm6(%s)',
+    'imm12'           : 'isImm12(%s)',
+    'imm16'           : 'isUimm16(%s)',
+    'immh:immb'       : 'isFpBits(%s)',
+    'immr'            : 'isUimm6(%s)',
+    'immr:imms'       : 'isMask32(%s)',
+    'imms'            : 'isUimm6(%s)',
+    'mask'            : 'isUimm4(%s)',
+    'nzcv'            : 'isUimm4(%s)',
+    'op1'             : 'isUimm3(%s)',
+    'op2'             : 'isUimm3(%s)',
+    'scale'           : 'isFpBits(%s)',
+    'uimm4'           : 'isUimm4(%s)',
+    'uimm6'           : 'isUimm6(%s)',
 }
 
 IMM_SPECIAL_CHECKS = {
@@ -1848,10 +1854,12 @@ VECTOR_TYPES = {
 }
 
 VECTOR_MODES = {
-    'B': 'ModeB',
-    'H': 'ModeH',
-    'S': 'ModeS',
-    'D': 'ModeD',
+    'B'  : 'ModeB',
+    '4B' : 'Mode4B',
+    'H'  : 'ModeH',
+    '2H' : 'Mode2H',
+    'S'  : 'ModeS',
+    'D'  : 'ModeD',
 }
 
 VECTOR_SIZE_CHECKS = {
@@ -2026,7 +2034,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                     yield 'isVri(%s)' % name
 
                 if isinstance(val.mode, Tag):
-                    yield 'vmoder(%s) == Mode%s' % (name, val.mode.name)
+                    yield 'vmoder(%s) == %s' % (name, VECTOR_MODES[val.mode.name])
 
                 if isinstance(val.vidx, Lit):
                     if val.vidx.ty is not int:
@@ -2256,26 +2264,26 @@ BR_ENUMS = {
 }
 
 IMM_ENCODER = {
-    'CRm'                             : 'asUimm4(%s)',
-    'CRm:Encoding:Hints:Index:by:op2' : 'asUimm7(%s)',
-    'N:immr:imms'                     : 'asMaskOp(%s)',
-    'Q:imm4'                          : 'asExtIndex(v0, %s)',
-    'a:b:c:d:e:f:g:h'                 : 'asUimm8(%s)',
-    'b40:b5'                          : 'asUimm6(%s)',
-    'imm5'                            : 'asUimm5(%s)',
-    'imm6'                            : 'asUimm6(%s)',
-    'imm12'                           : 'asImm12(%s)',
-    'imm16'                           : 'asUimm16(%s)',
-    'immr'                            : 'asUimm6(%s)',
-    'immr:imms'                       : 'asMaskOp(%s)',
-    'imms'                            : 'asUimm6(%s)',
-    'mask'                            : 'asUimm4(%s)',
-    'nzcv'                            : 'asUimm4(%s)',
-    'op1'                             : 'asUimm3(%s)',
-    'op2'                             : 'asUimm3(%s)',
-    'scale'                           : 'asFpScale(%s)',
-    'uimm4'                           : 'asUimm4(%s)',
-    'uimm6'                           : 'asUimm6(%s)',
+    'CRm'             : 'asUimm4(%s)',
+    'CRm:op2'         : 'asUimm7(%s)',
+    'N:immr:imms'     : 'asMaskOp(%s)',
+    'Q:imm4'          : 'asExtIndex(v0, %s)',
+    'a:b:c:d:e:f:g:h' : 'asUimm8(%s)',
+    'b40:b5'          : 'asUimm6(%s)',
+    'imm5'            : 'asUimm5(%s)',
+    'imm6'            : 'asUimm6(%s)',
+    'imm12'           : 'asImm12(%s)',
+    'imm16'           : 'asUimm16(%s)',
+    'immr'            : 'asUimm6(%s)',
+    'immr:imms'       : 'asMaskOp(%s)',
+    'imms'            : 'asUimm6(%s)',
+    'mask'            : 'asUimm4(%s)',
+    'nzcv'            : 'asUimm4(%s)',
+    'op1'             : 'asUimm3(%s)',
+    'op2'             : 'asUimm3(%s)',
+    'scale'           : 'asFpScale(%s)',
+    'uimm4'           : 'asUimm4(%s)',
+    'uimm6'           : 'asUimm6(%s)',
 }
 
 IMM_SPECIAL_ENCODER = {
@@ -2409,9 +2417,6 @@ SPECIAL_REGS = {
 REWRITE_FIELDS = {
     'AT_SYS_CR_systeminstrs': {
         'op1:CRm<0>:op2': 'op1:CRm:op2',
-    },
-    'HINT_HM_hints': {
-        'CRm:Encoding:Hints:Index:by:op2': 'CRm:op2',
     },
     'MOV_ORR_asimdsame_only': {
         'Rn': 'Rm:Rn',
@@ -2974,25 +2979,29 @@ def encode_operand(
                 if optcond:
                     raise RuntimeError('optional DSYNC is not supported')
 
+            case Sym.RCTX:
+                if optcond:
+                    raise RuntimeError('optional RCTX is not supported')
+
+            case Sym.X16:
+                if optcond:
+                    raise RuntimeError('optional X16 is not supported')
+
             case Sym.PRFOP:
                 if optcond:
                     raise RuntimeError('optional prefetch is not supported')
                 else:
-                    vals['sa_prfop'] = 'uint32(%s.(PrefetchOp))' % name
-
-            case Sym.RCTX:
-                if optcond:
-                    raise RuntimeError('optional RCTX is not supported')
+                    vals['sa_prfop'] = 'asBasicPrefetchOp(%s)' % name
 
             case Sym.RPRFOP:
                 if optcond:
                     raise RuntimeError('optional range prefetch is not supported')
                 else:
-                    vals['sa_rprfop'] = '%s.(RangePrefetchOp).encode()' % name
+                    vals['sa_rprfop'] = 'asRangePrefetchOp(%s)' % name
 
             case Sym.OPTION:
-                vals['sa_option'] = ('%s.(BarrierOption)' % name, 'SY', {})
-                vals['sa_imm'] = 'uint32(sa_option)'
+                vals['sa_option'] = ('asBarrierOption(%s)' % name, 'uint32(SY)', {})
+                vals['sa_imm'] = 'sa_option'
 
                 if optcond:
                     opts['sa_option'] = str(And(*optcond))

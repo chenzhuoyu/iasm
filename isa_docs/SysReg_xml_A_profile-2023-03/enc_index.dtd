@@ -1,0 +1,29 @@
+<!--
+
+System register index (sysregindex) Description XML language.
+Copyright (c) 2011, 2012, 2015-2023 Arm Limited or its affiliates. All rights reserved.
+
+--> 
+
+<!ELEMENT sysregindex (typelist, sectiongroup+, timestamp)>
+<!ATTLIST sysregindex indextype (encoding|function) #REQUIRED is_internal (True|False) #IMPLIED>
+<!ELEMENT typelist (typegroup+)>
+<!ELEMENT typegroup (typelink*)>
+<!ATTLIST typegroup groupname CDATA #REQUIRED>
+<!ELEMENT typelink EMPTY>
+<!ATTLIST typelink type CDATA #REQUIRED link IDREF #REQUIRED>
+
+<!ELEMENT sectiongroup (section*)>
+<!ATTLIST sectiongroup groupname CDATA #REQUIRED>
+<!ELEMENT section (heading, tbody)>
+<!ATTLIST section type CDATA #REQUIRED anchor ID #REQUIRED>
+<!ELEMENT heading (row+)>
+<!ATTLIST row class CDATA #IMPLIED>
+<!ELEMENT tbody (row+)>
+<!ELEMENT row (entry+)>
+<!ELEMENT entry (#PCDATA | a)*>
+<!ATTLIST entry rowspan CDATA #IMPLIED colspan CDATA #IMPLIED
+                class CDATA #IMPLIED field CDATA #IMPLIED> 
+<!ELEMENT a (#PCDATA)>
+<!ATTLIST a href CDATA #REQUIRED>
+<!ELEMENT timestamp (#PCDATA)> <!-- timestamp and version number, for footer -->

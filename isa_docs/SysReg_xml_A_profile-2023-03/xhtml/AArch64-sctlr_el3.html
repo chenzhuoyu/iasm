@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SCTLR_EL3</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">SCTLR_EL3, System Control Register (EL3)</h1><p>The SCTLR_EL3 characteristics are:</p><h2>Purpose</h2>
+        <p>Provides top level control of the system, including its memory system, at EL3.</p>
+      <h2>Configuration</h2><p>This register is present only when EL3 is implemented. Otherwise, direct accesses to SCTLR_EL3 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>SCTLR_EL3 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_63">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-62_62-1">SPINTMASK</a></td><td class="lr" colspan="1"><a href="#fieldset_0-61_61-1">NMI</a></td><td class="lr" colspan="1"><a href="#fieldset_0-60_60">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-59_59-1">TCSO</a></td><td class="lr" colspan="5"><a href="#fieldset_0-58_54">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-53_53-1">TME</a></td><td class="lr" colspan="1"><a href="#fieldset_0-52_52">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-51_51-1">TMT</a></td><td class="lr" colspan="6"><a href="#fieldset_0-50_45">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-44_44-1">DSSBS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-43_43-1">ATA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-42_42">RES0</a></td><td class="lr" colspan="2"><a href="#fieldset_0-41_40-1">TCF</a></td><td class="lr" colspan="2"><a href="#fieldset_0-39_38">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-37_37-1">ITFSB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-36_36-1">BT</a></td><td class="lr" colspan="4"><a href="#fieldset_0-35_32">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31-1">EnIA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_30-1">EnIB</a></td><td class="lr" colspan="2"><a href="#fieldset_0-29_28">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-27_27-1">EnDA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-26_26">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-25_25">EE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-24_24">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-23_23">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-22_22-1">EIS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-21_21-1">IESB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-20_20">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-19_19">WXN</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">RES1</a></td><td class="lr" colspan="2"><a href="#fieldset_0-15_14">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-13_13-1">EnDB</a></td><td class="lr" colspan="1"><a href="#fieldset_0-12_12">I</a></td><td class="lr" colspan="1"><a href="#fieldset_0-11_11-1">EOS</a></td><td class="lr" colspan="4"><a href="#fieldset_0-10_7">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-6_6-1">nAA</a></td><td class="lr" colspan="2"><a href="#fieldset_0-5_4">RES1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3">SA</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">A</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">M</a></td></tr></tbody></table><h4 id="fieldset_0-63_63">Bit [63]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-62_62-1">SPINTMASK, bit [62]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field">
+      <p>SP Interrupt Mask enable. When SCTLR_EL3.NMI is 1, controls whether PSTATE.SP acts as an interrupt mask, and controls the value of PSTATE.ALLINT on taking an exception to EL3.</p>
+    <table class="valuetable"><tr><th>SPINTMASK</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Does not cause PSTATE.SP to mask interrupts.</p>
+<p>PSTATE.ALLINT is set to 1 on taking an exception to EL3.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>When PSTATE.SP is 1 and execution is at EL3, an IRQ or FIQ interrupt that is targeted to EL3 is masked regardless of any denotion of Superpriority.</p>
+<p>PSTATE.ALLINT is set to 0 on taking an exception to EL3.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-62_62-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-61_61-1">NMI, bit [61]<span class="condition"><br/>When FEAT_NMI is implemented:
+                        </span></h4><div class="field">
+      <p>Non-maskable Interrupt enable.</p>
+    <table class="valuetable"><tr><th>NMI</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not affect interrupt masking behavior.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>This control enables all of the following:</p>
+<ul>
+<li>
+<p>The use of the PSTATE.ALLINT interrupt mask.</p>
+
+</li><li>
+<p>IRQ and FIQ interrupts to have Superpriority as an additional attribute.</p>
+
+</li><li>
+<p>PSTATE.SP to be used as an interrupt mask.</p>
+
+</li></ul></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-61_61-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-60_60">Bit [60]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-59_59-1">TCSO, bit [59]<span class="condition"><br/>When FEAT_MTE_STORE_ONLY is implemented:
+                        </span></h4><div class="field">
+      <p>Tag Checking Store Only.</p>
+    <table class="valuetable"><tr><th>TCSO</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This field has no effect on Tag checking.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Load instructions executed in EL3 are Tag Unchecked.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-59_59-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-58_54">Bits [58:54]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-53_53-1">TME, bit [53]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Enables the Transactional Memory Extension at EL3.</p>
+    <table class="valuetable"><tr><th>TME</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Any attempt to execute a TSTART instruction at EL3 is trapped, unless <a href="AArch64-hcr_el2.html">HCR_EL2</a>.TME or <a href="AArch64-scr_el3.html">SCR_EL3</a>.TME causes TSTART instructions to be <span class="arm-defined-word">UNDEFINED</span> at EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>This control does not cause any TSTART instruction to be trapped.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-53_53-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-52_52">Bit [52]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-51_51-1">TMT, bit [51]<span class="condition"><br/>When FEAT_TME is implemented:
+                        </span></h4><div class="field">
+      <p>Forces a trivial implementation of the Transactional Memory Extension at EL3.</p>
+    <table class="valuetable"><tr><th>TMT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control does not cause any TSTART instruction to fail.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When the TSTART instruction is executed at EL3, the transaction fails with a TRIVIAL failure cause.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-51_51-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-50_45">Bits [50:45]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-44_44-1">DSSBS, bit [44]<span class="condition"><br/>When FEAT_SSBS is implemented:
+                        </span></h4><div class="field">
+      <p>Default PSTATE.SSBS value on Exception Entry.</p>
+    <table class="valuetable"><tr><th>DSSBS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>PSTATE.SSBS is set to 0 on an exception to EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>PSTATE.SSBS is set to 1 on an exception to EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-44_44-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-43_43-1">ATA, bit [43]<span class="condition"><br/>When FEAT_MTE2 is implemented:
+                        </span></h4><div class="field"><p>Allocation Tag Access in EL3.</p>
+<p>Controls access to Allocation Tags and Tag Check operations in EL3.</p><table class="valuetable"><tr><th>ATA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Access to Allocation Tags is prevented at EL3.</p>
+<p>Memory accesses at EL3 are not subject to a Tag Check operation.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>This control does not prevent access to Allocation Tags at EL3.</p>
+<p>Tag Checked memory accesses at EL3 are subject to a Tag Check operation.</p>
+<p>The Tag Check operation depends on the type of tag at the memory being accessed:</p>
+<ul>
+<li>For Allocation Tagged memory, an Allocation Tag Check operation.
+</li><li>If FEAT_MTE_CANONICAL_TAGS is implemented, for Canonically Tagged memory, a Canonical Tag Check operation.
+</li></ul></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-43_43-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-42_42">Bit [42]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-41_40-1">TCF, bits [41:40]<span class="condition"><br/>When FEAT_MTE2 is implemented:
+                        </span></h4><div class="field"><p>Tag Check Fault in EL3. Controls the effect of Tag Check Faults due to Loads and Stores in EL3.</p>
+<p>If FEAT_MTE3 is not implemented, the value <span class="binarynumber">0b11</span> is reserved.</p><table class="valuetable"><tr><th>TCF</th><th>Meaning</th><th>Applies when</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Tag Check Faults have no effect on the PE.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Tag Check Faults cause a synchronous exception.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Tag Check Faults are asynchronously accumulated.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Tag Check Faults cause a synchronous exception on reads, and are asynchronously accumulated on writes.</p>
+        </td><td>When FEAT_MTE3 is implemented</td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-41_40-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-39_38">Bits [39:38]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-37_37-1">ITFSB, bit [37]<span class="condition"><br/>When FEAT_MTE2 is implemented:
+                        </span></h4><div class="field">
+      <p>When synchronous exceptions are not being generated by Tag Check Faults, this field controls whether on exception entry into EL3, all Tag Check Faults due to instructions executed before exception entry, that are reported asynchronously, are synchronized into <a href="AArch64-tfsre0_el1.html">TFSRE0_EL1</a> and <span class="xref">TFSR_ELx</span> registers.</p>
+    <table class="valuetable"><tr><th>ITFSB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Tag Check Faults are not synchronized on entry to EL3.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Tag Check Faults are synchronized on entry to EL3.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-37_37-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-36_36-1">BT, bit [36]<span class="condition"><br/>When FEAT_BTI is implemented:
+                        </span></h4><div class="field">
+      <p>PAC Branch Type compatibility at EL3.</p>
+    <table class="valuetable"><tr><th>BT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>When the PE is executing at EL3, PACIASP and PACIBSP are compatible with PSTATE.BTYPE == <span class="binarynumber">0b11</span>.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>When the PE is executing at EL3, PACIASP and PACIBSP are not compatible with PSTATE.BTYPE == <span class="binarynumber">0b11</span>.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-36_36-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-35_32">Bits [35:32]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31-1">EnIA, bit [31]<span class="condition"><br/>When FEAT_PAuth is implemented:
+                        </span></h4><div class="field"><p>Controls enabling of pointer authentication of instruction addresses, using the APIAKey_EL1 key, in the EL3 translation regime.</p>
+<p>Possible values of this bit are:</p><table class="valuetable"><tr><th>EnIA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Pointer authentication of instruction addresses, using the APIAKey_EL1 key, is not enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Pointer authentication of instruction addresses, using the APIAKey_EL1 key, is enabled.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>This field controls the behavior of the AddPACIA and AuthIA pseudocode functions. Specifically, when the field is 1, AddPACIA returns a copy of a pointer to which a pointer authentication code has been added, and AuthIA returns an authenticated copy of a pointer. When the field is 0, both of these functions are NOP.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-31_31-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-30_30-1">EnIB, bit [30]<span class="condition"><br/>When FEAT_PAuth is implemented:
+                        </span></h4><div class="field"><p>Controls enabling of pointer authentication of instruction addresses, using the APIBKey_EL1 key, in the EL3 translation regime.</p>
+<p>Possible values of this bit are:</p><table class="valuetable"><tr><th>EnIB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Pointer authentication of instruction addresses, using the APIBKey_EL1 key, is not enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Pointer authentication of instruction addresses, using the APIBKey_EL1 key, is enabled.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>This field controls the behavior of the AddPACIB and AuthIB pseudocode functions. Specifically, when the field is 1, AddPACIB returns a copy of a pointer to which a pointer authentication code has been added, and AuthIB returns an authenticated copy of a pointer. When the field is 0, both of these functions are NOP.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_30-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-29_28">Bits [29:28]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-27_27-1">EnDA, bit [27]<span class="condition"><br/>When FEAT_PAuth is implemented:
+                        </span></h4><div class="field">
+      <p>Controls enabling of pointer authentication of instruction addresses, using the APDAKey_EL1 key, in the EL3 translation regime.</p>
+    <table class="valuetable"><tr><th>EnDA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Pointer authentication of data addresses, using the APDAKey_EL1 key, is not enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Pointer authentication of data addresses, using the APDAKey_EL1 key, is enabled.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>This field controls the behavior of the AddPACDA and AuthDA pseudocode functions. Specifically, when the field is 1, AddPACDA returns a copy of a pointer to which a pointer authentication code has been added, and AuthDA returns an authenticated copy of a pointer. When the field is 0, both of these functions are NOP.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-27_27-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-26_26">Bit [26]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-25_25">EE, bit [25]</h4><div class="field">
+      <p>Endianness of data accesses at EL3, and stage 1 translation table walks in the EL3 translation regime.</p>
+    <table class="valuetable"><tr><th>EE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Explicit data accesses at EL3, and stage 1 translation table walks in the EL3 translation regime are little-endian.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Explicit data accesses at EL3, and stage 1 translation table walks in the EL3 translation regime are big-endian.</p>
+        </td></tr></table><p>If an implementation does not provide Big-endian support at Exception levels higher than EL0, this bit is <span class="arm-defined-word">RES0</span>.</p>
+<p>If an implementation does not provide Little-endian support at Exception levels higher than EL0, this bit is <span class="arm-defined-word">RES1</span>.</p>
+<p>The EE bit is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>
+                        On a Warm reset,
+                        
+      this field resets
+       to an <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> value.</li></ul></div><h4 id="fieldset_0-24_24">Bit [24]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-23_23">Bit [23]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-22_22-1">EIS, bit [22]<span class="condition"><br/>When FEAT_ExS is implemented:
+                        </span></h4><div class="field">
+      <p>Exception Entry is Context Synchronizing.</p>
+    <table class="valuetable"><tr><th>EIS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>The taking of an exception to EL3 is not a context synchronizing event.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>The taking of an exception to EL3 is a context synchronizing event.</p>
+        </td></tr></table><p>If SCTLR_EL3.EIS is set to <span class="binarynumber">0b0</span>:</p>
+<ul>
+<li>Indirect writes to <a href="AArch64-esr_el3.html">ESR_EL3</a>, <a href="AArch64-far_el3.html">FAR_EL3</a>, <a href="AArch64-spsr_el3.html">SPSR_EL3</a>, <a href="AArch64-elr_el3.html">ELR_EL3</a> are synchronized on exception entry to EL3, so that a direct read of the register after exception entry sees the indirectly written value caused by the exception entry.
+</li><li>Memory transactions, including instruction fetches, from an Exception level always use the translation resources associated with that translation regime.
+</li><li>Exception Catch debug events are synchronous debug events.
+</li><li>DCPS* and DRPS instructions are context synchronization events.
+</li></ul>
+<p>The following are not affected by the value of SCTLR_EL3.EIS:</p>
+<ul>
+<li>Changes to the PSTATE information on entry to EL3.
+</li><li>Behavior of accessing the banked copies of the stack pointer using the SP register name for loads, stores and data processing instructions.
+</li><li>Debug state exit.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-22_22-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-21_21-1">IESB, bit [21]<span class="condition"><br/>When FEAT_IESB is implemented:
+                        </span></h4><div class="field">
+      <p>Implicit Error Synchronization event enable.</p>
+    <table class="valuetable"><tr><th>IESB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>An implicit error synchronization event is added:</p>
+<ul>
+<li>
+<p>At each exception taken to EL3.</p>
+
+</li><li>
+<p>Before the operational pseudocode of each <span class="instruction">ERET</span> instruction executed at EL3.</p>
+
+</li></ul></td></tr></table><p>When the PE is in Debug state, the effect of this field is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, and its Effective value might be 0 or 1 regardless of the value of the field and, if implemented, <a href="AArch64-scr_el3.html">SCR_EL3</a>.NMEA. If the Effective value of the field is 1, then an implicit error synchronization event is added after each <span class="instruction">DCPSx</span> instruction taken to EL3 and before each <span class="instruction">DRPS</span> instruction executed at EL3, in addition to the other cases where it is added.</p>
+<p>When <span class="xref">FEAT_DoubleFault</span> is implemented, the PE is in Non-debug state, and the Effective value of <a href="AArch64-scr_el3.html">SCR_EL3</a>.NMEA is 1, this field is ignored and its Effective value is 1.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-21_21-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-20_20">Bit [20]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-19_19">WXN, bit [19]</h4><div class="field">
+      <p>Write permission implies XN (Execute-never). For the EL3 translation regime, this bit can force all memory regions that are writable to be treated as XN.</p>
+    <table class="valuetable"><tr><th>WXN</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>This control has no effect on memory access permissions.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Any region that is writable in the EL3 translation regime is forced to XN for accesses from software executing at EL3.</p>
+        </td></tr></table><p>This bit applies only when SCTLR_EL3.M bit is set.</p>
+<p>The WXN bit is permitted to be cached in a TLB.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-18_18">Bit [18]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-17_17">Bit [17]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-16_16">Bit [16]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-15_14">Bits [15:14]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-13_13-1">EnDB, bit [13]<span class="condition"><br/>When FEAT_PAuth is implemented:
+                        </span></h4><div class="field">
+      <p>Controls enabling of pointer authentication of instruction addresses, using the APDBKey_EL1 key, in the EL3 translation regime.</p>
+    <table class="valuetable"><tr><th>EnDB</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Pointer authentication of data addresses, using the APDBKey_EL1 key, is not enabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Pointer authentication of data addresses, using the APDBKey_EL1 key, is enabled.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>This field controls the behavior of the AddPACDB and AuthDB pseudocode functions. Specifically, when the field is 1, AddPACDB returns a copy of a pointer to which a pointer authentication code has been added, and AuthDB returns an authenticated copy of a pointer. When the field is 0, both of these functions are NOP.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-13_13-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-12_12">I, bit [12]</h4><div class="field">
+      <p>Instruction access Cacheability control, for accesses at EL3:</p>
+    <table class="valuetable"><tr><th>I</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>All instruction access to Normal memory from EL3 are Non-cacheable for all levels of instruction and unified cache.</p>
+<p>If the value of SCTLR_EL3.M is 0, instruction accesses from stage 1 of the EL3 translation regime are to Normal, Outer Shareable, Inner Non-cacheable, Outer Non-cacheable memory.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>This control has no effect on the Cacheability of instruction access to Normal memory from EL3.</p>
+<p>If the value of SCTLR_EL3.M is 0, instruction accesses from stage 1 of the EL3 translation regime are to Normal, Outer Shareable, Inner Write-Through, Outer Write-Through memory.</p></td></tr></table>
+      <p>This bit has no effect on the EL1&amp;0, EL2, or EL2&amp;0 translation regimes.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-11_11-1">EOS, bit [11]<span class="condition"><br/>When FEAT_ExS is implemented:
+                        </span></h4><div class="field">
+      <p>Exception Exit is Context Synchronizing.</p>
+    <table class="valuetable"><tr><th>EOS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>An exception return from EL3 is not a context synchronizing event</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>An exception return from EL3 is a context synchronizing event</p>
+        </td></tr></table><p>If SCTLR_EL3.EOS is set to <span class="binarynumber">0b0</span>:</p>
+<ul>
+<li>Memory transactions, including instruction fetches, from an Exception level always use the translation resources associated with that translation regime.
+</li><li>Exception Catch debug events are synchronous debug events.
+</li><li>DCPS* and DRPS instructions are context synchronization events.
+</li></ul>
+<p>The following are not affected by the value of SCTLR_EL3.EOS:</p>
+<ul>
+<li>The indirect write of the PSTATE and PC values from <a href="AArch64-spsr_el3.html">SPSR_EL3</a> and <a href="AArch64-elr_el3.html">ELR_EL3</a> on exception return is synchronized. 
+</li><li>If the PE enters Debug state before the first instruction after an Exception return from EL3 to Non-secure state, any pending Halting debug event completes execution.
+</li><li>The GIC behavior that allocates interrupts to FIQ or IRQ changes simultaneously with leaving the EL3 Exception level.
+</li><li>Behavior of accessing the banked copies of the stack pointer using the SP register name for loads, stores and data processing instructions.
+</li><li>Exit from Debug state.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_11-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-10_7">Bits [10:7]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-6_6-1">nAA, bit [6]<span class="condition"><br/>When FEAT_LSE2 is implemented:
+                        </span></h4><div class="field"><p>Non-aligned access. This bit controls generation of Alignment faults at EL3 under certain conditions. The following instructions generate an Alignment fault if all bytes being accessed are not within a single 16-byte quantity, aligned to 16 bytes for access:</p>
+<ul>
+<li>
+<p>LDAPR, LDAPRH, LDAPUR, LDAPURH, LDAPURSH, LDAPURSW, LDAR, LDARH, LDLAR, LDLARH.</p>
+
+</li><li>
+<p>STLLR, STLLRH, STLR, STLRH, STLUR, and STLURH</p>
+
+</li></ul>
+<p>If <span class="xref">FEAT_LRCPC3</span> is implemented, the following instructions generate an Alignment fault if all bytes being accessed for a single register are not within a single 16-byte quantity, aligned to 16 bytes for access:</p>
+<ul>
+<li>
+<p>LDIAPP, STILP, the post index versions of LDAPR and the pre index versions of STLR.</p>
+
+</li><li>
+<p>If Advanced SIMD and floating-point instructions are implemented, LDAPUR (SIMD&amp;FP), LDAP1 (SIMD&amp;FP), STLUR (SIMD&amp;FP), and STL1 (SIMD&amp;FP).</p>
+
+</li></ul><table class="valuetable"><tr><th>nAA</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Unaligned accesses by the specified instructions generate an Alignment fault.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Unaligned accesses by the specified instructions do not generate an Alignment fault.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-6_6-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-5_4">Bits [5:4]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES1</span>.</p>
+    </div><h4 id="fieldset_0-3_3">SA, bit [3]</h4><div class="field">
+      <p>SP Alignment check enable. When set to 1, if a load or store instruction executed at EL3 uses the SP as the base address and the SP is not aligned to a 16-byte boundary, then a SP alignment fault exception is generated. For more information, see <span class="xref">'SP alignment checking'</span>.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-2_2">C, bit [2]</h4><div class="field">
+      <p>Cacheability control, for data accesses.</p>
+    <table class="valuetable"><tr><th>C</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>All data access to Normal memory from EL3, and all Normal memory accesses to the EL3 translation tables, are Non-cacheable for all levels of data and unified cache.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td><p>This control has no effect on the Cacheability of:</p>
+<ul>
+<li>
+<p>Data access to Normal memory from EL3.</p>
+
+</li><li>
+<p>Normal memory accesses to the EL3 translation tables.</p>
+
+</li></ul></td></tr></table>
+      <p>This bit has no effect on the EL1&amp;0, EL2, or EL2&amp;0 translation regimes.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-1_1">A, bit [1]</h4><div class="field">
+      <p>Alignment check enable. This is the enable bit for Alignment fault checking at EL3.</p>
+    <table class="valuetable"><tr><th>A</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>Alignment fault checking is disabled when executing at EL3.</p>
+<p>Alignment checks on some instructions are not disabled by this control. For more information, see <span class="xref">'Alignment of data accesses'</span>.</p></td></tr><tr><td class="bitfield">0b1</td><td><p>Alignment fault checking is enabled when executing at EL3.</p>
+<p>All instructions that load or store one or more registers have an alignment check that the address being accessed is aligned to the size of the data element(s) being accessed. If this check fails it causes an Alignment fault, which is taken as a Data Abort exception.</p></td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">M, bit [0]</h4><div class="field">
+      <p>MMU enable for EL3 stage 1 address translation. Possible values of this bit are:</p>
+    <table class="valuetable"><tr><th>M</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>EL3 stage 1 address translation disabled.</p>
+<p>See the SCTLR_EL3.I field for the behavior of instruction accesses to Normal memory.</p></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>EL3 stage 1 address translation enabled.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, in a system where the PE resets into EL3, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><div class="access_mechanisms"><h2>Accessing SCTLR_EL3</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, SCTLR_EL3</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = SCTLR_EL3;
+                </p><h4 class="assembler">MSR SCTLR_EL3, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b110</td><td>0b0001</td><td>0b0000</td><td>0b000</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    UNDEFINED;
+elsif PSTATE.EL == EL2 then
+    UNDEFINED;
+elsif PSTATE.EL == EL3 then
+    SCTLR_EL3 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

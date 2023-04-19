@@ -1,0 +1,469 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch64" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>ID_MMFR4_EL1</reg_short_name>
+        
+        <reg_long_name>AArch32 Memory Model Feature Register 4</reg_long_name>
+
+
+
+      
+      
+
+
+
+          <reg_reset_value></reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch32-id_mmfr4.xml">ID_MMFR4</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch32</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>Provides information about the implemented memory model and memory management support in AArch32 state.</para>
+
+      </purpose_text>
+      <purpose_text>
+        <para>For general information about the interpretation of the ID registers see <xref browsertext="'Principles of the ID scheme for fields in ID registers'" filename="D_aarch64_system_register_descriptions.fm" linkend="BABFAFHI"/>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Identification registers</reg_group>
+      </reg_groups>
+      <reg_configuration>
+        
+    
+      <configuration_text>
+        <note><para>Prior to the introduction of the features described by this register, this register was unnamed and reserved, <arm-defined-word>RES0</arm-defined-word> from EL1, EL2, and EL3.</para></note>
+      </configuration_text>
+
+      </reg_configuration>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>ID_MMFR4_EL1 is a 64-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="64">
+  <fields_condition>When AArch32 is supported</fields_condition>
+  <text_before_fields/>
+  <field id="fieldset_0-63_32" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0">
+    <field_msb>63</field_msb>
+    <field_lsb>32</field_lsb>
+    <rel_range>63:32</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <field id="fieldset_0-31_28" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>EVT</field_name>
+    <field_msb>31</field_msb>
+    <field_lsb>28</field_lsb>
+    <rel_range>31:28</rel_range>
+    <field_description order="before">
+      <para>Enhanced Virtualization Traps. If EL2 is implemented, indicates support for the <register_link state="AArch32" id="AArch32-hcr2.xml">HCR2</register_link>.{TTLBIS, TOCU, TICAB, TID4} traps. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_EVT" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.EVT"/> implements the functionality identified by the values <binarynumber>0b0001</binarynumber> and <binarynumber>0b0010</binarynumber>.</para>
+<para>If EL2 is not implemented supporting AArch32, the only permitted value is <binarynumber>0b0000</binarynumber>.</para>
+<para>In Armv8.2, the permitted values are <binarynumber>0b0000</binarynumber>, <binarynumber>0b0001</binarynumber>, and <binarynumber>0b0010</binarynumber>.</para>
+<para>From Armv8.5, the permitted values are:</para>
+<list type="unordered">
+<listitem><content><binarynumber>0b0000</binarynumber> when EL2 is not implemented or does not support AArch32.</content>
+</listitem><listitem><content><binarynumber>0b0010</binarynumber> when EL2 is implemented and supports AArch32.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-hcr2.xml">HCR2</register_link>.{TTLBIS, TOCU, TICAB, TID4} traps are not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-hcr2.xml">HCR2</register_link>.{TOCU, TICAB, TID4} traps are supported. <register_link state="AArch32" id="AArch32-hcr2.xml">HCR2</register_link>.TTLBIS trap is not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-hcr2.xml">HCR2</register_link>.{TTLBIS, TOCU, TICAB, TID4} traps are supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-27_24" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CCIDX</field_name>
+    <field_msb>27</field_msb>
+    <field_lsb>24</field_lsb>
+    <rel_range>27:24</rel_range>
+    <field_description order="before">
+      <para>Support for use of the revised CCSIDR format and the presence of the CCSIDR2 is indicated. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_CCIDX" filename="A_armv8_architecture_extensions.fm" linkend="v8.3.CCIDX"/> implements the functionality identified by <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.3, the permitted values are <binarynumber>0b0000</binarynumber> and <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>32-bit format implemented for all levels of the CCSIDR, and the CCSIDR2 register is not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>64-bit format implemented for all levels of the CCSIDR, and the CCSIDR2 register is implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-23_20" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>LSM</field_name>
+    <field_msb>23</field_msb>
+    <field_lsb>20</field_lsb>
+    <rel_range>23:20</rel_range>
+    <field_description order="before">
+      <para>Indicates support for LSMAOE and nTLSMD bits in <register_link state="AArch32" id="AArch32-hsctlr.xml">HSCTLR</register_link> and <register_link state="AArch32" id="AArch32-sctlr.xml">SCTLR</register_link>. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_LSMAOC" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.LSMAOC"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.2, the permitted values are <binarynumber>0b0000</binarynumber> and <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>LSMAOE and nTLSMD bits not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>LSMAOE and nTLSMD bits supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-19_16" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>HPDS</field_name>
+    <field_msb>19</field_msb>
+    <field_lsb>16</field_lsb>
+    <rel_range>19:16</rel_range>
+    <field_description order="before">
+      <para>Hierarchical permission disables bits in translation tables. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_AA32HPD" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.AA32HPD"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para><xref browsertext="FEAT_HPDS2" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.TTPBHA"/> implements the functionality added by the value <binarynumber>0b0010</binarynumber>.</para>
+<note><para>The value <binarynumber>0b0000</binarynumber> implies that the encoding for <register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link> is <arm-defined-word>UNDEFINED</arm-defined-word>.</para></note></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Disabling of hierarchical controls not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Supports disabling of hierarchical controls using the <register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link>.HPD0, <register_link state="AArch32" id="AArch32-ttbcr2.xml">TTBCR2</register_link>.HPD1, and <register_link state="AArch32" id="AArch32-htcr.xml">HTCR</register_link>.HPD bits.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0010</field_value>
+        <field_value_description>
+          <para>As for value <binarynumber>0b0001</binarynumber>, and adds possible hardware allocation of bits[62:59] of the Translation table descriptors from the final lookup level for <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> use.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-15_12" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>CnP</field_name>
+    <field_msb>15</field_msb>
+    <field_lsb>12</field_lsb>
+    <rel_range>15:12</rel_range>
+    <field_description order="before">
+      <para>Common not Private translations. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_TTCNP" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.TTCNP"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.2 the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Common not Private translations not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Common not Private translations supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-11_8" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>XNX</field_name>
+    <field_msb>11</field_msb>
+    <field_lsb>8</field_lsb>
+    <rel_range>11:8</rel_range>
+    <field_description order="before">
+      <para>Support for execute-never control distinction by Exception level at stage 2. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para><xref browsertext="FEAT_XNX" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.TTS2UXN"/> implements the functionality identified by the value <binarynumber>0b0001</binarynumber>.</para>
+<para>When <xref browsertext="FEAT_XNX" filename="A_armv8_architecture_extensions.fm" linkend="v8.2.TTS2UXN"/> is implemented:</para>
+<list type="unordered">
+<listitem><content>If all of the following conditions are true, it is <arm-defined-word>IMPLEMENTATION DEFINED</arm-defined-word> whether the value of ID_MMFR4_EL1.XNX is <binarynumber>0b0000</binarynumber> or <binarynumber>0b0001</binarynumber>:<list type="unordered">
+<listitem><content><register_link state="AArch64" id="AArch64-id_aa64mmfr1_el1.xml">ID_AA64MMFR1_EL1</register_link>.XNX ==1.</content>
+</listitem><listitem><content>EL2 cannot use AArch32.</content>
+</listitem><listitem><content>EL1 can use AArch32.</content>
+</listitem></list>
+</content>
+</listitem><listitem><content>If EL2 can use AArch32 then the only permitted value is <binarynumber>0b0001</binarynumber>.</content>
+</listitem></list></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>Distinction between EL0 and EL1 execute-never control at stage 2 not supported.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>Distinction between EL0 and EL1 execute-never control at stage 2 supported.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-7_4" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_name>AC2</field_name>
+    <field_msb>7</field_msb>
+    <field_lsb>4</field_lsb>
+    <rel_range>7:4</rel_range>
+    <field_description order="before">
+      <para>Indicates the extension of the <register_link state="AArch32" id="AArch32-actlr.xml">ACTLR</register_link> and <register_link state="AArch32" id="AArch32-hactlr.xml">HACTLR</register_link> registers using <register_link state="AArch32" id="AArch32-actlr2.xml">ACTLR2</register_link> and <register_link id="AArch32-hactlr2.xml" state="AArch32">HACTLR2</register_link>. Defined values are:</para>
+    </field_description>
+    <field_description order="after"><para>All other values are reserved.</para>
+<para>In Armv8.0 and Armv8.1 the permitted values are <binarynumber>0b0000</binarynumber> and <binarynumber>0b0001</binarynumber>.</para>
+<para>From Armv8.2, the only permitted value is <binarynumber>0b0001</binarynumber>.</para></field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-actlr2.xml">ACTLR2</register_link> and <register_link id="AArch32-hactlr2.xml" state="AArch32">HACTLR2</register_link> are not implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para><register_link state="AArch32" id="AArch32-actlr2.xml">ACTLR2</register_link> and <register_link id="AArch32-hactlr2.xml" state="AArch32">HACTLR2</register_link> are implemented.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+  </field>
+  <field id="fieldset_0-3_0-1" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" reserved_type="RES0">
+    <field_name>SpecSEI</field_name>
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Describes whether the PE can generate SError interrupt exceptions from speculative reads of memory, including speculative instruction fetches.</para>
+    </field_description>
+    <field_description order="after">
+      <para>All other values are reserved.</para>
+    </field_description>
+    <field_values>
+      <field_value_instance>
+        <field_value>0b0000</field_value>
+        <field_value_description>
+          <para>The PE never generates an SError interrupt due to an External abort on a speculative read.</para>
+        </field_value_description>
+      </field_value_instance>
+      <field_value_instance>
+        <field_value>0b0001</field_value>
+        <field_value_description>
+          <para>The PE might generate an SError interrupt due to an External abort on a speculative read.</para>
+        </field_value_description>
+      </field_value_instance>
+    </field_values>
+    <fields_condition>When FEAT_RAS is implemented</fields_condition>
+  </field>
+  <field id="fieldset_0-3_0-2" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="RES0" reserved_type="RES0">
+    <field_msb>3</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>3:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>RES0</arm-defined-word>.</para>
+    </field_description>
+    <fields_condition>Otherwise</fields_condition>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+<fields id="fieldset_1" length="64">
+  <fields_condition/>
+  <text_before_fields/>
+  <field id="fieldset_1-63_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False" rwtype="UNKNOWN">
+    <field_msb>63</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>63:0</rel_range>
+    <field_description order="before">
+      <para>Reserved, <arm-defined-word>UNKNOWN</arm-defined-word>.</para>
+    </field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+
+    
+<reg_fieldset length="64">
+  <fields_condition>When AArch32 is supported</fields_condition>
+  <fieldat id="fieldset_0-63_32" msb="63" lsb="32"/>
+  <fieldat id="fieldset_0-31_28" msb="31" lsb="28"/>
+  <fieldat id="fieldset_0-27_24" msb="27" lsb="24"/>
+  <fieldat id="fieldset_0-23_20" msb="23" lsb="20"/>
+  <fieldat id="fieldset_0-19_16" msb="19" lsb="16"/>
+  <fieldat id="fieldset_0-15_12" msb="15" lsb="12"/>
+  <fieldat id="fieldset_0-11_8" msb="11" lsb="8"/>
+  <fieldat id="fieldset_0-7_4" msb="7" lsb="4"/>
+  <fieldat id="fieldset_0-3_0-1" msb="3" lsb="0"/>
+</reg_fieldset>
+
+    
+<reg_fieldset length="64">
+  <fields_condition/>
+  <fieldat id="fieldset_1-63_0" msb="63" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+
+
+
+
+        
+        <access_mechanism accessor="MRS ID_MMFR4_EL1" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRS &lt;Xt&gt;, ID_MMFR4_EL1</access_instruction>
+                
+                <enc n="op0" v="0b11"/>
+                
+                <enc n="op1" v="0b000"/>
+                
+                <enc n="CRn" v="0b0000"/>
+                
+                <enc n="CRm" v="0b0010"/>
+                
+                <enc n="op2" v="0b110"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRS" sections="1" secttype="access_permission">
+                <pstext>
+if PSTATE.EL == EL0 then
+    if IsFeatureImplemented(FEAT_IDST) then
+        if EL2Enabled() &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.SystemAccessTrap(EL2, 0x18);
+        else
+            AArch64.SystemAccessTrap(EL1, 0x18);
+    else
+        UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if EL2Enabled() &amp;&amp; (IsFeatureImplemented(FEAT_FGT) || !IsZero(ID_MMFR4_EL1) || boolean IMPLEMENTATION_DEFINED "ID_MMFR4_EL1 trapped by HCR_EL2.TID3") &amp;&amp; HCR_EL2.TID3 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    else
+        X[t, 64] = ID_MMFR4_EL1;
+elsif PSTATE.EL == EL2 then
+    X[t, 64] = ID_MMFR4_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = ID_MMFR4_EL1;
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

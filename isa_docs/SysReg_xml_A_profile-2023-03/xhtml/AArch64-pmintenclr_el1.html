@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMINTENCLR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMINTENCLR_EL1, Performance Monitors Interrupt Enable Clear Register</h1><p>The PMINTENCLR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Disables the generation of interrupt requests
+or, when FEAT_EBEP is implemented, PMU exceptions
+on overflows from
+the instruction counter, <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a>,
+the cycle counter, <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>, and the event counters <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;n&gt;_EL0</a>. Reading the register shows which overflow interrupt requests
+or PMU exceptions
+are enabled.</p>
+      <h2>Configuration</h2><p>AArch64 System register PMINTENCLR_EL1 bits [31:0] are architecturally mapped to AArch32 System register <a href="AArch32-pmintenclr.html">PMINTENCLR[31:0]</a>.</p><p>AArch64 System register PMINTENCLR_EL1 bits [31:0] are architecturally mapped to External register <a href="pmu.pmintenclr_el1.html">PMU.PMINTENCLR_EL1[31:0]</a>.</p><p>AArch64 System register PMINTENCLR_EL1 bits [63:32] are architecturally mapped to External register <a href="pmu.pmintenclr_el1.html">PMU.PMINTENCLR_EL1[63:32]</a> when FEAT_PMUv3p9 is implemented or FEAT_PMUv3_EXT64 is implemented.</p><p>This register is present only when FEAT_PMUv3 is implemented. Otherwise, direct accesses to PMINTENCLR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>PMINTENCLR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="31"><a href="#fieldset_0-63_33">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-32_32-1">F0</a></td></tr><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-31_31">C</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P30</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P29</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P28</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P27</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P26</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P25</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P24</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P23</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P22</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P21</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P20</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P19</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P18</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P17</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P16</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P15</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P14</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P13</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P12</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P11</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P10</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P9</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P8</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P7</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P6</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P5</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P4</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P3</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P2</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P1</a></td><td class="lr" colspan="1"><a href="#fieldset_0-30_0">P0</a></td></tr></tbody></table><h4 id="fieldset_0-63_33">Bits [63:33]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-32_32-1">F&lt;m&gt;, bit [m+32], for m = 0<span class="condition"><br/>When FEAT_PMUv3_ICNTR is implemented:
+                        </span></h4><div class="field">
+      <p>Interrupt request or PMU exception on unsigned overflow of fixed-function counter &lt;m&gt; disable. On writes, allows software to disable the interrupt request or PMU exception on unsigned overflow of fixed-function counter &lt;m&gt;. On reads, returns the interrupt request or PMU exception on unsigned overflow of fixed-function counter &lt;m&gt; enable status.</p>
+    <table class="valuetable"><tr><th>F&lt;m&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of fixed-function counter &lt;m&gt; disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of fixed-function counter &lt;m&gt; enabled.</p>
+        </td></tr></table><p>PMINTENCLR_EL1.F0 holds the enable status for <a href="AArch64-pmicntr_el0.html">PMICNTR_EL0</a>.</p>
+<p>Accessing this field has the following behavior:</p>
+<ul>
+<li>This field reads-as-zero if all of the following are true:<ul>
+<li>Any of the following are true:<ul>
+<li>EL3 is implemented and <a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0.
+</li><li><a href="AArch64-hdfgrtr2_el2.html">HDFGRTR2_EL2</a>.nPMICFILTR_EL0 == 0.
+</li></ul>
+
+</li><li><span class="xref">FEAT_FGT2</span> is implemented.
+</li><li>EL2 is implemented and enabled in the current Security state.
+</li><li>Accessed at EL1.
+</li></ul>
+
+</li><li>This field reads-as-zero and ignores writes if any of the following are true:<ul>
+<li>All of the following are true:<ul>
+<li>EL3 is implemented.
+</li><li><a href="AArch64-mdcr_el3.html">MDCR_EL3</a>.EnPM2 == 0.
+</li><li>Accessed at EL2 or EL1.
+</li></ul>
+
+</li></ul>
+
+</li><li>This field ignores writes if any of the following are true:<ul>
+<li>All of the following are true:<ul>
+<li>EL3 is implemented and <a href="AArch64-scr_el3.html">SCR_EL3</a>.FGTEn2 == 0, or <a href="AArch64-hdfgwtr2_el2.html">HDFGWTR2_EL2</a>.nPMICFILTR_EL0 == 0.
+</li><li><span class="xref">FEAT_FGT2</span> is implemented.
+</li><li>EL2 is implemented and enabled in the current Security state.
+</li><li>Accessed at EL1.
+</li></ul>
+
+</li></ul>
+
+</li><li>Otherwise access to this field is W1C.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-32_32-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-31_31">C, bit [31]</h4><div class="field">
+      <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> disable. On writes, allows software to disable the interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a>. On reads, returns the interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> enable status.</p>
+    <table class="valuetable"><tr><th>C</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmccntr_el0.html">PMCCNTR_EL0</a> enabled.</p>
+        </td></tr></table>
+      <p>Access to this field is W1C.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-30_0">P&lt;m&gt;, bit [m], for m = 30 to 0</h4><div class="field">
+      <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;m&gt;_EL0</a> disable. On writes, allows software to disable the interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;m&gt;_EL0</a>. On reads, returns the interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;m&gt;_EL0</a> enable status.</p>
+    <table class="valuetable"><tr><th>P&lt;m&gt;</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;m&gt;_EL0</a> disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Interrupt request or PMU exception on unsigned overflow of <a href="AArch64-pmevcntrn_el0.html">PMEVCNTR&lt;m&gt;_EL0</a> enabled.</p>
+        </td></tr></table><p>Accessing this field has the following behavior:</p>
+<ul>
+<li>This field reads-as-zero and ignores writes if any of the following are true:<ul>
+<li>All of the following are true:<ul>
+<li>EL2 is implemented and enabled in the current Security state.
+</li><li>m &gt;= UInt(<a href="AArch64-mdcr_el2.html">MDCR_EL2</a>.HPMN).
+</li><li>Accessed at EL1.
+</li></ul>
+
+</li><li>m &gt;= UInt(<a href="AArch64-pmcr_el0.html">PMCR_EL0</a>.N).
+</li></ul>
+
+</li><li>Otherwise access to this field is W1C.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing PMINTENCLR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, PMINTENCLR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1110</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMINTEN == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMINTENCLR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMINTENCLR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMINTENCLR_EL1;
+                </p><h4 class="assembler">MSR PMINTENCLR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1110</td><td>0b010</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMINTEN == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMINTENCLR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMINTENCLR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMINTENCLR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

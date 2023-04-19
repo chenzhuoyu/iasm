@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PMSFCR_EL1</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">PMSFCR_EL1, Sampling Filter Control Register</h1><p>The PMSFCR_EL1 characteristics are:</p><h2>Purpose</h2>
+        <p>Controls sample filtering. The filter is the logical AND of the FL, FT and FE bits. For example, if FE == 1 and FT == 1 only samples including the selected operation types and the selected events will be recorded</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_SPE is implemented. Otherwise, direct accesses to PMSFCR_EL1 are <span class="arm-defined-word">UNDEFINED</span>.</p><h2>Attributes</h2>
+        <p>PMSFCR_EL1 is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="32"><a href="#fieldset_0-63_19">RES0</a></td></tr><tr class="firstrow"><td class="lr" colspan="13"><a href="#fieldset_0-63_19">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-18_18">ST</a></td><td class="lr" colspan="1"><a href="#fieldset_0-17_17">LD</a></td><td class="lr" colspan="1"><a href="#fieldset_0-16_16">B</a></td><td class="lr" colspan="11"><a href="#fieldset_0-15_5">RES0</a></td><td class="lr" colspan="1"><a href="#fieldset_0-4_4-1">FDS</a></td><td class="lr" colspan="1"><a href="#fieldset_0-3_3-1">FnE</a></td><td class="lr" colspan="1"><a href="#fieldset_0-2_2">FL</a></td><td class="lr" colspan="1"><a href="#fieldset_0-1_1">FT</a></td><td class="lr" colspan="1"><a href="#fieldset_0-0_0">FE</a></td></tr></tbody></table><h4 id="fieldset_0-63_19">Bits [63:19]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-18_18">ST, bit [18]</h4><div class="field">
+      <p>Store filter enable</p>
+    <table class="valuetable"><tr><th>ST</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not record store operations</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Record all store operations, including vector stores and all atomic operations</p>
+        </td></tr></table>
+      <p>This bit is ignored by the PE when PMSFCR_EL1.FT == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-17_17">LD, bit [17]</h4><div class="field">
+      <p>Load filter enable</p>
+    <table class="valuetable"><tr><th>LD</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not record load operations</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Record all load operations, including vector loads and atomic operations that return data</p>
+        </td></tr></table>
+      <p>This bit is ignored by the PE when PMSFCR_EL1.FT == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-16_16">B, bit [16]</h4><div class="field">
+      <p>Branch filter enable</p>
+    <table class="valuetable"><tr><th>B</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Do not record branch and exception return operations</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Record all branch and exception return operations</p>
+        </td></tr></table>
+      <p>This bit is ignored by the PE when PMSFCR_EL1.FT == 0.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-15_5">Bits [15:5]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-4_4-1">FDS, bit [4]<span class="condition"><br/>When FEAT_SPE_FDS is implemented:
+                        </span></h4><div class="field">
+      <p>Filter by Data Source.</p>
+    <table class="valuetable"><tr><th>FDS</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Data Source filtering disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Data Source filtering enabled. Samples of load instructions reporting a Data Source not selected by <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a> will not be recorded.</p>
+        </td></tr></table><p>If PMSFCR_EL1.FDS == 1 and <a href="AArch64-pmsdsfr_el1.html">PMSDSFR_EL1</a> is zero, then no load operations with a Data Source will be recorded.</p>
+<p>Load operations without a Data Source and other sampled operations are unaffected by this field.</p><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-4_4-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-3_3-1">FnE, bit [3]<span class="condition"><br/>When FEAT_SPEv1p2 is implemented:
+                        </span></h4><div class="field">
+      <p>Filter by event, inverted.</p>
+    <table class="valuetable"><tr><th>FnE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Inverted event filtering disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Inverted event filtering enabled. Samples including the events selected by <a href="AArch64-pmsnevfr_el1.html">PMSNEVFR_EL1</a> will not be recorded.</p>
+        </td></tr></table><p>If any of the following are true, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether no samples are recorded or the PE behaves as if PMSFCR_EL1.FnE == 0:</p>
+<ul>
+<li>PMSFCR_EL1.FnE == 1 and <a href="AArch64-pmsnevfr_el1.html">PMSNEVFR_EL1</a> is zero.
+</li><li>PMSFCR_EL1.FnE == 1, PMSFCR_EL1.FE == 1, and there exists a value x such that <a href="AArch64-pmsevfr_el1.html">PMSEVFR_EL1</a>.E[x] == 1 and <a href="AArch64-pmsnevfr_el1.html">PMSNEVFR_EL1</a>.E[x] == 1.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-3_3-2"><span class="condition"><br/>Otherwise:
+                        </span></h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-2_2">FL, bit [2]</h4><div class="field">
+      <p>Filter by latency</p>
+    <table class="valuetable"><tr><th>FL</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Latency filtering disabled</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Latency filtering enabled. Samples with a total latency less than PMSLATFR_EL1.MINLAT will not be recorded</p>
+        </td></tr></table>
+      <p>If this field is set to 1 and PMSLATFR_EL1.MINLAT is set to zero, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether no samples are recorded or the PE behaves as if PMSFCR_EL1.FL is set to 0</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-1_1">FT, bit [1]</h4><div class="field">
+      <p>Filter by operation type. The filter is the logical OR of the ST, LD and B bits. For example, if LD and ST are both set, both load and store operations are recorded</p>
+    <table class="valuetable"><tr><th>FT</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Type filtering disabled</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Type filtering enabled. Samples not one of the selected operation types will not be recorded</p>
+        </td></tr></table>
+      <p>If this field is set to 1 and the PMSFCR_EL1.{ST, LD, B} bits are all set to zero, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether no samples are recorded or the PE behaves as if PMSFCR_EL1.FT is set to 0</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-0_0">FE, bit [0]</h4><div class="field">
+      <p>Filter by event.</p>
+    <table class="valuetable"><tr><th>FE</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Event filtering disabled.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Event filtering enabled. Samples not including the events selected by <a href="AArch64-pmsevfr_el1.html">PMSEVFR_EL1</a> will not be recorded.</p>
+        </td></tr></table><p>If any of the following are true, it is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span> whether no samples are recorded or the PE behaves as if PMSFCR_EL1.FE == 0:</p>
+<ul>
+<li>PMSFCR_EL1.FE == 1 and <a href="AArch64-pmsevfr_el1.html">PMSEVFR_EL1</a> is zero.
+</li><li><span class="xref">FEAT_SPEv1p2</span> is implemented, PMSFCR_EL1.FnE == 1, PMSFCR_EL1.FE == 1, and there exists a value x such that <a href="AArch64-pmsevfr_el1.html">PMSEVFR_EL1</a>.E[x] == 1 and <a href="AArch64-pmsnevfr_el1.html">PMSNEVFR_EL1</a>.E[x] == 1.
+</li></ul><p>The reset behavior of this field is:</p><ul><li>On a Warm reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><div class="access_mechanisms"><h2>Accessing PMSFCR_EL1</h2><p>Accesses to this register use the following encodings in the System register encoding space:</p><h4 class="assembler">MRS &lt;Xt&gt;, PMSFCR_EL1</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMSFCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMSFCR_EL1;
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        X[t, 64] = PMSFCR_EL1;
+elsif PSTATE.EL == EL3 then
+    X[t, 64] = PMSFCR_EL1;
+                </p><h4 class="assembler">MSR PMSFCR_EL1, &lt;Xt&gt;</h4><table class="access_instructions"><tr><th>op0</th><th>op1</th><th>CRn</th><th>CRm</th><th>op2</th></tr><tr><td>0b11</td><td>0b000</td><td>0b1001</td><td>0b1001</td><td>0b100</td></tr></table><p class="pseudocode">
+if PSTATE.EL == EL0 then
+    UNDEFINED;
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMSFCR_EL1 == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif EL2Enabled() &amp;&amp; MDCR_EL2.TPMS == '1' then
+        AArch64.SystemAccessTrap(EL2, 0x18);
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMSFCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; (MDCR_EL3.NSPB[0] == '0' || MDCR_EL3.NSPB[1] != SCR_EL3.NS || (IsFeatureImplemented(FEAT_RME) &amp;&amp; MDCR_EL3.NSPBE != SCR_EL3.NSE)) then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.SystemAccessTrap(EL3, 0x18);
+    else
+        PMSFCR_EL1 = X[t, 64];
+elsif PSTATE.EL == EL3 then
+    PMSFCR_EL1 = X[t, 64];
+                </p></div><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:07; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

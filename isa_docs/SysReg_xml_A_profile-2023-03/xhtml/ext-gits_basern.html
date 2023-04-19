@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GITS_BASER&lt;n&gt;</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GITS_BASER&lt;n&gt;, ITS Translation Table Descriptors, n = 0 - 7</h1><p>The GITS_BASER&lt;n&gt; characteristics are:</p><h2>Purpose</h2>
+        <p>Specifies the base address and size of the ITS translation tables.</p>
+      <h2>Configuration</h2>
+        <p>A copy of this register is provided for each ITS translation table.</p>
+
+      
+        <p>Bits [63:32] and bits [31:0] are accessible independently.</p>
+
+      
+        <p>A maximum of 8 GITS_BASER&lt;n&gt; registers can be provided. Unimplemented registers are <span class="arm-defined-word">RES0</span>.</p>
+
+      
+        <p>When <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Enabled == 1 or <a href="ext-gits_ctlr.html">GITS_CTLR</a>.Quiescent == 0, writing this register is <span class="arm-defined-word">UNPREDICTABLE</span>.</p>
+      <h2>Attributes</h2>
+        <p>GITS_BASER&lt;n&gt; is a 64-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>63</td><td>62</td><td>61</td><td>60</td><td>59</td><td>58</td><td>57</td><td>56</td><td>55</td><td>54</td><td>53</td><td>52</td><td>51</td><td>50</td><td>49</td><td>48</td><td>47</td><td>46</td><td>45</td><td>44</td><td>43</td><td>42</td><td>41</td><td>40</td><td>39</td><td>38</td><td>37</td><td>36</td><td>35</td><td>34</td><td>33</td><td>32</td></tr></thead><tfoot><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tfoot><tbody><tr class="firstrow"><td class="lr" colspan="1"><a href="#fieldset_0-63_63">Valid</a></td><td class="lr" colspan="1"><a href="#fieldset_0-62_62">Indirect</a></td><td class="lr" colspan="3"><a href="#fieldset_0-61_59">InnerCache</a></td><td class="lr" colspan="3"><a href="#fieldset_0-58_56">Type</a></td><td class="lr" colspan="3"><a href="#fieldset_0-55_53">OuterCache</a></td><td class="lr" colspan="5"><a href="#fieldset_0-52_48">Entry_Size</a></td><td class="lr" colspan="16"><a href="#fieldset_0-47_12">Physical_Address</a></td></tr><tr class="firstrow"><td class="lr" colspan="20"><a href="#fieldset_0-47_12">Physical_Address</a></td><td class="lr" colspan="2"><a href="#fieldset_0-11_10">Shareability</a></td><td class="lr" colspan="2"><a href="#fieldset_0-9_8">Page_Size</a></td><td class="lr" colspan="8"><a href="#fieldset_0-7_0">Size</a></td></tr></tbody></table><h4 id="fieldset_0-63_63">Valid, bit [63]</h4><div class="field">
+      <p>Indicates whether software has allocated memory for the translation table:</p>
+    <table class="valuetable"><tr><th>Valid</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td><p>No memory is allocated for the translation table. The ITS discards any writes to the interrupt translation page when either:</p>
+<ul>
+<li>GITS_BASER&lt;n&gt;.Type specifies any valid table entry type other than interrupt collections, that is, any value other than <span class="binarynumber">0b100</span>.
+</li><li>GITS_BASER&lt;n&gt;.Type specifies an interrupt collection and <a href="ext-gits_typer.html">GITS_TYPER</a>.HCC == 0.
+</li></ul></td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Memory is allocated to the translation table.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to <span class="binarynumber">0</span>.
+</li></ul></div><h4 id="fieldset_0-62_62">Indirect, bit [62]</h4><div class="field">
+      <p>This field indicates whether an implemented register specifies a single, flat table or a two-level table where the first level contains a list of descriptors.</p>
+    <table class="valuetable"><tr><th>Indirect</th><th>Meaning</th></tr><tr><td class="bitfield">0b0</td><td>
+          <p>Single Level. The Size field indicates the number of pages used by the ITS to store data associated with each table entry.</p>
+        </td></tr><tr><td class="bitfield">0b1</td><td>
+          <p>Two Level. The Size field indicates the number of pages which contain an array of 64-bit descriptors to pages that are used to store the data associated with each table entry. A little endian memory order model is used.</p>
+        </td></tr></table><p>For more information, see <span class="xref">'The ITS tables' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069)</span>.</p>
+<p>This field is RAZ/WI for GIC implementations that only support flat tables. If the maximum width of the scaling factor that is identified by GITS_BASER&lt;n&gt;.Type and the smallest page size that is supported result in a single level table that requires multiple pages, then implementing this bit as RAZ/WI is DEPRECATED.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-61_59">InnerCache, bits [61:59]</h4><div class="field">
+      <p>Indicates the Inner Cacheability attributes of accesses to the table. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>InnerCache</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Device-nGnRnE.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Normal Inner Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Normal Inner Cacheable Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>Normal Inner Cacheable Write-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b111</td><td>
+          <p>Normal Inner Cacheable Read-allocate, Write-allocate, Write-back.</p>
+        </td></tr></table><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-58_56">Type, bits [58:56]</h4><div class="field">
+      <p>Read only. Specifies the type of entity that requires entries in the corresponding translation table. The possible values of the field are:</p>
+    <table class="valuetable"><tr><th>Type</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Unimplemented. This register does not correspond to a translation table.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Devices. This register corresponds to a translation table that scales with the width of the DeviceID. Only a single GITS_BASER&lt;n&gt; register reports this type.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>vPEs. FEAT_GICv4 only. This register corresponds to a translation table that scales with the number of vPEs in the system. The translation table requires (ENTRY_SIZE * N) bytes of memory, where N is the number of vPEs in the system. Only a single GITS_BASER&lt;n&gt; register reports this type.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Interrupt collections. This register corresponds to a translation table that scales with the number of interrupt collections in the system. The translation table requires (ENTRY_SIZE * N) bytes of memory, where N is the number of interrupt collections. Not more than one GITS_BASER&lt;n&gt; register will report this type.</p>
+        </td></tr></table><p>Other values are reserved.</p>
+<p>For FEAT_GICv4p1, the registers are allocated as follows:</p>
+<ul>
+<li>
+<p>GITS_BASER0.Type is <span class="binarynumber">0b001</span> (Device).</p>
+
+</li><li>
+<p>GITS_BASER1.Type is either <span class="binarynumber">0b100</span> (Collection Table) or <span class="binarynumber">0b000</span> (Unimplemented).</p>
+
+</li><li>
+<p>GITS_BASER2.Type is either <span class="binarynumber">0b010</span> (vPE) or <span class="binarynumber">0b000</span> (Unimplemented).</p>
+
+</li><li>
+<p>GITS_BASER&lt;n&gt;.Type, where 'n' is in the range 3 to 7, is <span class="binarynumber">0b000</span> (Unimplemented).</p>
+
+</li></ul>
+<p>For FEAT_GICv3, FEAT_GICv3p1, and FEAT_GICv4, Arm recommends that the GITS_BASER&lt;n&gt; use the same allocations.</p>
+<p>Other allocations of Type values are deprecated.</p></div><h4 id="fieldset_0-55_53">OuterCache, bits [55:53]</h4><div class="field">
+      <p>Indicates the Outer Cacheability attributes of accesses to the table. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>OuterCache</th><th>Meaning</th></tr><tr><td class="bitfield">0b000</td><td>
+          <p>Memory type defined in InnerCache field. For Normal memory, Outer Cacheability is the same as Inner Cacheability.</p>
+        </td></tr><tr><td class="bitfield">0b001</td><td>
+          <p>Normal Outer Non-cacheable.</p>
+        </td></tr><tr><td class="bitfield">0b010</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b011</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b100</td><td>
+          <p>Normal Outer Cacheable Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b101</td><td>
+          <p>Normal Outer Cacheable Write-allocate, Write-back.</p>
+        </td></tr><tr><td class="bitfield">0b110</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-allocate, Write-through.</p>
+        </td></tr><tr><td class="bitfield">0b111</td><td>
+          <p>Normal Outer Cacheable Read-allocate, Write-allocate, Write-back.</p>
+        </td></tr></table>
+      <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-52_48">Entry_Size, bits [52:48]</h4><div class="field">
+      <p>Read-only. Specifies the number of bytes per translation table entry, minus one.</p>
+    </div><h4 id="fieldset_0-47_12">Physical_Address, bits [47:12]</h4><div class="field"><p>Physical Address. When Page_Size is 4KB or 16KB:</p>
+<ul>
+<li>Bits [51:48] of the base physical address are zero.
+</li><li>This field provides bits[47:12] of the base physical address of the table.
+</li><li>Bits[11:0] of the base physical address are zero.
+</li><li>The address must be aligned to the size specified in the Page Size field. Otherwise the effect is <span class="arm-defined-word">CONSTRAINED UNPREDICTABLE</span>, and can be one of the following:<ul>
+<li>Bits[X:12], where X is derived from the page size, are treated as zero.
+</li><li>The value of bits[X:12] are used when calculating the address of a table access.
+</li></ul>
+
+</li></ul>
+<p>When Page_Size is 64KB:</p>
+<ul>
+<li>Bits[47:16] of the register provide bits[47:16] of the base physical address of the table.
+</li><li>Bits[15:12] of the register provide bits[51:48] of the base physical address of the table.
+</li><li>Bits[15:0] of the base physical address are 0.
+</li></ul>
+<p>In implementations that support fewer than 52 bits of physical address, any unimplemented upper bits might be RAZ/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-11_10">Shareability, bits [11:10]</h4><div class="field">
+      <p>Indicates the Shareability attributes of accesses to the table. The possible values of this field are:</p>
+    <table class="valuetable"><tr><th>Shareability</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>Non-shareable.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>Inner Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>Outer Shareable.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Reserved. Treated as <span class="binarynumber">0b00</span>.</p>
+        </td></tr></table>
+      <p>It is <span class="arm-defined-word">IMPLEMENTATION DEFINED</span> whether this field has a fixed value or can be programmed by software. Implementing this field with a fixed value is deprecated.</p>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-9_8">Page_Size, bits [9:8]</h4><div class="field">
+      <p>The size of page that the translation table uses:</p>
+    <table class="valuetable"><tr><th>Page_Size</th><th>Meaning</th></tr><tr><td class="bitfield">0b00</td><td>
+          <p>4KB.</p>
+        </td></tr><tr><td class="bitfield">0b01</td><td>
+          <p>16KB.</p>
+        </td></tr><tr><td class="bitfield">0b10</td><td>
+          <p>64KB.</p>
+        </td></tr><tr><td class="bitfield">0b11</td><td>
+          <p>Reserved. Treated as <span class="binarynumber">0b10</span>.</p>
+        </td></tr></table>
+      <div class="note"><span class="note-header">Note</span>
+        <p>If the GIC implementation supports only a single, fixed page size, this field might be RO.</p>
+      </div>
+    <p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h4 id="fieldset_0-7_0">Size, bits [7:0]</h4><div class="field"><p>The number of pages of physical memory allocated to the table, minus one. GITS_BASER&lt;n&gt;.Page_Size specifies the size of each page.</p>
+<p>If GITS_BASER&lt;n&gt;.Type == 0, this field is RAZ/WI.</p><p>The reset behavior of this field is:</p><ul><li>On a GIC reset, 
+      this field resets
+       to an architecturally <span class="arm-defined-word">UNKNOWN</span> value.</li></ul></div><h2>Accessing GITS_BASER&lt;n&gt;</h2><h4>GITS_BASER&lt;n&gt; can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC ITS control</td><td><span class="hexnumber">0x0100</span> + (8 * n)</td><td>GITS_BASER&lt;n&gt;</td></tr></table><p>Accesses on this interface are <span class="access_level">RW</span>.</p><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

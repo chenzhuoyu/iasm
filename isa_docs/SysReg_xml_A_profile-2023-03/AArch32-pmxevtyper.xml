@@ -1,0 +1,441 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_page SYSTEM "registers.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+
+<register_page>
+  <registers>
+  
+    <register execution_state="AArch32" is_register="True" is_internal="True" is_banked="False" is_stub_entry="False">
+      <reg_short_name>PMXEVTYPER</reg_short_name>
+        
+        <reg_long_name>Performance Monitors Selected Event Type Register</reg_long_name>
+
+
+
+      
+        <reg_condition otherwise="UNDEFINED">when AArch32 is supported and FEAT_PMUv3 is implemented</reg_condition>
+      
+
+
+
+          <reg_reset_value>
+
+      </reg_reset_value>
+
+      <reg_mappings>
+        
+
+
+
+      
+      <reg_mapping>
+        
+  
+
+    
+
+    <mapped_name filename="AArch64-pmxevtyper_el0.xml">PMXEVTYPER_EL0</mapped_name>
+  <mapped_type>Architectural</mapped_type>
+      <mapped_execution_state>AArch64</mapped_execution_state>
+    <mapped_from_startbit>31</mapped_from_startbit>
+    <mapped_from_endbit>0</mapped_from_endbit>
+    <mapped_to_startbit>31</mapped_to_startbit>
+    <mapped_to_endbit>0</mapped_to_endbit>
+    <mapped_from_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_from_rangeset>
+    <mapped_to_rangeset output="31:0">
+      <range>
+        <msb>31</msb>
+        <lsb>0</lsb>
+      </range>
+    </mapped_to_rangeset>
+
+      </reg_mapping>
+
+      </reg_mappings>
+
+        <reg_purpose>
+          
+    
+      <purpose_text>
+        <para>When <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL selects an event counter, this accesses a <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link> register. When <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL selects the cycle counter, this accesses <register_link state="AArch32" id="AArch32-pmccfiltr.xml">PMCCFILTR</register_link>.</para>
+      </purpose_text>
+
+        </reg_purpose>
+
+      <reg_groups>
+          <reg_group>Performance Monitors registers</reg_group>
+      </reg_groups>
+      
+      
+        
+      <reg_attributes>
+          
+    
+      <attributes_text>
+        <para>PMXEVTYPER is a 32-bit register.</para>
+      </attributes_text>
+
+      </reg_attributes>
+      <reg_fieldsets>
+        
+
+
+
+
+
+
+<fields id="fieldset_0" length="32">
+  <text_before_fields/>
+  <field id="fieldset_0-31_0" has_partial_fieldset="False" is_linked_to_partial_fieldset="False" is_access_restriction_possible="False" is_variable_length="False" is_constant_value="False" is_partial_field="False" is_conditional_field_name="False">
+    <field_shortdesc>Event type register or PMCCFILTR</field_shortdesc>
+    <field_msb>31</field_msb>
+    <field_lsb>0</field_lsb>
+    <rel_range>31:0</rel_range>
+    <field_description order="before"><para>Event type register or <register_link state="AArch32" id="AArch32-pmccfiltr.xml">PMCCFILTR</register_link>.</para>
+<para>When <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL == 31, this register accesses <register_link state="AArch32" id="AArch32-pmccfiltr.xml">PMCCFILTR</register_link>.</para>
+<para>Otherwise, this register accesses <register_link state="AArch32" id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</register_link> where n is the value in <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL.</para></field_description>
+  </field>
+  <text_after_fields/>
+</fields>
+
+
+
+
+    
+<reg_fieldset length="32">
+  <fieldat id="fieldset_0-31_0" msb="31" lsb="0"/>
+</reg_fieldset>
+
+
+      </reg_fieldsets>
+
+      <access_mechanisms>
+          
+
+
+  
+    
+      <access_permission_text>
+        <para>If <xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> is implemented, and <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL is not 31 and is greater than or equal to the number of accessible event counters, then the behavior of permitted reads and writes of <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link> is as follows:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>If <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL selects an unimplemented event counter, the access is <arm-defined-word>UNDEFINED</arm-defined-word>.</content>
+</listitem><listitem><content>Otherwise, the access is trapped to EL2.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>If <xref browsertext="FEAT_FGT" filename="A_armv8_architecture_extensions.fm" linkend="v8.6.FGT"/> is not implemented, and <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL is not 31 and is greater than or equal to the number of accessible event counters, then reads and writes of <register_link state="AArch32" id="AArch32-pmxevtyper.xml">PMXEVTYPER</register_link> are <arm-defined-word>CONSTRAINED UNPREDICTABLE</arm-defined-word>, and the following behaviors are permitted:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>Accesses to the register are <arm-defined-word>UNDEFINED</arm-defined-word>.</content>
+</listitem><listitem><content>Accesses to the register behave as RAZ/WI.</content>
+</listitem><listitem><content>Accesses to the register execute as a <instruction>NOP</instruction></content>
+</listitem><listitem><content>Accesses to the register behave as if <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL has an <arm-defined-word>UNKNOWN</arm-defined-word> value less than the number of event counters accessible at the current Exception level and Security state.</content>
+</listitem><listitem><content>Accesses to the register behave as if <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL is 31.</content>
+</listitem><listitem><content>If EL2 is implemented and enabled in the current Security state, and <register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL is less than the number of implemented event counters, accesses from EL1 or permitted accesses from EL0 are trapped to EL2.</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMXEVTYPER reads-as-zero and ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.UEN == 1.</content>
+</listitem><listitem><content>Any of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL != 31 and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.P&lt;UInt(<register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL)&gt; == 0.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL == 31 and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.C == 0.</content>
+</listitem></list>
+</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <para>PMXEVTYPER ignores writes if all of the following are true:</para>
+
+      </access_permission_text>
+      <access_permission_text>
+        <list type="unordered">
+<listitem><content>FEAT_PMUv3p9 is implemented.</content>
+</listitem><listitem><content>PSTATE.EL == EL0.</content>
+</listitem><listitem><content>EL1 is using AArch64.</content>
+</listitem><listitem><content><register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.UEN == 1.</content>
+</listitem><listitem><content>Any of the following are true:<list type="unordered">
+<listitem><content><register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL != 31 and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.ER == 1.</content>
+</listitem><listitem><content><register_link state="AArch32" id="AArch32-pmselr.xml">PMSELR</register_link>.SEL == 31 and <register_link state="AArch64" id="AArch64-pmuacr_el1.xml">PMUACR_EL1</register_link>.CR == 1.</content>
+</listitem></list>
+</content>
+</listitem></list>
+
+      </access_permission_text>
+      <access_permission_text>
+        <note><para>In EL0, an access is permitted if it is enabled by <register_link state="AArch32" id="AArch32-pmuserenr.xml">PMUSERENR</register_link>.EN or <register_link state="AArch64" id="AArch64-pmuserenr_el0.xml">PMUSERENR_EL0</register_link>.{UEN,EN}.</para><para>If EL2 is implemented and enabled in the current Security state, at EL0 and EL1:</para><list type="unordered"><listitem><content>If EL2 is using AArch32, <register_link state="AArch32" id="AArch32-hdcr.xml">HDCR</register_link>.HPMN identifies the number of accessible event counters.</content></listitem><listitem><content>If EL2 is using AArch64, <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMN identifies the number of accessible event counters.</content></listitem></list><para>Otherwise, the number of accessible event counters is the number of implemented event counters. For more information, see <register_link state="AArch32" id="AArch32-hdcr.xml">HDCR</register_link>.HPMN and <register_link state="AArch64" id="AArch64-mdcr_el2.xml">MDCR_EL2</register_link>.HPMN.</para></note>
+      </access_permission_text>
+
+
+
+
+
+        
+        <access_mechanism accessor="MRC PMXEVTYPER" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MRC{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1101"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MRC" sections="1" secttype="access_permission">
+                <pstext>
+if UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= NUM_PMU_COUNTERS then
+    if IsFeatureImplemented(FEAT_FGT) then
+        UNDEFINED;
+    else
+        ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+elsif PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGRTR_EL2.PMEVTYPERn_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL1) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            R[t] = PMCCFILTR;
+        else
+            R[t] = PMEVTYPER[UInt(AArch32-PMSELR.SEL)];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL2) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            R[t] = PMCCFILTR;
+        else
+            R[t] = PMEVTYPER[UInt(AArch32-PMSELR.SEL)];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            R[t] = PMCCFILTR;
+        else
+            R[t] = PMEVTYPER[UInt(AArch32-PMSELR.SEL)];
+elsif PSTATE.EL == EL3 then
+    if UInt(PMSELR.SEL) == 31 then
+        R[t] = PMCCFILTR;
+    else
+        R[t] = PMEVTYPER[UInt(AArch32-PMSELR.SEL)];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+        
+        <access_mechanism accessor="MCR PMXEVTYPER" type="SystemAccessor">
+            <encoding>
+            <access_instruction>MCR{&lt;c&gt;}{&lt;q&gt;} &lt;coproc&gt;, {#}&lt;opc1&gt;, &lt;Rt&gt;, &lt;CRn&gt;, &lt;CRm&gt;{, {#}&lt;opc2&gt;}</access_instruction>
+                
+                <enc n="coproc" v="0b1111"/>
+                
+                <enc n="opc1" v="0b000"/>
+                
+                <enc n="CRn" v="0b1001"/>
+                
+                <enc n="CRm" v="0b1101"/>
+                
+                <enc n="opc2" v="0b001"/>
+            </encoding>
+            <access_permission>
+                <ps name="MCR" sections="1" secttype="access_permission">
+                <pstext>
+if UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= NUM_PMU_COUNTERS then
+    if IsFeatureImplemented(FEAT_FGT) then
+        UNDEFINED;
+    else
+        ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+elsif PSTATE.EL == EL0 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif !ELUsingAArch32(EL1) &amp;&amp; ((IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.&lt;UEN,EN&gt; == '00') || (!IsFeatureImplemented(FEAT_PMUv3p9) &amp;&amp; PMUSERENR_EL0.EN == '0')) then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL1, 0x03);
+    elsif ELUsingAArch32(EL1) &amp;&amp; PMUSERENR.EN == '0' then
+        if EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.TGE == '1' then
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+        elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HCR.TGE == '1' then
+            AArch32.TakeHypTrapException(0x00);
+        else
+            UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL1) &amp;&amp; HCR_EL2.&lt;E2H,TGE&gt; != '11' &amp;&amp; IsFeatureImplemented(FEAT_FGT) &amp;&amp; (!HaveEL(EL3) || SCR_EL3.FGTEn == '1') &amp;&amp; HDFGWTR_EL2.PMEVTYPERn_EL0 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL1) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            PMCCFILTR = R[t];
+        else
+            PMEVTYPER[UInt(AArch32-PMSELR.SEL)] = R[t];
+elsif PSTATE.EL == EL1 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; HSTR_EL2.T9 == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HSTR.T9 == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; !ELUsingAArch32(EL2) &amp;&amp; MDCR_EL2.TPM == '1' then
+        AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif EL2Enabled() &amp;&amp; ELUsingAArch32(EL2) &amp;&amp; HDCR.TPM == '1' then
+        AArch32.TakeHypTrapException(0x03);
+    elsif EL2Enabled() &amp;&amp; UInt(PMSELR.SEL) != 31 &amp;&amp; UInt(PMSELR.SEL) &gt;= AArch32.GetNumEventCountersAccessible() then
+        if !IsFeatureImplemented(FEAT_FGT) then
+            ConstrainUnpredictableProcedure(Unpredictable_PMUEVENTCOUNTER);
+        elsif ELUsingAArch32(EL2) then
+            AArch32.TakeHypTrapException(0x03);
+        else
+            AArch64.AArch32SystemAccessTrap(EL2, 0x03);
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            PMCCFILTR = R[t];
+        else
+            PMEVTYPER[UInt(AArch32-PMSELR.SEL)] = R[t];
+elsif PSTATE.EL == EL2 then
+    if Halted() &amp;&amp; HaveEL(EL3) &amp;&amp; EDSCR.SDD == '1' &amp;&amp; boolean IMPLEMENTATION_DEFINED "EL3 trap priority when SDD == '1'" &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        UNDEFINED;
+    elsif HaveEL(EL3) &amp;&amp; !ELUsingAArch32(EL3) &amp;&amp; MDCR_EL3.TPM == '1' then
+        if Halted() &amp;&amp; EDSCR.SDD == '1' then
+            UNDEFINED;
+        else
+            AArch64.AArch32SystemAccessTrap(EL3, 0x03);
+    else
+        if UInt(PMSELR.SEL) == 31 then
+            PMCCFILTR = R[t];
+        else
+            PMEVTYPER[UInt(AArch32-PMSELR.SEL)] = R[t];
+elsif PSTATE.EL == EL3 then
+    if UInt(PMSELR.SEL) == 31 then
+        PMCCFILTR = R[t];
+    else
+        PMEVTYPER[UInt(AArch32-PMSELR.SEL)] = R[t];
+                </pstext>
+                </ps>
+            </access_permission>
+        </access_mechanism>
+
+      </access_mechanisms>
+
+      <arch_variants>
+      </arch_variants>
+  </register>
+</registers>
+
+    <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_page>

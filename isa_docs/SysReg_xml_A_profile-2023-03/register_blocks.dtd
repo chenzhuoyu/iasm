@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Entities and elements for text formatting.
+Currently, text formatting can appear in the following elements:
+* <reg_purpose>
+* <usage_constraints_text>
+* <configuration_text>
+* <reg_attributes>
+* <field_description>
+* <field_value_description>
+* <pf_before_fields>
+* <pf_after_fields>
+
+Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved.
+-->
+<!ENTITY % formatted_words 'register_link|instruction|xref|arm-defined-word|sup|sub|b|binarynumber|hexnumber|signal|syntax|value|function|enum|enumvalue|url'>
+<!ENTITY % formatted_text '(#PCDATA|para|list|listitem|content|table|note|%formatted_words;)*'>
+<!-- Paragraphs -->
+<!ELEMENT para (#PCDATA|%formatted_words;)*>
+<!-- Lists, and list items -->
+<!ELEMENT list (listitem+)>
+<!ATTLIST list type (ordered|unordered|var|param) #REQUIRED role (standard|compressed|break|wide) #IMPLIED language CDATA #IMPLIED>
+<!ELEMENT listitem ((term*|param*), content)>
+<!ELEMENT term (#PCDATA|%formatted_words;)*>
+<!ELEMENT param (#PCDATA|%formatted_words;)*>
+<!ELEMENT content (#PCDATA|list|para|%formatted_words;)*>
+<!-- Notes -->
+<!ELEMENT note (#PCDATA|para|list|table)*>
+<!-- Word/phrase formatting -->
+<!ELEMENT hexnumber (#PCDATA)>
+<!ELEMENT binarynumber (#PCDATA)>
+<!ELEMENT sub (#PCDATA)>
+<!ELEMENT sup (#PCDATA)>
+<!ELEMENT b (#PCDATA)>
+<!ELEMENT signal (#PCDATA)>
+<!ELEMENT syntax (#PCDATA)*>
+<!ELEMENT value (#PCDATA)*>
+<!ELEMENT function (#PCDATA)*>
+<!ELEMENT enum (#PCDATA)*>
+<!ELEMENT enumvalue (#PCDATA)*>
+<!ELEMENT arm-defined-word (#PCDATA)> <!-- Defined words such as UNDEFINED. The browseable XML renders these in smallcaps.-->
+<!ELEMENT register_link (#PCDATA)>    <!-- Links to register pages. -->
+<!ATTLIST register_link state (AArch64|AArch32|ext) #IMPLIED id CDATA #IMPLIED>
+<!ELEMENT instruction (#PCDATA)*>
+<!ELEMENT xref EMPTY> <!-- For xrefs that will point to other locations in the Armv8 ARM. -->
+<!ATTLIST xref linkend CDATA #REQUIRED
+          filename CDATA #IMPLIED
+          browsertext CDATA #REQUIRED>
+<!ELEMENT url (#PCDATA)*>
+<!-- linkend is the target ID within the Armv8 ARM;
+    filename is the name of the Framemaker XML file that that ID is defined in;
+    browsertext is the text that will be displayed when this XML is rendered in the browseable XML. -->
+
+<!-- Table formatting; most similar to the definitions in iform.dtd, but with fewer attributes defined -->
+<!ELEMENT entry (#PCDATA|%formatted_words;)*>
+<!ELEMENT row (entry+)>
+<!ELEMENT tbody (row+)>
+<!ELEMENT thead (row+)>
+<!ELEMENT tgroup (thead, tbody)>
+<!ATTLIST tgroup cols CDATA #REQUIRED>
+<!ELEMENT table (tgroup+)>
+
+
+<!-- Register elements and attributes -->
+<!ELEMENT register_block_page (register_blocks, timestamp)>                                                            <!--  A single register block XML page with a timestamp. -->
+<!ELEMENT register_blocks (register_block+)>                                                                            <!-- Contains all the register blocks on one page; usually this is only one. -->
+<!ELEMENT register_block (reg_short_name, reg_long_name?, reg_condition?, reg_parent_link?, mappings?, reg_purpose?, reg_attributes?, child_blocks+)>  <!-- Contains the information about a single register block. -->
+<!ELEMENT reg_short_name (#PCDATA)>                                                                                     <!-- e.g. SCTLR -->
+<!ELEMENT reg_long_name (#PCDATA)>                                                                                      <!-- e.g. System Control Register -->
+
+<!ELEMENT reg_condition (#PCDATA)>                      <!-- Condition set under which the register block is implemented. -->
+<!ATTLIST reg_condition otherwise CDATA #IMPLIED>      <!-- Register value if reg_condition is not met. -->
+<!ATTLIST reg_condition verbatim (True|False) #IMPLIED> <!-- Is the condition represented as text -->
+
+<!ELEMENT regblock_mappings (regblock_mapping*, instance_mapping*)>
+<!ELEMENT regblock_mapping (mapped_name,mapped_type,mapped_execution_state,mapped_from_sec_state?,mapped_from_condition?,mapped_to_sec_state?,mapped_to_condition?)>
+<!ELEMENT mapped_name (#PCDATA)>                <!-- Name of the other register or operation this one is mapped to. -->
+<!ATTLIST mapped_name filename CDATA #IMPLIED> <!-- XML file for the other register or operation. (In the browseable XML, the mappings include links.) -->
+<!ELEMENT mapped_type (#PCDATA)>                <!-- Architectural|Optional|Functional as described above. -->
+<!ELEMENT mapped_execution_state (#PCDATA)>     <!-- AArch32|AArch64|external. Whether the other register or operation is available in AArch32, AArch64, or through the external or memory-mapped interfaces. -->
+<!--
+    A register in AArch64 may also be mapped to only the Secure or Non-secure version of a banked register in AArch32.
+    e.g. the Non-secure version of SCTLR in AArch32 is mapped to SCTLR_EL1 in AArch64.
+    In the register XML for SCTLR, we would have:
+    <mapped_from_sec_state>S</mapped_from_sec_state>
+    and no <mapped_to_sec_state>.
+-->
+<!ELEMENT mapped_from_sec_state (#PCDATA)> <!-- S|NS -->
+<!ELEMENT mapped_to_sec_state (#PCDATA)>   <!-- S|NS -->
+<!--
+    A few registers are only mapped to each other under limited conditions.
+    e.g. DFAR (Secure version) in AArch32 is mapped to HDFAR in AArch32 when EL2 is implemented.
+    The difference between <mapped_from_condition> and <mapped_to_condition> isn't significant.
+-->
+<!ELEMENT mapped_from_condition (#PCDATA)>
+<!ELEMENT mapped_to_condition (#PCDATA)>
+
+<!ELEMENT reg_parent_link (#PCDATA)>
+<!ATTLIST reg_parent_link id CDATA #REQUIRED>
+<!ELEMENT mappings (map*)>
+<!ELEMENT map (condition?, element+)>
+<!ELEMENT condition (#PCDATA)>
+<!ELEMENT element (rangeset?, block_link)>
+<!ELEMENT rangeset (range+)>
+<!ATTLIST rangeset output CDATA #REQUIRED>
+<!ELEMENT range (msb, lsb)>
+<!ELEMENT msb (#PCDATA)>
+<!ELEMENT lsb (#PCDATA)>
+
+<!-- More register-block description information -->
+<!ELEMENT reg_purpose (purpose_text*)>                     <!-- Short descriptive summary of the register. -->
+<!ELEMENT purpose_text %formatted_text;>                   <!-- Corresponds to the 'Purpose' section in the ARM ARM. -->
+<!ELEMENT reg_attributes (attributes_text*)>               <!-- Contains basic information about the length of this register. -->
+<!ELEMENT attributes_text %formatted_text;>                <!-- corresponds to the 'Attributes' section in the ARM ARM. -->
+
+<!-- Associated register blocks and registers -->
+<!ELEMENT child_blocks (child_block*)>                                                        <!-- The set of all register blocks and registers that this block contains. -->
+<!ATTLIST child_blocks default_access CDATA #REQUIRED>
+<!ELEMENT child_block (block_offset, block_type, block_link, block_condition?, accessor_condition?, block_access)> <!-- A single child block or register contained by this block. -->
+<!ELEMENT block_offset (#PCDATA)>                                                             <!-- The offset of the child block or register, expressed as a hexadecimal. -->
+<!ELEMENT block_type (#PCDATA)>                                                        <!-- Is this child of the current block a register or a sub-block? -->
+<!ELEMENT block_link (#PCDATA)>                                                               <!-- Short name of the child block or register, for display as browsertext. -->
+<!ATTLIST block_link state CDATA #IMPLIED>                                                      <!-- state of the child block or register, for linking. -->
+<!ATTLIST block_link id CDATA #IMPLIED>                                                      <!-- ID of the child block or register, for linking. -->
+<!ELEMENT accessor_condition (#PCDATA)>                                                          <!-- Pseudocode or plain-text condition under which the accessor is accessed. -->
+<!ELEMENT block_condition (#PCDATA)>                                                          <!-- Pseudocode or plain-text condition under which the register block is implemented. -->
+<!ELEMENT block_access (pstext)>                                                              <!-- Pseudocode description of the access  to the block. -->
+<!ELEMENT pstext %formatted_text;>
+
+<!ELEMENT timestamp (#PCDATA)> <!-- Timestamp and version number, for the page footer. -->

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GICV_AIAR</title>
+    <link href="insn.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><hr/><h1 class="register-section">GICV_AIAR, Virtual Machine Aliased Interrupt Acknowledge Register</h1><p>The GICV_AIAR characteristics are:</p><h2>Purpose</h2>
+        <p>Provides the INTID of the signaled Group 1 virtual interrupt. A read of this register by the PE acts as an acknowledge for the interrupt.</p>
+
+      
+        <p>This register corresponds to the physical CPU interface register <a href="ext-gicc_aiar.html">GICC_AIAR</a>.</p>
+      <h2>Configuration</h2><p>This register is present only when FEAT_GICv3_LEGACY is implemented and EL2 is implemented. Otherwise, direct accesses to GICV_AIAR are <span class="arm-defined-word">RES0</span>.</p>
+        <p>This register is available when the GIC implementation supports interrupt virtualization.</p>
+      <h2>Attributes</h2>
+        <p>GICV_AIAR is a 32-bit register.</p>
+      <h2>Field descriptions</h2><table class="regdiagram"><thead><tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td><td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></thead><tbody><tr class="firstrow"><td class="lr" colspan="7"><a href="#fieldset_0-31_25">RES0</a></td><td class="lr" colspan="25"><a href="#fieldset_0-24_0">INTID</a></td></tr></tbody></table><h4 id="fieldset_0-31_25">Bits [31:25]</h4><div class="field">
+      <p>Reserved, <span class="arm-defined-word">RES0</span>.</p>
+    </div><h4 id="fieldset_0-24_0">INTID, bits [24:0]</h4><div class="field"><p>The INTID of the signaled interrupt.</p>
+<div class="note"><span class="note-header">Note</span><p>INTIDs 1020-1023 are reserved and convey additional information such as spurious interrupts.</p></div><p>When affinity routing is not enabled:</p>
+<ul>
+<li>Bits [23:13] are <span class="arm-defined-word">RES0</span>.
+</li><li>For SGIs, bits [12:10] identify the CPU interface corresponding to the source PE. For all other interrupts these bits are <span class="arm-defined-word">RES0</span>.
+</li></ul></div><div class="text_after_fields"><p>The operation of this register is similar to the operation of <a href="ext-gicv_iar.html">GICV_IAR</a>. When a vPE reads this register, the corresponding <a href="ext-gich_lrn.html">GICH_LR&lt;n&gt;</a>.Group field is checked to determine whether the interrupt is in Group 0 or Group 1:</p>
+<ul>
+<li>If the interrupt is Group 0, the spurious INTID 1023 is returned and the interrupt is not acknowledged.
+</li><li>If the interrupt is Group 1, the INTID is returned. The List register entry is updated to active state, and the appropriate bit in <a href="ext-gich_aprn.html">GICH_APR&lt;n&gt;</a> is set to 1.
+</li></ul>
+<p>A read of this register returns the spurious INTID 1023 if any of the following are true:</p>
+<ul>
+<li>When the virtual CPU interface is enabled and <a href="ext-gich_hcr.html">GICH_HCR</a>.En == 1:<ul>
+<li>There are no pending interrupts of sufficiently high priority value to be signaled to the PE.
+</li><li>The highest priority pending interrupt is in Group 0.
+</li></ul>
+
+</li><li>Interrupt signaling by the virtual CPU interface is disabled.
+</li></ul></div><h2>Accessing GICV_AIAR</h2>
+        <p>This register is used only when System register access is not enabled. When System register access is enabled:</p>
+
+      
+        <ul>
+<li>For AArch32 implementations, <a href="AArch32-icc_iar1.html">ICC_IAR1</a> provides equivalent functionality.
+</li><li>For AArch64 implementations, <a href="AArch64-icc_iar1_el1.html">ICC_IAR1_EL1</a> provides equivalent functionality.
+</li></ul>
+
+      
+        <p>This register is used for Group 1 interrupts only. <a href="ext-gicv_iar.html">GICV_IAR</a> provides equivalent functionality for Group 0 interrupts.</p>
+
+      
+        <p>When affinity routing is enabled, it is a programming error to use memory-mapped registers to access the GIC.</p>
+      <h4>GICV_AIAR can be accessed through the memory-mapped interfaces:</h4><table class="info"><tr><th>Component</th><th>Offset</th><th>Instance</th></tr><tr><td>GIC Virtual CPU interface</td><td><span class="hexnumber">0x0020</span></td><td>GICV_AIAR</td></tr></table><p>This interface is accessible as follows:</p><ul><li>When GICD_CTLR.DS == 0, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When an access is Secure, accesses to this register are <span class="access_level">RO</span>.
+          </li><li>When an access is Non-secure, accesses to this register are <span class="access_level">RO</span>.
+          </li></ul><hr class="bottom_line"/><table style="margin: 0 auto;"><tr><td><div class="topbar"><a href="AArch32-regindex.html">AArch32 Registers</a></div></td><td><div class="topbar"><a href="AArch64-regindex.html">AArch64 Registers</a></div></td><td><div class="topbar"><a href="AArch32-sysindex.html">AArch32 Instructions</a></div></td><td><div class="topbar"><a href="AArch64-sysindex.html">AArch64 Instructions</a></div></td><td><div class="topbar"><a href="enc_index.html">Index by Encoding</a></div></td><td><div class="topbar"><a href="ext_alpha_index.html">External Registers</a></div></td><td><div class="topbar"><a href="ext_enc_index.html">External Registers by Offset</a></div></td><td><div class="topbar"><a href="func_index.html">Registers by Functional Group</a></div></td><td><div class="topbar"><a href="notice.html">Proprietary Notice</a></div></td></tr></table><p class="versions">30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</p><p class="copyconf">Copyright © 2010-2023 Arm Limited or its affiliates. All rights reserved. This document is Non-Confidential.</p></body>
+</html>

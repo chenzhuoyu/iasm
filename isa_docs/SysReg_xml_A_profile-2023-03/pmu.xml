@@ -1,0 +1,3249 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE register_block_page SYSTEM "register_blocks.dtd">
+<!-- Copyright (c) 2010-2023 Arm Limited or its affiliates. All rights reserved. -->
+<!-- This document is Non-Confidential. This document may only be used and distributed in accordance with the terms of the agreement entered into by Arm and the party that Arm delivered this document to. -->
+<!--The data contained in this document is preliminary and subject to change or correction following further review. -->
+<?xml-stylesheet href="one_register.xsl" type="text/xsl" ?>
+
+
+
+
+
+
+<register_block_page>
+  <register_blocks>
+    <register_block>
+      <reg_short_name>PMU</reg_short_name>
+
+
+
+      <mappings>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmccfiltr.xml">PMCCFILTR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccntr_el0.xml">PMCCNTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmccntr_el0.xml">PMCCNTR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccntr_el0.xml">PMCCNTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmccntr.xml">PMCCNTR</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_SS is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmccntsvr_el1.xml">PMCCNTSVR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmccntsvr_el1.xml">PMCCNTSVR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid0.xml">PMCEID0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmceid0_el0.xml">PMCEID0_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid0.xml">PMCEID0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmceid0.xml">PMCEID0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid1.xml">PMCEID1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmceid1_el0.xml">PMCEID1_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid1.xml">PMCEID1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmceid1.xml">PMCEID1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid2.xml">PMCEID2</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:32">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>32</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmceid0_el0.xml">PMCEID0_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid2.xml">PMCEID2</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmceid2.xml">PMCEID2</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid3.xml">PMCEID3</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:32">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>32</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmceid1_el0.xml">PMCEID1_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmceid3.xml">PMCEID3</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmceid3.xml">PMCEID3</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcnten.xml">PMCNTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcnten.xml">PMCNTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcnten.xml">PMCNTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenset.xml">PMCNTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcnten.xml">PMCNTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenclr.xml">PMCNTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenclr.xml">PMCNTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenset.xml">PMCNTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenclr.xml">PMCNTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcntenset.xml">PMCNTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:32, 10:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>32</lsb>
+                    </range>
+                    <range>
+                      <msb>10</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcr_el0.xml">PMCR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:32, 10:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>32</lsb>
+                    </range>
+                    <range>
+                      <msb>10</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmcr_el0.xml">PMCR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="10:0">
+                    <range>
+                      <msb>10</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmcr_el0.xml">PMCR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="10:0">
+                    <range>
+                      <msb>10</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmcr.xml">PMCR</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented or FEAT_PMUv3p5 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p5 is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmevcntrn.xml">PMEVCNTR&lt;n&gt;</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_SS is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmevtypern.xml">PMEVTYPER&lt;n&gt;</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmicfiltr_el0.xml">PMICFILTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmicfiltr_el0.xml">PMICFILTR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_ICNTR is implemented and FEAT_PMUv3_SS is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmicntsvr_el1.xml">PMICNTSVR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmicntsvr_el1.xml">PMICNTSVR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmicntr_el0.xml">PMICNTR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmicntr_el0.xml">PMICNTR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pminten.xml">PMINTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pminten.xml">PMINTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pminten.xml">PMINTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenclr.xml">PMINTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pminten.xml">PMINTEN</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenset.xml">PMINTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenclr.xml">PMINTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenset.xml">PMINTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenset.xml">PMINTENSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmintenclr.xml">PMINTENCLR</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and FEAT_PMUv3_ICNTR is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovs.xml">PMOVS</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovs.xml">PMOVS</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3p9 is implemented or FEAT_PMUv3_ICNTR is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsset.xml">PMOVSSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsr.xml">PMOVSR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsr.xml">PMOVSR</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsset.xml">PMOVSSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovs.xml">PMOVS</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsset.xml">PMOVSSET</block_link>
+            </element>
+
+        </map>
+          <map>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmovs.xml">PMOVS</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmovsr.xml">PMOVSR</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmswinc_el0.xml">PMSWINC_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmswinc_el0.xml">PMSWINC_EL0</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented</condition>
+
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmswinc_el0.xml">PMSWINC_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="31:0">
+                    <range>
+                      <msb>31</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch32-pmswinc.xml">PMSWINC</block_link>
+            </element>
+
+        </map>
+          <map>
+            <condition>FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3p9 is implemented</condition>
+
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="pmu.pmzr_el0.xml">PMZR_EL0</block_link>
+            </element>
+          
+            <element>
+                <rangeset output="63:0">
+                    <range>
+                      <msb>63</msb>
+                      <lsb>0</lsb>
+                    </range>
+                </rangeset>
+
+              
+                  <block_link id="AArch64-pmzr_el0.xml">PMZR_EL0</block_link>
+            </element>
+
+        </map>
+      </mappings>
+
+
+      <reg_attributes>
+        <attributes_text>
+          <para>PMU is a block of size: 4096 bytes</para>
+        </attributes_text>
+      </reg_attributes>
+      <child_blocks default_access="RES0">
+                     
+          <child_block>
+            <block_offset>0x000 + (8 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0x000 + (8 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p5 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0x000 + (8 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevcntrn_el0.xml">PMEVCNTR&lt;n&gt;_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p5 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x0F8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccntr_el0.xml">PMCCNTR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0x0F8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccntr_el0.xml">PMCCNTR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x0FC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccntr_el0.xml">PMCCNTR_EL0[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x100</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmicntr_el0.xml">PMICNTR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x200</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0x200</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x204</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x208</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmvcidsr.xml">PMVCIDSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x208</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcid1sr.xml">PMCID1SR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x20C</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmvidsr.xml">PMVIDSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented, FEAT_PCSRv8p2 is implemented and EL2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x220</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0x220</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x224</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsr.xml">PMPCSR[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x228</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccidsr.xml">PMCCIDSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x228</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcid1sr.xml">PMCID1SR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and FEAT_PCSRv8p2 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x22C</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcid2sr.xml">PMCID2SR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x400 + (8 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0[63:0]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x400 + (4 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0[31:0]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x47C</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0[31:0]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x480</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmicfiltr_el0.xml">PMICFILTR_EL0[31:0]</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x4F8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x500</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmicfiltr_el0.xml">PMICFILTR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x600 + (8 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevcntsvrn_el1.xml">PMEVCNTSVR&lt;n&gt;_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_SS is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_SS is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x6F8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccntsvr_el1.xml">PMCCNTSVR_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_SS is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_SS is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x700</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmicntsvr_el1.xml">PMICNTSVR_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented and FEAT_PMUv3_SS is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_SS is implemented and FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x800 + (4 * n) for n in 63:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevfilt2rn.xml">PMEVFILT2R&lt;n&gt;[31:0]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMEVFILT2R&lt;n&gt;</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0x800 + (8 * n) for n in 63:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevfilt2rn.xml">PMEVFILT2R&lt;n&gt;[63:0]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMEVFILT2R&lt;n&gt;</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xA00 + (4 * n) for n in 30:0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmevtypern_el0.xml">PMEVTYPER&lt;n&gt;_EL0[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and (FEAT_PMUv3_TH is implemented or FEAT_PMUv3p8 is implemented)
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xA7C</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmccfiltr_el0.xml">PMCCFILTR_EL0[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and (FEAT_PMUv3_TH is implemented or FEAT_PMUv3p8 is implemented)
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xA80</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmicfiltr_el0.xml">PMICFILTR_EL0[63:32]</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC00</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xC00</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcntenset_el0.xml">PMCNTENSET_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC10</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcnten.xml">PMCNTEN</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC20</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xC20</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcntenclr_el0.xml">PMCNTENCLR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC40</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xC40</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmintenset_el1.xml">PMINTENSET_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC50</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pminten.xml">PMINTEN</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC60</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xC60</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmintenclr_el1.xml">PMINTENCLR_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC80</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xC80</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmovsclr_el0.xml">PMOVSCLR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xC90</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmovs.xml">PMOVS</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xCA0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmswinc_el0.xml">PMSWINC_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3p9 is not implemented and an implementation implements PMSWINC_EL0</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>WO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xCA0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmzr_el0.xml">PMZR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3p9 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented and FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>WO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xCC0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented, or FEAT_PMUv3_ICNTR is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xCC0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmovsset_el0.xml">PMOVSSET_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented, FEAT_PMUv3_ICNTR is not implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xCE0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcgcr0.xml">PMCGCR0</block_link>
+            <block_condition>When FEAT_PMUv3_ICNTR is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_ICNTR is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE00</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcfgr.xml">PMCFGR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xE00</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcfgr.xml">PMCFGR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE04</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcr_el0.xml">PMCR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE08</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmiidr.xml">PMIIDR</block_link>
+            <block_condition>When (FEAT_PMUv3_EXT32 is implemented and an implementation implements PMIIDR) or FEAT_PMUv3_EXT64 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE10</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcr_el0.xml">PMCR_EL0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE20</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmceid0.xml">PMCEID0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE24</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmceid1.xml">PMCEID1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE28</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmceid2.xml">PMCEID2</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p1 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE2C</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmceid3.xml">PMCEID3</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p1 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE30</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmsscr_el1.xml">PMSSCR_EL1</block_link>
+            <block_condition>When FEAT_PMUv3_SS is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_SS is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE40</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmmir.xml">PMMIR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PMUv3p4 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented or FEAT_PMUv3p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+          <child_block>
+            <block_offset>0xE40</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmmir.xml">PMMIR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and FEAT_PMUv3p4 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented and FEAT_PMUv3p9 is not implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xE50</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpcsctl.xml">PMPCSCTL</block_link>
+            <block_condition>When FEAT_PCSRv8p9 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PCSRv8p9 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xF00</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmitctrl.xml">PMITCTRL</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and an implementation implements PMITCTRL</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RW</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFA8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevaff.xml">PMDEVAFF</block_link>
+            <block_condition>When FEAT_PMUv3_EXT64 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT64 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFA8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevaff0.xml">PMDEVAFF0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFAC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevaff1.xml">PMDEVAFF1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFB0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmlar.xml">PMLAR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>WO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFB4</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmlsr.xml">PMLSR</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFB8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmauthstatus.xml">PMAUTHSTATUS</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFBC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevarch.xml">PMDEVARCH</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFC8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevid.xml">PMDEVID</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                     
+          <child_block>
+            <block_offset>0xFCC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmdevtype.xml">PMDEVTYPE</block_link>
+            <block_condition>When FEAT_PMUv3_EXT32 is implemented and an implementation implements PMDEVTYPE</block_condition>
+            <accessor_condition>
+                When FEAT_PMUv3_EXT32 is implemented
+            </accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFD0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpidr4.xml">PMPIDR4</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR4</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFE0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpidr0.xml">PMPIDR0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR0</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFE4</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpidr1.xml">PMPIDR1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR1</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFE8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpidr2.xml">PMPIDR2</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR2</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFEC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmpidr3.xml">PMPIDR3</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMPIDR3</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFF0</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcidr0.xml">PMCIDR0</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR0</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFF4</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcidr1.xml">PMCIDR1</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR1</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFF8</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcidr2.xml">PMCIDR2</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR2</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+                   <child_block>
+            <block_offset>0xFFC</block_offset>
+            <block_type>Register</block_type>
+            <block_link id="pmu.pmcidr3.xml">PMCIDR3</block_link>
+            <block_condition>When FEAT_PMUv3_EXT is implemented and an implementation implements PMCIDR3</block_condition>
+            <accessor_condition>-</accessor_condition>
+            <block_access>
+            <pstext>RO</pstext>
+            </block_access>
+          </child_block>
+      </child_blocks>
+
+    </register_block>
+  </register_blocks>
+  
+      <timestamp>30/03/2023 19:06; 997dd0cf3258cacf72aa7cf7a885f19a4758c3af</timestamp>
+</register_block_page>
