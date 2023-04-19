@@ -23,6 +23,14 @@ func TestParser_Parse(t *testing.T) {
         `v7.2H[4]`,
         `v9.B[3]`,
         `v3.b[5]`,
+        `RCTX`,
+        `VMALLE1NXS`,
+        `DBGWVR5_EL1`,
+        `UAO`,
+        `PAN`,
+        `CurrentEL`,
+        `DAIFSet`,
+        `SVCRSM`,
     }, ", "))
     require.NoError(t, e)
     println(v.String())

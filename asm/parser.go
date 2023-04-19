@@ -3,6 +3,7 @@ package asm
 import (
     `errors`
     `fmt`
+    `reflect`
     `strconv`
     `strings`
     `unicode`
@@ -475,13 +476,23 @@ func (self *ParsedLabel) String() string {
     return fmt.Sprintf("(%s) %s", self.Kind, self.Name)
 }
 
+// ParsedSymbol represents an operand of a literal symbol in the source.
+type ParsedSymbol struct {
+    Name  string
+    Value interface{}
+}
+
+func (self *ParsedSymbol) String() string {
+    return fmt.Sprintf("%s: %s = %v", self.Name, reflect.TypeOf(self.Value), self.Value)
+}
+
 // ParsedOperand represents an operand of an instruction in the source.
 type ParsedOperand struct {
     Op    OperandKind
     Imm   int64
     FpImm float64
-    Sym   string
     Reg   Register
+    Sym   ParsedSymbol
     Mem   MemoryAddress
     Label ParsedLabel
 }
@@ -492,7 +503,7 @@ func (self *ParsedOperand) String() string {
         case OpFpImm : return fmt.Sprintf("(%s) %f", self.Op, self.FpImm)
         case OpReg   : return fmt.Sprintf("(%s) %s", self.Op, self.Reg)
         case OpMem   : return fmt.Sprintf("(%s) %s", self.Op, self.Mem.String())
-        case OpSym   : return fmt.Sprintf("(%s) %s", self.Op, self.Sym)
+        case OpSym   : return fmt.Sprintf("(%s) %s", self.Op, self.Sym.String())
         case OpLabel : return fmt.Sprintf("(%s) %s", self.Op, self.Label.String())
         default      : return "???"
     }
@@ -530,10 +541,13 @@ func (self *ParsedInstruction) Mem(v MemoryAddress) {
 }
 
 // Sym adds a literal symbol operand to this instruction.
-func (self *ParsedInstruction) Sym(v string) {
+func (self *ParsedInstruction) Sym(name string, value interface{}) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op  : OpSym,
-        Sym : v,
+        Sym : ParsedSymbol {
+            Name  : name,
+            Value : value,
+        },
     })
 }
 

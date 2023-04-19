@@ -447,20 +447,6 @@ func (self BarrierOption) isNXS() bool {
     }
 }
 
-// PStateField represents one of PSTATE field combinations.
-type PStateField uint8
-
-const (
-    UAO      PStateField = 0b000_011
-    PAN      PStateField = 0b000_100
-    SPSel    PStateField = 0b000_101
-    SSBS     PStateField = 0b011_001
-    DIT      PStateField = 0b011_010
-    TCO      PStateField = 0b011_100
-    DAIFSet  PStateField = 0b011_110
-    DAIFClr  PStateField = 0b011_111
-)
-
 type (
     ATOption    uint16  // ATOption represents one of the Address Translation options.
     BRBOption   uint16  // BRBOption represents one of the Branch Record Buffer options.

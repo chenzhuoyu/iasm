@@ -1578,7 +1578,7 @@ SYM_CHECKS = {
     Sym.SME_OPTION   : 'isSMEOption(%s)',
     Sym.TLBI_OPTION  : 'isTLBIOption(%s)',
     Sym.TLBIP_OPTION : 'isTLBIPOption(%s)',
-    Sym.PSTATE_FIELD : 'isPState(%s)',
+    Sym.PSTATE_FIELD : 'isPStateField(%s)',
     Sym.SYSREG       : 'isSysReg(%s)',
     Sym.TARGETS      : 'isTargets(%s)',
 }
@@ -1612,6 +1612,7 @@ IMM_SPECIAL_CHECKS = {
     'MOV_MOVN_64_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 64, true)' },
     'MOV_MOVZ_32_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 32, false)' },
     'MOV_MOVZ_64_movewide' : { 'hw:imm16'        : 'isMOVxImm(%s, 64, false)' },
+    'MSR_SI_pstate'        : { 'CRm'             : 'isPStateImm(v0, %s)' },
     'FMOV_D_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
     'FMOV_H_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
     'FMOV_S_floatimm'      : { 'imm8'            : 'isFpImm8(%s)' },
@@ -2291,6 +2292,7 @@ IMM_SPECIAL_ENCODER = {
     'MOV_MOVN_64_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 64, true)' },
     'MOV_MOVZ_32_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 32, false)' },
     'MOV_MOVZ_64_movewide' : { 'hw:imm16'        : 'asMOVxImm(%s, 64, false)' },
+    'MSR_SI_pstate'        : { 'CRm'             : 'asPStateImm(sa_pstatefield, %s)' },
     'FMOV_D_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
     'FMOV_H_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
     'FMOV_S_floatimm'      : { 'imm8'            : 'asFpImm8(%s)' },
@@ -2412,6 +2414,13 @@ SPECIAL_REGS = {
     'sa_cond'   : 'uint32(%s.(ConditionCode))',
     'sa_cond_1' : 'uint32(%s.(ConditionCode) ^ 1)',
     'sa_label'  : '%s.(*asm.Label)',
+}
+
+SYSREG_ENCODER = {
+    'MRRS_RS_systemmovepr' : '%s.(SystemRegister).r()',
+    'MRS_RS_systemmove'    : '%s.(SystemRegister).r()',
+    'MSRR_SR_systemmovepr' : '%s.(SystemRegister).w()',
+    'MSR_SR_systemmove'    : '%s.(SystemRegister).w()',
 }
 
 REWRITE_FIELDS = {
@@ -3059,13 +3068,13 @@ def encode_operand(
                 if optcond:
                     raise RuntimeError('optional pstatefield is not supported')
                 else:
-                    vals['sa_pstatefield'] = 'uint32(%s.(PStateField)) << 4' % name
+                    vals['sa_pstatefield'] = 'asPStateField(%s).encode()' % name
 
             case Sym.SYSREG:
                 if optcond:
                     raise RuntimeError('optional sysreg is not supported')
                 else:
-                    vals['sa_systemreg'] = 'uint32(%s.(SystemRegister))' % name
+                    vals['sa_systemreg'] = SYSREG_ENCODER[form.enctab.name] % name
 
             case Sym.TARGETS:
                 expr = '%s.(BranchTarget)' % name

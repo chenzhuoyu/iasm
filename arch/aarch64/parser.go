@@ -56,8 +56,9 @@ func (self *_ParserImpl) eval(p int) int64 {
     return r
 }
 
-func (self *_ParserImpl) name(tk asm.Token) (string, asm.Register) {
+func (self *_ParserImpl) name(tk asm.Token) (asm.Register, string, interface{}) {
     var ok bool
+    var sv interface{}
     var rx asm.Register
 
     /* normal registers are case-insensitive */
@@ -67,18 +68,23 @@ func (self *_ParserImpl) name(tk asm.Token) (string, asm.Register) {
     key := strings.ToUpper(tk.Str)
 
     /* symbols, case-sensitive */
-    if _, ok = _Symbols[tk.Str]; ok {
-        return tk.Str, nil
+    if sv, ok = _Symbols[tk.Str]; ok {
+        return nil, tk.Str, sv
     }
 
     /* core registers */
     if rx, ok = _Registers[key]; ok {
-        return "", rx
+        return rx, "", nil
+    }
+
+    /* pstate fields, case-sensitive */
+    if rx, ok = _PStateTab[tk.Str]; ok {
+        return rx, "", nil
     }
 
     /* system registers, case sensitive */
     if rx, ok = _SysRegisters[tk.Str]; ok {
-        return "", rx
+        return rx, "", nil
     }
 
     /* must be vector registers */
@@ -116,7 +122,7 @@ func (self *_ParserImpl) name(tk asm.Token) (string, asm.Register) {
         } else if im, ok := _VecIndexModes[pfx]; !ok {
             panic(self.err(pos, "invalid vector index mode"))
         } else {
-            return "", rx.(_VReg).toIndex(im, uint8(idx))
+            return rx.(_VReg).toIndex(im, uint8(idx)), "", nil
         }
     }
 
@@ -130,7 +136,7 @@ func (self *_ParserImpl) name(tk asm.Token) (string, asm.Register) {
     } else if vf, ok := _VecFormats[pfx]; !ok {
         panic(self.err(tk.Pos, "invalid arrangement specifier"))
     } else {
-        return "", rx.(_VReg).toVec(vf)
+        return rx.(_VReg).toVec(vf), "", nil
     }
 }
 
@@ -177,10 +183,10 @@ func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
 
             /* registers or symbols */
             case tt == asm.TokenName: {
-                if sym, reg := self.name(tk); reg != nil {
+                if reg, name, value := self.name(tk); reg != nil {
                     ins.Reg(reg)
                 } else {
-                    ins.Sym(sym)
+                    ins.Sym(name, value)
                 }
             }
 

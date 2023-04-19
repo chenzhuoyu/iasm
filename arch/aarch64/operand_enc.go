@@ -94,6 +94,26 @@ func asLSLShift(v interface{}, n uint64) uint32 {
     return uint32((-sh % n) << 6 | (n - sh - 1))
 }
 
+func asPStateImm(r uint32, v interface{}) uint32 {
+    if x, ok := asUint64(v); !ok || x > _PStateMax[PStateField(r >> 1)] {
+        panic("aarch64: not a valid PState Imm")
+    } else {
+        return (r & 0x0f) | uint32(x)
+    }
+}
+
+func asPStateField(v interface{}) PStateField {
+    if s, ok := v.(PStateField); ok {
+        return s
+    } else if r, ok := v.(SystemRegister); !ok {
+        panic("aarch64: not a valid PState Field")
+    } else if x, ok := _SysRegPStateMap[r]; !ok {
+        panic("aarch64: not a valid PState Field")
+    } else {
+        return x
+    }
+}
+
 func asBarrierOption(v interface{}) uint32 {
     if x, ok := v.(BarrierOption); ok {
         return uint32(x)

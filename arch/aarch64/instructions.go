@@ -46827,7 +46827,7 @@ func (self *Program) MRRS(v0, v1, v2 interface{}) *Instruction {
         self.Arch.Require(FEAT_SYSREG128)
         p.Domain = DomainSystem
         sa_xt := uint32(v0.(asm.Register).ID())
-        sa_systemreg := uint32(v2.(SystemRegister))
+        sa_systemreg := v2.(SystemRegister).r()
         return p.setins(systemmovepr(
             1,
             ubfx(sa_systemreg, 6, 1),
@@ -46856,7 +46856,7 @@ func (self *Program) MRS(v0, v1 interface{}) *Instruction {
     if isXr(v0) && isSysReg(v1) {
         p.Domain = DomainSystem
         sa_xt := uint32(v0.(asm.Register).ID())
-        sa_systemreg := uint32(v1.(SystemRegister))
+        sa_systemreg := v1.(SystemRegister).r()
         return p.setins(systemmove(
             1,
             ubfx(sa_systemreg, 6, 1),
@@ -46902,16 +46902,16 @@ func (self *Program) MRS(v0, v1 interface{}) *Instruction {
 func (self *Program) MSR(v0, v1 interface{}) *Instruction {
     p := self.alloc("MSR", 2, asm.Operands { v0, v1 })
     // MSR  <pstatefield>, #<imm>
-    if isPState(v0) && isUimm4(v1) {
+    if isPStateField(v0) && isPStateImm(v0, v1) {
         p.Domain = DomainSystem
-        sa_pstatefield := uint32(v0.(PStateField)) << 4
-        sa_imm := asUimm4(v1)
+        sa_pstatefield := asPStateField(v0).encode()
+        sa_imm := asPStateImm(sa_pstatefield, v1)
         return p.setins(pstate(ubfx(sa_pstatefield, 7, 3), sa_imm, ubfx(sa_pstatefield, 4, 3), 31))
     }
     // MSR  (<systemreg>|S<op0>_<op1>_<Cn>_<Cm>_<op2>), <Xt>
     if isSysReg(v0) && isXr(v1) {
         p.Domain = DomainSystem
-        sa_systemreg := uint32(v0.(SystemRegister))
+        sa_systemreg := v0.(SystemRegister).w()
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmove(
             0,
@@ -46943,7 +46943,7 @@ func (self *Program) MSRR(v0, v1, v2 interface{}) *Instruction {
     if isSysReg(v0) && isXr(v1) && isXr(v2) && isNextReg(v2, v1, 1) {
         self.Arch.Require(FEAT_SYSREG128)
         p.Domain = DomainSystem
-        sa_systemreg := uint32(v0.(SystemRegister))
+        sa_systemreg := v0.(SystemRegister).w()
         sa_xt := uint32(v1.(asm.Register).ID())
         return p.setins(systemmovepr(
             0,

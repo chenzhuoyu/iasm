@@ -264,7 +264,6 @@ func isFpBits       (v interface{}) bool { x, f := asUint64(v) ; return f && x >
 
 func isMod          (v interface{}) bool { _, f := v.(Modifier)        ; return f }
 func isIndex        (v interface{}) bool { _, f := v.(IndexMode)       ; return f }
-func isPState       (v interface{}) bool { _, f := v.(PStateField)     ; return f }
 func isBrCond       (v interface{}) bool { _, f := v.(ConditionCode)   ; return f }
 func isSysReg       (v interface{}) bool { _, f := v.(SystemRegister)  ; return f }
 func isOption       (v interface{}) bool { _, f := v.(BarrierOption)   ; return f || isUimm4(v) }
@@ -370,5 +369,22 @@ func isBFxWidth(i, w interface{}, n uint64) bool {
         return false
     } else {
         return vw >= 1 && vi <= n - 1 && vw <= n - vi
+    }
+}
+
+func isPStateImm(r, v interface{}) bool {
+    x, ok := asUint64(v)
+    return ok && x <= _PStateMax[asPStateField(r)]
+}
+
+func isPStateField(v interface{}) bool {
+    if _, ok := v.(PStateField); ok {
+        return ok
+    } else if r, ok := v.(SystemRegister); !ok {
+        return false
+    } else if _, ok := _SysRegPStateMap[r]; !ok {
+        return false
+    } else {
+        return true
     }
 }
