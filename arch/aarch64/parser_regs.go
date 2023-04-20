@@ -332,7 +332,7 @@ var _Registers = map[string]asm.Register {
     "Q31" : Q31,
 }
 
-var _VecRegisters = map[string]asm.Register {
+var _VecRegisters = map[string]_VReg {
     "V0"  : _V0,
     "V1"  : _V1,
     "V2"  : _V2,

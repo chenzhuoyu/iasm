@@ -213,7 +213,7 @@ func (self *Parser) nest(nest int, repo Repository) (*Expr, error) {
         return nil, err
     }
 
-    /* must follows with a ')' */
+    /* must follows with a ")" */
     if ntk, err = self.next(); err != nil {
         return nil, err
     } else if ntk.tag != _T_punc || ntk.u64 != ')' {
@@ -298,6 +298,11 @@ func (self *Parser) expr(prec int, nest int, repo Repository) (*Expr, error) {
     } else {
         return self.term(prec, nest, repo)
     }
+}
+
+// Pos returns the current parsing position, in characters.
+func (self *Parser) Pos() int {
+    return self.pos
 }
 
 // Parse parses the expression, and returns it's AST tree.

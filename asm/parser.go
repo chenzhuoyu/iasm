@@ -40,6 +40,8 @@ const (
     PuncRBrace
     PuncLIndex
     PuncRIndex
+    PuncLCurly
+    PuncRCurly
     PuncDot
     PuncComma
     PuncColon
@@ -64,6 +66,8 @@ var _PuncNames = map[Punctuation]string {
     PuncRBrace  : ")",
     PuncLIndex  : "[",
     PuncRIndex  : "]",
+    PuncLCurly  : "{",
+    PuncRCurly  : "}",
     PuncDot     : ".",
     PuncComma   : ",",
     PuncColon   : ":",
@@ -169,9 +173,9 @@ type SyntaxError struct {
 // Error implements the error interface.
 func (self *SyntaxError) Error() string {
     if self.Pos < 0 {
-        return fmt.Sprintf("%s at line %d", self.Reason, self.Row)
+        return fmt.Sprintf("Syntax error at line %d: %s", self.Row, self.Reason)
     } else {
-        return fmt.Sprintf("%s at %d:%d", self.Reason, self.Row, self.Pos + 1)
+        return fmt.Sprintf("Syntax error at [%d:%d]: %s", self.Row, self.Pos + 1, self.Reason)
     }
 }
 
@@ -375,6 +379,8 @@ func (self *Tokenizer) Read() Token {
         case ')'  : t = tokenPunc(p, PuncRBrace)
         case '['  : t = tokenPunc(p, PuncLIndex)
         case ']'  : t = tokenPunc(p, PuncRIndex)
+        case '{'  : t = tokenPunc(p, PuncLCurly)
+        case '}'  : t = tokenPunc(p, PuncRCurly)
         case '.'  : t = tokenPunc(p, PuncDot)
         case ','  : t = tokenPunc(p, PuncComma)
         case ':'  : t = tokenPunc(p, PuncColon)

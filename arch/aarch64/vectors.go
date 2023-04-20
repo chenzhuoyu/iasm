@@ -76,6 +76,17 @@ func Vec4(v0, v1, v2, v3 VRegister) Vector {
     return _Vec4(mkvec(v0))
 }
 
+// VecN creates a vector with specified first register and size.
+func VecN(v0 VRegister, size int) Vector {
+    switch size {
+        case 1  : return _Vec1(mkvec(v0))
+        case 2  : return _Vec2(mkvec(v0))
+        case 3  : return _Vec3(mkvec(v0))
+        case 4  : return _Vec4(mkvec(v0))
+        default : panic("aarch64: invalid vector size")
+    }
+}
+
 func (_Vec1) Size() uint8 { return 1 }
 func (_Vec2) Size() uint8 { return 2 }
 func (_Vec3) Size() uint8 { return 3 }
@@ -117,6 +128,15 @@ type (
     _IndexedVec4 uint16
 )
 
+var _MaxVecIndex = map[VecIndexMode]uint8 {
+    ModeB  : 15,
+    Mode4B : 3,
+    ModeH  : 7,
+    Mode2H : 3,
+    ModeS  : 3,
+    ModeD  : 1,
+}
+
 func mkidx(v VidxRegister, i uint8) uint16 {
     return (uint16(i) << 8) | (uint16(v.IndexMode()) << 5) | uint16(v.ID())
 }
@@ -128,6 +148,12 @@ func checkidx(v ...VidxRegister) {
         } else if x.IndexMode() != v[i].IndexMode() {
             panic("aarch64: indexed vector elements must have identical indexing modes")
         }
+    }
+}
+
+func checkpos(v VidxRegister, i uint8) {
+    if i > _MaxVecIndex[v.IndexMode()] {
+        panic("aarch64: vector element index out of bounds")
     }
 }
 
@@ -151,25 +177,40 @@ func formatidx(v uint8, m VecIndexMode, n int, x uint8) string {
 
 // Index1 creates an indexed vector with a single element.
 func Index1(v0 VidxRegister, i uint8) IndexedVector {
+    checkpos(v0, i)
     return _IndexedVec1(mkidx(v0, i))
 }
 
 // Index2 creates an indexed vector with two elements of the same structure.
 func Index2(v0, v1 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1)
+    checkpos(v0, i)
     return _IndexedVec2(mkidx(v0, i))
 }
 
 // Index3 creates an indexed vector with 3 elements of the same structure.
 func Index3(v0, v1, v2 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1, v2)
+    checkpos(v0, i)
     return _IndexedVec3(mkidx(v0, i))
 }
 
 // Index4 creates an indexed vector with 4 elements of the same structure.
 func Index4(v0, v1, v2, v3 VidxRegister, i uint8) IndexedVector {
     checkidx(v0, v1, v2, v3)
+    checkpos(v0, i)
     return _IndexedVec4(mkidx(v0, i))
+}
+
+// IndexN creates an indexed vector with specified first register and size.
+func IndexN(v0 VidxRegister, size int, i uint8) IndexedVector {
+    switch checkpos(v0, i); size {
+        case 1  : return _IndexedVec1(mkidx(v0, i))
+        case 2  : return _IndexedVec2(mkidx(v0, i))
+        case 3  : return _IndexedVec3(mkidx(v0, i))
+        case 4  : return _IndexedVec4(mkidx(v0, i))
+        default : panic("aarch64: invalid vector size")
+    }
 }
 
 func (_IndexedVec1) Size() uint8 { return 1 }
