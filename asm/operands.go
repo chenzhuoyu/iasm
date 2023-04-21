@@ -77,8 +77,9 @@ func (self *Label) Evaluate() (int64, error) {
 
 // MemoryAddressExtension represents an arch-specific memory address extension.
 type MemoryAddressExtension interface {
+    fmt.Stringer
     tag.Disposable
-    String(MemoryAddress) string
+    Display(MemoryAddress) string
     EnsureValid(MemoryAddress)
     MemoryAddressExtension()
 }
@@ -99,7 +100,7 @@ func (self MemoryAddress) String() string {
     if self.Ext == nil {
         return "(invalid)"
     } else {
-        return self.Ext.String(self)
+        return self.Ext.Display(self)
     }
 }
 
@@ -130,8 +131,9 @@ func (self RelativeOffset) String() string {
 
 // MemoryOperandExtension represents an arch-specific memory operand extension.
 type MemoryOperandExtension interface {
+    fmt.Stringer
     tag.Disposable
-    String(*MemoryOperand) string
+    Display(*MemoryOperand) string
     EnsureValid(*MemoryOperand)
     MemoryOperandExtension()
 }
@@ -155,7 +157,7 @@ func (self *MemoryOperand) String() string {
     if self.Ext == nil {
         return "(invalid)"
     } else {
-        return self.Ext.String(self)
+        return self.Ext.Display(self)
     }
 }
 

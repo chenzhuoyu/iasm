@@ -61,40 +61,47 @@ class HardcodedExtend(NamedTuple):
 class Account:
     name: str
     desc: str
+    altr: bool
     defv: str | HardcodedExtend
 
-    def __init__(self, name: str, desc: str, defv: str | HardcodedExtend):
+    def __init__(self, name: str, desc: str, altr: bool, defv: str | HardcodedExtend):
         self.name = name
         self.desc = desc
+        self.altr = altr
         self.defv = defv
 
     def __repr__(self) -> str:
-        if not self.defv:
-            return '%s %s' % (self.name, self.desc)
-        else:
-            return '%s %s (default = %s)' % (self.name, self.desc, self.defv)
+        return '%s %s%s%s' % (
+            self.name,
+            self.desc,
+            '' if not self.altr else ' (altr)',
+            '' if not self.defv else ' (default = %s)' % self.defv,
+        )
 
 class Definition:
     name: str
     desc: str
+    altr: bool
     defv: str | HardcodedExtend
     refs: list[str]
     bits: dict[str, set[str]]
 
-    def __init__(self, name: str, desc: str, defv: str | HardcodedExtend, refs: list[str], bits: dict[str, set[str]]):
+    def __init__(self, name: str, desc: str, altr: bool, defv: str | HardcodedExtend, refs: list[str], bits: dict[str, set[str]]):
         self.name = name
         self.desc = desc
+        self.altr = altr
         self.defv = defv
         self.refs = refs
         self.bits = bits
 
     def __repr__(self) -> str:
-        return '%s %s (=%s) [%s]%s' % (
+        return '%s %s (=%s) [%s]%s%s' % (
             self.name,
             self.desc,
             ':'.join(self.refs[::-1]),
             ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items()),
-            '' if not self.defv else ' (default = %s)' % str(self.defv)
+            '' if not self.altr else ' (altr)',
+            '' if not self.defv else ' (default = %s)' % str(self.defv),
         )
 
 class Instruction:
@@ -729,16 +736,16 @@ class Mod(NamedTuple):
 
 class Mem(NamedTuple):
     base   : Reg
-    offs   : tuple[Imm | Reg | Lit, bool] | None = None
-    index  : Literal['pre', 'post'] | None       = None
-    extend : tuple[Mod, bool] | None             = None
+    offs   : tuple[Imm | Reg | Lit, bool] | None       = None
+    index  : Literal['pre', 'post', 'post-reg'] | None = None
+    extend : tuple[Mod, bool] | None                   = None
 
     def __str__(self) -> str:
         ret = []
         ret.append('[')
         ret.append(self.base)
 
-        if self.offs and self.index != 'post':
+        if self.offs and self.index not in {'post', 'post-reg'}:
             v, o = self.offs
             ret.append('%s, %s%s' % ('{' if o else '', str(v), '}' if o else ''))
 
@@ -750,7 +757,7 @@ class Mem(NamedTuple):
             case 'pre':
                 ret.append(']!')
 
-            case 'post':
+            case 'post' | 'post-reg':
                 assert self.offs, 'missing index for post index'
                 v, o = self.offs
                 ret.append(']%s+%s%s' % ('{' if o else '', str(v), '}' if o else ''))
@@ -1208,12 +1215,14 @@ class AsmTemplate:
 
                 if not isinstance(mem, Mem):
                     req.append(val)
-                elif not isinstance(val, (Reg, Imm, Lit)):
-                    req.append(val)
                 elif mem.offs is not None or mem.index is not None:
                     req.append(val)
-                else:
+                elif isinstance(val, Reg):
+                    req[-1] = Mem(mem.base, (val, False), 'post-reg', mem.extend)
+                elif isinstance(val, (Imm, Lit)):
                     req[-1] = Mem(mem.base, (val, False), 'post', mem.extend)
+                else:
+                    req.append(val)
 
         if self.skip('{'):
             if req:
@@ -1397,6 +1406,7 @@ for expl in isadocs.findall('.//explanation'):
         raise AssertionError('invalid explanation')
 
     defv = ''
+    altr = False
     desc = symbol.text or ''
     name = symbol.attrib['link']
     status('* Field Explanation:', name)
@@ -1408,9 +1418,12 @@ for expl in isadocs.findall('.//explanation'):
         assert isinstance(symdef, Element)
         dest, (refs, bits), text = symdef.attrib['encodedin'], parse_symdef(symdef), ' '.join(symdef.itertext())
 
-    if mt := re.search('[Dd]efaults to #?([^., ]+)', text):
+    if re.search(r'When\s+option<0>\s+is set to\s+\d', text):
+        altr = True
+
+    if mt := re.search(r'[Dd]efaults to #?([^., ]+)', text):
         defv = mt.group(1)
-    elif mt := re.search('[Dd]efaulting to ([^, ]+)', text):
+    elif mt := re.search(r'[Dd]efaulting to ([^, ]+)', text):
         defv = mt.group(1)
 
     enclist = [
@@ -1476,9 +1489,9 @@ for expl in isadocs.findall('.//explanation'):
             dest = sym
 
         if refs is None or bits is None:
-            defs = Account(dest, desc, defv)
+            defs = Account(dest, desc, altr, defv)
         else:
-            defs = Definition(dest, desc, defv, refs, bits)
+            defs = Definition(dest, desc, altr, defv, refs, bits)
 
         tab = fieldtab.setdefault(enc, {})
         tab[name] = defs
@@ -2018,6 +2031,9 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 else:
                     yield Or(*optcond, REG_CHECKS[val.name] % name)
 
+            elif val.altr is not None:
+                raise RuntimeError('union register is not supported')
+
             elif val.size is not None:
                 if val.size == 'sa_r':
                     yield COMBREG_CHECKS[val.name] % name
@@ -2188,10 +2204,11 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
             if val.extend is None:
                 match val.index:
-                    case None   : yield 'mext(%s) == Basic' % name
-                    case 'pre'  : yield 'mext(%s) == PreIndex' % name
-                    case 'post' : yield 'mext(%s) == PostIndex' % name
-                    case _      : raise RuntimeError('invalid memory index')
+                    case None       : yield 'mext(%s) == Basic' % name
+                    case 'pre'      : yield 'mext(%s) == PreIndex' % name
+                    case 'post'     : yield 'mext(%s) == PostIndex' % name
+                    case 'post-reg' : yield 'mext(%s) == PostIndexReg' % name
+                    case _          : raise RuntimeError('invalid memory index')
 
             elif val.index is None:
                 yield from match_modifier(
@@ -2807,6 +2824,7 @@ def encode_operand(
     val      : Reg | Vec | Mem | Mod | Imm | Lit | Sym,
     vals     : dict[str, str | tuple[str, str, dict[str, str]]],
     opts     : dict[str, str | list[str] | tuple[str, list[str]]],
+    special  : list[And | str],
     *optcond : str,
 ):
     if isinstance(val, Reg):
@@ -2832,6 +2850,9 @@ def encode_operand(
                     vals[val.name] = (expr, 'uint32(0b%s)' % defr[1:-1], {})
                 else:
                     raise RuntimeError('invalid register default value: ' + defr)
+
+        elif val.altr is not None:
+            raise RuntimeError('union register is not supported')
 
         elif val.mode is not None and val.vidx is not None:
             if not val.name.startswith('sa_v'):
@@ -2897,12 +2918,15 @@ def encode_operand(
             vals[val.vidx.name] = 'uint32(%s.(IndexedVector).Index())' % name
 
     elif isinstance(val, Mem):
+        altr = None
+        base = val.base
+
         if optcond:
             raise RuntimeError('optional mem operand is not supported')
-        elif val.base.mode is not None or val.base.vidx is not None:
+        elif base.mode is not None or base.vidx is not None:
             raise RuntimeError('vector base is not supported')
         else:
-            vals[val.base.name] = 'uint32(mbase(%s).ID())' % name
+            vals[base.name] = 'uint32(mbase(%s).ID())' % name
 
         if val.offs is not None:
             off = val.offs[0]
@@ -2918,10 +2942,9 @@ def encode_operand(
                     raise RuntimeError('invalid offset register: vector')
                 elif off.mode is not None:
                     raise RuntimeError('invalid offset register: dyn or indexed vector')
-                elif off.altr is not None:
-                    vals[off.altr] = 'uint32(midx(%s).ID())' % name
                 else:
-                    vals[off.name] = 'uint32(midx(%s).ID())' % name
+                    altr = off.altr
+                    vals[off.altr or off.name] = 'uint32(midx(%s).ID())' % name
 
         if val.extend is not None:
             ext = val.extend[0]
@@ -2931,6 +2954,16 @@ def encode_operand(
                 raise RuntimeError('extension conflits with indexing')
             else:
                 encode_modifier(form, 'mext(%s)' % name, ext, vals, opts, opx, 'isMod(mext(%s))' % name)
+
+        if altr and form.fields[altr].altr:
+            for fn, fv in form.fields.items():
+                if fv.name == 'option':
+                    break
+            else:
+                raise RuntimeError('cannot find "option" field')
+
+            special.append(And('isWr(%s)' % altr, '%s & 1 != 0' % fn))
+            special.append(And('isXr(%s)' % altr, '%s & 1 != 1' % fn))
 
     elif isinstance(val, Mod):
         encode_modifier(form, name, val, vals, opts, bool(optcond), *optcond)
@@ -3417,20 +3450,22 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
 
         vals = OnceDict()
         opts = OnceDict()
+        spcond = []
         lastcond = None
 
         for i, val in enumerate(form.inst.operands.req):
             if i < nfix:
-                encode_operand(form, 'v%d' % i, val, vals, opts)
+                encode_operand(form, 'v%d' % i, val, vals, opts, spcond)
             else:
-                encode_operand(form, 'vv[%d]' % (i - nfix), val, vals, opts)
+                encode_operand(form, 'vv[%d]' % (i - nfix), val, vals, opts, spcond)
 
         for i, val in enumerate(form.inst.operands.opt):
             if not isinstance(val, (Reg, Mod, Imm, Sym)):
                 raise RuntimeError('invalid optional operand')
             else:
                 idx = len(form.inst.operands.req) - nfix + i
-                encode_operand(form, 'vv[%d]' % idx, val, vals, opts, 'len(vv) == %d' % len(form.inst.operands.opt))
+                cond = 'len(vv) == %d' % len(form.inst.operands.opt)
+                encode_operand(form, 'vv[%d]' % idx, val, vals, opts, spcond, cond)
 
         for var in sorted(opts):
             if not isinstance(vals[var], tuple):
@@ -3704,6 +3739,25 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
                 cc.dedent()
                 cc.line('}')
+
+        if spcond:
+            if len(spcond) == 1 or len(spcond) + cc.level * 4 + 5 <= MAX_LINE_WIDTH:
+                cc.line('if %s {' % ' || '.join(map(str, spcond)))
+                cc.indent()
+
+            else:
+                hd, *rem, tr = spcond
+                cc.line('if %s ||' % hd)
+
+                for v in rem:
+                    cc.line('   %s ||' % v)
+
+                cc.line('   %s {' % tr)
+                cc.indent()
+
+            cc.line('panic("aarch64: invalid combination of operands for %s")' % mnemonic)
+            cc.dedent()
+            cc.line('}')
 
         for arg, exp in form.args.items():
             if arg.startswith('__ensure__'):

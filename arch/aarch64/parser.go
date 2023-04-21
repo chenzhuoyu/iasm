@@ -4,7 +4,6 @@ import (
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/expr`
 )
 
 type _VecElem struct {
@@ -19,12 +18,27 @@ var _VectorModes = map[VecIndexMode]bool {
     ModeD: true,
 }
 
+type _SymPair struct {
+    sym string
+    val interface{}
+}
+
+func mksym(sym string, val interface{}) (p _SymPair) {
+    p.sym = sym
+    p.val = val
+    return
+}
+
 type _ParserImpl struct {
-    lex *asm.Tokenizer
+    lex       *asm.Tokenizer
+    isMemCopy bool
 }
 
 func mkparser(lex *asm.Tokenizer) *_ParserImpl {
-    return &_ParserImpl { lex }
+    return &_ParserImpl {
+        lex       : lex,
+        isMemCopy : false,
+    }
 }
 
 func (self *_ParserImpl) err(pos int, msg string) *asm.SyntaxError {
@@ -36,71 +50,26 @@ func (self *_ParserImpl) err(pos int, msg string) *asm.SyntaxError {
     }
 }
 
-func (self *_ParserImpl) eval(p int) int64 {
-    var r int64
-    var e error
-
-    /* searching start */
-    n := 1
-    q := p + 1
-
-    /* find the end of expression */
-    for n > 0 && q < len(self.lex.Src) {
-        switch self.lex.Src[q] {
-            case '[' : q++; n++
-            case ']' : q++; n--
-            default  : q++
-        }
-    }
-
-    /* check for EOF */
-    if n != 0 {
-        panic(self.err(q, "unexpected EOF when parsing expressions"))
-    }
-
-    /* evaluate the expression */
-    if r, e = expr.Eval(string(self.lex.Src[p:q - 1]), nil); e != nil {
-        panic(self.err(p, "cannot evaluate expression: " + e.Error()))
-    }
-
-    /* skip the last "]" */
-    self.lex.Pos = q
-    return r
-}
-
-func (self *_ParserImpl) delim(dp asm.Punctuation) bool {
-    pos := self.lex.Pos
-    row := self.lex.Row
-    tok := self.lex.Next()
-
-    /* check for the punctuation */
-    if tok.Ty == asm.TokenPunc && tok.Punc() == dp {
-        return true
-    }
-
-    /* otherwise rewind the tokenizer */
-    self.lex.Pos = pos
-    self.lex.Row = row
-    return false
+func (self *_ParserImpl) eval() (ret int64) {
+    ret = self.lex.Eval(nil)
+    self.lex.ExpectPunc(asm.PuncRIndex)
+    return
 }
 
 func (self *_ParserImpl) elem(tk asm.Token) (ret _VecElem) {
     var sp int
     var ok bool
 
-    /* the first token must be a name */
-    if tk.Ty != asm.TokenName {
+    /* the first token must be a name, and the next one must be a dot */
+    if tk.Ty == asm.TokenName {
+        self.lex.ExpectPuncNow(asm.PuncDot)
+    } else {
         panic(self.err(tk.Pos, "vector register expected"))
     }
 
     /* must be vector registers */
-    if ret.reg, ok = _VecRegisters[strings.ToUpper(tk.Str)]; !ok {
+    if ret.reg, ok = _VectorRegisters[strings.ToUpper(tk.Str)]; !ok {
         panic(self.err(tk.Pos, "invalid vector register name: " + tk.Str))
-    }
-
-    /* must be a dot */
-    if tk = self.lex.Read(); tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncDot {
-        panic(self.err(tk.Pos, `"." expected`))
     }
 
     /* parse the vector arrangement */
@@ -116,71 +85,33 @@ func (self *_ParserImpl) elem(tk asm.Token) (ret _VecElem) {
     return
 }
 
-func (self *_ParserImpl) name(tk asm.Token) (asm.Register, string, interface{}) {
-    var ok bool
-    var sv interface{}
-    var rx asm.Register
+func (self *_ParserImpl) name(tk asm.Token) interface{} {
+    ident := tk.Str
+    upper := strings.ToUpper(ident)
 
-    /* the first token must be a name */
-    if tk.Ty != asm.TokenName {
-        panic(self.err(tk.Pos, "symbol or register expected"))
-    }
+    /* symbols, modifiers and trivial register names */
+    if sym, ok := _Symbols[ident]       ; ok { return mksym(ident, sym) }
+    if val, ok := _PStateTab[ident]     ; ok { return val }
+    if mod, ok := _Modifiers[upper]     ; ok { return mod(self.modsize()) }
+    if reg, ok := _SysRegisters[ident]  ; ok { return reg }
+    if reg, ok := _CoreRegisters[upper] ; ok { return reg }
+    if reg, ok := _SimdRegisters[upper] ; ok { return reg }
 
-    /* symbols, case-sensitive */
-    if sv, ok = _Symbols[tk.Str]; ok {
-        return nil, tk.Str, sv
-    }
-
-    /* core registers */
-    if rx, ok = _Registers[strings.ToUpper(tk.Str)]; ok {
-        return rx, "", nil
-    }
-
-    /* pstate fields, case-sensitive */
-    if rx, ok = _PStateTab[tk.Str]; ok {
-        return rx, "", nil
-    }
-
-    /* system registers, case sensitive */
-    if rx, ok = _SysRegisters[tk.Str]; ok {
-        return rx, "", nil
-    }
-
-    /* must be vector registers */
-    ivr := false
-    idx := int64(0)
-    reg := self.elem(tk)
-    pos := self.lex.Pos
-    row := self.lex.Row
-
-    /* check for indexed vector register */
-    if tx := self.lex.Read(); tx.Ty == asm.TokenPunc && tx.Punc() == asm.PuncLIndex {
-        ivr = true
-        idx = self.eval(self.lex.Pos)
-    }
-
-    /* indexed vector register */
-    if ivr {
-        if im, ok := _VecIndexModes[reg.fmt]; !ok {
-            panic(self.err(pos, "invalid vector index mode"))
-        } else if idx < 0 || idx > int64(_MaxVecIndex[im]) {
+    /* parse the register, then check if it's an indexed vector register */
+    if v := self.elem(tk); !self.lex.MatchPuncNow(asm.PuncLIndex) {
+        if vf, ok := _VecFormats[v.fmt]; !ok {
+            panic(self.err(tk.Pos, "invalid arrangement specifier"))
+        } else {
+            return v.reg.toVec(vf)
+        }
+    } else {
+        if im, ok := _VecIndexModes[v.fmt]; !ok {
+            panic(self.err(self.lex.Pos, "invalid vector index mode"))
+        } else if idx := self.eval(); idx < 0 || idx > int64(_MaxVecIndex[im]) {
             panic(self.err(self.lex.Pos, "vector index out of bounds"))
         } else {
-            return reg.reg.toIndex(im, uint8(idx)), "", nil
+            return v.reg.toIndex(im, uint8(idx))
         }
-    }
-
-    /* restore lexer state if not an indexed vector register */
-    self.lex.Pos = pos
-    self.lex.Row = row
-
-    /* also, it must have the size prefix */
-    if reg.fmt == "" {
-        panic(self.err(tk.Pos, "invalid arrangement specifier: " + tk.Str))
-    } else if vf, ok := _VecFormats[reg.fmt]; !ok {
-        panic(self.err(tk.Pos, "invalid arrangement specifier"))
-    } else {
-        return reg.reg.toVec(vf), "", nil
     }
 }
 
@@ -194,7 +125,7 @@ func (self *_ParserImpl) vector() asm.Register {
     v0 := self.elem(self.lex.Next())
 
     /* parse all the registers, should be at least one */
-    for nb, vw = 1, v0; self.delim(asm.PuncComma); nb++ {
+    for nb, vw = 1, v0; self.lex.MatchPunc(asm.PuncComma); nb++ {
         tk := self.lex.Next()
         vx, vw = vw, self.elem(tk)
 
@@ -208,106 +139,285 @@ func (self *_ParserImpl) vector() asm.Register {
         }
     }
 
-    /* must end with a "}" */
-    if tk := self.lex.Next(); tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncRCurly {
-        panic(self.err(tk.Pos, "'}' expected"))
-    }
-
-    /* save the tokenizer cursor */
-    pos := self.lex.Pos
-    row := self.lex.Row
-
-    /* found an index bracket, it's a single structure vector */
-    if tk := self.lex.Next(); tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncLIndex {
+    /* must end with a "}", and if then found an index bracket, it's a single structure vector */
+    if self.lex.ExpectPunc(asm.PuncRCurly); !self.lex.MatchPunc(asm.PuncLIndex) {
+        if vf, ok := _VecFormats[v0.fmt]; !ok {
+            panic(self.err(ps, "invalid vector format"))
+        } else {
+            return VecN(v0.reg.toVec(vf), nb)
+        }
+    } else {
         if im, ok := _VecIndexModes[v0.fmt]; !ok || !_VectorModes[im] {
             panic(self.err(ps, "invalid indexed vector format"))
-        } else if idx := self.eval(self.lex.Pos); idx < 0 || idx > int64(_MaxVecIndex[im]) {
+        } else if idx := self.eval(); idx < 0 || idx > int64(_MaxVecIndex[im]) {
             panic(self.err(self.lex.Pos, "vector index out of bounds"))
         } else {
             return IndexN(v0.reg.toIndex(im, 0), nb, uint8(idx))
         }
     }
+}
 
-    /* otherwise it's a multi-structure vector, revert the tokenizer */
+func (self *_ParserImpl) memory() (mem asm.MemoryAddress) {
+    var ok bool
+    var tk asm.Token
+    var rr asm.Register
+
+    /* must be a register */
+    if tk = self.lex.Next(); tk.Ty != asm.TokenName {
+        panic(self.err(tk.Pos, "register expected"))
+    }
+
+    /* find the register */
+    if mem.Base, ok = _CoreRegisters[strings.ToUpper(tk.Str)]; !ok {
+        panic(self.err(tk.Pos, "register expected"))
+    }
+
+    /* base register must be Xr for CPY* instructions, or may also be SP for any other cases */
+    if self.isMemCopy {
+        if !isXr(mem.Base) {
+            panic(self.err(tk.Pos, "X registers expected"))
+        }
+    } else {
+        if !isXrOrSP(mem.Base) {
+            panic(self.err(tk.Pos, "X registers or SP expected"))
+        }
+    }
+
+    /* "[<Xr|SP>]!" (special-case syntax requirement for CPY* instructions) */
+    if self.isMemCopy {
+        mem.Ext = PreIndex
+        self.lex.ExpectPunc(asm.PuncRIndex)
+        self.lex.ExpectPunc(asm.PuncBang)
+        return mem
+    }
+
+    /* "[<Xr|SP>]" or "[<Xr|SP>], #imm" */
+    if !self.lex.MatchPunc(asm.PuncComma) {
+        self.lex.ExpectPunc(asm.PuncRIndex)
+        return self.postindex(mem)
+    }
+
+    /* "[<Xr|SP>, #imm]" or "[<Xr|SP>, #imm]!" */
+    if tk = self.lex.Next(); tk.IsPunc(asm.PuncHash) {
+        val := self.lex.Value(nil)
+        self.lex.ExpectPunc(asm.PuncRIndex)
+        return self.preindex(mem, val)
+    }
+
+    /* must be an identifier (register name) */
+    if tk.Ty != asm.TokenName {
+        panic(self.err(tk.Pos, "index register expected"))
+    }
+
+    /* this identifier must be a register name */
+    if rr, ok = _CoreRegisters[strings.ToUpper(tk.Str)]; !ok {
+        panic(self.err(tk.Pos, "index register expected"))
+    }
+
+    /* may have extension or shift modifier, otherwise it's a basic memory operand */
+    if !self.lex.MatchPunc(asm.PuncComma) {
+        mem.Ext = Basic
+    } else {
+        mem.Ext = self.modifier()
+    }
+
+    /* match the closing "]" */
+    mem.Index = rr
+    self.lex.ExpectPunc(asm.PuncRIndex)
+
+    /* guard for the invalid pre-indexing */
+    if self.lex.MatchPunc(asm.PuncBang) {
+        panic(self.err(self.lex.Pos, "pre-indexing conflits with register indexing"))
+    } else {
+        return mem
+    }
+}
+
+func (self *_ParserImpl) modsize() uint8 {
+    for {
+        tp := self.lex.Pos
+        tr := self.lex.Row
+        tk := self.lex.Read()
+
+        /* check token types */
+        switch tk.Ty {
+            default: {
+                self.lex.Pos = tp
+                self.lex.Row = tr
+                return 0
+            }
+
+            /* simple cases */
+            case asm.TokenEnd   : return 0
+            case asm.TokenInt   : return uint8(tk.Uint)
+            case asm.TokenFp64  : panic(self.err(tk.Pos, "extension or shift amount must be integers"))
+            case asm.TokenSpace : break
+
+            /* maybe unary operators, need further inspections */
+            case asm.TokenPunc: {
+                self.lex.Pos = tp
+                self.lex.Row = tr
+
+                /* only a handful of operators can act as value prefixes */
+                switch tk.Punc() {
+                    case asm.PuncPlus   : break
+                    case asm.PuncMinus  : break
+                    case asm.PuncTilde  : break
+                    case asm.PuncLBrace : break
+                    default             : return 0
+                }
+
+                /* expression must be non-negative */
+                if n := self.lex.Value(nil); n < 0 {
+                    panic(self.err(tk.Pos, "extension or shift amount must be non-negative"))
+                } else {
+                    return uint8(n)
+                }
+            }
+        }
+    }
+}
+
+func (self *_ParserImpl) modifier() Modifier {
+    pos := self.lex.Pos
+    row := self.lex.Row
+    tok := self.lex.Next()
+
+    /* should be an identifier, otherwise it's definately not a modifier */
+    if tok.Ty != asm.TokenName {
+        self.lex.Pos = pos
+        self.lex.Row = row
+        return nil
+    }
+
+    /* construct the modifier */
+    if mod, ok := _Modifiers[strings.ToUpper(tok.Str)]; !ok {
+        panic(self.err(tok.Pos, "invalid modifier"))
+    } else {
+        return mod(self.modsize())
+    }
+}
+
+func (self *_ParserImpl) preindex(mem asm.MemoryAddress, offs int64) asm.MemoryAddress {
+    if !self.lex.MatchPunc(asm.PuncBang) {
+        mem.Ext = Basic
+        mem.Offset = int32(offs & 0xfff)
+        return mem
+    } else {
+        mem.Ext = PreIndex
+        mem.Offset = int32(offs & 0x1ff)
+        return mem
+    }
+}
+
+func (self *_ParserImpl) postindex(mem asm.MemoryAddress) asm.MemoryAddress {
+    pos := self.lex.Pos
+    row := self.lex.Row
+    tok := self.lex.Next()
+
+    /* pre-indexing without offset is only allowed in CPY* instructions */
+    if tok.IsPunc(asm.PuncBang) {
+        panic(self.err(tok.Pos, "pre-indexing without offset is only allowed in CPY* instructions"))
+    }
+
+    /* post-indexing */
+    if tok.IsPunc(asm.PuncComma) {
+        if self.lex.Next().IsPunc(asm.PuncHash) {
+            mem.Ext = PostIndex
+            mem.Offset = int32(self.lex.Value(nil) & 0xfff)
+            return mem
+        }
+    }
+
+    /* does not match either of above, it's a basic memory address */
+    mem.Ext = Basic
     self.lex.Pos = pos
     self.lex.Row = row
+    return mem
+}
 
-    /* convert the vector format */
-    if vf, ok := _VecFormats[v0.fmt]; !ok {
-        panic(self.err(ps, "invalid vector format"))
-    } else {
-        return VecN(v0.reg.toVec(vf), nb)
+func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
+    switch tk := self.lex.Next(); {
+        default: {
+            panic(self.err(tk.Pos, "invalid operand for instruction " + ins.Mnemonic))
+        }
+
+        /* trailing comma, that's an error */
+        case tk.Ty == asm.TokenEnd: {
+            panic(self.err(tk.Pos, "trailing comma is not allowed"))
+        }
+
+        /* special case register for CPY* instructions */
+        case tk.Ty == asm.TokenName && self.isMemCopy: {
+            if reg, ok := self.name(tk).(asm.Register); !ok {
+                panic(self.err(tk.Pos, "register expected"))
+            } else {
+                self.lex.ExpectPunc(asm.PuncBang)
+                ins.Reg(reg)
+            }
+        }
+
+        /* normal registers or symbols */
+        case tk.Ty == asm.TokenName && !self.isMemCopy: {
+            switch v := self.name(tk).(type) {
+                case asm.Register : ins.Reg(v)
+                case Modifier     : ins.Mod(v)
+                case _SymPair     : ins.Sym(v.sym, v.val)
+                default           : panic("unreachable")
+            }
+        }
+
+        /* immediate values */
+        case tk.IsPunc(asm.PuncHash) && !self.isMemCopy: {
+            switch tk = self.lex.Read(); tk.Ty {
+                case asm.TokenInt  : ins.Imm(int64(tk.Uint))
+                case asm.TokenFp64 : ins.FpImm(tk.Fp64)
+                default            : panic(self.err(tk.Pos, "immediate value expected"))
+            }
+        }
+
+        /* register vectors */
+        case tk.IsPunc(asm.PuncLCurly) && !self.isMemCopy: {
+            ins.Reg(self.vector())
+        }
+
+        /* memory operands */
+        case tk.IsPunc(asm.PuncLIndex): {
+            ins.Mem(self.memory())
+        }
     }
 }
 
 func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
-    ff := true
-    tt := asm.TokenEnd
     tk := self.lex.Next()
+    str := tk.Str
 
-    /* must be an instruction */
+    /* must be a name */
     if tk.Ty != asm.TokenName {
         panic(self.err(tk.Pos, "identifier expected"))
-    } else {
-        ins.Mnemonic = strings.ToLower(tk.Str)
     }
 
+    /* mnemonic is case-insensitive */
+    ins.Mnemonic = strings.ToUpper(str)
+    self.isMemCopy = strings.HasPrefix(ins.Mnemonic, "CPY")
+
+    /* check if the instruction has operands */
+    if self.lex.MatchEnd() {
+        return
+    }
+
+    /* construct a placeholder token */
+    tk.Ty = asm.TokenPunc
+    tk.Uint = uint64(asm.PuncComma)
+
     /* parse all the operands */
-    for {
+    for tk.IsPunc(asm.PuncComma) {
+        self.value(ins)
         tk = self.lex.Next()
-        tt = tk.Ty
+    }
 
-        /* check for end of line */
-        if tt == asm.TokenEnd {
-            break
-        }
-
-        /* expect a comma if not the first operand */
-        if !ff {
-            if tt == asm.TokenPunc && tk.Punc() == asm.PuncComma {
-                tk = self.lex.Next()
-            } else {
-                panic(self.err(tk.Pos, "',' expected"))
-            }
-        }
-
-        /* not the first operand anymore */
-        ff = false
-        tt = tk.Ty
-
-        /* parse the operand */
-        switch {
-            default: {
-                panic(self.err(tk.Pos, "invalid operand"))
-            }
-
-            /* registers or symbols */
-            case tt == asm.TokenName: {
-                if reg, name, value := self.name(tk); reg != nil {
-                    ins.Reg(reg)
-                } else {
-                    ins.Sym(name, value)
-                }
-            }
-
-            /* literal values */
-            case tt == asm.TokenPunc && tk.Punc() == asm.PuncHash: {
-                switch tk = self.lex.Next(); tk.Ty {
-                    case asm.TokenInt  : ins.Imm(int64(tk.Uint))
-                    case asm.TokenFp64 : ins.FpImm(tk.Fp64)
-                    default            : panic(self.err(tk.Pos, "literal value expected"))
-                }
-            }
-
-            /* register vectors */
-            case tt == asm.TokenPunc && tk.Punc() == asm.PuncLCurly: {
-                ins.Reg(self.vector())
-            }
-
-            /* memory operands */
-            case tt == asm.TokenPunc && tk.Punc() == asm.PuncLIndex: {
-                panic("iasm: not implemented") // TODO: this
-            }
-        }
+    /* should be the end of instruction */
+    if tk.Ty != asm.TokenEnd {
+        panic(self.err(tk.Pos, "garbage after instruction"))
     }
 }

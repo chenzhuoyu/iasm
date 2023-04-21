@@ -88,7 +88,11 @@ func (self Scale) isMemBase(addr asm.MemoryAddress) bool {
            (_Scales & (1 << self)) != 0                 // `Scale` can only be 0, 1, 2, 4 or 8
 }
 
-func (self Scale) String(addr asm.MemoryAddress) string {
+func (self Scale) String() string {
+    return fmt.Sprintf("Scale(%d)", uint8(self))
+}
+
+func (self Scale) Display(addr asm.MemoryAddress) string {
     var dp int
     var sb strings.Builder
 
@@ -226,7 +230,11 @@ func (self *MemoryOperandExtension) ensureBroadcastValid() {
 func (self *MemoryOperandExtension) Free()                   { freeMemoryOperandExtension(self) }
 func (self *MemoryOperandExtension) MemoryOperandExtension() {}
 
-func (self *MemoryOperandExtension) String(mem *asm.MemoryOperand) string {
+func (self *MemoryOperandExtension) String() string {
+    return fmt.Sprintf("MemOpExt.x86_64(%s:%s)", self.formatMask(), self.formatBroadcast())
+}
+
+func (self *MemoryOperandExtension) Display(mem *asm.MemoryOperand) string {
     return mem.Addr.String() + self.formatMask() + self.formatBroadcast()
 }
 

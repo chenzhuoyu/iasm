@@ -71,7 +71,7 @@ var _SysRegPStateMap = map[SystemRegister]PStateField {
 }
 
 func (self PStateField) ID() uint8 {
-    panic("aarch64: invalid use of PState Fields.")
+    panic("aarch64: invalid use of Processor State Fields.")
 }
 
 func (self PStateField) String() string {

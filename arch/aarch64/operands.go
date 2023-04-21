@@ -2,6 +2,7 @@ package aarch64
 
 import (
     `fmt`
+    `strconv`
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
@@ -18,7 +19,11 @@ var Basic _Basic
 func (_Basic) Free()                   {}
 func (_Basic) MemoryAddressExtension() {}
 
-func (_Basic) String(addr asm.MemoryAddress) string {
+func (_Basic) String() string {
+    return "BasicAddressing"
+}
+
+func (_Basic) Display(addr asm.MemoryAddress) string {
     sb := new(strings.Builder)
     sb.WriteByte('[')
     sb.WriteString(addr.Base.String())
@@ -52,7 +57,11 @@ var MemOpExt _MemOpExt
 func (_MemOpExt) Free()                   {}
 func (_MemOpExt) MemoryOperandExtension() {}
 
-func (_MemOpExt) String(mem *asm.MemoryOperand) string {
+func (_MemOpExt) String() string {
+    return "MemOpExt.AArch64"
+}
+
+func (_MemOpExt) Display(mem *asm.MemoryOperand) string {
     return mem.Addr.String()
 }
 
@@ -66,12 +75,22 @@ type IndexMode uint8
 const (
     PreIndex IndexMode = iota   // Pre-index, like "[<Xn|SP>, #imm]!"
     PostIndex                   // Post-index, like "[<Xn|SP>], #imm"
+    PostIndexReg                // Register Post-index, like "[<Xn|SP>], <reg>"
 )
 
 func (IndexMode) Free()                   {}
 func (IndexMode) MemoryAddressExtension() {}
 
-func (self IndexMode) String(addr asm.MemoryAddress) string {
+func (self IndexMode) String() string {
+    switch self {
+        case PreIndex     : return "PreIndex"
+        case PostIndex    : return "PostIndex"
+        case PostIndexReg : return "PostIndexReg"
+        default           : panic("unreachable")
+    }
+}
+
+func (self IndexMode) Display(addr asm.MemoryAddress) (ret string) {
     sb := new(strings.Builder)
     sb.WriteByte('[')
     sb.WriteString(addr.Base.String())
@@ -83,26 +102,22 @@ func (self IndexMode) String(addr asm.MemoryAddress) string {
     }
 
     /* the offset of post-index does not appear here */
-    if addr.Offset != 0 && self != PostIndex {
+    if addr.Offset != 0 && self == PreIndex {
         sb.WriteString(", ")
         sb.WriteString(fmt.Sprintf("#%d", addr.Offset))
     }
 
-    /* check for index type */
+    /* format every index type */
     switch self {
-        case PreIndex  : sb.WriteString("]!")
-        case PostIndex : sb.WriteString("], ")
-        default        : panic("unreachable")
+        case PreIndex     : sb.WriteString("]!")
+        case PostIndex    : sb.WriteString(fmt.Sprintf("], #%d", addr.Offset))
+        case PostIndexReg : sb.WriteString("], " + addr.Index.String())
+        default           : panic("unreachable")
     }
 
-    /* not post-index, no more text */
-    if self != PostIndex {
-        return sb.String()
-    }
-
-    /* format the post-index offset */
-    sb.WriteString(fmt.Sprintf("#%d", addr.Offset))
-    return sb.String()
+    /* compose the result */
+    ret = sb.String()
+    return
 }
 
 func (self IndexMode) EnsureValid(addr asm.MemoryAddress) {
@@ -150,14 +165,15 @@ func (self ModType) String() string {
     }
 }
 
-// Modifier represents one of the memory address modifiers, such as shifts and extends.
+// Modifier represents one of the modifiers, such as shifts and extends.
 type Modifier interface {
+    fmt.Stringer
     asm.MemoryAddressExtension
     Type() ModType
     Amount() uint8
 }
 
-func _Modifier_String(mod Modifier, addr asm.MemoryAddress) string {
+func _Modifier_Display(mod Modifier, addr asm.MemoryAddress) string {
     sb := new(strings.Builder)
     sb.WriteByte('[')
     sb.WriteString(addr.Base.String())
@@ -170,19 +186,28 @@ func _Modifier_String(mod Modifier, addr asm.MemoryAddress) string {
 
     /* immediate offset */
     if addr.Offset != 0 {
-        sb.WriteString(", ")
-        sb.WriteString(fmt.Sprintf("#%d", addr.Offset))
+        sb.WriteString(", #")
+        sb.WriteString(strconv.FormatInt(int64(addr.Offset), 10))
     }
 
-    /* construct the memory address */
+    /* modifier type */
+    sb.WriteString(", ")
     sb.WriteString(mod.Type().String())
-    sb.WriteString(fmt.Sprintf(" %d]", mod.Amount()))
+
+    /* modifier amount, if any */
+    if n := mod.Amount(); n != 0 {
+        sb.WriteByte(' ')
+        sb.WriteString(strconv.FormatUint(uint64(mod.Amount()), 10))
+    }
+
+    /* end of memory address */
+    sb.WriteByte(']')
     return sb.String()
 }
 
 func _Modifier_EnsureValid(addr asm.MemoryAddress) {
     if addr.Index != nil && addr.Offset != 0 {
-        panic("aarch64: cannot index base by register and immediate at the same time")
+        panic("aarch64: cannot index by register and immediate at the same time")
     }
 }
 
@@ -224,11 +249,17 @@ func (self LSR) Amount() uint8 { return uint8(self) }
 func (self ASR) Amount() uint8 { return uint8(self) }
 func (self ROR) Amount() uint8 { return uint8(self) }
 
-func (self MSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self LSL) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self LSR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self ASR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self ROR) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self MSL) String() string { return fmt.Sprintf("MSL %d", self.Amount()) }
+func (self LSL) String() string { return fmt.Sprintf("LSL %d", self.Amount()) }
+func (self LSR) String() string { return fmt.Sprintf("LSR %d", self.Amount()) }
+func (self ASR) String() string { return fmt.Sprintf("ASR %d", self.Amount()) }
+func (self ROR) String() string { return fmt.Sprintf("ROR %d", self.Amount()) }
+
+func (self MSL) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self LSL) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self LSR) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self ASR) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self ROR) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
 
 type (
     UXTB uint8  // Unsigned extension from byte to 64-bit
@@ -286,14 +317,23 @@ func (self SXTH) Amount() uint8 { return uint8(self) }
 func (self SXTW) Amount() uint8 { return uint8(self) }
 func (self SXTX) Amount() uint8 { return uint8(self) }
 
-func (self UXTB) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self UXTH) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self UXTW) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self UXTX) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self SXTB) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self SXTH) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self SXTW) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
-func (self SXTX) String(addr asm.MemoryAddress) string { return _Modifier_String(self, addr) }
+func (self UXTB) String() string { return fmt.Sprintf("UXTB %d", self.Amount()) }
+func (self UXTH) String() string { return fmt.Sprintf("UXTH %d", self.Amount()) }
+func (self UXTW) String() string { return fmt.Sprintf("UXTW %d", self.Amount()) }
+func (self UXTX) String() string { return fmt.Sprintf("UXTX %d", self.Amount()) }
+func (self SXTB) String() string { return fmt.Sprintf("SXTB %d", self.Amount()) }
+func (self SXTH) String() string { return fmt.Sprintf("SXTH %d", self.Amount()) }
+func (self SXTW) String() string { return fmt.Sprintf("SXTW %d", self.Amount()) }
+func (self SXTX) String() string { return fmt.Sprintf("SXTX %d", self.Amount()) }
+
+func (self UXTB) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self UXTH) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self UXTW) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self UXTX) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self SXTB) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self SXTH) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self SXTW) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
+func (self SXTX) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
 
 // Mem constructs a memory operand.
 func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
@@ -324,6 +364,12 @@ func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
     /* more arguments than required */
     if len(args) >= 3 {
         panic("aarch64: excessive arguments for memory operand")
+    }
+
+    /* fix indexing mode for register post-indexing */
+    switch {
+        case addr.Ext == PostIndex    && addr.Index != nil: addr.Ext = PostIndexReg
+        case addr.Ext == PostIndexReg && addr.Index == nil: panic("aarch64: register post-indexing without register")
     }
 
     /* construct the operand */

@@ -7,7 +7,6 @@ import (
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
-    `github.com/chenzhuoyu/iasm/expr`
 )
 
 type (
@@ -95,82 +94,24 @@ func (self *_ParserImpl) err(pos int, msg string) *asm.SyntaxError {
     }
 }
 
-func (self *_ParserImpl) negv() int64 {
-    tk := self.lex.Read()
-    tt := tk.Ty
-
-    /* must be an integer */
-    if tt != asm.TokenInt {
-        panic(self.err(tk.Pos, "integer expected after '-'"))
-    } else {
-        return -int64(tk.Uint)
-    }
-}
-
-func (self *_ParserImpl) eval(p int) int64 {
-    var r int64
-    var e error
-
-    /* searching start */
-    n := 1
-    q := p + 1
-
-    /* find the end of expression */
-    for n > 0 && q < len(self.lex.Src) {
-        switch self.lex.Src[q] {
-            case '(' : q++; n++
-            case ')' : q++; n--
-            default  : q++
-        }
-    }
-
-    /* check for EOF */
-    if n != 0 {
-        panic(self.err(q, "unexpected EOF when parsing expressions"))
-    }
-
-    /* evaluate the expression */
-    if r, e = expr.Eval(string(self.lex.Src[p:q - 1]), nil); e != nil {
-        panic(self.err(p, "cannot evaluate expression: " + e.Error()))
-    }
-
-    /* skip the last ")" */
-    self.lex.Pos = q
-    return r
-}
-
 func (self *_ParserImpl) relx(tk asm.Token) {
-    if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncLBrace {
+    if !tk.IsPunc(asm.PuncLBrace) {
         panic(self.err(tk.Pos, "'(' expected for RIP-relative addressing"))
     } else if tk = self.lex.Next(); self.regx(tk) != rip {
         panic(self.err(tk.Pos, "RIP-relative addressing expects %rip as the base register"))
-    } else if tk = self.lex.Next(); tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncRBrace {
+    } else if tk = self.lex.Next(); !tk.IsPunc(asm.PuncRBrace) {
         panic(self.err(tk.Pos, "RIP-relative addressing does not support indexing or scaling"))
     }
 }
 
-func (self *_ParserImpl) immx(tk asm.Token) int64 {
-    if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncDollar {
-        panic(self.err(tk.Pos, "'$' expected for registers"))
-    } else if tk = self.lex.Read(); tk.Ty == asm.TokenInt {
-        return int64(tk.Uint)
-    } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncLBrace {
-        return self.eval(self.lex.Pos)
-    } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncMinus {
-        return self.negv()
-    } else {
-        panic(self.err(tk.Pos, "immediate value expected"))
-    }
-}
-
 func (self *_ParserImpl) regx(tk asm.Token) asm.Register {
-    if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncPercent {
+    if !tk.IsPunc(asm.PuncPercent) {
         panic(self.err(tk.Pos, "'%' expected for registers"))
     } else if tk = self.lex.Read(); tk.Ty != asm.TokenName {
         panic(self.err(tk.Pos, "register name expected"))
-    } else if tk.Str == "rip" {
+    } else if key := strings.ToLower(tk.Str); key == "rip" {
         return rip
-    } else if reg, ok := Registers[tk.Str]; ok {
+    } else if reg, ok := Registers[key]; ok {
         return reg
     } else {
         panic(self.err(tk.Pos, "invalid register name: " + strconv.Quote(tk.Str)))
@@ -186,42 +127,27 @@ func (self *_ParserImpl) regv(tk asm.Token) asm.Register {
 }
 
 func (self *_ParserImpl) disp(vv int32) asm.MemoryAddress {
-    switch tk := self.lex.Next(); tk.Ty {
-        case asm.TokenEnd  : return MemoryAddress(nil, nil, 0, vv)
-        case asm.TokenPunc : return self.relm(tk, vv)
-        default            : panic(self.err(tk.Pos, "',' or '(' expected"))
-    }
-}
+    pos := self.lex.Pos
+    row := self.lex.Row
+    tok := self.lex.Next()
 
-func (self *_ParserImpl) relm(tv asm.Token, disp int32) asm.MemoryAddress {
-    var tk asm.Token
-    var tt asm.TokenKind
-
-    /* check for absolute addressing */
-    if tv.Punc() == asm.PuncComma {
-        self.lex.Pos--
-        return MemoryAddress(nil, nil, 0, disp)
+    /* absolute addressing, may require rewinding */
+    if tok.Ty == asm.TokenEnd || tok.IsPunc(asm.PuncComma) {
+        self.lex.Pos = pos
+        self.lex.Row = row
+        return MemoryAddress(nil, nil, 0, vv)
     }
 
-    /* must be "(" now */
-    if tv.Punc() != asm.PuncLBrace {
-        panic(self.err(tv.Pos, "',' or '(' expected"))
+    /* begin of memory address */
+    if !tok.IsPunc(asm.PuncLBrace) {
+        panic(self.err(tok.Pos, "'(' expected"))
     }
 
-    /* read the next token */
-    tk = self.lex.Next()
-    tt = tk.Ty
-
-    /* must be a punctuation */
-    if tt != asm.TokenPunc {
-        panic(self.err(tk.Pos, "'%' or ',' expected"))
-    }
-
-    /* check for base */
-    switch tk.Punc() {
-        case asm.PuncPercent : return self.base(tk, disp)
-        case asm.PuncComma   : return self.index(nil, disp)
-        default              : panic(self.err(tk.Pos, "'%' or ',' expected"))
+    /* memory address */
+    if self.lex.MatchPunc(asm.PuncComma) {
+        return self.index(nil, vv)
+    } else {
+        return self.base(self.lex.Next(), vv)
     }
 }
 
@@ -266,50 +192,119 @@ func (self *_ParserImpl) index(base asm.Register, disp int32) asm.MemoryAddress 
 
 func (self *_ParserImpl) scale(base asm.Register, index asm.Register, disp int32) asm.MemoryAddress {
     tk := self.lex.Next()
-    tt := tk.Ty
-    tv := tk.Uint
+    bv := 1 << tk.Uint
 
     /* must be an integer */
-    if tt != asm.TokenInt {
+    if tk.Ty != asm.TokenInt {
         panic(self.err(tk.Pos, "integer expected"))
     }
 
-    /* scale can only be 1, 2, 4 or 8 */
-    if tv == 0 || (_Scales & (1 << tv)) == 0 {
+    /* check for scale value */
+    if tk.Uint == 0 || _Scales & bv == 0 {
         panic(self.err(tk.Pos, "scale can only be 1, 2, 4 or 8"))
     }
 
-    /* read next token */
-    tk = self.lex.Next()
-    tt = tk.Ty
+    /* match the closing ")" */
+    self.lex.ExpectPunc(asm.PuncRBrace)
+    return MemoryAddress(base, index, uint8(tk.Uint), disp)
+}
 
-    /* check for the closing ")" */
-    if tt != asm.TokenPunc || tk.Punc() != asm.PuncRBrace {
-        panic(self.err(tk.Pos, "')' expected"))
+func (self *_ParserImpl) value(ins *asm.ParsedInstruction, rr *bool) {
+    var ok bool
+    var tk asm.Token
+    var pp _PrefixImpl
+
+    /* save the tokenizer state */
+    pos := self.lex.Pos
+    row := self.lex.Row
+
+    /* encountered an integer, must be a SIB memory address */
+    if tk = self.lex.Next(); tk.Ty == asm.TokenInt {
+        ins.Mem(self.disp(self.i32(tk, int64(tk.Uint))))
+        return
     }
 
-    /* construct the memory address */
-    return MemoryAddress(
-        base,
-        index,
-        uint8(tv),
-        disp,
-    )
+    /* encountered an identifier, maybe an expression or a jump target, or a segment override prefix */
+    if tk.Ty == asm.TokenName {
+        ts := tk.Str
+        tp := self.lex.Pos
+        tr := self.lex.Row
+
+        /* if the next token is EOF or a comma, it's a jumpt target */
+        if tk = self.lex.Next(); tk.Ty == asm.TokenEnd || tk.IsPunc(asm.PuncComma) {
+            self.lex.Pos = tp
+            self.lex.Row = tr
+            ins.Target(ts)
+            return
+        }
+
+        /* if it is a colon, it's a segment override prefix, otherwise it must be an RIP-relative addressing operand */
+        if !tk.IsPunc(asm.PuncColon) {
+            self.relx(tk)
+            ins.Reference(ts)
+            return
+        }
+
+        /* lookup segment prefixes */
+        if pp, ok = _SegPrefix[strings.ToLower(ts)]; !ok {
+            panic(self.err(tk.Pos, "invalid segment name"))
+        }
+
+        /* read the next token */
+        tk = self.lex.Next()
+        ins.Prefixes = append(ins.Prefixes, pp)
+
+        /* encountered an integer, must be a SIB memory address */
+        if tk.Ty == asm.TokenInt {
+            ins.Mem(self.disp(self.i32(tk, int64(tk.Uint))))
+            return
+        }
+    }
+
+    /* certain instructions may have a "*" before operands */
+    if tk.IsPunc(asm.PuncStar) {
+        tk = self.lex.Next()
+        *rr = true
+    }
+
+    /* ... otherwise it must be a punctuation */
+    if tk.Ty != asm.TokenPunc {
+        panic(self.err(tk.Pos, "'$', '%', '-' or '(' expected"))
+    }
+
+    /* '(' is special because it might be either `(expr)(SIB)` or just `(SIB)`,
+     * read one more token to confirm, handle it later */
+    if tk.Punc() != asm.PuncLBrace {
+        switch tk.Punc() {
+            case asm.PuncMinus   : ins.Mem(self.disp(self.i32(tk, -self.lex.Value(nil)))) ; return
+            case asm.PuncDollar  : ins.Imm(self.lex.Value(nil))                           ; return
+            case asm.PuncPercent : ins.Reg(self.regv(tk))                                 ; return
+            default              : panic(self.err(tk.Pos, "'$', '%', '-' or '(' expected"))
+        }
+    }
+
+    /* the next token is '%', it's a memory address, or ',' if it's a memory address without base */
+    if tk = self.lex.Next(); tk.Ty == asm.TokenPunc {
+        switch tk.Punc() {
+            case asm.PuncPercent : ins.Mem(self.base(tk, 0))   ; return
+            case asm.PuncComma   : ins.Mem(self.index(nil, 0)) ; return
+        }
+    }
+
+    /* ... otherwise it must be `(expr)(SIB)`, revert the tokenizer */
+    self.lex.Pos = pos
+    self.lex.Row = row
+    ins.Mem(self.disp(self.i32(tk, self.lex.Value(nil))))
 }
 
 func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
-    var rr bool
-    var lk bool
-    var tt asm.TokenKind
-
-    /* parse the first token */
-    ff := true
+    rr := false
     tk := self.lex.Next()
 
     /* special case for the "lock" prefix */
     if tk.Ty == asm.TokenName && strings.ToLower(tk.Str) == "lock" {
-        lk = true
         tk = self.lex.Next()
+        ins.Prefixes = append(ins.Prefixes, PrefixLock)
     }
 
     /* must be an instruction */
@@ -317,121 +312,36 @@ func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
         panic(self.err(tk.Pos, "identifier expected"))
     }
 
-    /* set the mnemonic, and check for LOCK prefix */
-    if ins.Mnemonic = strings.ToLower(tk.Str); lk {
-        ins.Prefixes = append(ins.Prefixes, PrefixLock)
+    /* set the mnemonic */
+    pos := tk.Pos
+    ins.Mnemonic = strings.ToLower(tk.Str)
+
+    /* check if the instruction has operands */
+    if self.lex.MatchEnd() {
+        return
     }
 
+    /* construct a placeholder token */
+    tk.Ty = asm.TokenPunc
+    tk.Uint = uint64(asm.PuncComma)
+
     /* parse all the operands */
-    for {
+    for tk.IsPunc(asm.PuncComma) {
+        self.value(ins, &rr)
         tk = self.lex.Next()
-        tt = tk.Ty
+    }
 
-        /* check for end of line */
-        if tt == asm.TokenEnd {
-            break
-        }
-
-        /* expect a comma if not the first operand */
-        if !ff {
-            if tt == asm.TokenPunc && tk.Punc() == asm.PuncComma {
-                tk = self.lex.Next()
-            } else {
-                panic(self.err(tk.Pos, "',' expected"))
-            }
-        }
-
-        /* not the first operand anymore */
-        ff = false
-        tt = tk.Ty
-
-        /* encountered an integer, must be a SIB memory address */
-        if tt == asm.TokenInt {
-            ins.Mem(self.disp(self.i32(tk, int64(tk.Uint))))
-            continue
-        }
-
-        /* encountered an identifier, maybe an expression or a jump target, or a segment override prefix */
-        if tt == asm.TokenName {
-            ts := tk.Str
-            tp := self.lex.Pos
-
-            /* if the next token is EOF or a comma, it's a jumpt target */
-            if tk = self.lex.Next(); tk.Ty == asm.TokenEnd || (tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncComma) {
-                self.lex.Pos = tp
-                ins.Target(ts)
-                continue
-            }
-
-            /* if it is a colon, it's a segment override prefix, otherwise it must be an RIP-relative addressing operand */
-            if tk.Ty != asm.TokenPunc || tk.Punc() != asm.PuncColon {
-                self.relx(tk)
-                ins.Reference(ts)
-                continue
-            }
-
-            /* lookup segment prefixes */
-            if p, ok := _SegPrefix[strings.ToLower(ts)]; !ok {
-                panic(self.err(tk.Pos, "invalid segment name"))
-            } else {
-                ins.Prefixes = append(ins.Prefixes, p)
-            }
-
-            /* read the next token */
-            tk = self.lex.Next()
-            tt = tk.Ty
-
-            /* encountered an integer, must be a SIB memory address */
-            if tt == asm.TokenInt {
-                ins.Mem(self.disp(self.i32(tk, int64(tk.Uint))))
-                continue
-            }
-        }
-
-        /* certain instructions may have a "*" before operands */
-        if tt == asm.TokenPunc && tk.Punc() == asm.PuncStar {
-            tk = self.lex.Next()
-            tt = tk.Ty
-            rr = true
-        }
-
-        /* ... otherwise it must be a punctuation */
-        if tt != asm.TokenPunc {
-            panic(self.err(tk.Pos, "'$', '%', '-' or '(' expected"))
-        }
-
-        /* check the operator */
-        switch tk.Punc() {
-            case asm.PuncLBrace  : break
-            case asm.PuncMinus   : ins.Mem(self.disp(self.i32(tk, self.negv()))) ; continue
-            case asm.PuncDollar  : ins.Imm(self.immx(tk))                        ; continue
-            case asm.PuncPercent : ins.Reg(self.regv(tk))                        ; continue
-            default              : panic(self.err(tk.Pos, "'$', '%', '-' or '(' expected"))
-        }
-
-        /* special case of '(', might be either `(expr)(SIB)` or just `(SIB)`
-         * read one more token to confirm */
-        tk = self.lex.Next()
-        tt = tk.Ty
-
-        /* the next token is '%', it's a memory address,
-         * or ',' if it's a memory address without base,
-         * otherwise it must be in `(expr)(SIB)` form */
-        if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncPercent {
-            ins.Mem(self.base(tk, 0))
-        } else if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncComma {
-            ins.Mem(self.index(nil, 0))
-        } else {
-            ins.Mem(self.disp(self.i32(tk, self.eval(tk.Pos))))
-        }
+    /* should be the end of instruction */
+    if tk.Ty != asm.TokenEnd {
+        panic(self.err(tk.Pos, "garbage after instruction"))
     }
 
     /* check "jmp" and "call" instructions */
     if _RegBranch[ins.Mnemonic] {
         if len(ins.Operands) != 1 {
-            panic(self.err(tk.Pos, fmt.Sprintf(`"%s" requires exact 1 argument`, ins.Mnemonic)))
+            panic(self.err(pos, fmt.Sprintf(`"%s" requires exact 1 argument`, ins.Mnemonic)))
         } else if !rr && ins.Operands[0].Op != asm.OpReg && ins.Operands[0].Op != asm.OpLabel {
-            panic(self.err(tk.Pos, fmt.Sprintf(`invalid operand for "%s" instruction`, ins.Mnemonic)))
+            panic(self.err(pos, fmt.Sprintf(`invalid operand for "%s" instruction`, ins.Mnemonic)))
         }
     }
 }

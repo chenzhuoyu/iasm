@@ -35892,7 +35892,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm_3, 1, 31, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35912,7 +35912,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35932,7 +35932,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -35952,7 +35952,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 1, sa_xm, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36078,7 +36078,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -36117,7 +36117,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -36156,7 +36156,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -36195,7 +36195,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -36270,7 +36270,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD1R  { <Vt>.<T> }, [<Xn|SP>], <Xm>
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36379,7 +36379,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 1, 31, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36504,7 +36504,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -36543,7 +36543,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -36582,7 +36582,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -36621,7 +36621,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -36695,7 +36695,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, 31, 6, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD2R  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36805,7 +36805,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 1, 31, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -36930,7 +36930,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -36969,7 +36969,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -37008,7 +37008,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -37047,7 +37047,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -37121,7 +37121,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsop(mask(sa_t, 1), 1, 0, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD3R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -37230,7 +37230,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 1, 31, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // LD4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -37355,7 +37355,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -37394,7 +37394,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -37433,7 +37433,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -37472,7 +37472,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -37546,7 +37546,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsop(mask(sa_t, 1), 1, 1, 31, 7, 0, sa_imm, sa_xn_sp, sa_vt))
     }
     // LD4R  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -41193,6 +41193,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
+        }
         return p.setins(ldst_regoff(0, 1, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_bt))
     }
     // LDR  <Dt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -41221,6 +41224,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_1 = 0b0
             case 3: sa_amount_1 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
         }
         return p.setins(ldst_regoff(3, 1, 1, sa_xm, sa_extend_1, sa_amount_1, sa_xn_sp, sa_dt))
     }
@@ -41251,6 +41257,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 1: sa_amount_2 = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
+        }
         return p.setins(ldst_regoff(1, 1, 1, sa_xm, sa_extend_1, sa_amount_2, sa_xn_sp, sa_ht))
     }
     // LDR  <Qt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -41279,6 +41288,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_3 = 0b0
             case 4: sa_amount_3 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
         }
         return p.setins(ldst_regoff(0, 1, 3, sa_xm, sa_extend_1, sa_amount_3, sa_xn_sp, sa_qt))
     }
@@ -41309,6 +41321,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 2: sa_amount_4 = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
+        }
         return p.setins(ldst_regoff(2, 1, 1, sa_xm, sa_extend_1, sa_amount_4, sa_xn_sp, sa_st))
     }
     // LDR  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -41338,6 +41353,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 2: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
+        }
         return p.setins(ldst_regoff(2, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // LDR  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -41366,6 +41384,9 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_1 = 0b0
             case 3: sa_amount_1 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDR")
         }
         return p.setins(ldst_regoff(3, 0, 1, sa_xm, sa_extend, sa_amount_1, sa_xn_sp, sa_xt))
     }
@@ -41558,6 +41579,9 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRB")
+        }
         return p.setins(ldst_regoff(0, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // none of above
@@ -41643,6 +41667,9 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
             case 0: sa_amount = 0b0
             case 1: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRH")
         }
         return p.setins(ldst_regoff(1, 0, 1, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
@@ -41764,6 +41791,9 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRSB")
+        }
         return p.setins(ldst_regoff(0, 0, 3, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // LDRSB  <Xt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
@@ -41797,6 +41827,9 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRSB")
+        }
         return p.setins(ldst_regoff(0, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
     // none of above
@@ -41912,6 +41945,9 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
             case 1: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRSH")
+        }
         return p.setins(ldst_regoff(1, 0, 3, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // LDRSH  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -41940,6 +41976,9 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
             case 0: sa_amount = 0b0
             case 1: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRSH")
         }
         return p.setins(ldst_regoff(1, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
@@ -42042,6 +42081,9 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
             case 0: sa_amount = 0b0
             case 2: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for LDRSW")
         }
         return p.setins(ldst_regoff(2, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_xt))
     }
@@ -48752,6 +48794,9 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
             case 0: sa_amount = 0b0
             case 3: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for PRFM")
         }
         return p.setins(ldst_regoff(3, 0, 2, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_prfop))
     }
@@ -64101,7 +64146,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm_3, 0, 31, 2, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T> }, [<Xn|SP>], <Xm>
-    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec1(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64121,7 +64166,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 7, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64141,7 +64186,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 10, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64161,7 +64206,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(mask(sa_t, 1), 0, sa_xm, 6, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST1  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64287,7 +64332,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -64326,7 +64371,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -64365,7 +64410,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -64404,7 +64449,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -64499,7 +64544,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 0, 31, 8, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST2  { <Vt>.<T>, <Vt2>.<T> }, [<Xn|SP>], <Xm>
-    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec2(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -64624,7 +64669,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -64663,7 +64708,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -64702,7 +64747,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -64741,7 +64786,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -64897,7 +64942,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 0, 31, 4, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST3  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T> }, [<Xn|SP>], <Xm>
-    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec3(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -65022,7 +65067,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -65061,7 +65106,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -65100,7 +65145,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -65139,7 +65184,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -65234,7 +65279,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
         return p.setins(asisdlsep(sa_imm, 0, 31, 0, ubfx(sa_t, 1, 2), sa_xn_sp, sa_vt))
     }
     // ST4  { <Vt>.<T>, <Vt2>.<T>, <Vt3>.<T>, <Vt4>.<T> }, [<Xn|SP>], <Xm>
-    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndex {
+    if isVec4(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && moffs(v1) == 0 && isXr(midx(v1)) && mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         var sa_t uint32
         sa_vt := uint32(v0.(Vector).ID())
@@ -65359,7 +65404,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index := uint32(v0.(IndexedVector).Index())
@@ -65398,7 +65443,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_1 := uint32(v0.(IndexedVector).Index())
@@ -65437,7 +65482,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_2 := uint32(v0.(IndexedVector).Index())
@@ -65476,7 +65521,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
        isXrOrSP(mbase(v1)) &&
        moffs(v1) == 0 &&
        isXr(midx(v1)) &&
-       mext(v1) == PostIndex {
+       mext(v1) == PostIndexReg {
         p.Domain = DomainAdvSimd
         sa_vt := uint32(v0.(IndexedVector).ID())
         sa_index_3 := uint32(v0.(IndexedVector).Index())
@@ -67584,6 +67629,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
+        }
         return p.setins(ldst_regoff(0, 1, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_bt))
     }
     // STR  <Dt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -67612,6 +67660,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_1 = 0b0
             case 3: sa_amount_1 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
         }
         return p.setins(ldst_regoff(3, 1, 0, sa_xm, sa_extend_1, sa_amount_1, sa_xn_sp, sa_dt))
     }
@@ -67642,6 +67693,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 1: sa_amount_2 = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
+        }
         return p.setins(ldst_regoff(1, 1, 0, sa_xm, sa_extend_1, sa_amount_2, sa_xn_sp, sa_ht))
     }
     // STR  <Qt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -67670,6 +67724,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_3 = 0b0
             case 4: sa_amount_3 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
         }
         return p.setins(ldst_regoff(0, 1, 2, sa_xm, sa_extend_1, sa_amount_3, sa_xn_sp, sa_qt))
     }
@@ -67700,6 +67757,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 2: sa_amount_4 = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend_1 & 1 != 0 || isXr(sa_xm) && sa_extend_1 & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
+        }
         return p.setins(ldst_regoff(2, 1, 0, sa_xm, sa_extend_1, sa_amount_4, sa_xn_sp, sa_st))
     }
     // STR  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -67729,6 +67789,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 2: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
         }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
+        }
         return p.setins(ldst_regoff(2, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // STR  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -67757,6 +67820,9 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
             case 0: sa_amount_1 = 0b0
             case 3: sa_amount_1 = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STR")
         }
         return p.setins(ldst_regoff(3, 0, 0, sa_xm, sa_extend, sa_amount_1, sa_xn_sp, sa_xt))
     }
@@ -67853,6 +67919,9 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
             default: panic("aarch64: invalid modifier flags")
         }
         sa_amount := uint32(mext(v1).(Modifier).Amount())
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STRB")
+        }
         return p.setins(ldst_regoff(0, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }
     // none of above
@@ -67942,6 +68011,9 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
             case 0: sa_amount = 0b0
             case 1: sa_amount = 0b1
             default: panic("aarch64: invalid modifier amount")
+        }
+        if isWr(sa_xm) && sa_extend & 1 != 0 || isXr(sa_xm) && sa_extend & 1 != 1 {
+            panic("aarch64: invalid combination of operands for STRH")
         }
         return p.setins(ldst_regoff(1, 0, 0, sa_xm, sa_extend, sa_amount, sa_xn_sp, sa_wt))
     }

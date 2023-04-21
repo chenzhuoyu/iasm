@@ -7,6 +7,8 @@ import (
     `strconv`
     `strings`
     `unicode`
+
+    `github.com/chenzhuoyu/iasm/expr`
 )
 
 // TokenKind represents the type of a token.
@@ -94,7 +96,7 @@ type Token struct {
 }
 
 // Punc converts the token into a Punctuation.
-func (self *Token) Punc() Punctuation {
+func (self Token) Punc() Punctuation {
     if self.Ty != TokenPunc {
         panic("asm: token is not a punctuation")
     } else {
@@ -102,7 +104,7 @@ func (self *Token) Punc() Punctuation {
     }
 }
 
-func (self *Token) String() string {
+func (self Token) String() string {
     switch self.Ty {
         case TokenEnd   : return "<END>"
         case TokenInt   : return fmt.Sprintf("<INT %d>", self.Uint)
@@ -112,6 +114,11 @@ func (self *Token) String() string {
         case TokenSpace : return "<SPACE>"
         default         : return fmt.Sprintf("<UNK:%d %d %s>", self.Ty, self.Uint, strconv.QuoteToASCII(self.Str))
     }
+}
+
+// IsPunc tests if this token matches the specified Punctuation.
+func (self Token) IsPunc(punc Punctuation) bool {
+    return self.Ty == TokenPunc && Punctuation(self.Uint) == punc
 }
 
 func tokenEnd(p int, end int) Token {
@@ -209,7 +216,7 @@ func (self *Tokenizer) eof() bool {
 }
 
 func (self *Tokenizer) rch() (ret rune) {
-    ret, self.Pos = self.Src[self.Pos], self.Pos+ 1
+    ret, self.Pos = self.Src[self.Pos], self.Pos + 1
     return
 }
 
@@ -259,7 +266,9 @@ func (self *Tokenizer) init(src string) {
 
 func (self *Tokenizer) skip(check func(v rune) bool) {
     for !self.eof() && check(self.ch()) {
-        self.Pos++
+        if self.Pos++; self.Src[self.Pos - 1] == '\n' {
+            self.Row++
+        }
     }
 }
 
@@ -335,6 +344,54 @@ func (self *Tokenizer) rep2(p int, pp Punctuation, cc rune) Token {
     }
 }
 
+func (self *Tokenizer) evalfn(p expr.Repository, fn func(*expr.Parser, expr.Repository) (*expr.Expr, error)) int64 {
+    var err error
+    var ret int64
+    var ast *expr.Expr
+    var exp expr.Parser
+
+    /* skip all the spaces */
+    if unicode.IsSpace(self.Src[self.Pos]) {
+        self.skip(unicode.IsSpace)
+    }
+
+    /* save the current location */
+    pos := self.Pos
+    row := self.Row
+
+    /* special case: character literal */
+    if !self.eof() && self.ch() == '\'' {
+        return int64(self.chrv(pos).Uint)
+    }
+
+    /* parse the expression */
+    if ast, err = fn(exp.SetSource(self.Src[pos:]), p); err != nil {
+        if s, ok := err.(*expr.SyntaxError); ok {
+            panic(self.err(pos + s.Pos, s.Reason))
+        } else {
+            panic(self.err(pos + exp.Pos(), "cannot parse expression: " + err.Error()))
+        }
+    }
+
+    /* evaluate the expression */
+    ret, err = ast.Evaluate()
+    ast.Free()
+
+    /* check for errors */
+    if err != nil {
+        if s, ok := err.(*expr.SyntaxError); ok {
+            panic(self.err(pos + s.Pos, s.Reason))
+        } else {
+            panic(self.err(pos + exp.Pos(), "cannot evaluate expression: " + err.Error()))
+        }
+    }
+
+    /* update tokenizer location */
+    self.Row = row + exp.Row()
+    self.Pos = pos + exp.Pos()
+    return ret
+}
+
 // Read advances the tokenizer, and return the next token.
 func (self *Tokenizer) Read() Token {
     var p int
@@ -405,6 +462,85 @@ func (self *Tokenizer) Next() (tk Token) {
     }
 }
 
+// Eval evaluates the expression at current location, advancing the tokenizer.
+func (self *Tokenizer) Eval(p expr.Repository) int64 {
+    return self.evalfn(p, (*expr.Parser).Parse)
+}
+
+// Value is like Eval, but it only evaluates a single term rather than the whole expression.
+func (self *Tokenizer) Value(p expr.Repository) int64 {
+    return self.evalfn(p, (*expr.Parser).Value)
+}
+
+// MatchEnd attempts to matche the TokenEnd.
+func (self *Tokenizer) MatchEnd() bool {
+    pos := self.Pos
+    row := self.Row
+    tok := self.Next()
+
+    /* check for the punctuation */
+    if tok.Ty == TokenEnd {
+        return true
+    }
+
+    /* otherwise rewind the tokenizer */
+    self.Pos = pos
+    self.Row = row
+    return false
+}
+
+// MatchPunc attempts to matche the next token for a specified Punctuation.
+// Consumes it if matches.
+func (self *Tokenizer) MatchPunc(punc Punctuation) bool {
+    pos := self.Pos
+    row := self.Row
+    tok := self.Next()
+
+    /* check for the punctuation */
+    if tok.IsPunc(punc) {
+        return true
+    }
+
+    /* otherwise rewind the tokenizer */
+    self.Pos = pos
+    self.Row = row
+    return false
+}
+
+// MatchPuncNow attempts to matche the next adjacent token (including whitespaces) for a specified Punctuation.
+// Consumes it if matches.
+func (self *Tokenizer) MatchPuncNow(punc Punctuation) bool {
+    pos := self.Pos
+    row := self.Row
+    tok := self.Read()
+
+    /* check for the punctuation */
+    if tok.IsPunc(punc) {
+        return true
+    }
+
+    /* otherwise rewind the tokenizer */
+    self.Pos = pos
+    self.Row = row
+    return false
+}
+
+// ExpectPunc matches the next token for a specified Punctuation.
+// Throws an error if not match.
+func (self *Tokenizer) ExpectPunc(punc Punctuation) {
+    if tk := self.Next(); !tk.IsPunc(punc) {
+        panic(self.err(tk.Pos, fmt.Sprintf("%q expected", punc.String())))
+    }
+}
+
+// ExpectPuncNow matches the next adjacent token (including whitespaces) for a specified Punctuation.
+// Throws an error if not match.
+func (self *Tokenizer) ExpectPuncNow(punc Punctuation) {
+    if tk := self.Read(); !tk.IsPunc(punc) {
+        panic(self.err(tk.Pos, fmt.Sprintf("%q expected", punc.String())))
+    }
+}
+
 // OperandKind indicates the type of the operand.
 type OperandKind int
 
@@ -421,6 +557,9 @@ const (
     // OpMem means the operand is a memory address.
     OpMem
 
+    // OpMod means the operand is an address modifier.
+    OpMod
+
     // OpSym means the operand is a literal symbol.
     OpSym
 
@@ -435,6 +574,7 @@ func (self OperandKind) String() string {
         case OpFpImm : return "FpImm"
         case OpReg   : return "Reg"
         case OpMem   : return "Mem"
+        case OpMod   : return "Mod"
         case OpSym   : return "Sym"
         case OpLabel : return "Label"
         default      : return "???"
@@ -492,14 +632,24 @@ func (self *ParsedSymbol) String() string {
     return fmt.Sprintf("%s: %s = %v", self.Name, reflect.TypeOf(self.Value), self.Value)
 }
 
+// ParsedModifier represents an operand of an address modifier in the source.
+type ParsedModifier struct {
+    Value interface{}
+}
+
+func (self *ParsedModifier) String() string {
+    return fmt.Sprint(self.Value)
+}
+
 // ParsedOperand represents an operand of an instruction in the source.
 type ParsedOperand struct {
     Op    OperandKind
     Imm   int64
     FpImm float64
     Reg   Register
-    Sym   ParsedSymbol
     Mem   MemoryAddress
+    Mod   ParsedModifier
+    Sym   ParsedSymbol
     Label ParsedLabel
 }
 
@@ -509,6 +659,7 @@ func (self *ParsedOperand) String() string {
         case OpFpImm : return fmt.Sprintf("(%s) %f", self.Op, self.FpImm)
         case OpReg   : return fmt.Sprintf("(%s) %s", self.Op, self.Reg)
         case OpMem   : return fmt.Sprintf("(%s) %s", self.Op, self.Mem.String())
+        case OpMod   : return fmt.Sprintf("(%s) %s", self.Op, self.Mod.String())
         case OpSym   : return fmt.Sprintf("(%s) %s", self.Op, self.Sym.String())
         case OpLabel : return fmt.Sprintf("(%s) %s", self.Op, self.Label.String())
         default      : return "???"
@@ -543,6 +694,14 @@ func (self *ParsedInstruction) Mem(v MemoryAddress) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op  : OpMem,
         Mem : v,
+    })
+}
+
+// Mod adds an address modifier operand to this instruction.
+func (self *ParsedInstruction) Mod(mod interface{}) {
+    self.Operands = append(self.Operands, ParsedOperand {
+        Op  : OpMod,
+        Mod : ParsedModifier { mod },
     })
 }
 
@@ -760,44 +919,37 @@ func (self *Parser) feed(line string) *ParsedLine {
     self.lex.Row++
     self.lex.init(line)
 
-    /* save the lexer state */
+    /* parse the first token */
     pos := self.lex.Pos
     row := self.lex.Row
-
-    /* parse the first token */
-    tk := self.lex.Next()
-    tt := tk.Ty
+    tok := self.lex.Next()
 
     /* it is a directive if it starts with a dot */
-    if tk.Ty == TokenPunc && tk.Punc() == PuncDot {
+    if tok.IsPunc(PuncDot) {
         return self.cmds()
     }
 
-    /* otherwise it could be labels or instructions */
-    if tt == TokenName {
-        if tkx := self.lex.Next(); tkx.Ty == TokenPunc && tkx.Punc() == PuncColon {
-            tkx = self.lex.Next()
-            ttx := tkx.Ty
+    /* otherwise it must be an identifier (either instruction mnemonic or label name) */
+    if tok.Ty != TokenName {
+        panic(self.err(tok.Pos, "'.' or identifier expected"))
+    }
 
-            /* the line must end here */
-            if ttx != TokenEnd {
-                panic(self.err(tkx.Pos, "garbage after label definition"))
-            }
-
-            /* construct the label */
+    /* label must be in the form of "<ident>:" */
+    if self.lex.Next().IsPunc(PuncColon) {
+        if self.lex.Next().Ty == TokenEnd {
             return &ParsedLine {
                 Row   : self.lex.Row,
                 Src   : self.lex.Src,
                 Kind  : LineLabel,
                 Label : ParsedLabel {
                     Kind: Declaration,
-                    Name: tk.Str,
+                    Name: tok.Str,
                 },
             }
         }
     }
 
-    /* not a label, it must be an instruction */
+    /* not a label, it must be an instruction, revert the tokenizer */
     self.lex.Pos = pos
     self.lex.Row = row
 
@@ -851,33 +1003,9 @@ func (self *Parser) strings(argv *[]ParsedCommandArg, p int) int {
 }
 
 func (self *Parser) directives(line string) {
-    self.lex.Row++
     self.lex.init(line)
-
-    /* parse the first token */
-    tk := self.lex.Next()
-    tt := tk.Ty
-
-    /* check for EOF */
-    if tt == TokenEnd {
-        return
-    }
-
-    /* must be a directive */
-    if tt != TokenPunc || tk.Punc() != PuncHash {
-        panic(self.err(tk.Pos, "'#' expected"))
-    }
-
-    /* parse the line number */
-    tk = self.lex.Next()
-    tt = tk.Ty
-
-    /* must be a line number, if it is, set the row number, and ignore the rest of the line */
-    if tt != TokenInt {
-        panic(self.err(tk.Pos, "line number expected"))
-    } else {
-        self.lex.Row = int(tk.Uint) - 1
-    }
+    self.lex.ExpectPunc(PuncHash)
+    self.lex.Row = int(self.lex.Value(nil)) - 1
 }
 
 func (self *Parser) expressions(argv *[]ParsedCommandArg, p int) int {

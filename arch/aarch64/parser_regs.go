@@ -102,7 +102,7 @@ func (self _VReg) toIndex(mode VecIndexMode, index uint8) VidxRegister {
     }
 }
 
-var _Registers = map[string]asm.Register {
+var _CoreRegisters = map[string]asm.Register {
     "W0"  : W0,
     "W1"  : W1,
     "W2"  : W2,
@@ -170,6 +170,9 @@ var _Registers = map[string]asm.Register {
     "XZR" : XZR,
     "SP"  : SP,
     "LR"  : LR,
+}
+
+var _SimdRegisters = map[string]asm.Register {
     "B0"  : B0,
     "B1"  : B1,
     "B2"  : B2,
@@ -332,7 +335,7 @@ var _Registers = map[string]asm.Register {
     "Q31" : Q31,
 }
 
-var _VecRegisters = map[string]_VReg {
+var _VectorRegisters = map[string]_VReg {
     "V0"  : _V0,
     "V1"  : _V1,
     "V2"  : _V2,

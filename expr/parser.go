@@ -15,13 +15,6 @@ const (
     _T_name
 )
 
-const (
-    _OP2 = 0x80
-    _POW = _OP2 | '*'
-    _SHL = _OP2 | '<'
-    _SHR = _OP2 | '>'
-)
-
 type _Slice struct {
     p unsafe.Pointer
     n int
@@ -85,32 +78,41 @@ type Repository interface {
 
 // Parser parses an expression string to it's AST representation.
 type Parser struct {
-    pos int
-    src []rune
+    pos  int
+    row  int
+    src  []rune
+    once bool
 }
+
+const (
+    op2 = 0x80
+    pow = op2 | '*'
+    shl = op2 | '<'
+    shr = op2 | '>'
+)
 
 var binaryOps = [...]func(*Expr, *Expr) *Expr {
-    '+'  : (*Expr).Add,
-    '-'  : (*Expr).Sub,
-    '*'  : (*Expr).Mul,
-    '/'  : (*Expr).Div,
-    '%'  : (*Expr).Mod,
-    '&'  : (*Expr).And,
-    '^'  : (*Expr).Xor,
-    '|'  : (*Expr).Or,
-    _SHL : (*Expr).Shl,
-    _SHR : (*Expr).Shr,
-    _POW : (*Expr).Pow,
+    '+': (*Expr).Add,
+    '-': (*Expr).Sub,
+    '*': (*Expr).Mul,
+    '/': (*Expr).Div,
+    '%': (*Expr).Mod,
+    '&': (*Expr).And,
+    '^': (*Expr).Xor,
+    '|': (*Expr).Or,
+    shl: (*Expr).Shl,
+    shr: (*Expr).Shr,
+    pow: (*Expr).Pow,
 }
 
-var precedence = [...]map[int]bool {
-    {_SHL: true, _SHR: true},
-    {'|' : true},
-    {'^' : true},
-    {'&' : true},
-    {'+' : true, '-': true},
-    {'*' : true, '/': true, '%': true},
-    {_POW: true},
+var precedence = [...]map[uint64]bool {
+    { shl: true, shr: true },
+    { '|': true },
+    { '^': true },
+    { '&': true },
+    { '+': true, '-': true },
+    { '*': true, '/': true, '%': true },
+    { pow: true },
 }
 
 func (self *Parser) ch() rune {
@@ -121,9 +123,18 @@ func (self *Parser) eof() bool {
     return self.pos >= len(self.src)
 }
 
-func (self *Parser) rch() (v rune) {
-    v, self.pos = self.src[self.pos], self.pos + 1
-    return
+func (self *Parser) rch() rune {
+    pos := self.pos
+    ret := self.src[pos]
+
+    /* check for new line */
+    if ret == '\n' {
+        self.row++
+    }
+
+    /* update read pointer */
+    self.pos++
+    return ret
 }
 
 func (self *Parser) hex(ss []rune) bool {
@@ -164,9 +175,11 @@ func (self *Parser) read(p int, ch rune) (_Token, error) {
     } else if isident0(ch) {
         return self.name(p, []rune { ch }), nil
     } else if isop2ch(ch) && !self.eof() && self.ch() == ch {
-        return tokenPunc(p, _OP2 | self.rch()), nil
+        return tokenPunc(p, op2 | self.rch()), nil
     } else if isop1ch(ch) {
         return tokenPunc(p, ch), nil
+    } else if !self.once {
+        return tokenEnd(p), nil
     } else {
         return _Token{}, newSyntaxError(self.pos, "invalid character " + strconv.QuoteRuneToASCII(ch))
     }
@@ -254,32 +267,36 @@ func (self *Parser) term(prec int, nest int, repo Repository) (*Expr, error) {
 
     /* parse all the operators of the same precedence */
     for {
-        var op int
         var rv *Expr
         var tk _Token
 
-        /* peek the next token */
+        /* save the tokenizer state */
         pp := self.pos
-        tk, err = self.next()
+        rr := self.row
 
-        /* check for errors */
-        if err != nil {
+        /* peek the next token */
+        if tk, err = self.next(); err != nil {
             return nil, err
         }
 
         /* encountered EOF */
         if tk.tag == _T_end {
+            self.pos, self.row = pp, rr
             return val, nil
         }
 
         /* must be an operator */
         if tk.tag != _T_punc {
-            return nil, newSyntaxError(tk.pos, "operators expected")
+            if self.pos, self.row = pp, rr; !self.once {
+                return val, nil
+            } else {
+                return nil, newSyntaxError(tk.pos, "operators expected")
+            }
         }
 
         /* check for the operator precedence */
-        if op = int(tk.u64); !precedence[prec][op] {
-            self.pos = pp
+        if !precedence[prec][tk.u64] {
+            self.pos, self.row = pp, rr
             return val, nil
         }
 
@@ -287,7 +304,7 @@ func (self *Parser) term(prec int, nest int, repo Repository) (*Expr, error) {
         if rv, err = self.expr(prec + 1, nest, repo); err != nil {
             return nil, err
         } else {
-            val = binaryOps[op](val, rv)
+            val = binaryOps[tk.u64](val, rv)
         }
     }
 }
@@ -305,19 +322,41 @@ func (self *Parser) Pos() int {
     return self.pos
 }
 
-// Parse parses the expression, and returns it's AST tree.
+// Row returns the current parsing row, in lines.
+func (self *Parser) Row() int {
+    return self.row
+}
+
+// Once marks the parser as a standalone parser, and should consume the entire source at once.
+func (self *Parser) Once() *Parser {
+    self.once = true
+    return self
+}
+
+// Parse parses the expression as much as possible, and returns it's AST tree.
 func (self *Parser) Parse(repo Repository) (*Expr, error) {
     return self.expr(0, 0, repo)
 }
 
+// Value is like Parse, but it only parses a single term rather than the entire expression.
+func (self *Parser) Value(repo Repository) (*Expr, error) {
+    return self.unit(0, repo)
+}
+
 // SetSource resets the expression parser and sets the expression source.
-func (self *Parser) SetSource(src string) *Parser {
+func (self *Parser) SetSource(src []rune) *Parser {
     self.pos = 0
-    self.src = []rune(src)
+    self.row = 0
+    self.src = src
     return self
 }
 
-// Eval evaluates the expression.
+// SetSourceString is like SetSource, but accepts a string instead.
+func (self *Parser) SetSourceString(src string) *Parser {
+    return self.SetSource([]rune(src))
+}
+
+// Eval evaluates the entire expression.
 func Eval(src string, repo Repository) (int64, error) {
     var ret int64
     var err error
@@ -334,9 +373,8 @@ func Eval(src string, repo Repository) (int64, error) {
     return ret, err
 }
 
-
-// Parse parses the expression.
+// Parse parses the entire expression at once.
 func Parse(src string, repo Repository) (*Expr, error) {
     var p Parser
-    return p.SetSource(src).Parse(repo)
+    return p.SetSource([]rune(src)).Once().Parse(repo)
 }

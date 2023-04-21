@@ -1,6 +1,7 @@
 package aarch64
 
 import (
+    `fmt`
     `strings`
     `testing`
 
@@ -33,7 +34,24 @@ func TestParser_Parse(t *testing.T) {
         `SVCRSM`,
         `{ v31.2h, v0.2h, v1.2h, v2.2h }`,
         `{ v0.b, v1.b, v2.b, v3.b }[15]`,
+        `{ v0.b, v1.b, v2.b, v3.b }[7 + 5]`,
+        `[x0]`,
+        `[x1, #123]`,
+        `[x2, #123]!`,
+        `[x3], #123`,
+        `[x4, x5]`,
+        `[x6, x7, LSL]`,
+        `[x8, x9, SXTB]`,
+        `[x10, x11, UXTX 10]`,
+        `LSL`,
+        `LSL 12`,
+        `UXTH`,
+        `UXTH 20`,
     }, ", "))
     require.NoError(t, e)
-    println(v.String())
+    require.Equal(t, asm.LineInstruction, v.Kind)
+    println("Mnemonic    :", v.Instruction.Mnemonic)
+    for i, x := range v.Instruction.Operands {
+        println(fmt.Sprintf("Operand %3d : %s", i, x.String()))
+    }
 }
