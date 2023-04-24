@@ -6,6 +6,10 @@ import (
     `github.com/chenzhuoyu/iasm/asm`
 )
 
+type (
+	_BranchTarget string
+)
+
 type _VecElem struct {
     reg _VReg
     fmt string
@@ -96,6 +100,11 @@ func (self *_ParserImpl) name(tk asm.Token) interface{} {
     if reg, ok := _SysRegisters[ident]  ; ok { return reg }
     if reg, ok := _CoreRegisters[upper] ; ok { return reg }
     if reg, ok := _SimdRegisters[upper] ; ok { return reg }
+
+    /* if not a vector register, it must be a branch target */
+    if _, ok := _VectorRegisters[upper]; !ok {
+        return _BranchTarget(ident)
+    }
 
     /* parse the register, then check if it's an indexed vector register */
     if v := self.elem(tk); !self.lex.MatchPuncNow(asm.PuncLIndex) {
@@ -360,10 +369,11 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
         /* normal registers or symbols */
         case tk.Ty == asm.TokenName && !self.isMemCopy: {
             switch v := self.name(tk).(type) {
-                case asm.Register : ins.Reg(v)
-                case Modifier     : ins.Mod(v)
-                case _SymPair     : ins.Sym(v.sym, v.val)
-                default           : panic("unreachable")
+                case asm.Register  : ins.Reg(v)
+                case Modifier      : ins.Mod(v)
+                case _SymPair      : ins.Sym(v.sym, v.val)
+                case _BranchTarget : ins.Target(string(v))
+                default            : panic("unreachable")
             }
         }
 
@@ -373,6 +383,15 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
                 case asm.TokenInt  : ins.Imm(int64(tk.Uint))
                 case asm.TokenFp64 : ins.FpImm(tk.Fp64)
                 default            : panic(self.err(tk.Pos, "immediate value expected"))
+            }
+        }
+
+        /* label references */
+        case tk.IsPunc(asm.PuncEqual) && !self.isMemCopy: {
+            if tk = self.lex.Next(); tk.Ty != asm.TokenName {
+                panic(self.err(tk.Pos, "identifier expected"))
+            } else {
+                ins.Reference(tk.Str)
             }
         }
 

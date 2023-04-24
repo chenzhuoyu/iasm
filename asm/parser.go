@@ -50,6 +50,7 @@ const (
     PuncDollar
     PuncHash
     PuncBang
+    PuncEqual
 )
 
 var _PuncNames = map[Punctuation]string {
@@ -76,6 +77,7 @@ var _PuncNames = map[Punctuation]string {
     PuncDollar  : "$",
     PuncHash    : "#",
     PuncBang    : "!",
+    PuncEqual   : "=",
 }
 
 func (self Punctuation) String() string {
@@ -444,6 +446,7 @@ func (self *Tokenizer) Read() Token {
         case '$'  : t = tokenPunc(p, PuncDollar)
         case '#'  : t = tokenPunc(p, PuncHash)
         case '!'  : t = tokenPunc(p, PuncBang)
+        case '='  : t = tokenPunc(p, PuncEqual)
         case '\'' : t = self.chrv(p)
         default   : t = self.defv(p, c)
     }

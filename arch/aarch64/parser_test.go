@@ -47,6 +47,8 @@ func TestParser_Parse(t *testing.T) {
         `LSL 12`,
         `UXTH`,
         `UXTH 20`,
+        `branch_target`,
+        `=label_reference`,
     }, ", "))
     require.NoError(t, e)
     require.Equal(t, asm.LineInstruction, v.Kind)
