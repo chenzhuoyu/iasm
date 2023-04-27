@@ -36,7 +36,7 @@ func (self *Instruction) encode(m *[]byte) int {
     p := (*_Encoding)(nil)
 
     /* check for pseudo-instructions */
-    if self.Pseudo.Kind != 0 {
+    if self.Pseudo != nil {
         self.nb = self.Pseudo.Encode(m, self.PC)
         return self.nb
     }
@@ -171,10 +171,10 @@ func (self *Program) assemble(pc uintptr) (ret []byte) {
         /* scan all the branches */
         for _, m := range self.Instr {
             p := this(m)
-            k := p.Pseudo.Kind
+            s := p.Pseudo
 
             /* re-calculate the alignment here */
-            if k == asm.Align {
+            if s != nil && s.Type() == asm.PseudoAlign {
                 p.PC -= offs
                 offs += uintptr(p.nb - p.encode(nil))
                 continue

@@ -566,6 +566,9 @@ const (
     // OpSym means the operand is a literal symbol.
     OpSym
 
+    // OpPCrel means the operand is a PC-relative address.
+    OpPCrel
+
     // OpLabel means the operand is a label, specifically for
     // branch instructions.
     OpLabel
@@ -579,6 +582,7 @@ func (self OperandKind) String() string {
         case OpMem   : return "Mem"
         case OpMod   : return "Mod"
         case OpSym   : return "Sym"
+        case OpPCrel : return "PCrel"
         case OpLabel : return "Label"
         default      : return "???"
     }
@@ -653,6 +657,7 @@ type ParsedOperand struct {
     Mem   MemoryAddress
     Mod   ParsedModifier
     Sym   ParsedSymbol
+    Rel   RelativeOffset
     Label ParsedLabel
 }
 
@@ -664,6 +669,7 @@ func (self *ParsedOperand) String() string {
         case OpMem   : return fmt.Sprintf("(%s) %s", self.Op, self.Mem.String())
         case OpMod   : return fmt.Sprintf("(%s) %s", self.Op, self.Mod.String())
         case OpSym   : return fmt.Sprintf("(%s) %s", self.Op, self.Sym.String())
+        case OpPCrel : return fmt.Sprintf("(%s) %s", self.Op, self.Rel.String())
         case OpLabel : return fmt.Sprintf("(%s) %s", self.Op, self.Label.String())
         default      : return "???"
     }
@@ -724,6 +730,14 @@ func (self *ParsedInstruction) FpImm(v float64) {
     self.Operands = append(self.Operands, ParsedOperand {
         Op    : OpFpImm,
         FpImm : v,
+    })
+}
+
+// PCrel adds a PC-relative operand to this instruction.
+func (self *ParsedInstruction) PCrel(v RelativeOffset) {
+    self.Operands = append(self.Operands, ParsedOperand {
+        Op  : OpPCrel,
+        Rel : v,
     })
 }
 

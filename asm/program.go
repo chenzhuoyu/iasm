@@ -38,52 +38,39 @@ func (self *Program) Link(p *Label) {
 
 // Data is a pseudo-instruction that adds raw bytes to the assembled code.
 func (self *Program) Data(v []byte) *Instruction {
-    p := self.Pseudo(Data)
-    p.Pseudo.Data = v
-    return p
+    return self.Pseudo(Data(v))
 }
 
 // Byte is a pseudo-instruction that adds raw byte to the assembled code.
 func (self *Program) Byte(v *expr.Expr) *Instruction {
-    p := self.Pseudo(Byte)
-    p.Pseudo.Expr = v
-    return p
+    return self.Pseudo(Byte(v))
 }
 
 // Word is a pseudo-instruction that adds raw uint16 as little-endian to the assembled code.
 func (self *Program) Word(v *expr.Expr) *Instruction {
-    p := self.Pseudo(Word)
-    p.Pseudo.Expr = v
-    return p
+    return self.Pseudo(Word(v))
 }
 
 // Long is a pseudo-instruction that adds raw uint32 as little-endian to the assembled code.
 func (self *Program) Long(v *expr.Expr) *Instruction {
-    p := self.Pseudo(Long)
-    p.Pseudo.Expr = v
-    return p
+    return self.Pseudo(Long(v))
 }
 
 // Quad is a pseudo-instruction that adds raw uint64 as little-endian to the assembled code.
 func (self *Program) Quad(v *expr.Expr) *Instruction {
-    p := self.Pseudo(Quad)
-    p.Pseudo.Expr = v
-    return p
+    return self.Pseudo(Quad(v))
 }
 
 // Align is a pseudo-instruction that ensures the PC is aligned to a certain value.
 func (self *Program) Align(to uint64, padding *expr.Expr) *Instruction {
-    p := self.Pseudo(Align)
-    p.Pseudo.Uint = to
-    p.Pseudo.Expr = padding
-    return p
+    return self.Pseudo(Align(to, padding))
 }
 
 // Pseudo appends a pesudo-instruction with specific type to the instruction buffer.
-func (self *Program) Pseudo(kind PseudoType) (p *Instruction) {
-    p = self.Append(kind.String(), 0, Operands{})
+func (self *Program) Pseudo(ps Pseudo) (p *Instruction) {
+    p = self.Append(ps.Type().String(), 0, Operands{})
+    p.Pseudo = ps
     p.Domain = DomainPseudo
-    p.Pseudo.Kind = kind
     return
 }
 

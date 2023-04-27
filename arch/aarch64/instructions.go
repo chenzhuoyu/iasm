@@ -201,7 +201,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("ADD", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("ADD", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction ADD takes 3 or 4 operands")
+        default : panic("aarch64: instruction ADD takes 3 or 4 operands")
     }
     // ADD  <Wd|WSP>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -315,15 +315,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                0,
-                0,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                sa_wd_wsp,
-            )
+            return addsub_imm(0, 0, 0, sa_shift, abs12(sa_label), sa_wn_wsp, sa_wd_wsp)
         })
     }
     // ADD  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
@@ -365,15 +357,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                1,
-                0,
-                0,
-                sa_shift,
-                abs12(sa_label),
-                sa_xn_sp,
-                sa_xd_sp,
-            )
+            return addsub_imm(1, 0, 0, sa_shift, abs12(sa_label), sa_xn_sp, sa_xd_sp)
         })
     }
     // ADD  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
@@ -661,7 +645,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("ADDP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("ADDP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction ADDP takes 2 or 3 operands")
+        default : panic("aarch64: instruction ADDP takes 2 or 3 operands")
     }
     // ADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2D {
@@ -753,7 +737,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     switch len(vv) {
         case 0  : p = self.alloc("ADDS", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("ADDS", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction ADDS takes 3 or 4 operands")
+        default : panic("aarch64: instruction ADDS takes 3 or 4 operands")
     }
     // ADDS  <Wd>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -867,15 +851,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                0,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                sa_wd,
-            )
+            return addsub_imm(0, 0, 1, sa_shift, abs12(sa_label), sa_wn_wsp, sa_wd)
         })
     }
     // ADDS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
@@ -917,15 +893,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                1,
-                0,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_xn_sp,
-                sa_xd,
-            )
+            return addsub_imm(1, 0, 1, sa_shift, abs12(sa_label), sa_xn_sp, sa_xd)
         })
     }
     // ADDS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
@@ -1024,35 +992,47 @@ func (self *Program) ADDV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDV")
 }
 
-// ADR instruction have one single form from one single category:
+// ADR instruction have 2 forms from one single category:
 //
 // 1. Form PC-relative address
 //
 //    ADR  <Xd>, <label>
+//    ADR  <Xd>, .±<offs>
 //
 // Form PC-relative address adds an immediate value to the PC value to form a PC-
 // relative address, and writes the result to the destination register.
 //
 func (self *Program) ADR(v0, v1 interface{}) *Instruction {
     p := self.alloc("ADR", 2, asm.Operands { v0, v1 })
+    // ADR  <Xd>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
-            refs := reladr(sa_label, pc, false)
-            return pcreladdr(0, mask(refs, 2), ubfx(refs, 2, 19), sa_xd)
+            ra_refs := adroffs(sa_label, pc, false)
+            return pcreladdr(0, mask(ra_refs, 2), ubfx(ra_refs, 2, 19), sa_xd)
         })
     }
+    // ADR  <Xd>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xd := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        ra_refs := adrrel(ra_pcrel, false)
+        return p.setins(pcreladdr(0, mask(ra_refs, 2), ubfx(ra_refs, 2, 19), sa_xd))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for ADR")
 }
 
-// ADRP instruction have one single form from one single category:
+// ADRP instruction have 2 forms from one single category:
 //
 // 1. Form PC-relative address to 4KB page
 //
 //    ADRP  <Xd>, <label>
+//    ADRP  <Xd>, .±<offs>
 //
 // Form PC-relative address to 4KB page adds an immediate value that is shifted
 // left by 12 bits, to the PC value to form a PC-relative address, with the bottom
@@ -1060,15 +1040,25 @@ func (self *Program) ADR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
     p := self.alloc("ADRP", 2, asm.Operands { v0, v1 })
+    // ADRP  <Xd>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
         return p.setenc(func(pc uintptr) uint32 {
-            refs := reladr(sa_label, pc, true)
-            return pcreladdr(1, mask(refs, 2), ubfx(refs, 2, 19), sa_xd)
+            ra_refs := adroffs(sa_label, pc, true)
+            return pcreladdr(1, mask(ra_refs, 2), ubfx(ra_refs, 2, 19), sa_xd)
         })
     }
+    // ADRP  <Xd>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xd := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        ra_refs := adrrel(ra_pcrel, true)
+        return p.setins(pcreladdr(1, mask(ra_refs, 2), ubfx(ra_refs, 2, 19), sa_xd))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for ADRP")
 }
@@ -1193,7 +1183,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("AND", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("AND", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction AND takes 3 or 4 operands")
+        default : panic("aarch64: instruction AND takes 3 or 4 operands")
     }
     // AND  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -1310,7 +1300,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     switch len(vv) {
         case 0  : p = self.alloc("ANDS", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("ANDS", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction ANDS takes 3 or 4 operands")
+        default : panic("aarch64: instruction ANDS takes 3 or 4 operands")
     }
     // ANDS  <Wd>, <Wn>, #<imm>
     if isWr(v0) && isWr(v1) && isMask32(v2) {
@@ -2023,371 +2013,570 @@ func (self *Program) AXFLAG() *Instruction {
     return p.setins(pstate(0, 0, 2, 31))
 }
 
-// B instruction have one single form from one single category:
+// B instruction have 2 forms from one single category:
 //
 // 1. Branch
 //
 //    B  <label>
+//    B  .±<offs>
 //
 // Branch causes an unconditional branch to a label at a PC-relative offset, with a
 // hint that this is not a subroutine call or return.
 //
 func (self *Program) B(v0 interface{}) *Instruction {
     p := self.alloc("B", 1, asm.Operands { v0 })
+    // B  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return branch_imm(0, rel26(sa_label, pc)) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return branch_imm(0, pcrel26(sa_label, pc))
+        })
     }
+    // B  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(branch_imm(0, rel26(ra_pcrel)))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for B")
 }
 
-// BEQ instruction have one single form from one single category:
+// BEQ instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.eq  <label>
+//    B.eq  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BEQ(v0 interface{}) *Instruction {
     p := self.alloc("BEQ", 1, asm.Operands { v0 })
+    // B.eq  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 0) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 0)
+        })
     }
+    // B.eq  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 0))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BEQ")
 }
 
-// BNE instruction have one single form from one single category:
+// BNE instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.ne  <label>
+//    B.ne  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BNE(v0 interface{}) *Instruction {
     p := self.alloc("BNE", 1, asm.Operands { v0 })
+    // B.ne  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 1) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 1)
+        })
     }
+    // B.ne  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 1))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BNE")
 }
 
-// BCS instruction have one single form from one single category:
+// BCS instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.cs  <label>
+//    B.cs  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BCS(v0 interface{}) *Instruction {
     p := self.alloc("BCS", 1, asm.Operands { v0 })
+    // B.cs  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 2) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 2)
+        })
     }
+    // B.cs  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 2))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCS")
 }
 
-// BHS instruction have one single form from one single category:
+// BHS instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.hs  <label>
+//    B.hs  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BHS(v0 interface{}) *Instruction {
     p := self.alloc("BHS", 1, asm.Operands { v0 })
+    // B.hs  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 2) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 2)
+        })
     }
+    // B.hs  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 2))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BHS")
 }
 
-// BCC instruction have one single form from one single category:
+// BCC instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.cc  <label>
+//    B.cc  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BCC(v0 interface{}) *Instruction {
     p := self.alloc("BCC", 1, asm.Operands { v0 })
+    // B.cc  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 3) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 3)
+        })
     }
+    // B.cc  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 3))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCC")
 }
 
-// BLO instruction have one single form from one single category:
+// BLO instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.lo  <label>
+//    B.lo  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BLO(v0 interface{}) *Instruction {
     p := self.alloc("BLO", 1, asm.Operands { v0 })
+    // B.lo  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 3) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 3)
+        })
     }
+    // B.lo  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 3))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BLO")
 }
 
-// BMI instruction have one single form from one single category:
+// BMI instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.mi  <label>
+//    B.mi  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BMI(v0 interface{}) *Instruction {
     p := self.alloc("BMI", 1, asm.Operands { v0 })
+    // B.mi  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 4) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 4)
+        })
     }
+    // B.mi  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 4))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BMI")
 }
 
-// BPL instruction have one single form from one single category:
+// BPL instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.pl  <label>
+//    B.pl  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BPL(v0 interface{}) *Instruction {
     p := self.alloc("BPL", 1, asm.Operands { v0 })
+    // B.pl  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 5) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 5)
+        })
     }
+    // B.pl  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 5))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BPL")
 }
 
-// BVS instruction have one single form from one single category:
+// BVS instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.vs  <label>
+//    B.vs  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BVS(v0 interface{}) *Instruction {
     p := self.alloc("BVS", 1, asm.Operands { v0 })
+    // B.vs  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 6) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 6)
+        })
     }
+    // B.vs  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 6))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BVS")
 }
 
-// BVC instruction have one single form from one single category:
+// BVC instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.vc  <label>
+//    B.vc  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BVC(v0 interface{}) *Instruction {
     p := self.alloc("BVC", 1, asm.Operands { v0 })
+    // B.vc  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 7) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 7)
+        })
     }
+    // B.vc  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 7))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BVC")
 }
 
-// BHI instruction have one single form from one single category:
+// BHI instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.hi  <label>
+//    B.hi  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BHI(v0 interface{}) *Instruction {
     p := self.alloc("BHI", 1, asm.Operands { v0 })
+    // B.hi  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 8) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 8)
+        })
     }
+    // B.hi  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 8))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BHI")
 }
 
-// BLS instruction have one single form from one single category:
+// BLS instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.ls  <label>
+//    B.ls  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BLS(v0 interface{}) *Instruction {
     p := self.alloc("BLS", 1, asm.Operands { v0 })
+    // B.ls  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 9) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 9)
+        })
     }
+    // B.ls  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 9))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BLS")
 }
 
-// BGE instruction have one single form from one single category:
+// BGE instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.ge  <label>
+//    B.ge  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BGE(v0 interface{}) *Instruction {
     p := self.alloc("BGE", 1, asm.Operands { v0 })
+    // B.ge  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 10) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 10)
+        })
     }
+    // B.ge  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 10))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BGE")
 }
 
-// BLT instruction have one single form from one single category:
+// BLT instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.lt  <label>
+//    B.lt  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BLT(v0 interface{}) *Instruction {
     p := self.alloc("BLT", 1, asm.Operands { v0 })
+    // B.lt  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 11) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 11)
+        })
     }
+    // B.lt  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 11))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BLT")
 }
 
-// BGT instruction have one single form from one single category:
+// BGT instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.gt  <label>
+//    B.gt  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BGT(v0 interface{}) *Instruction {
     p := self.alloc("BGT", 1, asm.Operands { v0 })
+    // B.gt  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 12) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 12)
+        })
     }
+    // B.gt  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 12))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BGT")
 }
 
-// BLE instruction have one single form from one single category:
+// BLE instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.le  <label>
+//    B.le  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BLE(v0 interface{}) *Instruction {
     p := self.alloc("BLE", 1, asm.Operands { v0 })
+    // B.le  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 13) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 13)
+        })
     }
+    // B.le  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 13))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BLE")
 }
 
-// BAL instruction have one single form from one single category:
+// BAL instruction have 2 forms from one single category:
 //
 // 1. Branch conditionally
 //
 //    B.al  <label>
+//    B.al  .±<offs>
 //
 // Branch conditionally to a label at a PC-relative offset, with a hint that this
 // is not a subroutine call or return.
 //
 func (self *Program) BAL(v0 interface{}) *Instruction {
     p := self.alloc("BAL", 1, asm.Operands { v0 })
+    // B.al  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 0, 14) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 0, 14)
+        })
     }
+    // B.al  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 0, 14))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BAL")
 }
 
-// BCEQ instruction have one single form from one single category:
+// BCEQ instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.eq  <label>
+//    BC.eq  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2395,21 +2584,33 @@ func (self *Program) BAL(v0 interface{}) *Instruction {
 //
 func (self *Program) BCEQ(v0 interface{}) *Instruction {
     p := self.alloc("BCEQ", 1, asm.Operands { v0 })
+    // BC.eq  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 0) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 0)
+        })
     }
+    // BC.eq  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 0))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCEQ")
 }
 
-// BCNE instruction have one single form from one single category:
+// BCNE instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.ne  <label>
+//    BC.ne  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2417,21 +2618,33 @@ func (self *Program) BCEQ(v0 interface{}) *Instruction {
 //
 func (self *Program) BCNE(v0 interface{}) *Instruction {
     p := self.alloc("BCNE", 1, asm.Operands { v0 })
+    // BC.ne  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 1) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 1)
+        })
     }
+    // BC.ne  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 1))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCNE")
 }
 
-// BCCS instruction have one single form from one single category:
+// BCCS instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.cs  <label>
+//    BC.cs  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2439,21 +2652,33 @@ func (self *Program) BCNE(v0 interface{}) *Instruction {
 //
 func (self *Program) BCCS(v0 interface{}) *Instruction {
     p := self.alloc("BCCS", 1, asm.Operands { v0 })
+    // BC.cs  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 2) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 2)
+        })
     }
+    // BC.cs  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 2))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCCS")
 }
 
-// BCHS instruction have one single form from one single category:
+// BCHS instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.hs  <label>
+//    BC.hs  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2461,21 +2686,33 @@ func (self *Program) BCCS(v0 interface{}) *Instruction {
 //
 func (self *Program) BCHS(v0 interface{}) *Instruction {
     p := self.alloc("BCHS", 1, asm.Operands { v0 })
+    // BC.hs  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 2) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 2)
+        })
     }
+    // BC.hs  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 2))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCHS")
 }
 
-// BCCC instruction have one single form from one single category:
+// BCCC instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.cc  <label>
+//    BC.cc  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2483,21 +2720,33 @@ func (self *Program) BCHS(v0 interface{}) *Instruction {
 //
 func (self *Program) BCCC(v0 interface{}) *Instruction {
     p := self.alloc("BCCC", 1, asm.Operands { v0 })
+    // BC.cc  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 3) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 3)
+        })
     }
+    // BC.cc  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 3))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCCC")
 }
 
-// BCLO instruction have one single form from one single category:
+// BCLO instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.lo  <label>
+//    BC.lo  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2505,21 +2754,33 @@ func (self *Program) BCCC(v0 interface{}) *Instruction {
 //
 func (self *Program) BCLO(v0 interface{}) *Instruction {
     p := self.alloc("BCLO", 1, asm.Operands { v0 })
+    // BC.lo  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 3) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 3)
+        })
     }
+    // BC.lo  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 3))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCLO")
 }
 
-// BCMI instruction have one single form from one single category:
+// BCMI instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.mi  <label>
+//    BC.mi  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2527,21 +2788,33 @@ func (self *Program) BCLO(v0 interface{}) *Instruction {
 //
 func (self *Program) BCMI(v0 interface{}) *Instruction {
     p := self.alloc("BCMI", 1, asm.Operands { v0 })
+    // BC.mi  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 4) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 4)
+        })
     }
+    // BC.mi  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 4))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCMI")
 }
 
-// BCPL instruction have one single form from one single category:
+// BCPL instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.pl  <label>
+//    BC.pl  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2549,21 +2822,33 @@ func (self *Program) BCMI(v0 interface{}) *Instruction {
 //
 func (self *Program) BCPL(v0 interface{}) *Instruction {
     p := self.alloc("BCPL", 1, asm.Operands { v0 })
+    // BC.pl  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 5) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 5)
+        })
     }
+    // BC.pl  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 5))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCPL")
 }
 
-// BCVS instruction have one single form from one single category:
+// BCVS instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.vs  <label>
+//    BC.vs  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2571,21 +2856,33 @@ func (self *Program) BCPL(v0 interface{}) *Instruction {
 //
 func (self *Program) BCVS(v0 interface{}) *Instruction {
     p := self.alloc("BCVS", 1, asm.Operands { v0 })
+    // BC.vs  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 6) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 6)
+        })
     }
+    // BC.vs  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 6))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCVS")
 }
 
-// BCVC instruction have one single form from one single category:
+// BCVC instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.vc  <label>
+//    BC.vc  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2593,21 +2890,33 @@ func (self *Program) BCVS(v0 interface{}) *Instruction {
 //
 func (self *Program) BCVC(v0 interface{}) *Instruction {
     p := self.alloc("BCVC", 1, asm.Operands { v0 })
+    // BC.vc  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 7) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 7)
+        })
     }
+    // BC.vc  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 7))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCVC")
 }
 
-// BCHI instruction have one single form from one single category:
+// BCHI instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.hi  <label>
+//    BC.hi  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2615,21 +2924,33 @@ func (self *Program) BCVC(v0 interface{}) *Instruction {
 //
 func (self *Program) BCHI(v0 interface{}) *Instruction {
     p := self.alloc("BCHI", 1, asm.Operands { v0 })
+    // BC.hi  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 8) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 8)
+        })
     }
+    // BC.hi  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 8))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCHI")
 }
 
-// BCLS instruction have one single form from one single category:
+// BCLS instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.ls  <label>
+//    BC.ls  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2637,21 +2958,33 @@ func (self *Program) BCHI(v0 interface{}) *Instruction {
 //
 func (self *Program) BCLS(v0 interface{}) *Instruction {
     p := self.alloc("BCLS", 1, asm.Operands { v0 })
+    // BC.ls  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 9) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 9)
+        })
     }
+    // BC.ls  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 9))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCLS")
 }
 
-// BCGE instruction have one single form from one single category:
+// BCGE instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.ge  <label>
+//    BC.ge  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2659,21 +2992,33 @@ func (self *Program) BCLS(v0 interface{}) *Instruction {
 //
 func (self *Program) BCGE(v0 interface{}) *Instruction {
     p := self.alloc("BCGE", 1, asm.Operands { v0 })
+    // BC.ge  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 10) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 10)
+        })
     }
+    // BC.ge  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 10))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCGE")
 }
 
-// BCLT instruction have one single form from one single category:
+// BCLT instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.lt  <label>
+//    BC.lt  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2681,21 +3026,33 @@ func (self *Program) BCGE(v0 interface{}) *Instruction {
 //
 func (self *Program) BCLT(v0 interface{}) *Instruction {
     p := self.alloc("BCLT", 1, asm.Operands { v0 })
+    // BC.lt  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 11) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 11)
+        })
     }
+    // BC.lt  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 11))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCLT")
 }
 
-// BCGT instruction have one single form from one single category:
+// BCGT instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.gt  <label>
+//    BC.gt  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2703,21 +3060,33 @@ func (self *Program) BCLT(v0 interface{}) *Instruction {
 //
 func (self *Program) BCGT(v0 interface{}) *Instruction {
     p := self.alloc("BCGT", 1, asm.Operands { v0 })
+    // BC.gt  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 12) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 12)
+        })
     }
+    // BC.gt  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 12))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCGT")
 }
 
-// BCLE instruction have one single form from one single category:
+// BCLE instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.le  <label>
+//    BC.le  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2725,21 +3094,33 @@ func (self *Program) BCGT(v0 interface{}) *Instruction {
 //
 func (self *Program) BCLE(v0 interface{}) *Instruction {
     p := self.alloc("BCLE", 1, asm.Operands { v0 })
+    // BC.le  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 13) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 13)
+        })
     }
+    // BC.le  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 13))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCLE")
 }
 
-// BCAL instruction have one single form from one single category:
+// BCAL instruction have 2 forms from one single category:
 //
 // 1. Branch Consistent conditionally
 //
 //    BC.al  <label>
+//    BC.al  .±<offs>
 //
 // Branch Consistent conditionally to a label at a PC-relative offset, with a hint
 // that this branch will behave very consistently and is very unlikely to change
@@ -2747,12 +3128,23 @@ func (self *Program) BCLE(v0 interface{}) *Instruction {
 //
 func (self *Program) BCAL(v0 interface{}) *Instruction {
     p := self.alloc("BCAL", 1, asm.Operands { v0 })
+    // BC.al  <label>
     if isLabel(v0) {
         self.Arch.Require(FEAT_HBC)
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return condbranch(0, rel19(sa_label, pc), 1, 14) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return condbranch(0, pcrel19(sa_label, pc), 1, 14)
+        })
     }
+    // BC.al  .±<offs>
+    if isPCrel(v0) {
+        self.Arch.Require(FEAT_HBC)
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(condbranch(0, rel19(ra_pcrel), 1, 14))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BCAL")
 }
@@ -3461,7 +3853,7 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
         case 0  : p = self.alloc("BIC", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("BIC", 3, asm.Operands { v0, v1, vv[0] })
         case 2  : p = self.alloc("BIC", 4, asm.Operands { v0, v1, vv[0], vv[1] })
-        default : panic("instruction BIC takes 2 or 3 or 4 operands")
+        default : panic("aarch64: instruction BIC takes 2 or 3 or 4 operands")
     }
     // BIC  <Vd>.<T>, #<imm8>{, LSL #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -3645,7 +4037,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     switch len(vv) {
         case 0  : p = self.alloc("BICS", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("BICS", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction BICS takes 3 or 4 operands")
+        default : panic("aarch64: instruction BICS takes 3 or 4 operands")
     }
     // BICS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -3782,22 +4174,33 @@ func (self *Program) BIT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BIT")
 }
 
-// BL instruction have one single form from one single category:
+// BL instruction have 2 forms from one single category:
 //
 // 1. Branch with Link
 //
 //    BL  <label>
+//    BL  .±<offs>
 //
 // Branch with Link branches to a PC-relative offset, setting the register X30 to
 // PC+4. It provides a hint that this is a subroutine call.
 //
 func (self *Program) BL(v0 interface{}) *Instruction {
     p := self.alloc("BL", 1, asm.Operands { v0 })
+    // BL  <label>
     if isLabel(v0) {
         p.Domain = asm.DomainGeneric
         sa_label := v0.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return branch_imm(1, rel26(sa_label, pc)) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return branch_imm(1, pcrel26(sa_label, pc))
+        })
     }
+    // BL  .±<offs>
+    if isPCrel(v0) {
+        p.Domain = asm.DomainGeneric
+        ra_pcrel := v0.(asm.RelativeOffset)
+        return p.setins(branch_imm(1, rel26(ra_pcrel)))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for BL")
 }
@@ -4160,7 +4563,7 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("BRB", 1, asm.Operands { v0 })
         case 1  : p = self.alloc("BRB", 2, asm.Operands { v0, vv[0] })
-        default : panic("instruction BRB takes 1 or 2 operands")
+        default : panic("aarch64: instruction BRB takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isBRBOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
         self.Arch.Require(FEAT_BRBE)
@@ -4267,7 +4670,7 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("BTI", 0, asm.Operands {})
         case 1  : p = self.alloc("BTI", 1, asm.Operands { vv[0] })
-        default : panic("instruction BTI takes 0 or 1 operands")
+        default : panic("aarch64: instruction BTI takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isTargets(vv[0])) {
         self.Arch.Require(FEAT_BTI)
@@ -5246,12 +5649,14 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASPL")
 }
 
-// CBNZ instruction have 2 forms from one single category:
+// CBNZ instruction have 4 forms from one single category:
 //
 // 1. Compare and Branch on Nonzero
 //
 //    CBNZ  <Wt>, <label>
+//    CBNZ  <Wt>, .±<offs>
 //    CBNZ  <Xt>, <label>
+//    CBNZ  <Xt>, .±<offs>
 //
 // Compare and Branch on Nonzero compares the value in a register with zero, and
 // conditionally branches to a label at a PC-relative offset if the comparison is
@@ -5265,26 +5670,46 @@ func (self *Program) CBNZ(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 1, rel19(sa_label, pc), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return compbranch(0, 1, pcrel19(sa_label, pc), sa_wt)
+        })
+    }
+    // CBNZ  <Wt>, .±<offs>
+    if isWr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_wt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(compbranch(0, 1, rel19(ra_pcrel), sa_wt))
     }
     // CBNZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 1, rel19(sa_label, pc), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return compbranch(1, 1, pcrel19(sa_label, pc), sa_xt)
+        })
+    }
+    // CBNZ  <Xt>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(compbranch(1, 1, rel19(ra_pcrel), sa_xt))
     }
     // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for CBNZ")
 }
 
-// CBZ instruction have 2 forms from one single category:
+// CBZ instruction have 4 forms from one single category:
 //
 // 1. Compare and Branch on Zero
 //
 //    CBZ  <Wt>, <label>
+//    CBZ  <Wt>, .±<offs>
 //    CBZ  <Xt>, <label>
+//    CBZ  <Xt>, .±<offs>
 //
 // Compare and Branch on Zero compares the value in a register with zero, and
 // conditionally branches to a label at a PC-relative offset if the comparison is
@@ -5298,14 +5723,32 @@ func (self *Program) CBZ(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(0, 0, rel19(sa_label, pc), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return compbranch(0, 0, pcrel19(sa_label, pc), sa_wt)
+        })
+    }
+    // CBZ  <Wt>, .±<offs>
+    if isWr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_wt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(compbranch(0, 0, rel19(ra_pcrel), sa_wt))
     }
     // CBZ  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return compbranch(1, 0, rel19(sa_label, pc), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return compbranch(1, 0, pcrel19(sa_label, pc), sa_xt)
+        })
+    }
+    // CBZ  <Xt>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(compbranch(1, 0, rel19(ra_pcrel), sa_xt))
     }
     // none of above
     p.Free()
@@ -5603,7 +6046,7 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("CLREX", 0, asm.Operands {})
         case 1  : p = self.alloc("CLREX", 1, asm.Operands { vv[0] })
-        default : panic("instruction CLREX takes 0 or 1 operands")
+        default : panic("aarch64: instruction CLREX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm4(vv[0])) {
         p.Domain = DomainSystem
@@ -6382,7 +6825,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("CMN", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("CMN", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction CMN takes 2 or 3 operands")
+        default : panic("aarch64: instruction CMN takes 2 or 3 operands")
     }
     // CMN  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -6488,15 +6931,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                0,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                31,
-            )
+            return addsub_imm(0, 0, 1, sa_shift, abs12(sa_label), sa_wn_wsp, 31)
         })
     }
     // CMN  <Xn|SP>, #<imm>{, <shift>}
@@ -6533,7 +6968,9 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
                 default: panic("aarch64: invalid modifier flags")
             }
         }
-        return p.setenc(func(pc uintptr) uint32 { return addsub_imm(1, 0, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(1, 0, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31)
+        })
     }
     // CMN  <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -6620,7 +7057,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("CMP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("CMP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction CMP takes 2 or 3 operands")
+        default : panic("aarch64: instruction CMP takes 2 or 3 operands")
     }
     // CMP  <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -6726,15 +7163,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                1,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                31,
-            )
+            return addsub_imm(0, 1, 1, sa_shift, abs12(sa_label), sa_wn_wsp, 31)
         })
     }
     // CMP  <Xn|SP>, #<imm>{, <shift>}
@@ -6771,7 +7200,9 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
                 default: panic("aarch64: invalid modifier flags")
             }
         }
-        return p.setenc(func(pc uintptr) uint32 { return addsub_imm(1, 1, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return addsub_imm(1, 1, 1, sa_shift, abs12(sa_label), sa_xn_sp, 31)
+        })
     }
     // CMP  <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -24158,7 +24589,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("DCPS1", 0, asm.Operands {})
         case 1  : p = self.alloc("DCPS1", 1, asm.Operands { vv[0] })
-        default : panic("instruction DCPS1 takes 0 or 1 operands")
+        default : panic("aarch64: instruction DCPS1 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
         p.Domain = DomainSystem
@@ -24213,7 +24644,7 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("DCPS2", 0, asm.Operands {})
         case 1  : p = self.alloc("DCPS2", 1, asm.Operands { vv[0] })
-        default : panic("instruction DCPS2 takes 0 or 1 operands")
+        default : panic("aarch64: instruction DCPS2 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
         p.Domain = DomainSystem
@@ -24263,7 +24694,7 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("DCPS3", 0, asm.Operands {})
         case 1  : p = self.alloc("DCPS3", 1, asm.Operands { vv[0] })
-        default : panic("instruction DCPS3 takes 0 or 1 operands")
+        default : panic("aarch64: instruction DCPS3 takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
         p.Domain = DomainSystem
@@ -24586,7 +25017,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("EON", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("EON", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction EON takes 3 or 4 operands")
+        default : panic("aarch64: instruction EON takes 3 or 4 operands")
     }
     // EON  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -24677,7 +25108,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("EOR", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("EOR", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction EOR takes 3 or 4 operands")
+        default : panic("aarch64: instruction EOR takes 3 or 4 operands")
     }
     // EOR  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -25562,7 +25993,7 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("FADDP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FADDP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FADDP takes 2 or 3 operands")
+        default : panic("aarch64: instruction FADDP takes 2 or 3 operands")
     }
     // FADDP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
@@ -28846,7 +29277,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     switch len(vv) {
         case 0  : p = self.alloc("FCVTZS", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FCVTZS", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FCVTZS takes 2 or 3 operands")
+        default : panic("aarch64: instruction FCVTZS takes 2 or 3 operands")
     }
     // FCVTZS  <Vd>.<T>, <Vn>.<T>, #<fbits>
     if len(vv) == 1 &&
@@ -29166,7 +29597,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     switch len(vv) {
         case 0  : p = self.alloc("FCVTZU", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FCVTZU", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FCVTZU takes 2 or 3 operands")
+        default : panic("aarch64: instruction FCVTZU takes 2 or 3 operands")
     }
     // FCVTZU  <Vd>.<T>, <Vn>.<T>, #<fbits>
     if len(vv) == 1 &&
@@ -29957,7 +30388,7 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("FMAXNMP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FMAXNMP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FMAXNMP takes 2 or 3 operands")
+        default : panic("aarch64: instruction FMAXNMP takes 2 or 3 operands")
     }
     // FMAXNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
@@ -30209,7 +30640,7 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("FMAXP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FMAXP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FMAXP takes 2 or 3 operands")
+        default : panic("aarch64: instruction FMAXP takes 2 or 3 operands")
     }
     // FMAXP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
@@ -30744,7 +31175,7 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("FMINNMP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FMINNMP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FMINNMP takes 2 or 3 operands")
+        default : panic("aarch64: instruction FMINNMP takes 2 or 3 operands")
     }
     // FMINNMP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
@@ -30996,7 +31427,7 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("FMINP", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("FMINP", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction FMINP takes 2 or 3 operands")
+        default : panic("aarch64: instruction FMINP takes 2 or 3 operands")
     }
     // FMINP  <V><d>, <Vn>.<T>
     if isAdvSIMD(v0) && isVr(v1) && vfmt(v1) == Vec2H {
@@ -35133,7 +35564,7 @@ func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("GCSPOPCX", 0, asm.Operands {})
         case 1  : p = self.alloc("GCSPOPCX", 1, asm.Operands { vv[0] })
-        default : panic("instruction GCSPOPCX takes 0 or 1 operands")
+        default : panic("aarch64: instruction GCSPOPCX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
         self.Arch.Require(FEAT_GCS)
@@ -35187,7 +35618,7 @@ func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("GCSPOPX", 0, asm.Operands {})
         case 1  : p = self.alloc("GCSPOPX", 1, asm.Operands { vv[0] })
-        default : panic("instruction GCSPOPX takes 0 or 1 operands")
+        default : panic("aarch64: instruction GCSPOPX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
         self.Arch.Require(FEAT_GCS)
@@ -35240,7 +35671,7 @@ func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("GCSPUSHX", 0, asm.Operands {})
         case 1  : p = self.alloc("GCSPUSHX", 1, asm.Operands { vv[0] })
-        default : panic("instruction GCSPUSHX takes 0 or 1 operands")
+        default : panic("aarch64: instruction GCSPUSHX takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
         self.Arch.Require(FEAT_GCS)
@@ -35479,7 +35910,7 @@ func (self *Program) IC(v0 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("IC", 1, asm.Operands { v0 })
         case 1  : p = self.alloc("IC", 2, asm.Operands { v0, vv[0] })
-        default : panic("instruction IC takes 1 or 2 operands")
+        default : panic("aarch64: instruction IC takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isICOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
         p.Domain = DomainSystem
@@ -35616,7 +36047,7 @@ func (self *Program) IRG(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("IRG", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("IRG", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction IRG takes 2 or 3 operands")
+        default : panic("aarch64: instruction IRG takes 2 or 3 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isXrOrSP(v1) && (len(vv) == 0 || isXr(vv[0])) {
         self.Arch.Require(FEAT_MTE)
@@ -35654,7 +36085,7 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("ISB", 0, asm.Operands {})
         case 1  : p = self.alloc("ISB", 1, asm.Operands { vv[0] })
-        default : panic("instruction ISB takes 0 or 1 operands")
+        default : panic("aarch64: instruction ISB takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isOption(vv[0])) {
         p.Domain = DomainSystem
@@ -40857,7 +41288,7 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDPSW")
 }
 
-// LDR instruction have 34 forms from 6 categories:
+// LDR instruction have 39 forms from 6 categories:
 //
 // 1. Load SIMD&FP Register (immediate offset)
 //
@@ -40909,8 +41340,11 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
 // 3. Load SIMD&FP Register (PC-relative literal)
 //
 //    LDR  <Dt>, <label>
+//    LDR  <Dt>, .±<offs>
 //    LDR  <Qt>, <label>
+//    LDR  <Qt>, .±<offs>
 //    LDR  <St>, <label>
+//    LDR  <St>, .±<offs>
 //
 // Load SIMD&FP Register (PC-relative literal). This instruction loads a SIMD&FP
 // register from memory. The address that is used for the load is calculated from
@@ -40923,7 +41357,9 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
 // 4. Load Register (literal)
 //
 //    LDR  <Wt>, <label>
+//    LDR  <Wt>, .±<offs>
 //    LDR  <Xt>, <label>
+//    LDR  <Xt>, .±<offs>
 //
 // Load Register (literal) calculates an address from the PC value and an immediate
 // offset, loads a word from memory, and writes it to a register. For information
@@ -41132,35 +41568,80 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 1, rel19(sa_label, pc), sa_dt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(1, 1, pcrel19(sa_label, pc), sa_dt)
+        })
+    }
+    // LDR  <Dt>, .±<offs>
+    if isDr(v0) && isPCrel(v1) {
+        p.Domain = DomainFpSimd
+        sa_dt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(1, 1, rel19(ra_pcrel), sa_dt))
     }
     // LDR  <Qt>, <label>
     if isQr(v0) && isLabel(v1) {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 1, rel19(sa_label, pc), sa_qt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(2, 1, pcrel19(sa_label, pc), sa_qt)
+        })
+    }
+    // LDR  <Qt>, .±<offs>
+    if isQr(v0) && isPCrel(v1) {
+        p.Domain = DomainFpSimd
+        sa_qt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(2, 1, rel19(ra_pcrel), sa_qt))
     }
     // LDR  <St>, <label>
     if isSr(v0) && isLabel(v1) {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 1, rel19(sa_label, pc), sa_st) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(0, 1, pcrel19(sa_label, pc), sa_st)
+        })
+    }
+    // LDR  <St>, .±<offs>
+    if isSr(v0) && isPCrel(v1) {
+        p.Domain = DomainFpSimd
+        sa_st := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(0, 1, rel19(ra_pcrel), sa_st))
     }
     // LDR  <Wt>, <label>
     if isWr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(0, 0, rel19(sa_label, pc), sa_wt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(0, 0, pcrel19(sa_label, pc), sa_wt)
+        })
+    }
+    // LDR  <Wt>, .±<offs>
+    if isWr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_wt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(0, 0, rel19(ra_pcrel), sa_wt))
     }
     // LDR  <Xt>, <label>
     if isXr(v0) && isLabel(v1) {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(1, 0, rel19(sa_label, pc), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(1, 0, pcrel19(sa_label, pc), sa_xt)
+        })
+    }
+    // LDR  <Xt>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(1, 0, rel19(ra_pcrel), sa_xt))
     }
     // LDR  <Bt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
     if isBr(v0) &&
@@ -41987,7 +42468,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRSH")
 }
 
-// LDRSW instruction have 5 forms from 3 categories:
+// LDRSW instruction have 6 forms from 3 categories:
 //
 // 1. Load Register Signed Word (immediate)
 //
@@ -42007,6 +42488,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
 // 2. Load Register Signed Word (literal)
 //
 //    LDRSW  <Xt>, <label>
+//    LDRSW  <Xt>, .±<offs>
 //
 // Load Register Signed Word (literal) calculates an address from the PC value and
 // an immediate offset, loads a word from memory, and writes it to a register. For
@@ -42053,7 +42535,16 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(2, 0, rel19(sa_label, pc), sa_xt) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(2, 0, pcrel19(sa_label, pc), sa_xt)
+        })
+    }
+    // LDRSW  <Xt>, .±<offs>
+    if isXr(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_xt := uint32(v0.(asm.Register).ID())
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(2, 0, rel19(ra_pcrel), sa_xt))
     }
     // LDRSW  <Xt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
     if isXr(v0) &&
@@ -46512,7 +47003,7 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MOVI", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MOVI", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MOVI takes 2 or 3 operands")
+        default : panic("aarch64: instruction MOVI takes 2 or 3 operands")
     }
     // MOVI  <Vd>.2D, #<imm>
     if isVr(v0) && vfmt(v0) == Vec2D && isUimm8(v1) {
@@ -46736,7 +47227,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MOVK", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MOVK", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MOVK takes 2 or 3 operands")
+        default : panic("aarch64: instruction MOVK takes 2 or 3 operands")
     }
     // MOVK  <Wd>, #<imm>{, LSL #<shift>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
@@ -46745,7 +47236,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(Modifier).Amount())
+            sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 3, sa_shift, sa_imm, sa_wd))
     }
@@ -46756,7 +47247,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift_1 = uint32(vv[0].(Modifier).Amount())
+            sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 3, sa_shift_1, sa_imm, sa_xd))
     }
@@ -46780,7 +47271,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MOVN", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MOVN", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MOVN takes 2 or 3 operands")
+        default : panic("aarch64: instruction MOVN takes 2 or 3 operands")
     }
     // MOVN  <Wd>, #<imm>{, LSL #<shift>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
@@ -46789,7 +47280,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(Modifier).Amount())
+            sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 0, sa_shift, sa_imm, sa_wd))
     }
@@ -46800,7 +47291,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift_1 = uint32(vv[0].(Modifier).Amount())
+            sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 0, sa_shift_1, sa_imm, sa_xd))
     }
@@ -46824,7 +47315,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MOVZ", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MOVZ", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MOVZ takes 2 or 3 operands")
+        default : panic("aarch64: instruction MOVZ takes 2 or 3 operands")
     }
     // MOVZ  <Wd>, #<imm>{, LSL #<shift>}
     if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
@@ -46833,7 +47324,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift = uint32(vv[0].(Modifier).Amount())
+            sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 2, sa_shift, sa_imm, sa_wd))
     }
@@ -46844,7 +47335,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
         if len(vv) == 1 {
-            sa_shift_1 = uint32(vv[0].(Modifier).Amount())
+            sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 2, sa_shift_1, sa_imm, sa_xd))
     }
@@ -47189,7 +47680,7 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MVN", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MVN", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MVN takes 2 or 3 operands")
+        default : panic("aarch64: instruction MVN takes 2 or 3 operands")
     }
     // MVN  <Vd>.<T>, <Vn>.<T>
     if isVr(v0) && isVfmt(v0, Vec8B, Vec16B) && isVr(v1) && isVfmt(v1, Vec8B, Vec16B) && vfmt(v0) == vfmt(v1) {
@@ -47274,7 +47765,7 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("MVNI", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("MVNI", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction MVNI takes 2 or 3 operands")
+        default : panic("aarch64: instruction MVNI takes 2 or 3 operands")
     }
     // MVNI  <Vd>.<T>, #<imm8>{, LSL #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -47438,7 +47929,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("NEG", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("NEG", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction NEG takes 2 or 3 operands")
+        default : panic("aarch64: instruction NEG takes 2 or 3 operands")
     }
     // NEG  <Wd>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -47537,7 +48028,7 @@ func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("NEGS", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("NEGS", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction NEGS takes 2 or 3 operands")
+        default : panic("aarch64: instruction NEGS takes 2 or 3 operands")
     }
     // NEGS  <Wd>, <Wm>{, <shift> #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -47730,7 +48221,7 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("ORN", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("ORN", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction ORN takes 3 or 4 operands")
+        default : panic("aarch64: instruction ORN takes 3 or 4 operands")
     }
     // ORN  <Vd>.<T>, <Vn>.<T>, <Vm>.<T>
     if isVr(v0) &&
@@ -47857,7 +48348,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
         case 0  : p = self.alloc("ORR", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("ORR", 3, asm.Operands { v0, v1, vv[0] })
         case 2  : p = self.alloc("ORR", 4, asm.Operands { v0, v1, vv[0], vv[1] })
-        default : panic("instruction ORR takes 2 or 3 or 4 operands")
+        default : panic("aarch64: instruction ORR takes 2 or 3 or 4 operands")
     }
     // ORR  <Vd>.<T>, #<imm8>{, LSL #<amount>}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -48704,7 +49195,7 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PMULL2")
 }
 
-// PRFM instruction have 3 forms from 3 categories:
+// PRFM instruction have 4 forms from 3 categories:
 //
 // 1. Prefetch Memory (immediate)
 //
@@ -48724,6 +49215,7 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
 // 2. Prefetch Memory (literal)
 //
 //    PRFM  (<prfop>|#<imm5>), <label>
+//    PRFM  (<prfop>|#<imm5>), .±<offs>
 //
 // Prefetch Memory (literal) signals the memory system that data memory accesses
 // from a specified address are likely to occur in the near future. The memory
@@ -48766,7 +49258,16 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
         p.Domain = asm.DomainGeneric
         sa_prfop := asBasicPrefetchOp(v0)
         sa_label := v1.(*asm.Label)
-        return p.setenc(func(pc uintptr) uint32 { return loadlit(3, 0, rel19(sa_label, pc), sa_prfop) })
+        return p.setenc(func(pc uintptr) uint32 {
+            return loadlit(3, 0, pcrel19(sa_label, pc), sa_prfop)
+        })
+    }
+    // PRFM  (<prfop>|#<imm5>), .±<offs>
+    if isBasicPrf(v0) && isPCrel(v1) {
+        p.Domain = asm.DomainGeneric
+        sa_prfop := asBasicPrefetchOp(v0)
+        ra_pcrel := v1.(asm.RelativeOffset)
+        return p.setins(loadlit(3, 0, rel19(ra_pcrel), sa_prfop))
     }
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
     if isBasicPrf(v0) &&
@@ -51596,7 +52097,7 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("RET", 0, asm.Operands {})
         case 1  : p = self.alloc("RET", 1, asm.Operands { vv[0] })
-        default : panic("instruction RET takes 0 or 1 operands")
+        default : panic("aarch64: instruction RET takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
         p.Domain = asm.DomainGeneric
@@ -53473,7 +53974,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("SCVTF", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("SCVTF", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction SCVTF takes 2 or 3 operands")
+        default : panic("aarch64: instruction SCVTF takes 2 or 3 operands")
     }
     // SCVTF  <Vd>.<T>, <Vn>.<T>, #<fbits>
     if len(vv) == 1 &&
@@ -58920,7 +59421,7 @@ func (self *Program) SMSTART(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("SMSTART", 0, asm.Operands {})
         case 1  : p = self.alloc("SMSTART", 1, asm.Operands { vv[0] })
-        default : panic("instruction SMSTART takes 0 or 1 operands")
+        default : panic("aarch64: instruction SMSTART takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
         self.Arch.Require(FEAT_SME)
@@ -58955,7 +59456,7 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("SMSTOP", 0, asm.Operands {})
         case 1  : p = self.alloc("SMSTOP", 1, asm.Operands { vv[0] })
-        default : panic("instruction SMSTOP takes 0 or 1 operands")
+        default : panic("aarch64: instruction SMSTOP takes 0 or 1 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isSMEOption(vv[0])) {
         self.Arch.Require(FEAT_SME)
@@ -69657,7 +70158,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     switch len(vv) {
         case 0  : p = self.alloc("SUB", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("SUB", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction SUB takes 3 or 4 operands")
+        default : panic("aarch64: instruction SUB takes 3 or 4 operands")
     }
     // SUB  <Wd|WSP>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -69771,15 +70272,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                1,
-                0,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                sa_wd_wsp,
-            )
+            return addsub_imm(0, 1, 0, sa_shift, abs12(sa_label), sa_wn_wsp, sa_wd_wsp)
         })
     }
     // SUB  <Xd|SP>, <Xn|SP>, #<imm>{, <shift>}
@@ -69821,15 +70314,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                1,
-                1,
-                0,
-                sa_shift,
-                abs12(sa_label),
-                sa_xn_sp,
-                sa_xd_sp,
-            )
+            return addsub_imm(1, 1, 0, sa_shift, abs12(sa_label), sa_xn_sp, sa_xd_sp)
         })
     }
     // SUB  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
@@ -70184,7 +70669,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     switch len(vv) {
         case 0  : p = self.alloc("SUBS", 3, asm.Operands { v0, v1, v2 })
         case 1  : p = self.alloc("SUBS", 4, asm.Operands { v0, v1, v2, vv[0] })
-        default : panic("instruction SUBS takes 3 or 4 operands")
+        default : panic("aarch64: instruction SUBS takes 3 or 4 operands")
     }
     // SUBS  <Wd>, <Wn|WSP>, <Wm>{, <extend> {#<amount>}}
     if (len(vv) == 0 || len(vv) == 1) &&
@@ -70298,15 +70783,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                0,
-                1,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_wn_wsp,
-                sa_wd,
-            )
+            return addsub_imm(0, 1, 1, sa_shift, abs12(sa_label), sa_wn_wsp, sa_wd)
         })
     }
     // SUBS  <Xd>, <Xn|SP>, #<imm>{, <shift>}
@@ -70348,15 +70825,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             }
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return addsub_imm(
-                1,
-                1,
-                1,
-                sa_shift,
-                abs12(sa_label),
-                sa_xn_sp,
-                sa_xd,
-            )
+            return addsub_imm(1, 1, 1, sa_shift, abs12(sa_label), sa_xn_sp, sa_xd)
         })
     }
     // SUBS  <Wd>, <Wn>, <Wm>{, <shift> #<amount>}
@@ -71507,7 +71976,7 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
     switch len(vv) {
         case 0  : p = self.alloc("SYS", 4, asm.Operands { v0, v1, v2, v3 })
         case 1  : p = self.alloc("SYS", 5, asm.Operands { v0, v1, v2, v3, vv[0] })
-        default : panic("instruction SYS takes 4 or 5 operands")
+        default : panic("aarch64: instruction SYS takes 4 or 5 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) &&
        isUimm3(v0) &&
@@ -71568,7 +72037,7 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
     switch len(vv) {
         case 0  : p = self.alloc("SYSP", 4, asm.Operands { v0, v1, v2, v3 })
         case 2  : p = self.alloc("SYSP", 6, asm.Operands { v0, v1, v2, v3, vv[0], vv[1] })
-        default : panic("instruction SYSP takes 4 or 6 operands")
+        default : panic("aarch64: instruction SYSP takes 4 or 6 operands")
     }
     if (len(vv) == 0 || len(vv) == 2) &&
        isUimm3(v0) &&
@@ -71707,11 +72176,12 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBL")
 }
 
-// TBNZ instruction have one single form from one single category:
+// TBNZ instruction have 2 forms from one single category:
 //
 // 1. Test bit and Branch if Nonzero
 //
 //    TBNZ  <R><t>, #<imm>, <label>
+//    TBNZ  <R><t>, #<imm>, .±<offs>
 //
 // Test bit and Branch if Nonzero compares the value of a bit in a general-purpose
 // register with zero, and conditionally branches to a label at a PC-relative
@@ -71720,6 +72190,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBNZ", 3, asm.Operands { v0, v1, v2 })
+    // TBNZ  <R><t>, #<imm>, <label>
     if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
@@ -71735,15 +72206,27 @@ func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
             panic("aarch64: invalid combination of operands for TBNZ")
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return testbranch(
-                mask(sa_imm, 1),
-                1,
-                ubfx(sa_imm, 1, 5),
-                rel14(sa_label, pc),
-                sa_t,
-            )
+            return testbranch(mask(sa_imm, 1), 1, ubfx(sa_imm, 1, 5), pcrel14(sa_label, pc), sa_t)
         })
     }
+    // TBNZ  <R><t>, #<imm>, .±<offs>
+    if isWrOrXr(v0) && isUimm6(v1) && isPCrel(v2) {
+        p.Domain = asm.DomainGeneric
+        var sa_r uint32
+        sa_t := uint32(v0.(asm.Register).ID())
+        switch true {
+            case isWr(v0): sa_r = 0b0
+            case isXr(v0): sa_r = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        sa_imm := asUimm6(v1)
+        ra_pcrel := v2.(asm.RelativeOffset)
+        if mask(sa_imm, 1) != sa_r {
+            panic("aarch64: invalid combination of operands for TBNZ")
+        }
+        return p.setins(testbranch(mask(sa_imm, 1), 1, ubfx(sa_imm, 1, 5), rel14(ra_pcrel), sa_t))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for TBNZ")
 }
@@ -71857,11 +72340,12 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBX")
 }
 
-// TBZ instruction have one single form from one single category:
+// TBZ instruction have 2 forms from one single category:
 //
 // 1. Test bit and Branch if Zero
 //
 //    TBZ  <R><t>, #<imm>, <label>
+//    TBZ  <R><t>, #<imm>, .±<offs>
 //
 // Test bit and Branch if Zero compares the value of a test bit with zero, and
 // conditionally branches to a label at a PC-relative offset if the comparison is
@@ -71870,6 +72354,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBZ", 3, asm.Operands { v0, v1, v2 })
+    // TBZ  <R><t>, #<imm>, <label>
     if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
@@ -71885,15 +72370,27 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
             panic("aarch64: invalid combination of operands for TBZ")
         }
         return p.setenc(func(pc uintptr) uint32 {
-            return testbranch(
-                mask(sa_imm, 1),
-                0,
-                ubfx(sa_imm, 1, 5),
-                rel14(sa_label, pc),
-                sa_t,
-            )
+            return testbranch(mask(sa_imm, 1), 0, ubfx(sa_imm, 1, 5), pcrel14(sa_label, pc), sa_t)
         })
     }
+    // TBZ  <R><t>, #<imm>, .±<offs>
+    if isWrOrXr(v0) && isUimm6(v1) && isPCrel(v2) {
+        p.Domain = asm.DomainGeneric
+        var sa_r uint32
+        sa_t := uint32(v0.(asm.Register).ID())
+        switch true {
+            case isWr(v0): sa_r = 0b0
+            case isXr(v0): sa_r = 0b1
+            default: panic("aarch64: unreachable")
+        }
+        sa_imm := asUimm6(v1)
+        ra_pcrel := v2.(asm.RelativeOffset)
+        if mask(sa_imm, 1) != sa_r {
+            panic("aarch64: invalid combination of operands for TBZ")
+        }
+        return p.setins(testbranch(mask(sa_imm, 1), 0, ubfx(sa_imm, 1, 5), rel14(ra_pcrel), sa_t))
+    }
+    // none of above
     p.Free()
     panic("aarch64: invalid combination of operands for TBZ")
 }
@@ -71956,7 +72453,7 @@ func (self *Program) TLBI(v0 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("TLBI", 1, asm.Operands { v0 })
         case 1  : p = self.alloc("TLBI", 2, asm.Operands { v0, vv[0] })
-        default : panic("instruction TLBI takes 1 or 2 operands")
+        default : panic("aarch64: instruction TLBI takes 1 or 2 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) && isTLBIOption(v0) && (len(vv) == 0 || isXr(vv[0])) {
         p.Domain = DomainSystem
@@ -71991,7 +72488,7 @@ func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("TLBIP", 1, asm.Operands { v0 })
         case 2  : p = self.alloc("TLBIP", 3, asm.Operands { v0, vv[0], vv[1] })
-        default : panic("instruction TLBIP takes 1 or 3 operands")
+        default : panic("aarch64: instruction TLBIP takes 1 or 3 operands")
     }
     if (len(vv) == 0 || len(vv) == 2) &&
        isTLBIPOption(v0) &&
@@ -72197,7 +72694,7 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("TST", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("TST", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction TST takes 2 or 3 operands")
+        default : panic("aarch64: instruction TST takes 2 or 3 operands")
     }
     // TST  <Wn>, #<imm>
     if isWr(v0) && isMask32(v1) {
@@ -73281,7 +73778,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     switch len(vv) {
         case 0  : p = self.alloc("UCVTF", 2, asm.Operands { v0, v1 })
         case 1  : p = self.alloc("UCVTF", 3, asm.Operands { v0, v1, vv[0] })
-        default : panic("instruction UCVTF takes 2 or 3 operands")
+        default : panic("aarch64: instruction UCVTF takes 2 or 3 operands")
     }
     // UCVTF  <Vd>.<T>, <Vn>.<T>, #<fbits>
     if len(vv) == 1 &&

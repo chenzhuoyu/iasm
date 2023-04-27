@@ -335,11 +335,21 @@ func (self SXTH) Display(addr asm.MemoryAddress) string { return _Modifier_Displ
 func (self SXTW) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
 func (self SXTX) Display(addr asm.MemoryAddress) string { return _Modifier_Display(self, addr) }
 
-// Mem constructs a memory operand.
-func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
-    addr := asm.MemoryAddress{}
-    addr.Ext = Basic
-    addr.Base = base
+// Mem constructs a memory operand with raw asm.MemoryAddress.
+func Mem(addr asm.MemoryAddress) (v *asm.MemoryOperand) {
+    v = asm.CreateMemoryOperand(MemOpExt)
+    v.Addr = addr
+    v.EnsureValid()
+    return
+}
+
+// Ptr constructs a memory operand with base register, optional indexing
+// and optional modifiers.
+func Ptr(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
+    addr := asm.MemoryAddress {
+        Ext  : Basic,
+        Base : base,
+    }
 
     /* parse offset or index register if any */
     if len(args) >= 1 {
@@ -373,9 +383,7 @@ func Mem(base asm.Register, args ...interface{}) (v *asm.MemoryOperand) {
     }
 
     /* construct the operand */
-    v = asm.CreateMemoryOperand(MemOpExt)
-    v.Addr = addr
-    v.EnsureValid()
+    v = Mem(addr)
     return
 }
 

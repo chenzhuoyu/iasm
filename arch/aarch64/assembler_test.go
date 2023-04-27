@@ -12,13 +12,13 @@ import (
 func TestAssembler_Assemble(t *testing.T) {
     p := asm.GetArch("aarch64").CreateAssembler()
     e := p.Assemble(`
-.org 0x08000000
+.org 0x04000000
 .entry start
 
 start:
     mov     x0, #1
     ldr     x1, =msg
-    ldr     x2, =len
+    mov     x2, #14
     mov     w8, #64
     svc     #0
     mov     x0, #0

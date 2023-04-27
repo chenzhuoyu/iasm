@@ -85,11 +85,34 @@ func (self *_AssemblerImpl) build(p *Program, line *asm.ParsedInstruction) (err 
     /* convert the operands */
     for _, op := range line.Operands {
         switch op.Op {
+            default: {
+                panic("parser yields an invalid operand kind")
+            }
+
+            /* simple values */
             case asm.OpImm   : ops = append(ops, op.Imm)
             case asm.OpReg   : ops = append(ops, op.Reg)
-            case asm.OpMem   : self.buildMem(&ops, op.Mem)
-            case asm.OpLabel : self.buildLabel(&ops, op.Label)
-            default          : panic("parser yields an invalid operand kind")
+            case asm.OpPCrel : ops = append(ops, op.Rel)
+
+            /* memory operands */
+            case asm.OpMem: {
+                if op.Mem.Base != rip {
+                    ops = append(ops, Mem(op.Mem))
+                } else {
+                    ops = append(ops, Mem(asm.RelativeOffset(op.Mem.Offset)))
+                }
+            }
+
+            /* label references */
+            case asm.OpLabel: {
+                if tr, err := self.Symbols().Label(op.Label.Name); err != nil {
+                    panic(err)
+                } else if op.Label.Kind == asm.BranchTarget {
+                    ops = append(ops, tr)
+                } else {
+                    ops = append(ops, Mem(tr))
+                }
+            }
         }
     }
 
@@ -103,22 +126,4 @@ func (self *_AssemblerImpl) build(p *Program, line *asm.ParsedInstruction) (err 
     /* encode the instruction */
     enc(p, ops...).prefix = pfx
     return nil
-}
-
-func (self *_AssemblerImpl) buildMem(ops *[]interface{}, addr asm.MemoryAddress) {
-    if addr.Base != rip {
-        *ops = append(*ops, Mem(addr))
-    } else {
-        *ops = append(*ops, Mem(asm.RelativeOffset(addr.Offset)))
-    }
-}
-
-func (self *_AssemblerImpl) buildLabel(ops *[]interface{}, label asm.ParsedLabel) {
-    if tr, err := self.Symbols().Label(label.Name); err != nil {
-        panic(err)
-    } else if label.Kind == asm.BranchTarget {
-        *ops = append(*ops, tr)
-    } else {
-        *ops = append(*ops, Mem(tr))
-    }
 }

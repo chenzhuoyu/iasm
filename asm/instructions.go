@@ -43,18 +43,10 @@ type Instruction struct {
     Domain InstructionDomain
 }
 
-func (self *Instruction) clear() {
-    for i := 0; i < self.Argc; i++ {
-        if v, ok := self.Argv[i].(tag.Disposable); ok {
-            v.Free()
-        }
-    }
-}
-
 func (self *Instruction) Free() {
     if atomic.AddInt64(&self.refs, -1) == 0 {
-        self.clear()
-        self.Pseudo.Free()
+        self.clearArgs()
+        self.clearPseudo()
         self.arch.impl.Free(self)
     }
 }
@@ -67,4 +59,18 @@ func (self *Instruction) Encode() (m []byte) {
 func (self *Instruction) Retain() *Instruction {
     atomic.AddInt64(&self.refs, 1)
     return self
+}
+
+func (self *Instruction) clearArgs() {
+    for i := 0; i < self.Argc; i++ {
+        if v, ok := self.Argv[i].(tag.Disposable); ok {
+            v.Free()
+        }
+    }
+}
+
+func (self *Instruction) clearPseudo() {
+    if self.Pseudo != nil {
+        self.Pseudo.Free()
+    }
 }

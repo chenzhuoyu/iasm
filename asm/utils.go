@@ -1,7 +1,6 @@
 package asm
 
 import (
-    `encoding/binary`
     `errors`
     `reflect`
     `strconv`
@@ -56,28 +55,6 @@ func isnumber(cc rune) bool {
            (cc >= 'a' && cc <= 'f') ||
            (cc >= 'A' && cc <= 'F') ||
            (cc == '.')
-}
-
-func append8(m *[]byte, v byte) {
-    *m = append(*m, v)
-}
-
-func append16(m *[]byte, v uint16) {
-    p := len(*m)
-    *m = append(*m, 0, 0)
-    binary.LittleEndian.PutUint16((*m)[p:], v)
-}
-
-func append32(m *[]byte, v uint32) {
-    p := len(*m)
-    *m = append(*m, 0, 0, 0, 0)
-    binary.LittleEndian.PutUint32((*m)[p:], v)
-}
-
-func append64(m *[]byte, v uint64) {
-    p := len(*m)
-    *m = append(*m, 0, 0, 0, 0, 0, 0, 0, 0)
-    binary.LittleEndian.PutUint64((*m)[p:], v)
 }
 
 func literal64(v string) (uint64, error) {

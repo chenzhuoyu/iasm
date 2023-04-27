@@ -1643,6 +1643,7 @@ IMM_SPECIAL_CHECKS = {
 }
 
 REG_CHECKS = {
+    'ra_pcrel'       : 'isPCrel(%s)',
     'sa_cm'          : 'isUimm4(%s)',
     'sa_cn'          : 'isUimm4(%s)',
     'sa_cond'        : 'isBrCond(%s)',
@@ -2272,7 +2273,7 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     )
 
 BM_FORMAT   = '%s__bit_mask'
-REF_VARNAME = 'refs'
+REF_VARNAME = 'ra_refs'
 
 BR_ENUMS = {
     '(omitted)' : '_BrOmitted',
@@ -2326,38 +2327,60 @@ IMM_SPECIAL_ENCODER = {
     'UMIN_64U_minmax_imm'  : { 'imm8'            : 'asUimm8(%s)' },
 }
 
+REL_ADDRESS = {
+    'ADR_only_pcreladdr'   : 'adrrel(ra_pcrel, false)',
+    'ADRP_only_pcreladdr'  : 'adrrel(ra_pcrel, true)',
+    'B_only_branch_imm'    : 'rel26(ra_pcrel)',
+    'B_only_condbranch'    : 'rel19(ra_pcrel)',
+    'BC_only_condbranch'   : 'rel19(ra_pcrel)',
+    'BL_only_branch_imm'   : 'rel26(ra_pcrel)',
+    'CBNZ_32_compbranch'   : 'rel19(ra_pcrel)',
+    'CBNZ_64_compbranch'   : 'rel19(ra_pcrel)',
+    'CBZ_32_compbranch'    : 'rel19(ra_pcrel)',
+    'CBZ_64_compbranch'    : 'rel19(ra_pcrel)',
+    'LDR_D_loadlit'        : 'rel19(ra_pcrel)',
+    'LDR_Q_loadlit'        : 'rel19(ra_pcrel)',
+    'LDR_S_loadlit'        : 'rel19(ra_pcrel)',
+    'LDR_32_loadlit'       : 'rel19(ra_pcrel)',
+    'LDR_64_loadlit'       : 'rel19(ra_pcrel)',
+    'LDRSW_64_loadlit'     : 'rel19(ra_pcrel)',
+    'PRFM_P_loadlit'       : 'rel19(ra_pcrel)',
+    'TBNZ_only_testbranch' : 'rel14(ra_pcrel)',
+    'TBZ_only_testbranch'  : 'rel14(ra_pcrel)',
+}
+
 REF_ADDRESS = {
     'ADD_32_addsub_imm'       : 'abs12(sa_label)',
     'ADD_64_addsub_imm'       : 'abs12(sa_label)',
-    'ADR_only_pcreladdr'      : 'reladr(sa_label, pc, false)',
-    'ADRP_only_pcreladdr'     : 'reladr(sa_label, pc, true)',
+    'ADR_only_pcreladdr'      : 'adroffs(sa_label, pc, false)',
+    'ADRP_only_pcreladdr'     : 'adroffs(sa_label, pc, true)',
     'ADDS_32S_addsub_imm'     : 'abs12(sa_label)',
     'ADDS_64S_addsub_imm'     : 'abs12(sa_label)',
-    'B_only_branch_imm'       : 'rel26(sa_label, pc)',
-    'B_only_condbranch'       : 'rel19(sa_label, pc)',
-    'BC_only_condbranch'      : 'rel19(sa_label, pc)',
-    'BL_only_branch_imm'      : 'rel26(sa_label, pc)',
-    'CBNZ_32_compbranch'      : 'rel19(sa_label, pc)',
-    'CBNZ_64_compbranch'      : 'rel19(sa_label, pc)',
-    'CBZ_32_compbranch'       : 'rel19(sa_label, pc)',
-    'CBZ_64_compbranch'       : 'rel19(sa_label, pc)',
+    'B_only_branch_imm'       : 'pcrel26(sa_label, pc)',
+    'B_only_condbranch'       : 'pcrel19(sa_label, pc)',
+    'BC_only_condbranch'      : 'pcrel19(sa_label, pc)',
+    'BL_only_branch_imm'      : 'pcrel26(sa_label, pc)',
+    'CBNZ_32_compbranch'      : 'pcrel19(sa_label, pc)',
+    'CBNZ_64_compbranch'      : 'pcrel19(sa_label, pc)',
+    'CBZ_32_compbranch'       : 'pcrel19(sa_label, pc)',
+    'CBZ_64_compbranch'       : 'pcrel19(sa_label, pc)',
     'CMN_ADDS_32S_addsub_imm' : 'abs12(sa_label)',
     'CMN_ADDS_64S_addsub_imm' : 'abs12(sa_label)',
     'CMP_SUBS_32S_addsub_imm' : 'abs12(sa_label)',
     'CMP_SUBS_64S_addsub_imm' : 'abs12(sa_label)',
-    'LDR_D_loadlit'           : 'rel19(sa_label, pc)',
-    'LDR_Q_loadlit'           : 'rel19(sa_label, pc)',
-    'LDR_S_loadlit'           : 'rel19(sa_label, pc)',
-    'LDR_32_loadlit'          : 'rel19(sa_label, pc)',
-    'LDR_64_loadlit'          : 'rel19(sa_label, pc)',
-    'LDRSW_64_loadlit'        : 'rel19(sa_label, pc)',
-    'PRFM_P_loadlit'          : 'rel19(sa_label, pc)',
+    'LDR_D_loadlit'           : 'pcrel19(sa_label, pc)',
+    'LDR_Q_loadlit'           : 'pcrel19(sa_label, pc)',
+    'LDR_S_loadlit'           : 'pcrel19(sa_label, pc)',
+    'LDR_32_loadlit'          : 'pcrel19(sa_label, pc)',
+    'LDR_64_loadlit'          : 'pcrel19(sa_label, pc)',
+    'LDRSW_64_loadlit'        : 'pcrel19(sa_label, pc)',
+    'PRFM_P_loadlit'          : 'pcrel19(sa_label, pc)',
     'SUB_32_addsub_imm'       : 'abs12(sa_label)',
     'SUB_64_addsub_imm'       : 'abs12(sa_label)',
     'SUBS_32S_addsub_imm'     : 'abs12(sa_label)',
     'SUBS_64S_addsub_imm'     : 'abs12(sa_label)',
-    'TBNZ_only_testbranch'    : 'rel14(sa_label, pc)',
-    'TBZ_only_testbranch'     : 'rel14(sa_label, pc)',
+    'TBNZ_only_testbranch'    : 'pcrel14(sa_label, pc)',
+    'TBZ_only_testbranch'     : 'pcrel14(sa_label, pc)',
 }
 
 XBFM_ENCODER = {
@@ -2431,6 +2454,7 @@ SPECIAL_REGS = {
     'sa_cond'   : 'uint32(%s.(ConditionCode))',
     'sa_cond_1' : 'uint32(%s.(ConditionCode) ^ 1)',
     'sa_label'  : '%s.(*asm.Label)',
+    'ra_pcrel'  : '%s.(asm.RelativeOffset)',
 }
 
 SYSREG_ENCODER = {
@@ -2584,6 +2608,15 @@ NOCHECK_FIELDS = {
     'MSR_SI_pstate': [
         ('sa_imm', 'sa_pstatefield'),
     ],
+}
+
+SPECIAL_MODIFIERS = {
+    'MOVK_32_movewide': { 'hw': 'asMOVxShift(%s, 32)' },
+    'MOVK_64_movewide': { 'hw': 'asMOVxShift(%s, 64)' },
+    'MOVN_32_movewide': { 'hw': 'asMOVxShift(%s, 32)' },
+    'MOVN_64_movewide': { 'hw': 'asMOVxShift(%s, 64)' },
+    'MOVZ_32_movewide': { 'hw': 'asMOVxShift(%s, 32)' },
+    'MOVZ_64_movewide': { 'hw': 'asMOVxShift(%s, 64)' },
 }
 
 class SwitchLit(dict):
@@ -2800,7 +2833,12 @@ def encode_modifier(
     if mod.imm is not None and isinstance(mod.imm[0], Imm):
         args = mod.imm[0].name
         field = form.fields[args]
-        value = 'uint32(%s.(Modifier).Amount())' % name
+        spmod = SPECIAL_MODIFIERS.get(form.enctab.name, {}).get(field.name)
+
+        if spmod is not None:
+            value = spmod % name
+        else:
+            value = 'uint32(%s.(Modifier).Amount())' % name
 
         if isinstance(field, Definition):
             encode_defs(form, value, args, SwitchLit(), vals, opts, 'invalid modifier amount')
@@ -3192,6 +3230,64 @@ def rebuild_upper_half(pat: str, sfx: str, forms: list[InstrForm], **args: int) 
         for f in forms
     ]
 
+def rebuild_label_refs(form: InstrForm, pos: int, op_old: str, op_new: str, text_old: str, text_new: str) -> InstrForm:
+    new_operands = form.inst.operands.req[:]
+    new_operands[pos] = Reg(op_new)
+
+    new_fields = dict(form.fields)
+    new_fields[op_new] = new_fields.pop(op_old)
+
+    return InstrForm(
+        text   = form.text.replace(text_old, text_new),
+        inst   = Instr(
+            mnemonic = form.inst.mnemonic,
+            operands = Seq(req = new_operands, opt = form.inst.operands.opt[:]),
+            modifier = None,
+        ),
+        feat   = form.feat[:],
+        bits   = form.bits,
+        opts   = form.opts,
+        args   = dict(form.args),
+        enctab = form.enctab,
+        fields = new_fields,
+    )
+
+def rebuild_relative_addr(forms: list[InstrForm]) -> Iterator[InstrForm]:
+    for form in forms:
+        pos = None
+        opv = None
+        req = form.inst.operands.req
+
+        for i, op in enumerate(req):
+            if isinstance(op, Reg) and op.name == 'sa_label':
+                assert not op.incr, 'invalid label operand'
+                assert op.altr is None, 'invalid label operand'
+                assert op.size is None, 'invalid label operand'
+                assert op.mode is None, 'invalid label operand'
+                assert op.vidx is None, 'invalid label operand'
+                pos, opv = i, op
+                break
+
+            if isinstance(op, Imm) and form.fields[op.name].name == 'imm12':
+                pos, opv = i, op
+                break
+
+        if pos is None:
+            yield form
+            continue
+
+        if opv is None:
+            raise RuntimeError('invalid operands')
+
+        if isinstance(opv, Imm):
+            yield form
+            yield rebuild_label_refs(form, pos, opv.name, 'sa_label', '#<imm>', '<label>')
+        elif isinstance(opv, Reg):
+            yield form
+            yield rebuild_label_refs(form, pos, opv.name, 'ra_pcrel', '<label>', '.±<offs>')
+        else:
+            raise RuntimeError('unreachable')
+
 def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[str, list[InstrForm]]]:
     for name, forms in sorted(ftab.items(), key = lambda x: x[0]):
         mod = None
@@ -3211,54 +3307,8 @@ def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[s
             case None:
                 if not nomod:
                     raise RuntimeError('non-encodable instruction ' + repr(name))
-
-                out = []
-                nomod.clear()
-
-                for form in forms:
-                    pos = None
-                    opv = None
-                    req = form.inst.operands.req
-                    opt = form.inst.operands.opt
-
-                    for i, op in enumerate(req):
-                        if isinstance(op, Imm) and form.fields[op.name].name == 'imm12':
-                            pos, opv = i, op
-                            break
-
-                    if pos is None:
-                        out.append(form)
-                        continue
-
-                    if opv is None:
-                        raise RuntimeError('invalid operands')
-
-                    new_operands = req[:]
-                    new_operands[pos] = Reg('sa_label')
-
-                    new_fields = dict(form.fields)
-                    new_fields['sa_label'] = new_fields.pop(opv.name)
-
-                    out.append(form)
-                    out.append(InstrForm(
-                        text   = form.text.replace('#<imm>', '<label>'),
-                        inst   = Instr(
-                            mnemonic = form.inst.mnemonic,
-                            operands = Seq(req = new_operands, opt = opt[:]),
-                            modifier = None,
-                        ),
-                        feat   = form.feat[:],
-                        bits   = form.bits,
-                        opts   = form.opts,
-                        args   = dict(form.args),
-                        enctab = form.enctab,
-                        fields = new_fields,
-                    ))
-
-                if not out:
-                    raise RuntimeError('non-encodable instruction ' + repr(name))
                 else:
-                    yield name, out
+                    yield name, list(rebuild_relative_addr(nomod))
 
             case 'sa_2':
                 yield name, nomod + rebuild_upper_half('{2}', '', withmod, __ensure__Q = 0)
@@ -3273,10 +3323,11 @@ def preprocess_instr_forms(ftab: dict[str, list[InstrForm]]) -> Iterator[tuple[s
 
             case 'sa_cond':
                 if nomod:
-                    yield name, nomod
+                    yield name, list(rebuild_relative_addr(nomod))
 
                 for cond, bits in BRANCH_CONDITIONS:
-                    yield name + cond, rebuild_bcc(cond, bits, withmod)
+                    bcc = rebuild_bcc(cond, bits, withmod)
+                    yield name + cond, list(rebuild_relative_addr(bcc))
 
             case _:
                 raise RuntimeError('unrecognized instruction modifier for %s: %s' % (name, mod))
@@ -3293,7 +3344,10 @@ cc.dedent()
 cc.line(')')
 cc.line()
 
-for mnemonic, forms in preprocess_instr_forms(formtab):
+instforms = preprocess_instr_forms(formtab)
+instforms = list(instforms)
+
+for mnemonic, forms in instforms:
     nops = set()
     always = False
     status('* Instruction:', mnemonic)
@@ -3403,7 +3457,7 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 args = base[:] + ['vv[%d]' % i for i in range(argc - nfix)]
                 cc.line('case %d  : p = self.alloc("%s", %d, asm.Operands { %s })' % (argc - nfix, mnemonic, argc, ', '.join(args)))
 
-        cc.line('default : panic("instruction %s takes %s operands")' % (mnemonic, ' or '.join(map(str, sorted(nops)))))
+        cc.line('default : panic("aarch64: instruction %s takes %s operands")' % (mnemonic, ' or '.join(map(str, sorted(nops)))))
         cc.dedent()
         cc.line('}')
 
@@ -3772,34 +3826,46 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
                 args[form.enctab.args.index(arg[10:])] = str(exp)
 
         deferred = ['sa_label' in v for v in args].count(True)
+        relative = ['ra_pcrel' in v for v in args].count(True)
+
         reldelta = REF_ADDRESS[form.enctab.name] if deferred else ''
+        reloffsv = REL_ADDRESS[form.enctab.name] if relative else ''
 
         encoding = '%s(%s)' % (form.enctab.func, ', '.join(
-            v.replace('sa_label', reldelta if deferred == 1 else REF_VARNAME)
+            v.replace('ra_pcrel', reloffsv if relative == 1 else REF_VARNAME)
+             .replace('sa_label', reldelta if deferred == 1 else REF_VARNAME)
             for v in args
         ))
 
         if not deferred:
             if len(encoding) + cc.level * 4 + 17 <= MAX_LINE_WIDTH:
-                cc.line('return p.setins(%s)' % encoding)
+                if relative <= 1:
+                    cc.line('return p.setins(%s)' % encoding)
+                else:
+                    cc.line('%s := %s' % (REF_VARNAME, reldelta or reloffsv))
+                    cc.line('return p.setins(%s)' % encoding)
 
             else:
                 cc.line('return p.setins(%s(' % form.enctab.func)
                 cc.indent()
 
                 for arg in args:
-                    cc.line(arg + ',')
+                    if relative <= 1:
+                        cc.line(arg + ',')
+                    else:
+                        cc.line(arg.replace('ra_pcrel', REF_VARNAME) + ',')
 
                 cc.dedent()
                 cc.line('))')
 
         elif deferred == 1:
-            if len(encoding) + cc.level * 4 + 52 <= MAX_LINE_WIDTH:
-                cc.line('return p.setenc(func(pc uintptr) uint32 { return %s })' % encoding)
+            cc.line('return p.setenc(func(pc uintptr) uint32 {')
+            cc.indent()
+
+            if len(encoding) + cc.level * 4 + 7 <= MAX_LINE_WIDTH:
+                cc.line('return %s' % encoding)
 
             else:
-                cc.line('return p.setenc(func(pc uintptr) uint32 {')
-                cc.indent()
                 cc.line('return %s(' % form.enctab.func)
                 cc.indent()
 
@@ -3808,13 +3874,14 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
 
                 cc.dedent()
                 cc.line(')')
-                cc.dedent()
-                cc.line('})')
+
+            cc.dedent()
+            cc.line('})')
 
         else:
             cc.line('return p.setenc(func(pc uintptr) uint32 {')
             cc.indent()
-            cc.line('%s := %s' % (REF_VARNAME, reldelta))
+            cc.line('%s := %s' % (REF_VARNAME, reldelta or reloffsv))
 
             if len(encoding) + cc.level * 4 + 7 <= MAX_LINE_WIDTH:
                 cc.line('return %s' % encoding)
@@ -3848,4 +3915,81 @@ for mnemonic, forms in preprocess_instr_forms(formtab):
     cc.line()
 
 with open('arch/aarch64/instructions.go', 'w') as fp:
+    fp.write('\n'.join(cc.buf))
+
+cc = CodeGen()
+cc.line('// Code generated by "mkasm_aarch64.py", DO NOT EDIT.')
+cc.line()
+cc.line('package aarch64')
+cc.line()
+cc.line('type (')
+cc.indent()
+cc.line('_InstructionEncoder func(*Program, ...interface{}) *Instruction')
+cc.dedent()
+cc.line(')')
+cc.line()
+cc.line('// Instructions maps all the instruction name to it\'s encoder function.')
+cc.line('var Instructions = map[string]_InstructionEncoder {')
+
+max_wdith = max(
+    len(s)
+    for s, _ in instforms
+)
+
+for mnemonic, _ in instforms:
+    status('* Instruction Table:', mnemonic)
+    cc.line('    %s : __asm_proxy_%s__,' % (('"%s"' % mnemonic).ljust(max_wdith + 2), mnemonic))
+
+cc.line('}')
+cc.line()
+
+for mnemonic, forms in instforms:
+    nops = set()
+
+    for form in forms:
+        nop = len(form.inst.operands.req)
+        nops.add(nop)
+
+        if form.inst.operands.opt:
+            nops.add(nop + len(form.inst.operands.opt))
+
+    if len(nops) == 1:
+        argc = nops.pop()
+        cc.line('func __asm_proxy_%s__(p *Program, vv ...interface{}) *Instruction {' % mnemonic)
+        cc.indent()
+        cc.line('if len(vv) != %d {' % argc)
+        cc.indent()
+
+        if not argc:
+            cc.line('panic("aarch64: instruction %s takes no operands")' % mnemonic)
+        elif argc == 1:
+            cc.line('panic("aarch64: instruction %s takes a single operand")' % mnemonic)
+        else:
+            cc.line('panic("aarch64: instruction %s takes %d operands")' % (mnemonic, argc))
+
+        cc.dedent()
+        cc.line('} else {')
+        cc.indent()
+        cc.line('return p.%s(%s)' % (mnemonic, ', '.join('vv[%d]' % i for i in range(argc))))
+        cc.dedent()
+        cc.line('}')
+
+    else:
+        cc.line('func __asm_proxy_%s__(p *Program, vv ...interface{}) *Instruction {' % mnemonic)
+        cc.indent()
+        cc.line('switch len(vv) {')
+        cc.indent()
+
+        for argc in sorted(nops):
+            cc.line('case %d  : return p.%s(%s)' % (argc, mnemonic, ', '.join('vv[%d]' % i for i in range(argc))))
+
+        cc.line('default : panic("aarch64: instruction %s takes %s operands")' % (mnemonic, ' or '.join(map(str, sorted(nops)))))
+        cc.dedent()
+        cc.line('}')
+
+    cc.dedent()
+    cc.line('}')
+    cc.line()
+
+with open('arch/aarch64/instructions_table.go', 'w') as fp:
     fp.write('\n'.join(cc.buf))

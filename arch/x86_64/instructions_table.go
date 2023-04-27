@@ -6,6 +6,10 @@ const (
     _N_forms = 23
 )
 
+type (
+    _InstructionEncoder func(*Program, ...interface{}) *Instruction
+)
+
 // Instructions maps all the instruction name to it's encoder function.
 var Instructions = map[string]_InstructionEncoder {
     "adcb"             : __asm_proxy_ADCB__,

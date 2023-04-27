@@ -12,7 +12,13 @@ import (
 
 // Symbols is the symbol table used by Assembler.
 type Symbols struct {
+    pc    uintptr
     terms map[string]expr.Term
+}
+
+// Pos returns the current PC for the value of "."
+func (self *Symbols) Pos() int64 {
+    return int64(self.pc)
 }
 
 // Get resolves a symbol and returns it's value.
@@ -105,7 +111,6 @@ type Options struct {
 // machine code representations.
 type Assembler struct {
     cc   int
-    pc   uintptr
     buf  []byte
     arch *Arch
     main string
@@ -237,7 +242,7 @@ func (self *Assembler) assembleCommandOrg(_ *Program, argv []ParsedCommandArg) e
     }
 
     /* set the initial program counter */
-    self.pc = uintptr(val)
+    self.repo.pc = uintptr(val)
     return nil
 }
 
@@ -407,7 +412,7 @@ func (self *Assembler) assembleCommandP2Align(p *Program, argv []ParsedCommandAr
 
 // Base returns the origin.
 func (self *Assembler) Base() uintptr {
-    return self.pc
+    return self.repo.pc
 }
 
 // Code returns the assembled machine code.
@@ -418,7 +423,7 @@ func (self *Assembler) Code() []byte {
 // Entry returns the address of the specified entry point, or the origin if not specified.
 func (self *Assembler) Entry() uintptr {
     if self.main == "" {
-        return self.pc
+        return self.repo.pc
     } else if tr, err := self.repo.Get(self.main); err != nil {
         panic(err)
     } else if val, err := tr.Evaluate(); err != nil {
@@ -450,7 +455,7 @@ func (self *Assembler) Error(msg string) *SyntaxError {
 
 // Rebase resets the origin to pc.
 func (self *Assembler) Rebase(pc uintptr) *Assembler {
-    self.pc = pc
+    self.repo.pc = pc
     return self
 }
 
@@ -485,6 +490,6 @@ func (self *Assembler) Assemble(src string) error {
     }
 
     /* assemble the program */
-    self.buf = p.Assemble(self.pc)
+    self.buf = p.Assemble(self.repo.pc)
     return nil
 }

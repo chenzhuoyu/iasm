@@ -228,7 +228,6 @@ func isSameType(x, y interface{}) bool {
     return rt.TypeOf(x) == rt.TypeOf(y)
 }
 
-func isLabel        (v interface{}) bool { _, f := v.(*asm.Label)    ; return f }
 func isXr           (v interface{}) bool { x, f := v.(XRegister)     ; return f && x != SP }
 func isWr           (v interface{}) bool { x, f := v.(WRegister)     ; return f && x != WSP }
 func isXrOrSP       (v interface{}) bool { x, f := v.(XRegister)     ; return f && x != XZR }
@@ -248,6 +247,9 @@ func isIdxVec1      (v interface{}) bool { x, f := v.(IndexedVector) ; return f 
 func isIdxVec2      (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 2 }
 func isIdxVec3      (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 3 }
 func isIdxVec4      (v interface{}) bool { x, f := v.(IndexedVector) ; return f && x.Size() == 4 }
+
+func isLabel        (v interface{}) bool { _, f := v.(*asm.Label)         ; return f }
+func isPCrel        (v interface{}) bool { _, f := v.(asm.RelativeOffset) ; return f }
 
 func isImm8         (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= math.MinInt8 && x <= math.MaxInt8 }
 func isImm12        (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= _MinInt12 && x <= _MaxInt12 }

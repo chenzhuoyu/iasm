@@ -18,9 +18,6 @@ func TestAssembler_Assemble(t *testing.T) {
 .org 0x08000000
 .entry start
 
-msg:
-    .ascii "hello, world\n"
-
 start:
     movl    $1, %edi
     leaq    msg(%rip), %rsi
@@ -30,6 +27,9 @@ start:
     xorl    %edi, %edi
     movl    $0x02000001, %eax
     syscall
+
+msg:
+    .ascii "hello, world\n"
 `)
     require.NoError(t, e)
     code := p.Code()

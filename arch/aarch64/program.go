@@ -17,12 +17,12 @@ type Instruction struct {
 }
 
 func (self *Instruction) encode(m *[]byte) int {
-    inst := uint32(0)
-    kind := self.Pseudo.Kind
+    pc := self.PC
+    iv := uint32(0)
 
     /* check for pseudo-instructions */
-    if kind != 0 {
-        return self.Pseudo.Encode(m, self.PC)
+    if self.Pseudo != nil {
+        return self.Pseudo.Encode(m, pc)
     }
 
     /* check for dry run */
@@ -32,15 +32,15 @@ func (self *Instruction) encode(m *[]byte) int {
 
     /* encode the instruction */
     if self.instr != 0 {
-        inst = self.instr
+        iv = self.instr
     } else if self.encoder != nil {
-        inst = self.encoder(self.PC)
+        iv = self.encoder(pc)
     } else{
         panic("aarch64: uninitialized instruction")
     }
 
     /* add to buffer */
-    *m = binary.LittleEndian.AppendUint32(*m, inst)
+    *m = binary.LittleEndian.AppendUint32(*m, iv)
     return _INS_LEN
 }
 
@@ -58,6 +58,50 @@ func (self *Instruction) setenc(enc func(uintptr) uint32) *Instruction {
 
 type Program struct {
     asm.Program
+}
+
+// LDI is a pseudo-instruction that loads a 64-bit immediate into a register.
+//
+// The LDI pseudo-instruction generates the most efficient single instruction
+// for a specific constant:
+//
+//   * If the constant can be constructed with a single MOV or MVN instruction,
+//     the assembler generates the appropriate instruction.
+//
+//   * If not, the assembler will encode the immediate with MOVZ / MOVK pairs.
+//
+// NOTE: This pseudo-instruction may expand to multiple instructions, so it
+//       does not return the instruction instance.
+//
+func (self *Program) LDI(reg asm.Register, val uint64) {
+    var z int
+    var v [4]uint16
+
+    /* simple case if the immediate is encodable with "MOV Rd, #imm" */
+    if isXr(reg) && (isMOVxImm(val, 64, true) || isMOVxImm(val, 64, false)) ||
+       isWr(reg) && (isMOVxImm(val, 32, true) || isMOVxImm(val, 32, false)) ||
+       isXrOrSP(reg) && isMask64(val) ||
+       isWrOrWSP(reg) && isMask32(val) {
+        self.MOV(reg, val)
+        return
+    }
+
+    /* decompose the immediate */
+    v[0] = uint16(val)
+    v[1] = uint16(val >> 16)
+    v[2] = uint16(val >> 32)
+    v[3] = uint16(val >> 48)
+
+    /* encode with MOVZ/MOVK pairs */
+    for i, x := range v {
+        if x != 0 {
+            if z++; z == 1 {
+                self.MOVZ(reg, x, LSL(i * 16))
+            } else {
+                self.MOVK(reg, x, LSL(i * 16))
+            }
+        }
+    }
 }
 
 func (self *Program) alloc(name string, argc int, argv asm.Operands) *Instruction {

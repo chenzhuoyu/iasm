@@ -94,6 +94,14 @@ func asLSLShift(v interface{}, n uint64) uint32 {
     return uint32((-sh % n) << 6 | (n - sh - 1))
 }
 
+func asMOVxShift(v interface{}, n uint8) uint32 {
+    if sh := v.(Modifier).Amount(); sh >= n || sh & 15 != 0 {
+        panic("aarch64: invalid shift value")
+    } else {
+        return uint32(sh >> 4)
+    }
+}
+
 func asPStateImm(r uint32, v interface{}) uint32 {
     if x, ok := asUint64(v); !ok || x > _PStateMax[PStateField(r >> 1)] {
         panic("aarch64: not a valid PState Imm")

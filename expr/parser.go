@@ -73,6 +73,7 @@ func tokenName(p int, v []rune) _Token {
 
 // Repository represents a repository of Term's.
 type Repository interface {
+    Pos() int64
     Get(name string) (Term, error)
 }
 
@@ -243,6 +244,8 @@ func (self *Parser) unit(nest int, repo Repository) (*Expr, error) {
         return Int(int64(tk.u64)), nil
     } else if tk.tag == _T_name {
         return self.grab(tk, repo)
+    } else if tk.tag == _T_punc && tk.u64 == '.' {
+        return Ref(mkcurpos(repo)), nil
     } else if tk.tag == _T_punc && tk.u64 == '(' {
         return self.nest(nest, repo)
     } else if tk.tag == _T_punc && tk.u64 == '+' {

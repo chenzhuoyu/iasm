@@ -1,6 +1,8 @@
 package aarch64
 
 import (
+    `fmt`
+
     `github.com/chenzhuoyu/iasm/asm`
 )
 
@@ -34,50 +36,44 @@ func abs12(lb *asm.Label) uint32 {
     return uint32(lb.Address() & 0xfff)
 }
 
-func rel14(lb *asm.Label, pc uintptr) uint32 {
-    if d := lb.Address() - pc; d & 0b11 != 0 {
-        panic("aarch64: target address is not aligned")
-    } else if r := uint32(int64(d) >> 2); r &^ 0x3fff != 0 {
-        panic("aarch64: target is too far to fit into 14 bit relative address")
+func adradj(ra uintptr, adrp bool) uintptr {
+    if !adrp {
+        return ra
     } else {
-        return r
+        return ra >> 12
     }
 }
 
-func rel19(lb *asm.Label, pc uintptr) uint32 {
-    if d := lb.Address() - pc; d & 0b11 != 0 {
-        panic("aarch64: target address is not aligned")
-    } else if r := uint32(int64(d) >> 2); r &^ 0x7ffff != 0 {
-        panic("aarch64: target is too far to fit into 19 bit relative address")
-    } else {
-        return r
-    }
-}
-
-func rel26(lb *asm.Label, pc uintptr) uint32 {
-    if d := lb.Address() - pc; d & 0b11 != 0 {
-        panic("aarch64: target address is not aligned")
-    } else if r := uint32(int64(d) >> 2); r &^ 0x3ffffff != 0 {
-        panic("aarch64: target is too far to fit into 26 bit relative address")
-    } else {
-        return r
-    }
-}
-
-func reladr(lb *asm.Label, pc uintptr, adrp bool) uint32 {
-    base := pc
-    dest := lb.Address()
-
-    /* align to page for ADRP */
-    if adrp {
-        base >>= 12
-        dest >>= 12
-    }
-
-    /* calculate the relative address */
-    if rel := dest - base; rel &^ 0x1fffff != 0 {
+func adrrel(ra asm.RelativeOffset, adrp bool) uint32 {
+    if rel := adradj(uintptr(ra), adrp); rel >> 21 != 0 && rel >> 21 != 0x7ffffffffff {
         panic("aarch64: target is too far to fit into 21 bit relative address")
     } else {
         return uint32(rel)
+    }
+}
+
+func adroffs(lb *asm.Label, pc uintptr, adrp bool) uint32 {
+    if rel := adradj(lb.Address(), adrp) - adradj(pc, adrp); rel >> 21 != 0 && rel >> 21 != 0x7ffffffffff {
+        panic("aarch64: target is too far to fit into 21 bit relative address")
+    } else {
+        return uint32(rel)
+    }
+}
+
+func rel14(ra asm.RelativeOffset) uint32 { return pcreloffs(uintptr(ra), 14) }
+func rel19(ra asm.RelativeOffset) uint32 { return pcreloffs(uintptr(ra), 19) }
+func rel26(ra asm.RelativeOffset) uint32 { return pcreloffs(uintptr(ra), 26) }
+
+func pcrel14(lb *asm.Label, pc uintptr) uint32 { return pcreloffs(lb.Address() - pc, 14) }
+func pcrel19(lb *asm.Label, pc uintptr) uint32 { return pcreloffs(lb.Address() - pc, 19) }
+func pcrel26(lb *asm.Label, pc uintptr) uint32 { return pcreloffs(lb.Address() - pc, 26) }
+
+func pcreloffs(offs uintptr, bits int) uint32 {
+    if offs & 0b11 != 0 {
+        panic("aarch64: target address is not aligned")
+    } else if r := uintptr(int64(offs) >> 2); r >> bits != 0 && r >> bits != (1 << (64 - bits)) - 1 {
+        panic(fmt.Sprintf("aarch64: target is too far to fit into %d bit relative address", bits))
+    } else {
+        return uint32(r)
     }
 }

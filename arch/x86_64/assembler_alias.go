@@ -1,9 +1,5 @@
 package x86_64
 
-type (
-	_InstructionEncoder func(*Program, ...interface{}) *Instruction
-)
-
 func alias_INT3(p *Program, vv ...interface{}) *Instruction {
     if len(vv) == 0 {
         return p.INT(3)

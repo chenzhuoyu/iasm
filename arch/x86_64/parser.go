@@ -94,6 +94,41 @@ func (self *_ParserImpl) err(pos int, msg string) *asm.SyntaxError {
     }
 }
 
+func (self *_ParserImpl) rela() asm.RelativeOffset {
+    var iv int64
+    var tk asm.Token
+
+    /* record the tokenizer state */
+    tp := self.lex.Pos
+    tr := self.lex.Row
+
+    /* a single dot */
+    if tk = self.lex.Next(); tk.Ty == asm.TokenPunc {
+        switch tk.Punc() {
+            case asm.PuncPlus  : iv = 1
+            case asm.PuncMinus : iv = -1
+        }
+    }
+
+    /* neither "+" nor "-", it's a single dot, revert the tokenizer */
+    if iv == 0 {
+        self.lex.Pos = tp
+        self.lex.Row = tr
+        return 0
+    }
+
+    /* parse the offset absolute value */
+    pos := self.lex.Pos
+    val := self.lex.Value(nil) * iv
+
+    /* range check */
+    if val < math.MinInt32 || val > math.MaxInt32 {
+        panic(self.err(pos, "relative offset out of range"))
+    } else {
+        return asm.RelativeOffset(val)
+    }
+}
+
 func (self *_ParserImpl) relx(tk asm.Token) {
     if !tk.IsPunc(asm.PuncLBrace) {
         panic(self.err(tk.Pos, "'(' expected for RIP-relative addressing"))
@@ -276,6 +311,7 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction, rr *bool) {
      * read one more token to confirm, handle it later */
     if tk.Punc() != asm.PuncLBrace {
         switch tk.Punc() {
+            case asm.PuncDot     : ins.PCrel(self.rela())                                 ; return
             case asm.PuncMinus   : ins.Mem(self.disp(self.i32(tk, -self.lex.Value(nil)))) ; return
             case asm.PuncDollar  : ins.Imm(self.lex.Value(nil))                           ; return
             case asm.PuncPercent : ins.Reg(self.regv(tk))                                 ; return
@@ -340,7 +376,7 @@ func (self *_ParserImpl) parse(ins *asm.ParsedInstruction) {
     if _RegBranch[ins.Mnemonic] {
         if len(ins.Operands) != 1 {
             panic(self.err(pos, fmt.Sprintf(`"%s" requires exact 1 argument`, ins.Mnemonic)))
-        } else if !rr && ins.Operands[0].Op != asm.OpReg && ins.Operands[0].Op != asm.OpLabel {
+        } else if op := ins.Operands[0].Op; !rr && op != asm.OpReg && op != asm.OpPCrel && op != asm.OpLabel {
             panic(self.err(pos, fmt.Sprintf(`invalid operand for "%s" instruction`, ins.Mnemonic)))
         }
     }

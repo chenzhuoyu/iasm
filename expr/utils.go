@@ -12,6 +12,7 @@ var op1ch = [...]bool {
     '~': true,
     '(': true,
     ')': true,
+    '.': true,
 }
 
 var op2ch = [...]bool {

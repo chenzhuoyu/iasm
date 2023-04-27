@@ -1,6 +1,7 @@
 package aarch64
 
 import (
+    `math`
     `strings`
 
     `github.com/chenzhuoyu/iasm/asm`
@@ -58,6 +59,41 @@ func (self *_ParserImpl) eval() (ret int64) {
     ret = self.lex.Eval(nil)
     self.lex.ExpectPunc(asm.PuncRIndex)
     return
+}
+
+func (self *_ParserImpl) rela() asm.RelativeOffset {
+    var iv int64
+    var tk asm.Token
+
+    /* record the tokenizer state */
+    tp := self.lex.Pos
+    tr := self.lex.Row
+
+    /* a single dot */
+    if tk = self.lex.Next(); tk.Ty == asm.TokenPunc {
+        switch tk.Punc() {
+            case asm.PuncPlus  : iv = 1
+            case asm.PuncMinus : iv = -1
+        }
+    }
+
+    /* neither "+" nor "-", it's a single dot, revert the tokenizer */
+    if iv == 0 {
+        self.lex.Pos = tp
+        self.lex.Row = tr
+        return 0
+    }
+
+    /* parse the offset absolute value */
+    pos := self.lex.Pos
+    val := self.lex.Value(nil) * iv
+
+    /* range check */
+    if val < math.MinInt32 || val > math.MaxInt32 {
+        panic(self.err(pos, "relative offset out of range"))
+    } else {
+        return asm.RelativeOffset(val)
+    }
 }
 
 func (self *_ParserImpl) elem(tk asm.Token) (ret _VecElem) {
@@ -377,6 +413,11 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
             }
         }
 
+        /* relative address */
+        case tk.IsPunc(asm.PuncDot) && !self.isMemCopy: {
+            ins.PCrel(self.rela())
+        }
+
         /* immediate values */
         case tk.IsPunc(asm.PuncHash) && !self.isMemCopy: {
             switch tk = self.lex.Read(); tk.Ty {
@@ -388,10 +429,25 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
 
         /* label references */
         case tk.IsPunc(asm.PuncEqual) && !self.isMemCopy: {
-            if tk = self.lex.Next(); tk.Ty != asm.TokenName {
-                panic(self.err(tk.Pos, "identifier expected"))
-            } else {
-                ins.Reference(tk.Str)
+            switch tk = self.lex.Next(); tk.Ty {
+                default: {
+                    panic(self.err(tk.Pos, "identifier or const expression expected"))
+                }
+
+                /* LDR Rd, =<const or label or var-name> */
+                case asm.TokenInt  : ins.Sym(_LitSym, _LitInt(tk.Uint))
+                case asm.TokenName : ins.Sym(_LitSym, _LitName(tk.Str))
+                case asm.TokenFp64 : ins.Sym(_LitSym, _LitFloat(tk.Fp64))
+
+                /* LDR Rd, =(<expr>) */
+                case asm.TokenPunc: {
+                    if tk.Punc() != asm.PuncLBrace {
+                        panic(self.err(tk.Pos, "identifier or const expression expected"))
+                    } else {
+                        ins.Imm(self.lex.Value(nil))
+                        self.lex.ExpectPunc(asm.PuncRBrace)
+                    }
+                }
             }
         }
 
