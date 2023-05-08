@@ -113,6 +113,11 @@ const (
 )
 
 const (
+    XR  = X8
+    IP0 = X16
+    IP1 = X17
+    PR  = X18
+    FP  = X29
     LR  = X30
     SP  = XZR | 0x80
     WSP = WZR | 0x80

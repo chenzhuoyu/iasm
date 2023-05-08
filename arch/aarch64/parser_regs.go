@@ -169,6 +169,11 @@ var _CoreRegisters = map[string]asm.Register {
     "X30" : X30,
     "XZR" : XZR,
     "SP"  : SP,
+    "XR"  : XR,
+    "IP0" : IP0,
+    "IP1" : IP1,
+    "PR"  : PR,
+    "FP"  : FP,
     "LR"  : LR,
 }
 
