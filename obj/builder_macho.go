@@ -21,7 +21,7 @@ const (
 )
 
 const (
-    _ENTRY_SYM = "_main"
+    _MACHO_ENTRY_SYM = "_main"
 )
 
 type _MachHeader64 struct {
@@ -102,7 +102,7 @@ func buildMachO(w io.Writer, arch *Arch, code []byte, base uintptr, entry uintpt
             Symoff  : uint32(symbase),
             Nsyms   : 1,
             Stroff  : uint32(symbase + unsafe.Sizeof(macho.Nlist64{})),
-            Strsize : uint32(len(_ENTRY_SYM) + 1),
+            Strsize : uint32(len(_MACHO_ENTRY_SYM) + 1),
         },
         dsymtab: macho.DysymtabCmd {
             Cmd            : macho.LoadCmdDysymtab,
@@ -150,7 +150,7 @@ func buildMachO(w io.Writer, arch *Arch, code []byte, base uintptr, entry uintpt
         return err
     } else if err = binary.Write(w, binary.LittleEndian, byte(0)); err != nil {
         return err
-    } else if err = binary.Write(w, binary.LittleEndian, []byte(_ENTRY_SYM)); err != nil {
+    } else if err = binary.Write(w, binary.LittleEndian, []byte(_MACHO_ENTRY_SYM)); err != nil {
         return err
     } else if err = binary.Write(w, binary.LittleEndian, byte(0)); err != nil {
         return err

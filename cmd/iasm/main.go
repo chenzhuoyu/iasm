@@ -155,9 +155,9 @@ func main() {
 
     /* compile the machine code, link if required */
     if comp {
-        err = obj.CurrentOS().Compile(fout, dst, out.Code(), out.Base(), out.Entry())
+        err = obj.CurrentOS.Compile(fout, dst, out.Code(), out.Base(), out.Entry())
     } else {
-        err = obj.CurrentOS().CompileAndLink(fout, dst, out.Code(), out.Base(), out.Entry())
+        err = obj.CurrentOS.CompileAndLink(fout, dst, out.Code(), out.Base(), out.Entry())
     }
 
     /* check for errors */

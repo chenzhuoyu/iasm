@@ -6,8 +6,8 @@ import (
     `strings`
 )
 
-// TargetOS represents the target OS for linking.
-const TargetOS = MacOS
+// CurrentOS is the OS that iasm is built for.
+const CurrentOS = MacOS
 
 func link(dest string, file string) error {
     var err error

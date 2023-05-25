@@ -38,7 +38,7 @@ msg:
     spew.Dump(code)
     fmt.Printf("Image Base  : %#x\n", base)
     fmt.Printf("Entry Point : %#x\n", entry)
-    err := obj.CurrentOS().CompileAndLink("/tmp/iasm-out", obj.GetArch("x86_64"), code, base, entry)
+    err := obj.CurrentOS.CompileAndLink("/tmp/iasm-out", obj.GetArch("x86_64"), code, base, entry)
     require.NoError(t, err)
     println("Saved to /tmp/iasm-out")
     out, err := exec.Command("/tmp/iasm-out").Output()

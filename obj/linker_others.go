@@ -6,8 +6,8 @@ import (
     `errors`
 )
 
-// TargetOS represents the target OS for linking.
-const TargetOS = Unsupported
+// CurrentOS is the OS that iasm is built for.
+const CurrentOS = Unsupported
 
 func link(_ string, _ string) error {
     return errors.New("unsupported operating system")

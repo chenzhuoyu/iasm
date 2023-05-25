@@ -4,7 +4,6 @@ import (
     `errors`
     `io`
     `os`
-    `runtime`
 )
 
 // OS reprensets the target operating system.
@@ -19,15 +18,6 @@ const (
 var builderTab = [256]func(io.Writer, *Arch, []byte, uintptr, uintptr) error {
     MacOS: buildMachO,
     Linux: buildELF,
-}
-
-// CurrentOS returns the OS that iasm is built for.
-func CurrentOS() OS {
-    switch runtime.GOOS {
-        case "linux"  : return Linux
-        case "darwin" : return MacOS
-        default       : panic("iasm: unsupported operating system: " + runtime.GOOS)
-    }
 }
 
 func (self OS) String() string {
@@ -76,7 +66,7 @@ func (self OS) CompileAndLink(name string, arch *Arch, code []byte, base uintptr
     var err error
 
     /* can only link for target OS */
-    if self != TargetOS {
+    if self != CurrentOS {
         return errors.New("cannot link for other operating systems")
     }
 
