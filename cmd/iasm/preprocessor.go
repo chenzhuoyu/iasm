@@ -12,12 +12,12 @@ const (
 
 func preprocess(name string, defs []string) (string, error) {
     var err error
-    var cpp string
+    var exe string
     var out bytes.Buffer
 
-    /* find the CPP command */
-    if cpp = os.Getenv("CPP"); cpp == "" {
-        cpp = defaultCpp
+    /* find the `cpp` command */
+    if exe = os.Getenv("CPP"); exe == "" {
+        exe = defaultCpp
     }
 
     /* command arguments */
@@ -32,12 +32,7 @@ func preprocess(name string, defs []string) (string, error) {
     }
 
     /* construct the preprocessor command */
-    cmd := exec.Command(
-        defaultCpp,
-        append(args, name)...,
-    )
-
-    /* bind stdio */
+    cmd := exec.Command(exe, append(args, name)...)
     cmd.Stdin  = nil
     cmd.Stdout = &out
     cmd.Stderr = os.Stderr

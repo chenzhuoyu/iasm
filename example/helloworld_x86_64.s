@@ -1,5 +1,4 @@
 #define STDOUT      $1
-#define IMAGE_BASE  0x04000000
 
 #ifdef __Linux__
 #define SYS_exit    $1
@@ -10,9 +9,6 @@
 #else
 #error Unsupported operating system.
 #endif
-
-.org   IMAGE_BASE
-.entry start
 
 start:
     movq    STDOUT, %rdi

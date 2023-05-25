@@ -10,8 +10,6 @@ import (
 )
 
 func TestMachO_Create(t *testing.T) {
-    fp, err := os.CreateTemp("", "macho_out-")
-    require.NoError(t, err)
     code := []byte {
         0x48, 0xc7, 0xc7, 0x01, 0x00, 0x00, 0x00,   // MOVQ    $1, %rdi
         0x48, 0x8d, 0x35, 0x1b, 0x00, 0x00, 0x00,   // LEAQ    0x1b(%rip), %rsi
@@ -24,17 +22,15 @@ func TestMachO_Create(t *testing.T) {
         'h', 'e', 'l', 'l', 'o', ',', ' ',
         'w', 'o', 'r', 'l', 'd', '\r', '\n',
     }
-    err = assembleMachO(fp, code, 0, 0)
-    require.NoError(t, err)
-    err = fp.Close()
-    require.NoError(t, err)
-    err = os.Chmod(fp.Name(), 0755)
-    require.NoError(t, err)
-    println("Saved to", fp.Name())
-    out, err := exec.Command(fp.Name()).Output()
-    require.NoError(t, err)
-    spew.Dump(out)
-    require.Equal(t, []byte("hello, world\r\n"), out)
-    err = os.Remove(fp.Name())
-    require.NoError(t, err)
+    if CurrentOS() == MacOS {
+        err := MacOS.CompileAndLink("/tmp/iasm-macho-out", x86_64, code, 0, 0)
+        require.NoError(t, err)
+        println("Saved to /tmp/iasm-macho-out")
+        out, err := exec.Command("/tmp/iasm-macho-out").Output()
+        require.NoError(t, err)
+        spew.Dump(out)
+        require.Equal(t, []byte("hello, world\r\n"), out)
+        err = os.Remove("/tmp/iasm-macho-out")
+        require.NoError(t, err)
+    }
 }

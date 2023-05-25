@@ -13,18 +13,9 @@ import (
     `nullprogram.com/x/optparse`
 )
 
-type _FileFormat int
-
-const (
-    _F_bin _FileFormat = iota + 1
-    _F_macho
-    _F_elf
-)
-
-var formatTab = map[string]_FileFormat {
-    "bin"   : _F_bin,
-    "macho" : _F_macho,
-    "elf"   : _F_elf,
+var _ArchTab = map[string]string {
+    "arm64": "aarch64",
+    "amd64": "x86_64",
 }
 
 func usage() {
@@ -34,47 +25,41 @@ func usage() {
     println()
     println("General Options:")
     println(`    -a ARCH, --arch=ARCH        Target architecture`)
+    println(`    -c, --compile               Compile only`)
     println(`    -D DEF, --define=DEF        Passing the defination to preprocessor`)
-    println("    -f FMT, --format=FMT        Select output format")
-    println("       bin                          Flat raw binary (default)")
-    println("       macho                        Mach-O executable")
-    println("       elf                          ELF executable")
-    println()
     println("    -h, --help                  This help message")
+    println("    -i, --interactive           Start as an interactive REPL shell")
     println("    -o FILE, --output=FILE      Output file name")
     println("    -s, --gas-compat            GAS compatible mode")
-    println("    -i, --interactive           Start as an interactive REPL shell")
     println()
     println("Environment Variables:")
     println("    CPP                         The C Preprocessor")
+    println("    LD                          Path to the linker program")
     println()
     println("Supported Architectures:")
     println("    " + strings.Join(asm.SupportedArch(), "\n    "))
     println()
 }
 
-var _ArchTab = map[string]string {
-    "arm64": "aarch64",
-    "amd64": "x86_64",
-}
-
 func main() {
     var err error
     var src string
     var rem []string
-    var arc *asm.Arch
+    var cpu *asm.Arch
+    var dst *obj.Arch
     var out *asm.Assembler
     var ret []optparse.Result
 
     /* options list */
     opts := []optparse.Option {
-        { "help"        , 'h', optparse.KindNone     },
         { "arch"        , 'a', optparse.KindRequired },
+        { "compile"     , 'c', optparse.KindNone     },
         { "define"      , 'D', optparse.KindRequired },
         { "format"      , 'f', optparse.KindRequired },
+        { "help"        , 'h', optparse.KindNone     },
+        { "interactive" , 'i', optparse.KindNone     },
         { "output"      , 'o', optparse.KindRequired },
         { "gas-compat"  , 's', optparse.KindNone     },
-        { "interactive" , 'i', optparse.KindNone     },
     }
 
     /* parse the options */
@@ -86,30 +71,24 @@ func main() {
 
     /* default values */
     arch := ""
+    comp := false
     intr := false
     help := false
     mgas := false
-    ffmt := "bin"
     fout := "a.out"
     defs := []string(nil)
 
     /* check the result */
     for _, vv := range ret {
         switch vv.Short {
+            case 'c': comp = true
             case 'h': help = true
-            case 's': mgas = true
             case 'i': intr = true
+            case 's': mgas = true
             case 'a': arch = vv.Optarg
-            case 'f': ffmt = vv.Optarg
             case 'o': fout = vv.Optarg
             case 'D': defs = append(defs, vv.Optarg)
         }
-    }
-
-    /* check file format */
-    if _, ok := formatTab[ffmt]; !ok {
-        println("iasm: error: unknown file format: " + ffmt)
-        os.Exit(1)
     }
 
     /* check for help */
@@ -127,7 +106,7 @@ func main() {
     }
 
     /* create the architecture */
-    if arc = asm.GetArch(arch); arc == nil {
+    if cpu = asm.GetArch(arch); cpu == nil {
         println("iasm: unsupported architecture: " + arch)
         println("iasm: available architectures are: " + strings.Join(asm.SupportedArch(), ", "))
         os.Exit(1)
@@ -135,8 +114,13 @@ func main() {
 
     /* enter interactive mode if command line arguments or explicitly specified */
     if intr || len(os.Args) == 1 {
-        new(repl.IASM).Start(arc)
+        new(repl.IASM).Start(cpu)
         return
+    }
+
+    /* find the object architecture */
+    if dst = obj.GetArch(arch); dst == nil {
+        panic("iasm: unimplemented object architecture: " + arch)
     }
 
     /* check four source file */
@@ -158,7 +142,7 @@ func main() {
     }
 
     /* create the assembler, check for GAS compatible mode */
-    if out = arc.CreateAssembler(); mgas {
+    if out = cpu.CreateAssembler(); mgas {
         out.Options().PermissiveMnemonic = true
         out.Options().IgnoreUnknownDirectives = true
     }
@@ -169,12 +153,11 @@ func main() {
         os.Exit(1)
     }
 
-    /* check for format */
-    switch formatTab[ffmt] {
-        case _F_bin   : err = os.WriteFile(fout, out.Code(), 0755)
-        case _F_elf   : err = obj.ELF.Generate(fout, out.Code(), uint64(out.Base()), uint64(out.Entry()))
-        case _F_macho : err = obj.MachO.Generate(fout, out.Code(), uint64(out.Base()), uint64(out.Entry()))
-        default       : panic("invalid format: " + ffmt)
+    /* compile the machine code, link if required */
+    if comp {
+        err = obj.CurrentOS().Compile(fout, dst, out.Code(), out.Base(), out.Entry())
+    } else {
+        err = obj.CurrentOS().CompileAndLink(fout, dst, out.Code(), out.Base(), out.Entry())
     }
 
     /* check for errors */
