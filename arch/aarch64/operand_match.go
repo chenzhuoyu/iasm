@@ -251,18 +251,10 @@ func isIdxVec4      (v interface{}) bool { x, f := v.(IndexedVector) ; return f 
 func isLabel        (v interface{}) bool { _, f := v.(*asm.Label)         ; return f }
 func isPCrel        (v interface{}) bool { _, f := v.(asm.RelativeOffset) ; return f }
 
-func isImm8         (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= math.MinInt8 && x <= math.MaxInt8 }
-func isImm12        (v interface{}) bool { x, f := asInt64(v)  ; return f && x >= _MinInt12 && x <= _MaxInt12 }
-func isUimm3        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x07 == 0 }
 func isUimm4        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x0f == 0 }
 func isUimm5        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x1f == 0 }
 func isUimm6        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x3f == 0 }
-func isUimm7        (v interface{}) bool { x, f := asUint64(v) ; return f && x &^ 0x7f == 0 }
 func isUimm8        (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint8 }
-func isUimm16       (v interface{}) bool { x, f := asUint64(v) ; return f && x <= math.MaxUint16 }
-func isMask32       (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is32() }
-func isMask64       (v interface{}) bool { x, f := asUint64(v) ; return f && _BitMask(x).is64() }
-func isFpBits       (v interface{}) bool { x, f := asUint64(v) ; return f && x >= 1 && x <= 64 }
 
 func isMod          (v interface{}) bool { _, f := v.(Modifier)        ; return f }
 func isIndex        (v interface{}) bool { _, f := v.(IndexMode)       ; return f }
@@ -302,9 +294,24 @@ func isVfmt(v interface{}, fmt ...VecFormat) bool {
     return false
 }
 
+func isMask32(v interface{}) bool {
+    x, f := asUint64(v)
+    return f && _BitMask(x).is32()
+}
+
+func isMask64(v interface{}) bool {
+    x, f := asUint64(v)
+    return f && _BitMask(x).is64()
+}
+
 func isFpImm8(v interface{}) bool {
     _, f := encodeFpImm8(v)
     return f
+}
+
+func isFpBits(v interface{}) bool {
+    x, f := asUint64(v)
+    return f && x >= 1 && x <= 64
 }
 
 func isIntLit(v interface{}, imm ...int64) bool {
@@ -327,6 +334,11 @@ func isIntLit(v interface{}, imm ...int64) bool {
     return false
 }
 
+func isInRange(v interface{}, lo int64, hi int64) bool {
+    x, ok := asInt64(v)
+    return ok && x >= lo && x <= hi
+}
+
 func isExtIndex(r, v interface{}) bool {
     return isUimm4(v) && (vfmt(r) != Vec8B || (asUimm4(v) & 0b1000) == 0)
 }
@@ -334,6 +346,11 @@ func isExtIndex(r, v interface{}) bool {
 func isFloatLit(v interface{}, imm float64) bool {
     x, ok := asFloat64(v)
     return ok && x == imm
+}
+
+func isMultipleOf(v interface{}, mult int64) bool {
+    x, ok := asInt64(v)
+    return ok && (x % mult) == 0
 }
 
 func isWrOrXr(v interface{}) bool {

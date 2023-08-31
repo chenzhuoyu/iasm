@@ -4,3381 +4,1338 @@ package aarch64
 
 // addsub_carry: Add/subtract (with carry)
 func addsub_carry(sf, op, S, Rm, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("addsub_carry: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("addsub_carry: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("addsub_carry: invalid S")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("addsub_carry: invalid Rm")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("addsub_carry: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("addsub_carry: invalid Rd")
-    }
     ret := uint32(0x1a000000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= Rm << 16
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (Rm & 0x1f) << 16
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // addsub_ext: Add/subtract (extended register)
 func addsub_ext(sf, op, S, opt, Rm, option, imm3, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("addsub_ext: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("addsub_ext: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("addsub_ext: invalid S")
-    }
-    if opt &^ 0x3 != 0 {
-        panic("addsub_ext: invalid opt")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("addsub_ext: invalid Rm")
-    }
-    if option &^ 0x7 != 0 {
-        panic("addsub_ext: invalid option")
-    }
-    if imm3 &^ 0x7 != 0 {
-        panic("addsub_ext: invalid imm3")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("addsub_ext: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("addsub_ext: invalid Rd")
-    }
     ret := uint32(0x0b200000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= opt << 22
-    ret |= Rm << 16
-    ret |= option << 13
-    ret |= imm3 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (opt & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (option & 0x7) << 13
+    ret |= (imm3 & 0x7) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // addsub_imm: Add/subtract (immediate)
 func addsub_imm(sf, op, S, sh, imm12, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("addsub_imm: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("addsub_imm: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("addsub_imm: invalid S")
-    }
-    if sh &^ 0x1 != 0 {
-        panic("addsub_imm: invalid sh")
-    }
-    if imm12 &^ 0xfff != 0 {
-        panic("addsub_imm: invalid imm12")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("addsub_imm: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("addsub_imm: invalid Rd")
-    }
     ret := uint32(0x11000000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= sh << 22
-    ret |= imm12 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (sh & 0x1) << 22
+    ret |= (imm12 & 0xfff) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // addsub_immtags: Add/subtract (immediate, with tags)
 func addsub_immtags(sf, op, S, uimm6, op3, uimm4, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("addsub_immtags: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("addsub_immtags: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("addsub_immtags: invalid S")
-    }
-    if uimm6 &^ 0x3f != 0 {
-        panic("addsub_immtags: invalid uimm6")
-    }
-    if op3 &^ 0x3 != 0 {
-        panic("addsub_immtags: invalid op3")
-    }
-    if uimm4 &^ 0xf != 0 {
-        panic("addsub_immtags: invalid uimm4")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("addsub_immtags: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("addsub_immtags: invalid Rd")
-    }
     ret := uint32(0x11800000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= uimm6 << 16
-    ret |= op3 << 14
-    ret |= uimm4 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (uimm6 & 0x3f) << 16
+    ret |= (op3 & 0x3) << 14
+    ret |= (uimm4 & 0xf) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // addsub_shift: Add/subtract (shifted register)
 func addsub_shift(sf, op, S, shift, Rm, imm6, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("addsub_shift: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("addsub_shift: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("addsub_shift: invalid S")
-    }
-    if shift &^ 0x3 != 0 {
-        panic("addsub_shift: invalid shift")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("addsub_shift: invalid Rm")
-    }
-    if imm6 &^ 0x3f != 0 {
-        panic("addsub_shift: invalid imm6")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("addsub_shift: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("addsub_shift: invalid Rd")
-    }
     ret := uint32(0x0b000000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= shift << 22
-    ret |= Rm << 16
-    ret |= imm6 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (shift & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imm6 & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdall: Advanced SIMD across lanes
 func asimdall(Q, U, size, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdall: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdall: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdall: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asimdall: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdall: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdall: invalid Rd")
-    }
     ret := uint32(0x0e300800)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimddiff: Advanced SIMD three different
 func asimddiff(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimddiff: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimddiff: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimddiff: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimddiff: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asimddiff: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimddiff: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimddiff: invalid Rd")
-    }
     ret := uint32(0x0e200000)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdelem: Advanced SIMD vector x indexed element
 func asimdelem(Q, U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdelem: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdelem: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdelem: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asimdelem: invalid L")
-    }
-    if M &^ 0x1 != 0 {
-        panic("asimdelem: invalid M")
-    }
-    if Rm &^ 0xf != 0 {
-        panic("asimdelem: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asimdelem: invalid opcode")
-    }
-    if H &^ 0x1 != 0 {
-        panic("asimdelem: invalid H")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdelem: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdelem: invalid Rd")
-    }
     ret := uint32(0x0f000000)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= L << 21
-    ret |= M << 20
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= H << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (L & 0x1) << 21
+    ret |= (M & 0x1) << 20
+    ret |= (Rm & 0xf) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (H & 0x1) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdext: Advanced SIMD extract
 func asimdext(Q, op2, Rm, imm4, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdext: invalid Q")
-    }
-    if op2 &^ 0x3 != 0 {
-        panic("asimdext: invalid op2")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdext: invalid Rm")
-    }
-    if imm4 &^ 0xf != 0 {
-        panic("asimdext: invalid imm4")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdext: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdext: invalid Rd")
-    }
     ret := uint32(0x2e000000)
-    ret |= Q << 30
-    ret |= op2 << 22
-    ret |= Rm << 16
-    ret |= imm4 << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (op2 & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imm4 & 0xf) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdimm: Advanced SIMD modified immediate
 func asimdimm(Q, op, a, b, c, cmode, o2, d, e, f, g, h, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdimm: invalid Q")
-    }
-    if op &^ 0x1 != 0 {
-        panic("asimdimm: invalid op")
-    }
-    if a &^ 0x1 != 0 {
-        panic("asimdimm: invalid a")
-    }
-    if b &^ 0x1 != 0 {
-        panic("asimdimm: invalid b")
-    }
-    if c &^ 0x1 != 0 {
-        panic("asimdimm: invalid c")
-    }
-    if cmode &^ 0xf != 0 {
-        panic("asimdimm: invalid cmode")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("asimdimm: invalid o2")
-    }
-    if d &^ 0x1 != 0 {
-        panic("asimdimm: invalid d")
-    }
-    if e &^ 0x1 != 0 {
-        panic("asimdimm: invalid e")
-    }
-    if f &^ 0x1 != 0 {
-        panic("asimdimm: invalid f")
-    }
-    if g &^ 0x1 != 0 {
-        panic("asimdimm: invalid g")
-    }
-    if h &^ 0x1 != 0 {
-        panic("asimdimm: invalid h")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdimm: invalid Rd")
-    }
     ret := uint32(0x0f000400)
-    ret |= Q << 30
-    ret |= op << 29
-    ret |= a << 18
-    ret |= b << 17
-    ret |= c << 16
-    ret |= cmode << 12
-    ret |= o2 << 11
-    ret |= d << 9
-    ret |= e << 8
-    ret |= f << 7
-    ret |= g << 6
-    ret |= h << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (op & 0x1) << 29
+    ret |= (a & 0x1) << 18
+    ret |= (b & 0x1) << 17
+    ret |= (c & 0x1) << 16
+    ret |= (cmode & 0xf) << 12
+    ret |= (o2 & 0x1) << 11
+    ret |= (d & 0x1) << 9
+    ret |= (e & 0x1) << 8
+    ret |= (f & 0x1) << 7
+    ret |= (g & 0x1) << 6
+    ret |= (h & 0x1) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdins: Advanced SIMD copy
 func asimdins(Q, op, imm5, imm4, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdins: invalid Q")
-    }
-    if op &^ 0x1 != 0 {
-        panic("asimdins: invalid op")
-    }
-    if imm5 &^ 0x1f != 0 {
-        panic("asimdins: invalid imm5")
-    }
-    if imm4 &^ 0xf != 0 {
-        panic("asimdins: invalid imm4")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdins: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdins: invalid Rd")
-    }
     ret := uint32(0x0e000400)
-    ret |= Q << 30
-    ret |= op << 29
-    ret |= imm5 << 16
-    ret |= imm4 << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (op & 0x1) << 29
+    ret |= (imm5 & 0x1f) << 16
+    ret |= (imm4 & 0xf) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdmisc: Advanced SIMD two-register miscellaneous
 func asimdmisc(Q, U, size, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdmisc: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdmisc: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdmisc: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asimdmisc: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdmisc: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdmisc: invalid Rd")
-    }
     ret := uint32(0x0e200800)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdmiscfp16: Advanced SIMD two-register miscellaneous (FP16)
 func asimdmiscfp16(Q, U, a, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdmiscfp16: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdmiscfp16: invalid U")
-    }
-    if a &^ 0x1 != 0 {
-        panic("asimdmiscfp16: invalid a")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asimdmiscfp16: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdmiscfp16: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdmiscfp16: invalid Rd")
-    }
     ret := uint32(0x0e780800)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= a << 23
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (a & 0x1) << 23
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdperm: Advanced SIMD permute
 func asimdperm(Q, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdperm: invalid Q")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdperm: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdperm: invalid Rm")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("asimdperm: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdperm: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdperm: invalid Rd")
-    }
     ret := uint32(0x0e000800)
-    ret |= Q << 30
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x7) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdsame: Advanced SIMD three same
 func asimdsame(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdsame: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdsame: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdsame: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdsame: invalid Rm")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asimdsame: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdsame: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdsame: invalid Rd")
-    }
     ret := uint32(0x0e200400)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x1f) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdsame2: Advanced SIMD three-register extension
 func asimdsame2(Q, U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdsame2: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdsame2: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asimdsame2: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdsame2: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asimdsame2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdsame2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdsame2: invalid Rd")
-    }
     ret := uint32(0x0e008400)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdsamefp16: Advanced SIMD three same (FP16)
 func asimdsamefp16(Q, U, a, Rm, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdsamefp16: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdsamefp16: invalid U")
-    }
-    if a &^ 0x1 != 0 {
-        panic("asimdsamefp16: invalid a")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdsamefp16: invalid Rm")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("asimdsamefp16: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdsamefp16: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdsamefp16: invalid Rd")
-    }
     ret := uint32(0x0e400400)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= a << 23
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (a & 0x1) << 23
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x7) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdshf: Advanced SIMD shift by immediate
 func asimdshf(Q, U, immh, immb, opcode, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdshf: invalid Q")
-    }
-    if U &^ 0x1 != 0 {
-        panic("asimdshf: invalid U")
-    }
-    if immh &^ 0xf != 0 {
-        panic("asimdshf: invalid immh")
-    }
-    if immb &^ 0x7 != 0 {
-        panic("asimdshf: invalid immb")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asimdshf: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdshf: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdshf: invalid Rd")
-    }
     if immh == 0b0000 {
         panic("asimdshf: decode constraint is not satisfied: immh != 0000")
     }
     ret := uint32(0x0f000400)
-    ret |= Q << 30
-    ret |= U << 29
-    ret |= immh << 19
-    ret |= immb << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (U & 0x1) << 29
+    ret |= (immh & 0xf) << 19
+    ret |= (immb & 0x7) << 16
+    ret |= (opcode & 0x1f) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asimdtbl: Advanced SIMD table lookup
 func asimdtbl(Q, op2, Rm, len, op, Rn, Rd uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asimdtbl: invalid Q")
-    }
-    if op2 &^ 0x3 != 0 {
-        panic("asimdtbl: invalid op2")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asimdtbl: invalid Rm")
-    }
-    if len &^ 0x3 != 0 {
-        panic("asimdtbl: invalid len")
-    }
-    if op &^ 0x1 != 0 {
-        panic("asimdtbl: invalid op")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asimdtbl: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asimdtbl: invalid Rd")
-    }
     ret := uint32(0x0e000000)
-    ret |= Q << 30
-    ret |= op2 << 22
-    ret |= Rm << 16
-    ret |= len << 13
-    ret |= op << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Q & 0x1) << 30
+    ret |= (op2 & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (len & 0x3) << 13
+    ret |= (op & 0x1) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisddiff: Advanced SIMD scalar three different
 func asisddiff(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisddiff: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisddiff: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisddiff: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asisddiff: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisddiff: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisddiff: invalid Rd")
-    }
     ret := uint32(0x5e200000)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdelem: Advanced SIMD scalar x indexed element
 func asisdelem(U, size, L, M, Rm, opcode, H, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdelem: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdelem: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asisdelem: invalid L")
-    }
-    if M &^ 0x1 != 0 {
-        panic("asisdelem: invalid M")
-    }
-    if Rm &^ 0xf != 0 {
-        panic("asisdelem: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asisdelem: invalid opcode")
-    }
-    if H &^ 0x1 != 0 {
-        panic("asisdelem: invalid H")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdelem: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdelem: invalid Rd")
-    }
     ret := uint32(0x5f000000)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= L << 21
-    ret |= M << 20
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= H << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (L & 0x1) << 21
+    ret |= (M & 0x1) << 20
+    ret |= (Rm & 0xf) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (H & 0x1) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdlse: Advanced SIMD load/store multiple structures
 func asisdlse(Q, L, opcode, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asisdlse: invalid Q")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asisdlse: invalid L")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asisdlse: invalid opcode")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdlse: invalid size")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdlse: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("asisdlse: invalid Rt")
-    }
     ret := uint32(0x0c000000)
-    ret |= Q << 30
-    ret |= L << 22
-    ret |= opcode << 12
-    ret |= size << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (Q & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (opcode & 0xf) << 12
+    ret |= (size & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // asisdlsep: Advanced SIMD load/store multiple structures (post-indexed)
 func asisdlsep(Q, L, Rm, opcode, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asisdlsep: invalid Q")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asisdlsep: invalid L")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisdlsep: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asisdlsep: invalid opcode")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdlsep: invalid size")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdlsep: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("asisdlsep: invalid Rt")
-    }
     ret := uint32(0x0c800000)
-    ret |= Q << 30
-    ret |= L << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= size << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (Q & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (size & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // asisdlso: Advanced SIMD load/store single structure
 func asisdlso(Q, L, R, o2, opcode, S, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asisdlso: invalid Q")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asisdlso: invalid L")
-    }
-    if R &^ 0x1 != 0 {
-        panic("asisdlso: invalid R")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("asisdlso: invalid o2")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("asisdlso: invalid opcode")
-    }
-    if S &^ 0x1 != 0 {
-        panic("asisdlso: invalid S")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdlso: invalid size")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdlso: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("asisdlso: invalid Rt")
-    }
     ret := uint32(0x0d000000)
-    ret |= Q << 30
-    ret |= L << 22
-    ret |= R << 21
-    ret |= o2 << 16
-    ret |= opcode << 13
-    ret |= S << 12
-    ret |= size << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (Q & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (R & 0x1) << 21
+    ret |= (o2 & 0x1) << 16
+    ret |= (opcode & 0x7) << 13
+    ret |= (S & 0x1) << 12
+    ret |= (size & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // asisdlsop: Advanced SIMD load/store single structure (post-indexed)
 func asisdlsop(Q, L, R, Rm, opcode, S, size, Rn, Rt uint32) uint32 {
-    if Q &^ 0x1 != 0 {
-        panic("asisdlsop: invalid Q")
-    }
-    if L &^ 0x1 != 0 {
-        panic("asisdlsop: invalid L")
-    }
-    if R &^ 0x1 != 0 {
-        panic("asisdlsop: invalid R")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisdlsop: invalid Rm")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("asisdlsop: invalid opcode")
-    }
-    if S &^ 0x1 != 0 {
-        panic("asisdlsop: invalid S")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdlsop: invalid size")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdlsop: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("asisdlsop: invalid Rt")
-    }
     ret := uint32(0x0d800000)
-    ret |= Q << 30
-    ret |= L << 22
-    ret |= R << 21
-    ret |= Rm << 16
-    ret |= opcode << 13
-    ret |= S << 12
-    ret |= size << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (Q & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (R & 0x1) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x7) << 13
+    ret |= (S & 0x1) << 12
+    ret |= (size & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // asisdmisc: Advanced SIMD scalar two-register miscellaneous
 func asisdmisc(U, size, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdmisc: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdmisc: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asisdmisc: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdmisc: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdmisc: invalid Rd")
-    }
     ret := uint32(0x5e200800)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdmiscfp16: Advanced SIMD scalar two-register miscellaneous FP16
 func asisdmiscfp16(U, a, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdmiscfp16: invalid U")
-    }
-    if a &^ 0x1 != 0 {
-        panic("asisdmiscfp16: invalid a")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asisdmiscfp16: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdmiscfp16: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdmiscfp16: invalid Rd")
-    }
     ret := uint32(0x5e780800)
-    ret |= U << 29
-    ret |= a << 23
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (a & 0x1) << 23
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdone: Advanced SIMD scalar copy
 func asisdone(op, imm5, imm4, Rn, Rd uint32) uint32 {
-    if op &^ 0x1 != 0 {
-        panic("asisdone: invalid op")
-    }
-    if imm5 &^ 0x1f != 0 {
-        panic("asisdone: invalid imm5")
-    }
-    if imm4 &^ 0xf != 0 {
-        panic("asisdone: invalid imm4")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdone: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdone: invalid Rd")
-    }
     ret := uint32(0x5e000400)
-    ret |= op << 29
-    ret |= imm5 << 16
-    ret |= imm4 << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (op & 0x1) << 29
+    ret |= (imm5 & 0x1f) << 16
+    ret |= (imm4 & 0xf) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdpair: Advanced SIMD scalar pairwise
 func asisdpair(U, size, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdpair: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdpair: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asisdpair: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdpair: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdpair: invalid Rd")
-    }
     ret := uint32(0x5e300800)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdsame: Advanced SIMD scalar three same
 func asisdsame(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdsame: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdsame: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisdsame: invalid Rm")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asisdsame: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdsame: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdsame: invalid Rd")
-    }
     ret := uint32(0x5e200400)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x1f) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdsame2: Advanced SIMD scalar three same extra
 func asisdsame2(U, size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdsame2: invalid U")
-    }
-    if size &^ 0x3 != 0 {
-        panic("asisdsame2: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisdsame2: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("asisdsame2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdsame2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdsame2: invalid Rd")
-    }
     ret := uint32(0x5e008400)
-    ret |= U << 29
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdsamefp16: Advanced SIMD scalar three same FP16
 func asisdsamefp16(U, a, Rm, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdsamefp16: invalid U")
-    }
-    if a &^ 0x1 != 0 {
-        panic("asisdsamefp16: invalid a")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("asisdsamefp16: invalid Rm")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("asisdsamefp16: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdsamefp16: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdsamefp16: invalid Rd")
-    }
     ret := uint32(0x5e400400)
-    ret |= U << 29
-    ret |= a << 23
-    ret |= Rm << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (a & 0x1) << 23
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x7) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // asisdshf: Advanced SIMD scalar shift by immediate
 func asisdshf(U, immh, immb, opcode, Rn, Rd uint32) uint32 {
-    if U &^ 0x1 != 0 {
-        panic("asisdshf: invalid U")
-    }
-    if immh &^ 0xf != 0 {
-        panic("asisdshf: invalid immh")
-    }
-    if immb &^ 0x7 != 0 {
-        panic("asisdshf: invalid immb")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("asisdshf: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("asisdshf: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("asisdshf: invalid Rd")
-    }
     ret := uint32(0x5f000400)
-    ret |= U << 29
-    ret |= immh << 19
-    ret |= immb << 16
-    ret |= opcode << 11
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (U & 0x1) << 29
+    ret |= (immh & 0xf) << 19
+    ret |= (immb & 0x7) << 16
+    ret |= (opcode & 0x1f) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // barriers: Barriers
 func barriers(CRm, op2, Rt uint32) uint32 {
-    if CRm &^ 0xf != 0 {
-        panic("barriers: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("barriers: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("barriers: invalid Rt")
-    }
     ret := uint32(0xd5033000)
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // bitfield: Bitfield
 func bitfield(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("bitfield: invalid sf")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("bitfield: invalid opc")
-    }
-    if N &^ 0x1 != 0 {
-        panic("bitfield: invalid N")
-    }
-    if immr &^ 0x3f != 0 {
-        panic("bitfield: invalid immr")
-    }
-    if imms &^ 0x3f != 0 {
-        panic("bitfield: invalid imms")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("bitfield: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("bitfield: invalid Rd")
-    }
     ret := uint32(0x13000000)
-    ret |= sf << 31
-    ret |= opc << 29
-    ret |= N << 22
-    ret |= immr << 16
-    ret |= imms << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (opc & 0x3) << 29
+    ret |= (N & 0x1) << 22
+    ret |= (immr & 0x3f) << 16
+    ret |= (imms & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // branch_imm: Unconditional branch (immediate)
 func branch_imm(op, imm26 uint32) uint32 {
-    if op &^ 0x1 != 0 {
-        panic("branch_imm: invalid op")
-    }
-    if imm26 &^ 0x3ffffff != 0 {
-        panic("branch_imm: invalid imm26")
-    }
     ret := uint32(0x14000000)
-    ret |= op << 31
-    ret |= imm26
+    ret |= (op & 0x1) << 31
+    ret |= imm26 & 0x3ffffff
     return ret;
 }
 
 // branch_reg: Unconditional branch (register)
 func branch_reg(opc, op2, op3, Rn, op4 uint32) uint32 {
-    if opc &^ 0xf != 0 {
-        panic("branch_reg: invalid opc")
-    }
-    if op2 &^ 0x1f != 0 {
-        panic("branch_reg: invalid op2")
-    }
-    if op3 &^ 0x3f != 0 {
-        panic("branch_reg: invalid op3")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("branch_reg: invalid Rn")
-    }
-    if op4 &^ 0x1f != 0 {
-        panic("branch_reg: invalid op4")
-    }
     ret := uint32(0xd6000000)
-    ret |= opc << 21
-    ret |= op2 << 16
-    ret |= op3 << 10
-    ret |= Rn << 5
-    ret |= op4
+    ret |= (opc & 0xf) << 21
+    ret |= (op2 & 0x1f) << 16
+    ret |= (op3 & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= op4 & 0x1f
     return ret;
 }
 
 // compbranch: Compare and branch (immediate)
 func compbranch(sf, op, imm19, Rt uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("compbranch: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("compbranch: invalid op")
-    }
-    if imm19 &^ 0x7ffff != 0 {
-        panic("compbranch: invalid imm19")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("compbranch: invalid Rt")
-    }
     ret := uint32(0x34000000)
-    ret |= sf << 31
-    ret |= op << 24
-    ret |= imm19 << 5
-    ret |= Rt
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 24
+    ret |= (imm19 & 0x7ffff) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // comswap: Compare and swap
 func comswap(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("comswap: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("comswap: invalid L")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("comswap: invalid Rs")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("comswap: invalid o0")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("comswap: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("comswap: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("comswap: invalid Rt")
-    }
     ret := uint32(0x08a00000)
-    ret |= size << 30
-    ret |= L << 22
-    ret |= Rs << 16
-    ret |= o0 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // comswappr: Compare and swap pair
 func comswappr(sz, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if sz &^ 0x1 != 0 {
-        panic("comswappr: invalid sz")
-    }
-    if L &^ 0x1 != 0 {
-        panic("comswappr: invalid L")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("comswappr: invalid Rs")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("comswappr: invalid o0")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("comswappr: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("comswappr: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("comswappr: invalid Rt")
-    }
     ret := uint32(0x08200000)
-    ret |= sz << 30
-    ret |= L << 22
-    ret |= Rs << 16
-    ret |= o0 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (sz & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // condbranch: Conditional branch (immediate)
 func condbranch(o1, imm19, o0, cond uint32) uint32 {
-    if o1 &^ 0x1 != 0 {
-        panic("condbranch: invalid o1")
-    }
-    if imm19 &^ 0x7ffff != 0 {
-        panic("condbranch: invalid imm19")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("condbranch: invalid o0")
-    }
-    if cond &^ 0xf != 0 {
-        panic("condbranch: invalid cond")
-    }
     ret := uint32(0x54000000)
-    ret |= o1 << 24
-    ret |= imm19 << 5
-    ret |= o0 << 4
-    ret |= cond
+    ret |= (o1 & 0x1) << 24
+    ret |= (imm19 & 0x7ffff) << 5
+    ret |= (o0 & 0x1) << 4
+    ret |= cond & 0xf
     return ret;
 }
 
 // condcmp_imm: Conditional compare (immediate)
 func condcmp_imm(sf, op, S, imm5, cond, o2, Rn, o3, nzcv uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("condcmp_imm: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("condcmp_imm: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("condcmp_imm: invalid S")
-    }
-    if imm5 &^ 0x1f != 0 {
-        panic("condcmp_imm: invalid imm5")
-    }
-    if cond &^ 0xf != 0 {
-        panic("condcmp_imm: invalid cond")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("condcmp_imm: invalid o2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("condcmp_imm: invalid Rn")
-    }
-    if o3 &^ 0x1 != 0 {
-        panic("condcmp_imm: invalid o3")
-    }
-    if nzcv &^ 0xf != 0 {
-        panic("condcmp_imm: invalid nzcv")
-    }
     ret := uint32(0x1a400800)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= imm5 << 16
-    ret |= cond << 12
-    ret |= o2 << 10
-    ret |= Rn << 5
-    ret |= o3 << 4
-    ret |= nzcv
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (imm5 & 0x1f) << 16
+    ret |= (cond & 0xf) << 12
+    ret |= (o2 & 0x1) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= (o3 & 0x1) << 4
+    ret |= nzcv & 0xf
     return ret;
 }
 
 // condcmp_reg: Conditional compare (register)
 func condcmp_reg(sf, op, S, Rm, cond, o2, Rn, o3, nzcv uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("condcmp_reg: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("condcmp_reg: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("condcmp_reg: invalid S")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("condcmp_reg: invalid Rm")
-    }
-    if cond &^ 0xf != 0 {
-        panic("condcmp_reg: invalid cond")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("condcmp_reg: invalid o2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("condcmp_reg: invalid Rn")
-    }
-    if o3 &^ 0x1 != 0 {
-        panic("condcmp_reg: invalid o3")
-    }
-    if nzcv &^ 0xf != 0 {
-        panic("condcmp_reg: invalid nzcv")
-    }
     ret := uint32(0x1a400000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= Rm << 16
-    ret |= cond << 12
-    ret |= o2 << 10
-    ret |= Rn << 5
-    ret |= o3 << 4
-    ret |= nzcv
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (Rm & 0x1f) << 16
+    ret |= (cond & 0xf) << 12
+    ret |= (o2 & 0x1) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= (o3 & 0x1) << 4
+    ret |= nzcv & 0xf
     return ret;
 }
 
 // condsel: Conditional select
 func condsel(sf, op, S, Rm, cond, op2, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("condsel: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("condsel: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("condsel: invalid S")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("condsel: invalid Rm")
-    }
-    if cond &^ 0xf != 0 {
-        panic("condsel: invalid cond")
-    }
-    if op2 &^ 0x3 != 0 {
-        panic("condsel: invalid op2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("condsel: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("condsel: invalid Rd")
-    }
     ret := uint32(0x1a800000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= Rm << 16
-    ret |= cond << 12
-    ret |= op2 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (Rm & 0x1f) << 16
+    ret |= (cond & 0xf) << 12
+    ret |= (op2 & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // crypto3_imm2: Cryptographic three-register, imm2
 func crypto3_imm2(Rm, imm2, opcode, Rn, Rd uint32) uint32 {
-    if Rm &^ 0x1f != 0 {
-        panic("crypto3_imm2: invalid Rm")
-    }
-    if imm2 &^ 0x3 != 0 {
-        panic("crypto3_imm2: invalid imm2")
-    }
-    if opcode &^ 0x3 != 0 {
-        panic("crypto3_imm2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("crypto3_imm2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("crypto3_imm2: invalid Rd")
-    }
     ret := uint32(0xce408000)
-    ret |= Rm << 16
-    ret |= imm2 << 12
-    ret |= opcode << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imm2 & 0x3) << 12
+    ret |= (opcode & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // crypto3_imm6: Cryptographic three-register, imm6
 func crypto3_imm6(Rm, imm6, Rn, Rd uint32) uint32 {
-    if Rm &^ 0x1f != 0 {
-        panic("crypto3_imm6: invalid Rm")
-    }
-    if imm6 &^ 0x3f != 0 {
-        panic("crypto3_imm6: invalid imm6")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("crypto3_imm6: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("crypto3_imm6: invalid Rd")
-    }
     ret := uint32(0xce800000)
-    ret |= Rm << 16
-    ret |= imm6 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imm6 & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // crypto4: Cryptographic four-register
 func crypto4(Op0, Rm, Ra, Rn, Rd uint32) uint32 {
-    if Op0 &^ 0x3 != 0 {
-        panic("crypto4: invalid Op0")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("crypto4: invalid Rm")
-    }
-    if Ra &^ 0x1f != 0 {
-        panic("crypto4: invalid Ra")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("crypto4: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("crypto4: invalid Rd")
-    }
     ret := uint32(0xce000000)
-    ret |= Op0 << 21
-    ret |= Rm << 16
-    ret |= Ra << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Op0 & 0x3) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (Ra & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // cryptoaes: Cryptographic AES
 func cryptoaes(size, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("cryptoaes: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("cryptoaes: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("cryptoaes: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("cryptoaes: invalid Rd")
-    }
     ret := uint32(0x4e280800)
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // cryptosha2: Cryptographic two-register SHA
 func cryptosha2(size, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("cryptosha2: invalid size")
-    }
-    if opcode &^ 0x1f != 0 {
-        panic("cryptosha2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("cryptosha2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("cryptosha2: invalid Rd")
-    }
     ret := uint32(0x5e280800)
-    ret |= size << 22
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (size & 0x3) << 22
+    ret |= (opcode & 0x1f) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // cryptosha3: Cryptographic three-register SHA
 func cryptosha3(size, Rm, opcode, Rn, Rd uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("cryptosha3: invalid size")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("cryptosha3: invalid Rm")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("cryptosha3: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("cryptosha3: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("cryptosha3: invalid Rd")
-    }
     ret := uint32(0x5e000000)
-    ret |= size << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (size & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x7) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // cryptosha512_2: Cryptographic two-register SHA 512
 func cryptosha512_2(opcode, Rn, Rd uint32) uint32 {
-    if opcode &^ 0x3 != 0 {
-        panic("cryptosha512_2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("cryptosha512_2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("cryptosha512_2: invalid Rd")
-    }
     ret := uint32(0xcec08000)
-    ret |= opcode << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (opcode & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // cryptosha512_3: Cryptographic three-register SHA 512
 func cryptosha512_3(Rm, O, opcode, Rn, Rd uint32) uint32 {
-    if Rm &^ 0x1f != 0 {
-        panic("cryptosha512_3: invalid Rm")
-    }
-    if O &^ 0x1 != 0 {
-        panic("cryptosha512_3: invalid O")
-    }
-    if opcode &^ 0x3 != 0 {
-        panic("cryptosha512_3: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("cryptosha512_3: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("cryptosha512_3: invalid Rd")
-    }
     ret := uint32(0xce608000)
-    ret |= Rm << 16
-    ret |= O << 14
-    ret |= opcode << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (Rm & 0x1f) << 16
+    ret |= (O & 0x1) << 14
+    ret |= (opcode & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // dp_1src: Data-processing (1 source)
 func dp_1src(sf, S, opcode2, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("dp_1src: invalid sf")
-    }
-    if S &^ 0x1 != 0 {
-        panic("dp_1src: invalid S")
-    }
-    if opcode2 &^ 0x1f != 0 {
-        panic("dp_1src: invalid opcode2")
-    }
-    if opcode &^ 0x3f != 0 {
-        panic("dp_1src: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("dp_1src: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("dp_1src: invalid Rd")
-    }
     ret := uint32(0x5ac00000)
-    ret |= sf << 31
-    ret |= S << 29
-    ret |= opcode2 << 16
-    ret |= opcode << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (opcode2 & 0x1f) << 16
+    ret |= (opcode & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // dp_2src: Data-processing (2 source)
 func dp_2src(sf, S, Rm, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("dp_2src: invalid sf")
-    }
-    if S &^ 0x1 != 0 {
-        panic("dp_2src: invalid S")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("dp_2src: invalid Rm")
-    }
-    if opcode &^ 0x3f != 0 {
-        panic("dp_2src: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("dp_2src: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("dp_2src: invalid Rd")
-    }
     ret := uint32(0x1ac00000)
-    ret |= sf << 31
-    ret |= S << 29
-    ret |= Rm << 16
-    ret |= opcode << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // dp_3src: Data-processing (3 source)
 func dp_3src(sf, op54, op31, Rm, o0, Ra, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("dp_3src: invalid sf")
-    }
-    if op54 &^ 0x3 != 0 {
-        panic("dp_3src: invalid op54")
-    }
-    if op31 &^ 0x7 != 0 {
-        panic("dp_3src: invalid op31")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("dp_3src: invalid Rm")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("dp_3src: invalid o0")
-    }
-    if Ra &^ 0x1f != 0 {
-        panic("dp_3src: invalid Ra")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("dp_3src: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("dp_3src: invalid Rd")
-    }
     ret := uint32(0x1b000000)
-    ret |= sf << 31
-    ret |= op54 << 29
-    ret |= op31 << 21
-    ret |= Rm << 16
-    ret |= o0 << 15
-    ret |= Ra << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op54 & 0x3) << 29
+    ret |= (op31 & 0x7) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Ra & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // exception: Exception generation
 func exception(opc, imm16, op2, LL uint32) uint32 {
-    if opc &^ 0x7 != 0 {
-        panic("exception: invalid opc")
-    }
-    if imm16 &^ 0xffff != 0 {
-        panic("exception: invalid imm16")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("exception: invalid op2")
-    }
-    if LL &^ 0x3 != 0 {
-        panic("exception: invalid LL")
-    }
     ret := uint32(0xd4000000)
-    ret |= opc << 21
-    ret |= imm16 << 5
-    ret |= op2 << 2
-    ret |= LL
+    ret |= (opc & 0x7) << 21
+    ret |= (imm16 & 0xffff) << 5
+    ret |= (op2 & 0x7) << 2
+    ret |= LL & 0x3
     return ret;
 }
 
 // extract: Extract
 func extract(sf, op21, N, o0, Rm, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("extract: invalid sf")
-    }
-    if op21 &^ 0x3 != 0 {
-        panic("extract: invalid op21")
-    }
-    if N &^ 0x1 != 0 {
-        panic("extract: invalid N")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("extract: invalid o0")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("extract: invalid Rm")
-    }
-    if imms &^ 0x3f != 0 {
-        panic("extract: invalid imms")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("extract: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("extract: invalid Rd")
-    }
     ret := uint32(0x13800000)
-    ret |= sf << 31
-    ret |= op21 << 29
-    ret |= N << 22
-    ret |= o0 << 21
-    ret |= Rm << 16
-    ret |= imms << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op21 & 0x3) << 29
+    ret |= (N & 0x1) << 22
+    ret |= (o0 & 0x1) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imms & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // float2fix: Conversion between floating-point and fixed-point
 func float2fix(sf, S, ftype, rmode, opcode, scale, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("float2fix: invalid sf")
-    }
-    if S &^ 0x1 != 0 {
-        panic("float2fix: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("float2fix: invalid ftype")
-    }
-    if rmode &^ 0x3 != 0 {
-        panic("float2fix: invalid rmode")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("float2fix: invalid opcode")
-    }
-    if scale &^ 0x3f != 0 {
-        panic("float2fix: invalid scale")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("float2fix: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("float2fix: invalid Rd")
-    }
     ret := uint32(0x1e000000)
-    ret |= sf << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= rmode << 19
-    ret |= opcode << 16
-    ret |= scale << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (rmode & 0x3) << 19
+    ret |= (opcode & 0x7) << 16
+    ret |= (scale & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // float2int: Conversion between floating-point and integer
 func float2int(sf, S, ftype, rmode, opcode, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("float2int: invalid sf")
-    }
-    if S &^ 0x1 != 0 {
-        panic("float2int: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("float2int: invalid ftype")
-    }
-    if rmode &^ 0x3 != 0 {
-        panic("float2int: invalid rmode")
-    }
-    if opcode &^ 0x7 != 0 {
-        panic("float2int: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("float2int: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("float2int: invalid Rd")
-    }
     ret := uint32(0x1e200000)
-    ret |= sf << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= rmode << 19
-    ret |= opcode << 16
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (rmode & 0x3) << 19
+    ret |= (opcode & 0x7) << 16
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // floatccmp: Floating-point conditional compare
 func floatccmp(M, S, ftype, Rm, cond, Rn, op, nzcv uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatccmp: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatccmp: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatccmp: invalid ftype")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("floatccmp: invalid Rm")
-    }
-    if cond &^ 0xf != 0 {
-        panic("floatccmp: invalid cond")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatccmp: invalid Rn")
-    }
-    if op &^ 0x1 != 0 {
-        panic("floatccmp: invalid op")
-    }
-    if nzcv &^ 0xf != 0 {
-        panic("floatccmp: invalid nzcv")
-    }
     ret := uint32(0x1e200400)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= Rm << 16
-    ret |= cond << 12
-    ret |= Rn << 5
-    ret |= op << 4
-    ret |= nzcv
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (cond & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= (op & 0x1) << 4
+    ret |= nzcv & 0xf
     return ret;
 }
 
 // floatcmp: Floating-point compare
 func floatcmp(M, S, ftype, Rm, op, Rn, opcode2 uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatcmp: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatcmp: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatcmp: invalid ftype")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("floatcmp: invalid Rm")
-    }
-    if op &^ 0x3 != 0 {
-        panic("floatcmp: invalid op")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatcmp: invalid Rn")
-    }
-    if opcode2 &^ 0x1f != 0 {
-        panic("floatcmp: invalid opcode2")
-    }
     ret := uint32(0x1e202000)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= Rm << 16
-    ret |= op << 14
-    ret |= Rn << 5
-    ret |= opcode2
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (op & 0x3) << 14
+    ret |= (Rn & 0x1f) << 5
+    ret |= opcode2 & 0x1f
     return ret;
 }
 
 // floatdp1: Floating-point data-processing (1 source)
 func floatdp1(M, S, ftype, opcode, Rn, Rd uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatdp1: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatdp1: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatdp1: invalid ftype")
-    }
-    if opcode &^ 0x3f != 0 {
-        panic("floatdp1: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatdp1: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("floatdp1: invalid Rd")
-    }
     ret := uint32(0x1e204000)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= opcode << 15
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (opcode & 0x3f) << 15
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // floatdp2: Floating-point data-processing (2 source)
 func floatdp2(M, S, ftype, Rm, opcode, Rn, Rd uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatdp2: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatdp2: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatdp2: invalid ftype")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("floatdp2: invalid Rm")
-    }
-    if opcode &^ 0xf != 0 {
-        panic("floatdp2: invalid opcode")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatdp2: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("floatdp2: invalid Rd")
-    }
     ret := uint32(0x1e200800)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= Rm << 16
-    ret |= opcode << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (opcode & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // floatdp3: Floating-point data-processing (3 source)
 func floatdp3(M, S, ftype, o1, Rm, o0, Ra, Rn, Rd uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatdp3: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatdp3: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatdp3: invalid ftype")
-    }
-    if o1 &^ 0x1 != 0 {
-        panic("floatdp3: invalid o1")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("floatdp3: invalid Rm")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("floatdp3: invalid o0")
-    }
-    if Ra &^ 0x1f != 0 {
-        panic("floatdp3: invalid Ra")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatdp3: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("floatdp3: invalid Rd")
-    }
     ret := uint32(0x1f000000)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= o1 << 21
-    ret |= Rm << 16
-    ret |= o0 << 15
-    ret |= Ra << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (o1 & 0x1) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Ra & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // floatimm: Floating-point immediate
 func floatimm(M, S, ftype, imm8, imm5, Rd uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatimm: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatimm: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatimm: invalid ftype")
-    }
-    if imm8 &^ 0xff != 0 {
-        panic("floatimm: invalid imm8")
-    }
-    if imm5 &^ 0x1f != 0 {
-        panic("floatimm: invalid imm5")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("floatimm: invalid Rd")
-    }
     ret := uint32(0x1e201000)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= imm8 << 13
-    ret |= imm5 << 5
-    ret |= Rd
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (imm8 & 0xff) << 13
+    ret |= (imm5 & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // floatsel: Floating-point conditional select
 func floatsel(M, S, ftype, Rm, cond, Rn, Rd uint32) uint32 {
-    if M &^ 0x1 != 0 {
-        panic("floatsel: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("floatsel: invalid S")
-    }
-    if ftype &^ 0x3 != 0 {
-        panic("floatsel: invalid ftype")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("floatsel: invalid Rm")
-    }
-    if cond &^ 0xf != 0 {
-        panic("floatsel: invalid cond")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("floatsel: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("floatsel: invalid Rd")
-    }
     ret := uint32(0x1e200c00)
-    ret |= M << 31
-    ret |= S << 29
-    ret |= ftype << 22
-    ret |= Rm << 16
-    ret |= cond << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (M & 0x1) << 31
+    ret |= (S & 0x1) << 29
+    ret |= (ftype & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (cond & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // hints: Hints
 func hints(CRm, op2 uint32) uint32 {
-    if CRm &^ 0xf != 0 {
-        panic("hints: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("hints: invalid op2")
-    }
     ret := uint32(0xd503201f)
-    ret |= CRm << 8
-    ret |= op2 << 5
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
     return ret;
 }
 
 // ldapstl_simd: LDAPR/STLR (SIMD&FP)
 func ldapstl_simd(size, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldapstl_simd: invalid size")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldapstl_simd: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldapstl_simd: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldapstl_simd: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldapstl_simd: invalid Rt")
-    }
     ret := uint32(0x1d000800)
-    ret |= size << 30
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldapstl_unscaled: LDAPR/STLR (unscaled immediate)
 func ldapstl_unscaled(size, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldapstl_unscaled: invalid size")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldapstl_unscaled: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldapstl_unscaled: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldapstl_unscaled: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldapstl_unscaled: invalid Rt")
-    }
     ret := uint32(0x19000000)
-    ret |= size << 30
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldapstl_writeback: LDAPR/STLR (writeback)
 func ldapstl_writeback(size, L, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldapstl_writeback: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldapstl_writeback: invalid L")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldapstl_writeback: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldapstl_writeback: invalid Rt")
-    }
     ret := uint32(0x19800800)
-    ret |= size << 30
-    ret |= L << 22
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldiappstilp: LDIAPP/STILP
 func ldiappstilp(size, L, Rt2, opc2, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldiappstilp: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldiappstilp: invalid L")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldiappstilp: invalid Rt2")
-    }
-    if opc2 &^ 0xf != 0 {
-        panic("ldiappstilp: invalid opc2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldiappstilp: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldiappstilp: invalid Rt")
-    }
     ret := uint32(0x19000800)
-    ret |= size << 30
-    ret |= L << 22
-    ret |= Rt2 << 16
-    ret |= opc2 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rt2 & 0x1f) << 16
+    ret |= (opc2 & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_gcs: GCS load/store
 func ldst_gcs(opc, Rn, Rt uint32) uint32 {
-    if opc &^ 0x7 != 0 {
-        panic("ldst_gcs: invalid opc")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_gcs: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_gcs: invalid Rt")
-    }
     ret := uint32(0xd91f0c00)
-    ret |= opc << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x7) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_immpost: Load/store register (immediate post-indexed)
 func ldst_immpost(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_immpost: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_immpost: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_immpost: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldst_immpost: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_immpost: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_immpost: invalid Rt")
-    }
     ret := uint32(0x38000400)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_immpre: Load/store register (immediate pre-indexed)
 func ldst_immpre(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_immpre: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_immpre: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_immpre: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldst_immpre: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_immpre: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_immpre: invalid Rt")
-    }
     ret := uint32(0x38000c00)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_pac: Load/store register (pac)
 func ldst_pac(size, V, M, S, imm9, W, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_pac: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_pac: invalid V")
-    }
-    if M &^ 0x1 != 0 {
-        panic("ldst_pac: invalid M")
-    }
-    if S &^ 0x1 != 0 {
-        panic("ldst_pac: invalid S")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldst_pac: invalid imm9")
-    }
-    if W &^ 0x1 != 0 {
-        panic("ldst_pac: invalid W")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_pac: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_pac: invalid Rt")
-    }
     ret := uint32(0x38200400)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= M << 23
-    ret |= S << 22
-    ret |= imm9 << 12
-    ret |= W << 11
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (M & 0x1) << 23
+    ret |= (S & 0x1) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (W & 0x1) << 11
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_pos: Load/store register (unsigned immediate)
 func ldst_pos(size, V, opc, imm12, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_pos: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_pos: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_pos: invalid opc")
-    }
-    if imm12 &^ 0xfff != 0 {
-        panic("ldst_pos: invalid imm12")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_pos: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_pos: invalid Rt")
-    }
     ret := uint32(0x39000000)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= imm12 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (imm12 & 0xfff) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_regoff: Load/store register (register offset)
 func ldst_regoff(size, V, opc, Rm, option, S, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_regoff: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_regoff: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_regoff: invalid opc")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("ldst_regoff: invalid Rm")
-    }
-    if option &^ 0x7 != 0 {
-        panic("ldst_regoff: invalid option")
-    }
-    if S &^ 0x1 != 0 {
-        panic("ldst_regoff: invalid S")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_regoff: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_regoff: invalid Rt")
-    }
     ret := uint32(0x38200800)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= Rm << 16
-    ret |= option << 13
-    ret |= S << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (Rm & 0x1f) << 16
+    ret |= (option & 0x7) << 13
+    ret |= (S & 0x1) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_unpriv: Load/store register (unprivileged)
 func ldst_unpriv(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_unpriv: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_unpriv: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_unpriv: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldst_unpriv: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_unpriv: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_unpriv: invalid Rt")
-    }
     ret := uint32(0x38000800)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldst_unscaled: Load/store register (unscaled immediate)
 func ldst_unscaled(size, V, opc, imm9, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldst_unscaled: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldst_unscaled: invalid V")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("ldst_unscaled: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldst_unscaled: invalid imm9")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldst_unscaled: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldst_unscaled: invalid Rt")
-    }
     ret := uint32(0x38000000)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstexclp: Load/store exclusive pair
 func ldstexclp(sz, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if sz &^ 0x1 != 0 {
-        panic("ldstexclp: invalid sz")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstexclp: invalid L")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("ldstexclp: invalid Rs")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("ldstexclp: invalid o0")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstexclp: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstexclp: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstexclp: invalid Rt")
-    }
     ret := uint32(0x88200000)
-    ret |= sz << 30
-    ret |= L << 22
-    ret |= Rs << 16
-    ret |= o0 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (sz & 0x1) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstexclr: Load/store exclusive register
 func ldstexclr(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldstexclr: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstexclr: invalid L")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("ldstexclr: invalid Rs")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("ldstexclr: invalid o0")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstexclr: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstexclr: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstexclr: invalid Rt")
-    }
     ret := uint32(0x08000000)
-    ret |= size << 30
-    ret |= L << 22
-    ret |= Rs << 16
-    ret |= o0 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstnapair_offs: Load/store no-allocate pair (offset)
 func ldstnapair_offs(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("ldstnapair_offs: invalid opc")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldstnapair_offs: invalid V")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstnapair_offs: invalid L")
-    }
-    if imm7 &^ 0x7f != 0 {
-        panic("ldstnapair_offs: invalid imm7")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstnapair_offs: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstnapair_offs: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstnapair_offs: invalid Rt")
-    }
     ret := uint32(0x28000000)
-    ret |= opc << 30
-    ret |= V << 26
-    ret |= L << 22
-    ret |= imm7 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (L & 0x1) << 22
+    ret |= (imm7 & 0x7f) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstord: Load/store ordered
 func ldstord(size, L, Rs, o0, Rt2, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("ldstord: invalid size")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstord: invalid L")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("ldstord: invalid Rs")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("ldstord: invalid o0")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstord: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstord: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstord: invalid Rt")
-    }
     ret := uint32(0x08800000)
-    ret |= size << 30
-    ret |= L << 22
-    ret |= Rs << 16
-    ret |= o0 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (L & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o0 & 0x1) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstpair_off: Load/store register pair (offset)
 func ldstpair_off(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("ldstpair_off: invalid opc")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldstpair_off: invalid V")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstpair_off: invalid L")
-    }
-    if imm7 &^ 0x7f != 0 {
-        panic("ldstpair_off: invalid imm7")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstpair_off: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstpair_off: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstpair_off: invalid Rt")
-    }
     ret := uint32(0x29000000)
-    ret |= opc << 30
-    ret |= V << 26
-    ret |= L << 22
-    ret |= imm7 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (L & 0x1) << 22
+    ret |= (imm7 & 0x7f) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstpair_post: Load/store register pair (post-indexed)
 func ldstpair_post(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("ldstpair_post: invalid opc")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldstpair_post: invalid V")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstpair_post: invalid L")
-    }
-    if imm7 &^ 0x7f != 0 {
-        panic("ldstpair_post: invalid imm7")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstpair_post: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstpair_post: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstpair_post: invalid Rt")
-    }
     ret := uint32(0x28800000)
-    ret |= opc << 30
-    ret |= V << 26
-    ret |= L << 22
-    ret |= imm7 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (L & 0x1) << 22
+    ret |= (imm7 & 0x7f) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldstpair_pre: Load/store register pair (pre-indexed)
 func ldstpair_pre(opc, V, L, imm7, Rt2, Rn, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("ldstpair_pre: invalid opc")
-    }
-    if V &^ 0x1 != 0 {
-        panic("ldstpair_pre: invalid V")
-    }
-    if L &^ 0x1 != 0 {
-        panic("ldstpair_pre: invalid L")
-    }
-    if imm7 &^ 0x7f != 0 {
-        panic("ldstpair_pre: invalid imm7")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("ldstpair_pre: invalid Rt2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldstpair_pre: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldstpair_pre: invalid Rt")
-    }
     ret := uint32(0x29800000)
-    ret |= opc << 30
-    ret |= V << 26
-    ret |= L << 22
-    ret |= imm7 << 15
-    ret |= Rt2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (L & 0x1) << 22
+    ret |= (imm7 & 0x7f) << 15
+    ret |= (Rt2 & 0x1f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // ldsttags: Load/store memory tags
 func ldsttags(opc, imm9, op2, Rn, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("ldsttags: invalid opc")
-    }
-    if imm9 &^ 0x1ff != 0 {
-        panic("ldsttags: invalid imm9")
-    }
-    if op2 &^ 0x3 != 0 {
-        panic("ldsttags: invalid op2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("ldsttags: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("ldsttags: invalid Rt")
-    }
     ret := uint32(0xd9200000)
-    ret |= opc << 22
-    ret |= imm9 << 12
-    ret |= op2 << 10
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 22
+    ret |= (imm9 & 0x1ff) << 12
+    ret |= (op2 & 0x3) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // loadlit: Load register (literal)
 func loadlit(opc, V, imm19, Rt uint32) uint32 {
-    if opc &^ 0x3 != 0 {
-        panic("loadlit: invalid opc")
-    }
-    if V &^ 0x1 != 0 {
-        panic("loadlit: invalid V")
-    }
-    if imm19 &^ 0x7ffff != 0 {
-        panic("loadlit: invalid imm19")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("loadlit: invalid Rt")
-    }
     ret := uint32(0x18000000)
-    ret |= opc << 30
-    ret |= V << 26
-    ret |= imm19 << 5
-    ret |= Rt
+    ret |= (opc & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (imm19 & 0x7ffff) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // log_imm: Logical (immediate)
 func log_imm(sf, opc, N, immr, imms, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("log_imm: invalid sf")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("log_imm: invalid opc")
-    }
-    if N &^ 0x1 != 0 {
-        panic("log_imm: invalid N")
-    }
-    if immr &^ 0x3f != 0 {
-        panic("log_imm: invalid immr")
-    }
-    if imms &^ 0x3f != 0 {
-        panic("log_imm: invalid imms")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("log_imm: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("log_imm: invalid Rd")
-    }
     ret := uint32(0x12000000)
-    ret |= sf << 31
-    ret |= opc << 29
-    ret |= N << 22
-    ret |= immr << 16
-    ret |= imms << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (opc & 0x3) << 29
+    ret |= (N & 0x1) << 22
+    ret |= (immr & 0x3f) << 16
+    ret |= (imms & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // log_shift: Logical (shifted register)
 func log_shift(sf, opc, shift, N, Rm, imm6, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("log_shift: invalid sf")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("log_shift: invalid opc")
-    }
-    if shift &^ 0x3 != 0 {
-        panic("log_shift: invalid shift")
-    }
-    if N &^ 0x1 != 0 {
-        panic("log_shift: invalid N")
-    }
-    if Rm &^ 0x1f != 0 {
-        panic("log_shift: invalid Rm")
-    }
-    if imm6 &^ 0x3f != 0 {
-        panic("log_shift: invalid imm6")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("log_shift: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("log_shift: invalid Rd")
-    }
     ret := uint32(0x0a000000)
-    ret |= sf << 31
-    ret |= opc << 29
-    ret |= shift << 22
-    ret |= N << 21
-    ret |= Rm << 16
-    ret |= imm6 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (opc & 0x3) << 29
+    ret |= (shift & 0x3) << 22
+    ret |= (N & 0x1) << 21
+    ret |= (Rm & 0x1f) << 16
+    ret |= (imm6 & 0x3f) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // memcms: Memory Copy and Memory Set
 func memcms(size, o0, op1, Rs, op2, Rn, Rd uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("memcms: invalid size")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("memcms: invalid o0")
-    }
-    if op1 &^ 0x3 != 0 {
-        panic("memcms: invalid op1")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("memcms: invalid Rs")
-    }
-    if op2 &^ 0xf != 0 {
-        panic("memcms: invalid op2")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("memcms: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("memcms: invalid Rd")
-    }
     ret := uint32(0x19000400)
-    ret |= size << 30
-    ret |= o0 << 26
-    ret |= op1 << 22
-    ret |= Rs << 16
-    ret |= op2 << 12
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (size & 0x3) << 30
+    ret |= (o0 & 0x1) << 26
+    ret |= (op1 & 0x3) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (op2 & 0xf) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // memop: Atomic memory operations
 func memop(size, V, A, R, Rs, o3, opc, Rn, Rt uint32) uint32 {
-    if size &^ 0x3 != 0 {
-        panic("memop: invalid size")
-    }
-    if V &^ 0x1 != 0 {
-        panic("memop: invalid V")
-    }
-    if A &^ 0x1 != 0 {
-        panic("memop: invalid A")
-    }
-    if R &^ 0x1 != 0 {
-        panic("memop: invalid R")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("memop: invalid Rs")
-    }
-    if o3 &^ 0x1 != 0 {
-        panic("memop: invalid o3")
-    }
-    if opc &^ 0x7 != 0 {
-        panic("memop: invalid opc")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("memop: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("memop: invalid Rt")
-    }
     ret := uint32(0x38200000)
-    ret |= size << 30
-    ret |= V << 26
-    ret |= A << 23
-    ret |= R << 22
-    ret |= Rs << 16
-    ret |= o3 << 15
-    ret |= opc << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (size & 0x3) << 30
+    ret |= (V & 0x1) << 26
+    ret |= (A & 0x1) << 23
+    ret |= (R & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (o3 & 0x1) << 15
+    ret |= (opc & 0x7) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // memop_128: 128-bit atomic memory operations
 func memop_128(S, A, R, Rt2, o3, opc, Rn, Rt uint32) uint32 {
-    if S &^ 0x1 != 0 {
-        panic("memop_128: invalid S")
-    }
-    if A &^ 0x1 != 0 {
-        panic("memop_128: invalid A")
-    }
-    if R &^ 0x1 != 0 {
-        panic("memop_128: invalid R")
-    }
-    if Rt2 &^ 0x1f != 0 {
-        panic("memop_128: invalid Rt2")
-    }
-    if o3 &^ 0x1 != 0 {
-        panic("memop_128: invalid o3")
-    }
-    if opc &^ 0x7 != 0 {
-        panic("memop_128: invalid opc")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("memop_128: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("memop_128: invalid Rt")
-    }
     ret := uint32(0x19200000)
-    ret |= S << 30
-    ret |= A << 23
-    ret |= R << 22
-    ret |= Rt2 << 16
-    ret |= o3 << 15
-    ret |= opc << 12
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (S & 0x1) << 30
+    ret |= (A & 0x1) << 23
+    ret |= (R & 0x1) << 22
+    ret |= (Rt2 & 0x1f) << 16
+    ret |= (o3 & 0x1) << 15
+    ret |= (opc & 0x7) << 12
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // minmax_imm: Min/max (immediate)
 func minmax_imm(sf, op, S, opc, imm8, Rn, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("minmax_imm: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("minmax_imm: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("minmax_imm: invalid S")
-    }
-    if opc &^ 0xf != 0 {
-        panic("minmax_imm: invalid opc")
-    }
-    if imm8 &^ 0xff != 0 {
-        panic("minmax_imm: invalid imm8")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("minmax_imm: invalid Rn")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("minmax_imm: invalid Rd")
-    }
     ret := uint32(0x11c00000)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= opc << 18
-    ret |= imm8 << 10
-    ret |= Rn << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (opc & 0xf) << 18
+    ret |= (imm8 & 0xff) << 10
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // movewide: Move wide (immediate)
 func movewide(sf, opc, hw, imm16, Rd uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("movewide: invalid sf")
-    }
-    if opc &^ 0x3 != 0 {
-        panic("movewide: invalid opc")
-    }
-    if hw &^ 0x3 != 0 {
-        panic("movewide: invalid hw")
-    }
-    if imm16 &^ 0xffff != 0 {
-        panic("movewide: invalid imm16")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("movewide: invalid Rd")
-    }
     ret := uint32(0x12800000)
-    ret |= sf << 31
-    ret |= opc << 29
-    ret |= hw << 21
-    ret |= imm16 << 5
-    ret |= Rd
+    ret |= (sf & 0x1) << 31
+    ret |= (opc & 0x3) << 29
+    ret |= (hw & 0x3) << 21
+    ret |= (imm16 & 0xffff) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // pcreladdr: PC-rel. addressing
 func pcreladdr(op, immlo, immhi, Rd uint32) uint32 {
-    if op &^ 0x1 != 0 {
-        panic("pcreladdr: invalid op")
-    }
-    if immlo &^ 0x3 != 0 {
-        panic("pcreladdr: invalid immlo")
-    }
-    if immhi &^ 0x7ffff != 0 {
-        panic("pcreladdr: invalid immhi")
-    }
-    if Rd &^ 0x1f != 0 {
-        panic("pcreladdr: invalid Rd")
-    }
     ret := uint32(0x10000000)
-    ret |= op << 31
-    ret |= immlo << 29
-    ret |= immhi << 5
-    ret |= Rd
+    ret |= (op & 0x1) << 31
+    ret |= (immlo & 0x3) << 29
+    ret |= (immhi & 0x7ffff) << 5
+    ret |= Rd & 0x1f
     return ret;
 }
 
 // perm_undef: Reserved
 func perm_undef(imm16 uint32) uint32 {
-    if imm16 &^ 0xffff != 0 {
-        panic("perm_undef: invalid imm16")
-    }
     ret := uint32(0x00000000)
-    ret |= imm16
+    ret |= imm16 & 0xffff
     return ret;
 }
 
 // pstate: PSTATE
 func pstate(op1, CRm, op2, Rt uint32) uint32 {
-    if op1 &^ 0x7 != 0 {
-        panic("pstate: invalid op1")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("pstate: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("pstate: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("pstate: invalid Rt")
-    }
     ret := uint32(0xd5004000)
-    ret |= op1 << 16
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // rcwcomswap: RCW compare and swap
 func rcwcomswap(S, A, R, Rs, Rn, Rt uint32) uint32 {
-    if S &^ 0x1 != 0 {
-        panic("rcwcomswap: invalid S")
-    }
-    if A &^ 0x1 != 0 {
-        panic("rcwcomswap: invalid A")
-    }
-    if R &^ 0x1 != 0 {
-        panic("rcwcomswap: invalid R")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("rcwcomswap: invalid Rs")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("rcwcomswap: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("rcwcomswap: invalid Rt")
-    }
     ret := uint32(0x19200800)
-    ret |= S << 30
-    ret |= A << 23
-    ret |= R << 22
-    ret |= Rs << 16
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (S & 0x1) << 30
+    ret |= (A & 0x1) << 23
+    ret |= (R & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // rcwcomswappr: RCW compare and swap pair
 func rcwcomswappr(S, A, R, Rs, Rn, Rt uint32) uint32 {
-    if S &^ 0x1 != 0 {
-        panic("rcwcomswappr: invalid S")
-    }
-    if A &^ 0x1 != 0 {
-        panic("rcwcomswappr: invalid A")
-    }
-    if R &^ 0x1 != 0 {
-        panic("rcwcomswappr: invalid R")
-    }
-    if Rs &^ 0x1f != 0 {
-        panic("rcwcomswappr: invalid Rs")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("rcwcomswappr: invalid Rn")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("rcwcomswappr: invalid Rt")
-    }
     ret := uint32(0x19200c00)
-    ret |= S << 30
-    ret |= A << 23
-    ret |= R << 22
-    ret |= Rs << 16
-    ret |= Rn << 5
-    ret |= Rt
+    ret |= (S & 0x1) << 30
+    ret |= (A & 0x1) << 23
+    ret |= (R & 0x1) << 22
+    ret |= (Rs & 0x1f) << 16
+    ret |= (Rn & 0x1f) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // rmif: Rotate right into flags
 func rmif(sf, op, S, imm6, Rn, o2, mask uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("rmif: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("rmif: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("rmif: invalid S")
-    }
-    if imm6 &^ 0x3f != 0 {
-        panic("rmif: invalid imm6")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("rmif: invalid Rn")
-    }
-    if o2 &^ 0x1 != 0 {
-        panic("rmif: invalid o2")
-    }
-    if mask &^ 0xf != 0 {
-        panic("rmif: invalid mask")
-    }
     ret := uint32(0x1a000400)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= imm6 << 15
-    ret |= Rn << 5
-    ret |= o2 << 4
-    ret |= mask
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (imm6 & 0x3f) << 15
+    ret |= (Rn & 0x1f) << 5
+    ret |= (o2 & 0x1) << 4
+    ret |= mask & 0xf
     return ret;
 }
 
 // setf: Evaluate into flags
 func setf(sf, op, S, opcode2, sz, Rn, o3, mask uint32) uint32 {
-    if sf &^ 0x1 != 0 {
-        panic("setf: invalid sf")
-    }
-    if op &^ 0x1 != 0 {
-        panic("setf: invalid op")
-    }
-    if S &^ 0x1 != 0 {
-        panic("setf: invalid S")
-    }
-    if opcode2 &^ 0x3f != 0 {
-        panic("setf: invalid opcode2")
-    }
-    if sz &^ 0x1 != 0 {
-        panic("setf: invalid sz")
-    }
-    if Rn &^ 0x1f != 0 {
-        panic("setf: invalid Rn")
-    }
-    if o3 &^ 0x1 != 0 {
-        panic("setf: invalid o3")
-    }
-    if mask &^ 0xf != 0 {
-        panic("setf: invalid mask")
-    }
     ret := uint32(0x1a000800)
-    ret |= sf << 31
-    ret |= op << 30
-    ret |= S << 29
-    ret |= opcode2 << 15
-    ret |= sz << 14
-    ret |= Rn << 5
-    ret |= o3 << 4
-    ret |= mask
+    ret |= (sf & 0x1) << 31
+    ret |= (op & 0x1) << 30
+    ret |= (S & 0x1) << 29
+    ret |= (opcode2 & 0x3f) << 15
+    ret |= (sz & 0x1) << 14
+    ret |= (Rn & 0x1f) << 5
+    ret |= (o3 & 0x1) << 4
+    ret |= mask & 0xf
     return ret;
 }
 
 // syspairinstrs: System pair instructions
 func syspairinstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0x1 != 0 {
-        panic("syspairinstrs: invalid L")
-    }
-    if op1 &^ 0x7 != 0 {
-        panic("syspairinstrs: invalid op1")
-    }
-    if CRn &^ 0xf != 0 {
-        panic("syspairinstrs: invalid CRn")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("syspairinstrs: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("syspairinstrs: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("syspairinstrs: invalid Rt")
-    }
     ret := uint32(0xd5480000)
-    ret |= L << 21
-    ret |= op1 << 16
-    ret |= CRn << 12
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (L & 0x1) << 21
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRn & 0xf) << 12
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // systeminstrs: System instructions
 func systeminstrs(L, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0x1 != 0 {
-        panic("systeminstrs: invalid L")
-    }
-    if op1 &^ 0x7 != 0 {
-        panic("systeminstrs: invalid op1")
-    }
-    if CRn &^ 0xf != 0 {
-        panic("systeminstrs: invalid CRn")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("systeminstrs: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("systeminstrs: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("systeminstrs: invalid Rt")
-    }
     ret := uint32(0xd5080000)
-    ret |= L << 21
-    ret |= op1 << 16
-    ret |= CRn << 12
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (L & 0x1) << 21
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRn & 0xf) << 12
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // systeminstrswithreg: System instructions with register argument
 func systeminstrswithreg(CRm, op2, Rt uint32) uint32 {
-    if CRm &^ 0xf != 0 {
-        panic("systeminstrswithreg: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("systeminstrswithreg: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("systeminstrswithreg: invalid Rt")
-    }
     ret := uint32(0xd5031000)
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // systemmove: System register move
 func systemmove(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0x1 != 0 {
-        panic("systemmove: invalid L")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("systemmove: invalid o0")
-    }
-    if op1 &^ 0x7 != 0 {
-        panic("systemmove: invalid op1")
-    }
-    if CRn &^ 0xf != 0 {
-        panic("systemmove: invalid CRn")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("systemmove: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("systemmove: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("systemmove: invalid Rt")
-    }
     ret := uint32(0xd5100000)
-    ret |= L << 21
-    ret |= o0 << 19
-    ret |= op1 << 16
-    ret |= CRn << 12
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (L & 0x1) << 21
+    ret |= (o0 & 0x1) << 19
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRn & 0xf) << 12
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // systemmovepr: System register pair move
 func systemmovepr(L, o0, op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if L &^ 0x1 != 0 {
-        panic("systemmovepr: invalid L")
-    }
-    if o0 &^ 0x1 != 0 {
-        panic("systemmovepr: invalid o0")
-    }
-    if op1 &^ 0x7 != 0 {
-        panic("systemmovepr: invalid op1")
-    }
-    if CRn &^ 0xf != 0 {
-        panic("systemmovepr: invalid CRn")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("systemmovepr: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("systemmovepr: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("systemmovepr: invalid Rt")
-    }
     ret := uint32(0xd5500000)
-    ret |= L << 21
-    ret |= o0 << 19
-    ret |= op1 << 16
-    ret |= CRn << 12
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (L & 0x1) << 21
+    ret |= (o0 & 0x1) << 19
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRn & 0xf) << 12
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // systemresult: System with result
 func systemresult(op1, CRn, CRm, op2, Rt uint32) uint32 {
-    if op1 &^ 0x7 != 0 {
-        panic("systemresult: invalid op1")
-    }
-    if CRn &^ 0xf != 0 {
-        panic("systemresult: invalid CRn")
-    }
-    if CRm &^ 0xf != 0 {
-        panic("systemresult: invalid CRm")
-    }
-    if op2 &^ 0x7 != 0 {
-        panic("systemresult: invalid op2")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("systemresult: invalid Rt")
-    }
     ret := uint32(0xd5200000)
-    ret |= op1 << 16
-    ret |= CRn << 12
-    ret |= CRm << 8
-    ret |= op2 << 5
-    ret |= Rt
+    ret |= (op1 & 0x7) << 16
+    ret |= (CRn & 0xf) << 12
+    ret |= (CRm & 0xf) << 8
+    ret |= (op2 & 0x7) << 5
+    ret |= Rt & 0x1f
     return ret;
 }
 
 // testbranch: Test and branch (immediate)
 func testbranch(b5, op, b40, imm14, Rt uint32) uint32 {
-    if b5 &^ 0x1 != 0 {
-        panic("testbranch: invalid b5")
-    }
-    if op &^ 0x1 != 0 {
-        panic("testbranch: invalid op")
-    }
-    if b40 &^ 0x1f != 0 {
-        panic("testbranch: invalid b40")
-    }
-    if imm14 &^ 0x3fff != 0 {
-        panic("testbranch: invalid imm14")
-    }
-    if Rt &^ 0x1f != 0 {
-        panic("testbranch: invalid Rt")
-    }
     ret := uint32(0x36000000)
-    ret |= b5 << 31
-    ret |= op << 24
-    ret |= b40 << 19
-    ret |= imm14 << 5
-    ret |= Rt
+    ret |= (b5 & 0x1) << 31
+    ret |= (op & 0x1) << 24
+    ret |= (b40 & 0x1f) << 19
+    ret |= (imm14 & 0x3fff) << 5
+    ret |= Rt & 0x1f
     return ret;
 }

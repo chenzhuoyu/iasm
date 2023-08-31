@@ -114,9 +114,9 @@ func asPStateField(v interface{}) PStateField {
     if s, ok := v.(PStateField); ok {
         return s
     } else if r, ok := v.(SystemRegister); !ok {
-        panic("aarch64: not a valid PState Field")
+        panic("aarch64: not a valid Processor State Field")
     } else if x, ok := _SysRegPStateMap[r]; !ok {
-        panic("aarch64: not a valid PState Field")
+        panic("aarch64: not a valid Processor State Field")
     } else {
         return x
     }

@@ -6,7 +6,7 @@ import (
     `github.com/chenzhuoyu/iasm/asm`
 )
 
-// ABS instruction have 4 forms from 2 categories:
+// ABS instruction have 4 forms across 2 categories:
 //
 // 1. Absolute value
 //
@@ -86,7 +86,7 @@ func (self *Program) ABS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ABS")
 }
 
-// ADC instruction have 2 forms from one single category:
+// ADC instruction have 2 forms across one single category:
 //
 // 1. Add with Carry
 //
@@ -119,7 +119,7 @@ func (self *Program) ADC(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADC")
 }
 
-// ADCS instruction have 2 forms from one single category:
+// ADCS instruction have 2 forms across one single category:
 //
 // 1. Add with Carry, setting flags
 //
@@ -153,7 +153,7 @@ func (self *Program) ADCS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADCS")
 }
 
-// ADD instruction have 10 forms from 4 categories:
+// ADD instruction have 10 forms across 4 categories:
 //
 // 1. Add (extended register)
 //
@@ -280,7 +280,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -322,7 +322,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -450,7 +450,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for ADD")
 }
 
-// ADDG instruction have one single form from one single category:
+// ADDG instruction have one single form across one single category:
 //
 // 1. Add with Tag
 //
@@ -464,7 +464,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 //
 func (self *Program) ADDG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("ADDG", 4, asm.Operands { v0, v1, v2, v3 })
-    if isXrOrSP(v0) && isXrOrSP(v1) && isUimm6(v2) && isUimm4(v3) {
+    if isXrOrSP(v0) && isXrOrSP(v1) && isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) && isInRange(v3, 0, 15) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -481,7 +481,7 @@ func (self *Program) ADDG(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDG")
 }
 
-// ADDHN instruction have one single form from one single category:
+// ADDHN instruction have one single form across one single category:
 //
 // 1. Add returning High Narrow
 //
@@ -546,7 +546,7 @@ func (self *Program) ADDHN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDHN")
 }
 
-// ADDHN2 instruction have one single form from one single category:
+// ADDHN2 instruction have one single form across one single category:
 //
 // 1. Add returning High Narrow
 //
@@ -611,7 +611,7 @@ func (self *Program) ADDHN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDHN2")
 }
 
-// ADDP instruction have 2 forms from 2 categories:
+// ADDP instruction have 2 forms across 2 categories:
 //
 // 1. Add Pair of elements (scalar)
 //
@@ -699,7 +699,7 @@ func (self *Program) ADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDP")
 }
 
-// ADDS instruction have 8 forms from 3 categories:
+// ADDS instruction have 8 forms across 3 categories:
 //
 // 1. Add (extended register), setting flags
 //
@@ -816,7 +816,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     if (len(vv) == 0 || len(vv) == 1) &&
        isWr(v0) &&
        isWrOrWSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -858,7 +858,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     if (len(vv) == 0 || len(vv) == 1) &&
        isXr(v0) &&
        isXrOrSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -947,7 +947,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     panic("aarch64: invalid combination of operands for ADDS")
 }
 
-// ADDV instruction have one single form from one single category:
+// ADDV instruction have one single form across one single category:
 //
 // 1. Add across Vector
 //
@@ -992,7 +992,7 @@ func (self *Program) ADDV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADDV")
 }
 
-// ADR instruction have 2 forms from one single category:
+// ADR instruction have 2 forms across one single category:
 //
 // 1. Form PC-relative address
 //
@@ -1027,7 +1027,7 @@ func (self *Program) ADR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADR")
 }
 
-// ADRP instruction have 2 forms from one single category:
+// ADRP instruction have 2 forms across one single category:
 //
 // 1. Form PC-relative address to 4KB page
 //
@@ -1063,7 +1063,7 @@ func (self *Program) ADRP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ADRP")
 }
 
-// AESD instruction have one single form from one single category:
+// AESD instruction have one single form across one single category:
 //
 // 1. AES single round decryption
 //
@@ -1084,7 +1084,7 @@ func (self *Program) AESD(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AESD")
 }
 
-// AESE instruction have one single form from one single category:
+// AESE instruction have one single form across one single category:
 //
 // 1. AES single round encryption
 //
@@ -1105,7 +1105,7 @@ func (self *Program) AESE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AESE")
 }
 
-// AESIMC instruction have one single form from one single category:
+// AESIMC instruction have one single form across one single category:
 //
 // 1. AES inverse mix columns
 //
@@ -1126,7 +1126,7 @@ func (self *Program) AESIMC(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AESIMC")
 }
 
-// AESMC instruction have one single form from one single category:
+// AESMC instruction have one single form across one single category:
 //
 // 1. AES mix columns
 //
@@ -1147,7 +1147,7 @@ func (self *Program) AESMC(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AESMC")
 }
 
-// AND instruction have 5 forms from 3 categories:
+// AND instruction have 5 forms across 3 categories:
 //
 // 1. Bitwise AND (vector)
 //
@@ -1275,7 +1275,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for AND")
 }
 
-// ANDS instruction have 4 forms from 2 categories:
+// ANDS instruction have 4 forms across 2 categories:
 //
 // 1. Bitwise AND (immediate), setting flags
 //
@@ -1371,7 +1371,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     panic("aarch64: invalid combination of operands for ANDS")
 }
 
-// ASR instruction have 4 forms from 2 categories:
+// ASR instruction have 4 forms across 2 categories:
 //
 // 1. Arithmetic Shift Right (register)
 //
@@ -1412,7 +1412,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(dp_2src(1, 0, sa_xm, 10, sa_xn, sa_xd))
     }
     // ASR  <Wd>, <Wn>, #<shift>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -1420,7 +1420,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(bitfield(0, 0, 0, sa_shift, 31, sa_wn, sa_wd))
     }
     // ASR  <Xd>, <Xn>, #<shift>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -1432,7 +1432,7 @@ func (self *Program) ASR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ASR")
 }
 
-// ASRV instruction have 2 forms from one single category:
+// ASRV instruction have 2 forms across one single category:
 //
 // 1. Arithmetic Shift Right Variable
 //
@@ -1468,7 +1468,7 @@ func (self *Program) ASRV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ASRV")
 }
 
-// AT instruction have one single form from one single category:
+// AT instruction have one single form across one single category:
 //
 // 1. Address Translate
 //
@@ -1489,7 +1489,7 @@ func (self *Program) AT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AT")
 }
 
-// AUTDA instruction have one single form from one single category:
+// AUTDA instruction have one single form across one single category:
 //
 // 1. Authenticate Data address, using key A
 //
@@ -1523,7 +1523,7 @@ func (self *Program) AUTDA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTDA")
 }
 
-// AUTDB instruction have one single form from one single category:
+// AUTDB instruction have one single form across one single category:
 //
 // 1. Authenticate Data address, using key B
 //
@@ -1557,7 +1557,7 @@ func (self *Program) AUTDB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTDB")
 }
 
-// AUTDZA instruction have one single form from one single category:
+// AUTDZA instruction have one single form across one single category:
 //
 // 1. Authenticate Data address, using key A
 //
@@ -1590,7 +1590,7 @@ func (self *Program) AUTDZA(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTDZA")
 }
 
-// AUTDZB instruction have one single form from one single category:
+// AUTDZB instruction have one single form across one single category:
 //
 // 1. Authenticate Data address, using key B
 //
@@ -1623,7 +1623,7 @@ func (self *Program) AUTDZB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTDZB")
 }
 
-// AUTIA instruction have one single form from one single category:
+// AUTIA instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key A
 //
@@ -1664,7 +1664,7 @@ func (self *Program) AUTIA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTIA")
 }
 
-// AUTIA1716 instruction have one single form from one single category:
+// AUTIA1716 instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key A
 //
@@ -1699,7 +1699,7 @@ func (self *Program) AUTIA1716() *Instruction {
     return p.setins(hints(1, 4))
 }
 
-// AUTIASP instruction have one single form from one single category:
+// AUTIASP instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key A
 //
@@ -1734,7 +1734,7 @@ func (self *Program) AUTIASP() *Instruction {
     return p.setins(hints(3, 5))
 }
 
-// AUTIAZ instruction have one single form from one single category:
+// AUTIAZ instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key A
 //
@@ -1769,7 +1769,7 @@ func (self *Program) AUTIAZ() *Instruction {
     return p.setins(hints(3, 4))
 }
 
-// AUTIB instruction have one single form from one single category:
+// AUTIB instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key B
 //
@@ -1810,7 +1810,7 @@ func (self *Program) AUTIB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTIB")
 }
 
-// AUTIB1716 instruction have one single form from one single category:
+// AUTIB1716 instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key B
 //
@@ -1845,7 +1845,7 @@ func (self *Program) AUTIB1716() *Instruction {
     return p.setins(hints(1, 6))
 }
 
-// AUTIBSP instruction have one single form from one single category:
+// AUTIBSP instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key B
 //
@@ -1880,7 +1880,7 @@ func (self *Program) AUTIBSP() *Instruction {
     return p.setins(hints(3, 7))
 }
 
-// AUTIBZ instruction have one single form from one single category:
+// AUTIBZ instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key B
 //
@@ -1915,7 +1915,7 @@ func (self *Program) AUTIBZ() *Instruction {
     return p.setins(hints(3, 6))
 }
 
-// AUTIZA instruction have one single form from one single category:
+// AUTIZA instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key A
 //
@@ -1955,7 +1955,7 @@ func (self *Program) AUTIZA(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTIZA")
 }
 
-// AUTIZB instruction have one single form from one single category:
+// AUTIZB instruction have one single form across one single category:
 //
 // 1. Authenticate Instruction address, using key B
 //
@@ -1995,7 +1995,7 @@ func (self *Program) AUTIZB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for AUTIZB")
 }
 
-// AXFLAG instruction have one single form from one single category:
+// AXFLAG instruction have one single form across one single category:
 //
 // 1. Convert floating-point condition flags from Arm to external format
 //
@@ -2013,7 +2013,7 @@ func (self *Program) AXFLAG() *Instruction {
     return p.setins(pstate(0, 0, 2, 31))
 }
 
-// B instruction have 2 forms from one single category:
+// B instruction have 2 forms across one single category:
 //
 // 1. Branch
 //
@@ -2044,7 +2044,7 @@ func (self *Program) B(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for B")
 }
 
-// BEQ instruction have 2 forms from one single category:
+// BEQ instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2075,7 +2075,7 @@ func (self *Program) BEQ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BEQ")
 }
 
-// BNE instruction have 2 forms from one single category:
+// BNE instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2106,7 +2106,7 @@ func (self *Program) BNE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BNE")
 }
 
-// BCS instruction have 2 forms from one single category:
+// BCS instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2137,7 +2137,7 @@ func (self *Program) BCS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCS")
 }
 
-// BHS instruction have 2 forms from one single category:
+// BHS instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2168,7 +2168,7 @@ func (self *Program) BHS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BHS")
 }
 
-// BCC instruction have 2 forms from one single category:
+// BCC instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2199,7 +2199,7 @@ func (self *Program) BCC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCC")
 }
 
-// BLO instruction have 2 forms from one single category:
+// BLO instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2230,7 +2230,7 @@ func (self *Program) BLO(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLO")
 }
 
-// BMI instruction have 2 forms from one single category:
+// BMI instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2261,7 +2261,7 @@ func (self *Program) BMI(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BMI")
 }
 
-// BPL instruction have 2 forms from one single category:
+// BPL instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2292,7 +2292,7 @@ func (self *Program) BPL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BPL")
 }
 
-// BVS instruction have 2 forms from one single category:
+// BVS instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2323,7 +2323,7 @@ func (self *Program) BVS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BVS")
 }
 
-// BVC instruction have 2 forms from one single category:
+// BVC instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2354,7 +2354,7 @@ func (self *Program) BVC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BVC")
 }
 
-// BHI instruction have 2 forms from one single category:
+// BHI instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2385,7 +2385,7 @@ func (self *Program) BHI(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BHI")
 }
 
-// BLS instruction have 2 forms from one single category:
+// BLS instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2416,7 +2416,7 @@ func (self *Program) BLS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLS")
 }
 
-// BGE instruction have 2 forms from one single category:
+// BGE instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2447,7 +2447,7 @@ func (self *Program) BGE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BGE")
 }
 
-// BLT instruction have 2 forms from one single category:
+// BLT instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2478,7 +2478,7 @@ func (self *Program) BLT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLT")
 }
 
-// BGT instruction have 2 forms from one single category:
+// BGT instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2509,7 +2509,7 @@ func (self *Program) BGT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BGT")
 }
 
-// BLE instruction have 2 forms from one single category:
+// BLE instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2540,7 +2540,7 @@ func (self *Program) BLE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLE")
 }
 
-// BAL instruction have 2 forms from one single category:
+// BAL instruction have 2 forms across one single category:
 //
 // 1. Branch conditionally
 //
@@ -2571,7 +2571,7 @@ func (self *Program) BAL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BAL")
 }
 
-// BCEQ instruction have 2 forms from one single category:
+// BCEQ instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2605,7 +2605,7 @@ func (self *Program) BCEQ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCEQ")
 }
 
-// BCNE instruction have 2 forms from one single category:
+// BCNE instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2639,7 +2639,7 @@ func (self *Program) BCNE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCNE")
 }
 
-// BCCS instruction have 2 forms from one single category:
+// BCCS instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2673,7 +2673,7 @@ func (self *Program) BCCS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCCS")
 }
 
-// BCHS instruction have 2 forms from one single category:
+// BCHS instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2707,7 +2707,7 @@ func (self *Program) BCHS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCHS")
 }
 
-// BCCC instruction have 2 forms from one single category:
+// BCCC instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2741,7 +2741,7 @@ func (self *Program) BCCC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCCC")
 }
 
-// BCLO instruction have 2 forms from one single category:
+// BCLO instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2775,7 +2775,7 @@ func (self *Program) BCLO(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCLO")
 }
 
-// BCMI instruction have 2 forms from one single category:
+// BCMI instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2809,7 +2809,7 @@ func (self *Program) BCMI(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCMI")
 }
 
-// BCPL instruction have 2 forms from one single category:
+// BCPL instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2843,7 +2843,7 @@ func (self *Program) BCPL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCPL")
 }
 
-// BCVS instruction have 2 forms from one single category:
+// BCVS instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2877,7 +2877,7 @@ func (self *Program) BCVS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCVS")
 }
 
-// BCVC instruction have 2 forms from one single category:
+// BCVC instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2911,7 +2911,7 @@ func (self *Program) BCVC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCVC")
 }
 
-// BCHI instruction have 2 forms from one single category:
+// BCHI instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2945,7 +2945,7 @@ func (self *Program) BCHI(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCHI")
 }
 
-// BCLS instruction have 2 forms from one single category:
+// BCLS instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -2979,7 +2979,7 @@ func (self *Program) BCLS(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCLS")
 }
 
-// BCGE instruction have 2 forms from one single category:
+// BCGE instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -3013,7 +3013,7 @@ func (self *Program) BCGE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCGE")
 }
 
-// BCLT instruction have 2 forms from one single category:
+// BCLT instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -3047,7 +3047,7 @@ func (self *Program) BCLT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCLT")
 }
 
-// BCGT instruction have 2 forms from one single category:
+// BCGT instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -3081,7 +3081,7 @@ func (self *Program) BCGT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCGT")
 }
 
-// BCLE instruction have 2 forms from one single category:
+// BCLE instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -3115,7 +3115,7 @@ func (self *Program) BCLE(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCLE")
 }
 
-// BCAL instruction have 2 forms from one single category:
+// BCAL instruction have 2 forms across one single category:
 //
 // 1. Branch Consistent conditionally
 //
@@ -3149,7 +3149,7 @@ func (self *Program) BCAL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCAL")
 }
 
-// BCAX instruction have one single form from one single category:
+// BCAX instruction have one single form across one single category:
 //
 // 1. Bit Clear and exclusive-OR
 //
@@ -3185,7 +3185,7 @@ func (self *Program) BCAX(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BCAX")
 }
 
-// BFC instruction have 2 forms from one single category:
+// BFC instruction have 2 forms across one single category:
 //
 // 1. Bitfield Clear
 //
@@ -3198,7 +3198,7 @@ func (self *Program) BCAX(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("BFC", 3, asm.Operands { v0, v1, v2 })
     // BFC  <Wd>, #<lsb>, #<width>
-    if isWr(v0) && isUimm5(v1) && isBFxWidth(v1, v2, 32) {
+    if isWr(v0) && isInRange(v1, 0, 31) && isBFxWidth(v1, v2, 32) {
         self.Arch.Require(FEAT_ASMv8p2)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -3207,7 +3207,7 @@ func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
         return p.setins(bitfield(0, 1, 0, sa_lsb, sa_width, 31, sa_wd))
     }
     // BFC  <Xd>, #<lsb>, #<width>
-    if isXr(v0) && isUimm6(v1) && isBFxWidth(v1, v2, 64) {
+    if isXr(v0) && isInRange(v1, 0, 63) && isBFxWidth(v1, v2, 64) {
         self.Arch.Require(FEAT_ASMv8p2)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -3220,7 +3220,7 @@ func (self *Program) BFC(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFC")
 }
 
-// BFCVT instruction have one single form from one single category:
+// BFCVT instruction have one single form across one single category:
 //
 // 1. Floating-point convert from single-precision to BFloat16 format (scalar)
 //
@@ -3246,7 +3246,7 @@ func (self *Program) BFCVT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFCVT")
 }
 
-// BFCVTN instruction have one single form from one single category:
+// BFCVTN instruction have one single form across one single category:
 //
 // 1. Floating-point convert from single-precision to BFloat16 format (vector)
 //
@@ -3285,7 +3285,7 @@ func (self *Program) BFCVTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFCVTN")
 }
 
-// BFCVTN2 instruction have one single form from one single category:
+// BFCVTN2 instruction have one single form across one single category:
 //
 // 1. Floating-point convert from single-precision to BFloat16 format (vector)
 //
@@ -3324,7 +3324,7 @@ func (self *Program) BFCVTN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFCVTN2")
 }
 
-// BFDOT instruction have 2 forms from 2 categories:
+// BFDOT instruction have 2 forms across 2 categories:
 //
 // 1. BFloat16 floating-point dot product (vector, by element)
 //
@@ -3496,7 +3496,7 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFDOT")
 }
 
-// BFI instruction have 2 forms from one single category:
+// BFI instruction have 2 forms across one single category:
 //
 // 1. Bitfield Insert
 //
@@ -3510,7 +3510,7 @@ func (self *Program) BFDOT(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFI", 4, asm.Operands { v0, v1, v2, v3 })
     // BFI  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -3519,7 +3519,7 @@ func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 1, 0, sa_lsb, sa_width, sa_wn, sa_wd))
     }
     // BFI  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -3532,7 +3532,7 @@ func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFI")
 }
 
-// BFM instruction have 2 forms from one single category:
+// BFM instruction have 2 forms across one single category:
 //
 // 1. Bitfield Move
 //
@@ -3556,7 +3556,7 @@ func (self *Program) BFI(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) BFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFM", 4, asm.Operands { v0, v1, v2, v3 })
     // BFM  <Wd>, <Wn>, #<immr>, #<imms>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isInRange(v3, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -3565,7 +3565,7 @@ func (self *Program) BFM(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 1, 0, sa_immr, sa_imms, sa_wn, sa_wd))
     }
     // BFM  <Xd>, <Xn>, #<immr>, #<imms>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isInRange(v3, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -3578,7 +3578,7 @@ func (self *Program) BFM(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFM")
 }
 
-// BFMLALB instruction have 2 forms from 2 categories:
+// BFMLALB instruction have 2 forms across 2 categories:
 //
 // 1. BFloat16 floating-point widening multiply-add long (by element)
 //
@@ -3644,7 +3644,7 @@ func (self *Program) BFMLALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFMLALB")
 }
 
-// BFMLALT instruction have 2 forms from 2 categories:
+// BFMLALT instruction have 2 forms across 2 categories:
 //
 // 1. BFloat16 floating-point widening multiply-add long (by element)
 //
@@ -3710,7 +3710,7 @@ func (self *Program) BFMLALT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFMLALT")
 }
 
-// BFMMLA instruction have one single form from one single category:
+// BFMMLA instruction have one single form across one single category:
 //
 // 1. BFloat16 floating-point matrix multiply-accumulate into 2x2 matrix
 //
@@ -3773,7 +3773,7 @@ func (self *Program) BFMMLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFMMLA")
 }
 
-// BFXIL instruction have 2 forms from one single category:
+// BFXIL instruction have 2 forms across one single category:
 //
 // 1. Bitfield extract and insert at low end
 //
@@ -3787,7 +3787,7 @@ func (self *Program) BFMMLA(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("BFXIL", 4, asm.Operands { v0, v1, v2, v3 })
     // BFXIL  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -3796,7 +3796,7 @@ func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 1, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
     }
     // BFXIL  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -3809,7 +3809,7 @@ func (self *Program) BFXIL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BFXIL")
 }
 
-// BIC instruction have 5 forms from 3 categories:
+// BIC instruction have 5 forms across 3 categories:
 //
 // 1. Bitwise bit Clear (vector, immediate)
 //
@@ -4020,7 +4020,7 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BIC")
 }
 
-// BICS instruction have 2 forms from one single category:
+// BICS instruction have 2 forms across one single category:
 //
 // 1. Bitwise Bit Clear (shifted register), setting flags
 //
@@ -4092,7 +4092,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     panic("aarch64: invalid combination of operands for BICS")
 }
 
-// BIF instruction have one single form from one single category:
+// BIF instruction have one single form across one single category:
 //
 // 1. Bitwise Insert if False
 //
@@ -4133,7 +4133,7 @@ func (self *Program) BIF(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BIF")
 }
 
-// BIT instruction have one single form from one single category:
+// BIT instruction have one single form across one single category:
 //
 // 1. Bitwise Insert if True
 //
@@ -4174,7 +4174,7 @@ func (self *Program) BIT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BIT")
 }
 
-// BL instruction have 2 forms from one single category:
+// BL instruction have 2 forms across one single category:
 //
 // 1. Branch with Link
 //
@@ -4205,7 +4205,7 @@ func (self *Program) BL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BL")
 }
 
-// BLR instruction have one single form from one single category:
+// BLR instruction have one single form across one single category:
 //
 // 1. Branch with Link to Register
 //
@@ -4225,7 +4225,7 @@ func (self *Program) BLR(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLR")
 }
 
-// BLRAA instruction have one single form from one single category:
+// BLRAA instruction have one single form across one single category:
 //
 // 1. Branch with Link to Register, with pointer authentication
 //
@@ -4265,7 +4265,7 @@ func (self *Program) BLRAA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLRAA")
 }
 
-// BLRAAZ instruction have one single form from one single category:
+// BLRAAZ instruction have one single form across one single category:
 //
 // 1. Branch with Link to Register, with pointer authentication
 //
@@ -4302,7 +4302,7 @@ func (self *Program) BLRAAZ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLRAAZ")
 }
 
-// BLRAB instruction have one single form from one single category:
+// BLRAB instruction have one single form across one single category:
 //
 // 1. Branch with Link to Register, with pointer authentication
 //
@@ -4342,7 +4342,7 @@ func (self *Program) BLRAB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLRAB")
 }
 
-// BLRABZ instruction have one single form from one single category:
+// BLRABZ instruction have one single form across one single category:
 //
 // 1. Branch with Link to Register, with pointer authentication
 //
@@ -4379,7 +4379,7 @@ func (self *Program) BLRABZ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BLRABZ")
 }
 
-// BR instruction have one single form from one single category:
+// BR instruction have one single form across one single category:
 //
 // 1. Branch to Register
 //
@@ -4399,7 +4399,7 @@ func (self *Program) BR(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BR")
 }
 
-// BRAA instruction have one single form from one single category:
+// BRAA instruction have one single form across one single category:
 //
 // 1. Branch to Register, with pointer authentication
 //
@@ -4438,7 +4438,7 @@ func (self *Program) BRAA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRAA")
 }
 
-// BRAAZ instruction have one single form from one single category:
+// BRAAZ instruction have one single form across one single category:
 //
 // 1. Branch to Register, with pointer authentication
 //
@@ -4474,7 +4474,7 @@ func (self *Program) BRAAZ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRAAZ")
 }
 
-// BRAB instruction have one single form from one single category:
+// BRAB instruction have one single form across one single category:
 //
 // 1. Branch to Register, with pointer authentication
 //
@@ -4513,7 +4513,7 @@ func (self *Program) BRAB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRAB")
 }
 
-// BRABZ instruction have one single form from one single category:
+// BRABZ instruction have one single form across one single category:
 //
 // 1. Branch to Register, with pointer authentication
 //
@@ -4549,7 +4549,7 @@ func (self *Program) BRABZ(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRABZ")
 }
 
-// BRB instruction have one single form from one single category:
+// BRB instruction have one single form across one single category:
 //
 // 1. Branch Record Buffer
 //
@@ -4579,7 +4579,7 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRB")
 }
 
-// BRK instruction have one single form from one single category:
+// BRK instruction have one single form across one single category:
 //
 // 1. Breakpoint instruction
 //
@@ -4591,7 +4591,7 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
 //
 func (self *Program) BRK(v0 interface{}) *Instruction {
     p := self.alloc("BRK", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(1, sa_imm, 0, 0))
@@ -4600,7 +4600,7 @@ func (self *Program) BRK(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BRK")
 }
 
-// BSL instruction have one single form from one single category:
+// BSL instruction have one single form across one single category:
 //
 // 1. Bitwise Select
 //
@@ -4641,7 +4641,7 @@ func (self *Program) BSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BSL")
 }
 
-// BTI instruction have one single form from one single category:
+// BTI instruction have one single form across one single category:
 //
 // 1. Branch Target Identification
 //
@@ -4693,7 +4693,7 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for BTI")
 }
 
-// CAS instruction have 2 forms from one single category:
+// CAS instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap word or doubleword in memory
 //
@@ -4760,7 +4760,7 @@ func (self *Program) CAS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CAS")
 }
 
-// CASA instruction have 2 forms from one single category:
+// CASA instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap word or doubleword in memory
 //
@@ -4827,7 +4827,7 @@ func (self *Program) CASA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASA")
 }
 
-// CASAB instruction have one single form from one single category:
+// CASAB instruction have one single form across one single category:
 //
 // 1. Compare and Swap byte in memory
 //
@@ -4875,7 +4875,7 @@ func (self *Program) CASAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASAB")
 }
 
-// CASAH instruction have one single form from one single category:
+// CASAH instruction have one single form across one single category:
 //
 // 1. Compare and Swap halfword in memory
 //
@@ -4923,7 +4923,7 @@ func (self *Program) CASAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASAH")
 }
 
-// CASAL instruction have 2 forms from one single category:
+// CASAL instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap word or doubleword in memory
 //
@@ -4990,7 +4990,7 @@ func (self *Program) CASAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASAL")
 }
 
-// CASALB instruction have one single form from one single category:
+// CASALB instruction have one single form across one single category:
 //
 // 1. Compare and Swap byte in memory
 //
@@ -5038,7 +5038,7 @@ func (self *Program) CASALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASALB")
 }
 
-// CASALH instruction have one single form from one single category:
+// CASALH instruction have one single form across one single category:
 //
 // 1. Compare and Swap halfword in memory
 //
@@ -5086,7 +5086,7 @@ func (self *Program) CASALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASALH")
 }
 
-// CASB instruction have one single form from one single category:
+// CASB instruction have one single form across one single category:
 //
 // 1. Compare and Swap byte in memory
 //
@@ -5134,7 +5134,7 @@ func (self *Program) CASB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASB")
 }
 
-// CASH instruction have one single form from one single category:
+// CASH instruction have one single form across one single category:
 //
 // 1. Compare and Swap halfword in memory
 //
@@ -5182,7 +5182,7 @@ func (self *Program) CASH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASH")
 }
 
-// CASL instruction have 2 forms from one single category:
+// CASL instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap word or doubleword in memory
 //
@@ -5249,7 +5249,7 @@ func (self *Program) CASL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASL")
 }
 
-// CASLB instruction have one single form from one single category:
+// CASLB instruction have one single form across one single category:
 //
 // 1. Compare and Swap byte in memory
 //
@@ -5297,7 +5297,7 @@ func (self *Program) CASLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASLB")
 }
 
-// CASLH instruction have one single form from one single category:
+// CASLH instruction have one single form across one single category:
 //
 // 1. Compare and Swap halfword in memory
 //
@@ -5345,7 +5345,7 @@ func (self *Program) CASLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASLH")
 }
 
-// CASP instruction have 2 forms from one single category:
+// CASP instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap Pair of words or doublewords in memory
 //
@@ -5421,7 +5421,7 @@ func (self *Program) CASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASP")
 }
 
-// CASPA instruction have 2 forms from one single category:
+// CASPA instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap Pair of words or doublewords in memory
 //
@@ -5497,7 +5497,7 @@ func (self *Program) CASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASPA")
 }
 
-// CASPAL instruction have 2 forms from one single category:
+// CASPAL instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap Pair of words or doublewords in memory
 //
@@ -5573,7 +5573,7 @@ func (self *Program) CASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASPAL")
 }
 
-// CASPL instruction have 2 forms from one single category:
+// CASPL instruction have 2 forms across one single category:
 //
 // 1. Compare and Swap Pair of words or doublewords in memory
 //
@@ -5649,7 +5649,7 @@ func (self *Program) CASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CASPL")
 }
 
-// CBNZ instruction have 4 forms from one single category:
+// CBNZ instruction have 4 forms across one single category:
 //
 // 1. Compare and Branch on Nonzero
 //
@@ -5702,7 +5702,7 @@ func (self *Program) CBNZ(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CBNZ")
 }
 
-// CBZ instruction have 4 forms from one single category:
+// CBZ instruction have 4 forms across one single category:
 //
 // 1. Compare and Branch on Zero
 //
@@ -5755,7 +5755,7 @@ func (self *Program) CBZ(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CBZ")
 }
 
-// CCMN instruction have 4 forms from 2 categories:
+// CCMN instruction have 4 forms across 2 categories:
 //
 // 1. Conditional Compare Negative (immediate)
 //
@@ -5778,7 +5778,7 @@ func (self *Program) CBZ(v0, v1 interface{}) *Instruction {
 func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CCMN", 4, asm.Operands { v0, v1, v2, v3 })
     // CCMN  <Wn>, #<imm>, #<nzcv>, <cond>
-    if isWr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isWr(v0) && isUimm5(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
@@ -5787,7 +5787,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_imm(0, 0, 1, sa_imm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMN  <Xn>, #<imm>, #<nzcv>, <cond>
-    if isXr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isXr(v0) && isUimm5(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
@@ -5796,7 +5796,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_imm(1, 0, 1, sa_imm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // CCMN  <Wn>, <Wm>, #<nzcv>, <cond>
-    if isWr(v0) && isWr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
@@ -5805,7 +5805,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_reg(0, 0, 1, sa_wm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMN  <Xn>, <Xm>, #<nzcv>, <cond>
-    if isXr(v0) && isXr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
@@ -5818,7 +5818,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CCMN")
 }
 
-// CCMP instruction have 4 forms from 2 categories:
+// CCMP instruction have 4 forms across 2 categories:
 //
 // 1. Conditional Compare (immediate)
 //
@@ -5841,7 +5841,7 @@ func (self *Program) CCMN(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("CCMP", 4, asm.Operands { v0, v1, v2, v3 })
     // CCMP  <Wn>, #<imm>, #<nzcv>, <cond>
-    if isWr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isWr(v0) && isUimm5(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
@@ -5850,7 +5850,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_imm(0, 1, 1, sa_imm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMP  <Xn>, #<imm>, #<nzcv>, <cond>
-    if isXr(v0) && isUimm5(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isXr(v0) && isUimm5(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm5(v1)
@@ -5859,7 +5859,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_imm(1, 1, 1, sa_imm, sa_cond, 0, sa_xn, 0, sa_nzcv))
     }
     // CCMP  <Wn>, <Wm>, #<nzcv>, <cond>
-    if isWr(v0) && isWr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
@@ -5868,7 +5868,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(condcmp_reg(0, 1, 1, sa_wm, sa_cond, 0, sa_wn, 0, sa_nzcv))
     }
     // CCMP  <Xn>, <Xm>, #<nzcv>, <cond>
-    if isXr(v0) && isXr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
@@ -5881,7 +5881,7 @@ func (self *Program) CCMP(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CCMP")
 }
 
-// CFINV instruction have one single form from one single category:
+// CFINV instruction have one single form across one single category:
 //
 // 1. Invert Carry Flag
 //
@@ -5896,7 +5896,7 @@ func (self *Program) CFINV() *Instruction {
     return p.setins(pstate(0, 0, 0, 31))
 }
 
-// CFP instruction have one single form from one single category:
+// CFP instruction have one single form across one single category:
 //
 // 1. Control Flow Prediction Restriction by Context
 //
@@ -5925,7 +5925,7 @@ func (self *Program) CFP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CFP")
 }
 
-// CHKFEAT instruction have one single form from one single category:
+// CHKFEAT instruction have one single form across one single category:
 //
 // 1. Check feature status
 //
@@ -5946,7 +5946,7 @@ func (self *Program) CHKFEAT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CHKFEAT")
 }
 
-// CINC instruction have 2 forms from one single category:
+// CINC instruction have 2 forms across one single category:
 //
 // 1. Conditional Increment
 //
@@ -5980,7 +5980,7 @@ func (self *Program) CINC(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CINC")
 }
 
-// CINV instruction have 2 forms from one single category:
+// CINV instruction have 2 forms across one single category:
 //
 // 1. Conditional Invert
 //
@@ -6014,7 +6014,7 @@ func (self *Program) CINV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CINV")
 }
 
-// CLRBHB instruction have one single form from one single category:
+// CLRBHB instruction have one single form across one single category:
 //
 // 1. Clear Branch History
 //
@@ -6033,7 +6033,7 @@ func (self *Program) CLRBHB() *Instruction {
     return p.setins(hints(2, 6))
 }
 
-// CLREX instruction have one single form from one single category:
+// CLREX instruction have one single form across one single category:
 //
 // 1. Clear Exclusive
 //
@@ -6048,7 +6048,7 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("CLREX", 1, asm.Operands { vv[0] })
         default : panic("aarch64: instruction CLREX takes 0 or 1 operands")
     }
-    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm4(vv[0])) {
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 15)) {
         p.Domain = DomainSystem
         sa_imm := uint32(15)
         if len(vv) == 1 {
@@ -6060,7 +6060,7 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CLREX")
 }
 
-// CLS instruction have 3 forms from 2 categories:
+// CLS instruction have 3 forms across 2 categories:
 //
 // 1. Count Leading Sign bits (vector)
 //
@@ -6128,7 +6128,7 @@ func (self *Program) CLS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CLS")
 }
 
-// CLZ instruction have 3 forms from 2 categories:
+// CLZ instruction have 3 forms across 2 categories:
 //
 // 1. Count Leading Zero bits (vector)
 //
@@ -6194,7 +6194,7 @@ func (self *Program) CLZ(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CLZ")
 }
 
-// CMEQ instruction have 4 forms from 2 categories:
+// CMEQ instruction have 4 forms across 2 categories:
 //
 // 1. Compare bitwise Equal (vector)
 //
@@ -6308,7 +6308,7 @@ func (self *Program) CMEQ(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMEQ")
 }
 
-// CMGE instruction have 4 forms from 2 categories:
+// CMGE instruction have 4 forms across 2 categories:
 //
 // 1. Compare signed Greater than or Equal (vector)
 //
@@ -6424,7 +6424,7 @@ func (self *Program) CMGE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMGE")
 }
 
-// CMGT instruction have 4 forms from 2 categories:
+// CMGT instruction have 4 forms across 2 categories:
 //
 // 1. Compare signed Greater than (vector)
 //
@@ -6539,7 +6539,7 @@ func (self *Program) CMGT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMGT")
 }
 
-// CMHI instruction have 2 forms from one single category:
+// CMHI instruction have 2 forms across one single category:
 //
 // 1. Compare unsigned Higher (vector)
 //
@@ -6604,7 +6604,7 @@ func (self *Program) CMHI(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMHI")
 }
 
-// CMHS instruction have 2 forms from one single category:
+// CMHS instruction have 2 forms across one single category:
 //
 // 1. Compare unsigned Higher or Same (vector)
 //
@@ -6669,7 +6669,7 @@ func (self *Program) CMHS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMHS")
 }
 
-// CMLE instruction have 2 forms from one single category:
+// CMLE instruction have 2 forms across one single category:
 //
 // 1. Compare signed Less than or Equal to zero (vector)
 //
@@ -6728,7 +6728,7 @@ func (self *Program) CMLE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMLE")
 }
 
-// CMLT instruction have 2 forms from one single category:
+// CMLT instruction have 2 forms across one single category:
 //
 // 1. Compare signed Less than zero (vector)
 //
@@ -6787,7 +6787,7 @@ func (self *Program) CMLT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMLT")
 }
 
-// CMN instruction have 8 forms from 3 categories:
+// CMN instruction have 8 forms across 3 categories:
 //
 // 1. Compare Negative (extended register)
 //
@@ -6899,7 +6899,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     // CMN  <Wn|WSP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
-       isImm12(v1) &&
+       isInRange(v1, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -6937,7 +6937,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     // CMN  <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
-       isImm12(v1) &&
+       isInRange(v1, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -7019,7 +7019,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMN")
 }
 
-// CMP instruction have 8 forms from 3 categories:
+// CMP instruction have 8 forms across 3 categories:
 //
 // 1. Compare (extended register)
 //
@@ -7131,7 +7131,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     // CMP  <Wn|WSP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
-       isImm12(v1) &&
+       isInRange(v1, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -7169,7 +7169,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     // CMP  <Xn|SP>, #<imm>{, <shift>}
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
-       isImm12(v1) &&
+       isInRange(v1, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -7251,7 +7251,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMP")
 }
 
-// CMPP instruction have one single form from one single category:
+// CMPP instruction have one single form across one single category:
 //
 // 1. Compare with Tag
 //
@@ -7278,7 +7278,7 @@ func (self *Program) CMPP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMPP")
 }
 
-// CMTST instruction have 2 forms from one single category:
+// CMTST instruction have 2 forms across one single category:
 //
 // 1. Compare bitwise Test bits nonzero (vector)
 //
@@ -7342,7 +7342,7 @@ func (self *Program) CMTST(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CMTST")
 }
 
-// CNEG instruction have 2 forms from one single category:
+// CNEG instruction have 2 forms across one single category:
 //
 // 1. Conditional Negate
 //
@@ -7376,7 +7376,7 @@ func (self *Program) CNEG(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CNEG")
 }
 
-// CNT instruction have 3 forms from 2 categories:
+// CNT instruction have 3 forms across 2 categories:
 //
 // 1. Count bits
 //
@@ -7434,7 +7434,7 @@ func (self *Program) CNT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CNT")
 }
 
-// COSP instruction have one single form from one single category:
+// COSP instruction have one single form across one single category:
 //
 // 1. Clear Other Speculative Predictions by Context
 //
@@ -7461,7 +7461,7 @@ func (self *Program) COSP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for COSP")
 }
 
-// CPP instruction have one single form from one single category:
+// CPP instruction have one single form across one single category:
 //
 // 1. Cache Prefetch Prediction Restriction by Context
 //
@@ -7489,7 +7489,7 @@ func (self *Program) CPP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPP")
 }
 
-// CPYE instruction have one single form from one single category:
+// CPYE instruction have one single form across one single category:
 //
 // 1. Memory Copy
 //
@@ -7702,7 +7702,7 @@ func (self *Program) CPYE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYE")
 }
 
-// CPYEN instruction have one single form from one single category:
+// CPYEN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes non-temporal
 //
@@ -7916,7 +7916,7 @@ func (self *Program) CPYEN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEN")
 }
 
-// CPYERN instruction have one single form from one single category:
+// CPYERN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads non-temporal
 //
@@ -8129,7 +8129,7 @@ func (self *Program) CPYERN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYERN")
 }
 
-// CPYERT instruction have one single form from one single category:
+// CPYERT instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged
 //
@@ -8342,7 +8342,7 @@ func (self *Program) CPYERT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYERT")
 }
 
-// CPYERTN instruction have one single form from one single category:
+// CPYERTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, reads and writes non-temporal
 //
@@ -8556,7 +8556,7 @@ func (self *Program) CPYERTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYERTN")
 }
 
-// CPYERTRN instruction have one single form from one single category:
+// CPYERTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged and non-temporal
 //
@@ -8774,7 +8774,7 @@ func (self *Program) CPYERTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYERTRN")
 }
 
-// CPYERTWN instruction have one single form from one single category:
+// CPYERTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, writes non-temporal
 //
@@ -8992,7 +8992,7 @@ func (self *Program) CPYERTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYERTWN")
 }
 
-// CPYET instruction have one single form from one single category:
+// CPYET instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged
 //
@@ -9206,7 +9206,7 @@ func (self *Program) CPYET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYET")
 }
 
-// CPYETN instruction have one single form from one single category:
+// CPYETN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged and non-temporal
 //
@@ -9420,7 +9420,7 @@ func (self *Program) CPYETN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYETN")
 }
 
-// CPYETRN instruction have one single form from one single category:
+// CPYETRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, reads non-temporal
 //
@@ -9634,7 +9634,7 @@ func (self *Program) CPYETRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYETRN")
 }
 
-// CPYETWN instruction have one single form from one single category:
+// CPYETWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, writes non-temporal
 //
@@ -9848,7 +9848,7 @@ func (self *Program) CPYETWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYETWN")
 }
 
-// CPYEWN instruction have one single form from one single category:
+// CPYEWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes non-temporal
 //
@@ -10061,7 +10061,7 @@ func (self *Program) CPYEWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEWN")
 }
 
-// CPYEWT instruction have one single form from one single category:
+// CPYEWT instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged
 //
@@ -10274,7 +10274,7 @@ func (self *Program) CPYEWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEWT")
 }
 
-// CPYEWTN instruction have one single form from one single category:
+// CPYEWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads and writes non-temporal
 //
@@ -10488,7 +10488,7 @@ func (self *Program) CPYEWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEWTN")
 }
 
-// CPYEWTRN instruction have one single form from one single category:
+// CPYEWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads non-temporal
 //
@@ -10706,7 +10706,7 @@ func (self *Program) CPYEWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEWTRN")
 }
 
-// CPYEWTWN instruction have one single form from one single category:
+// CPYEWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged and non-temporal
 //
@@ -10924,7 +10924,7 @@ func (self *Program) CPYEWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYEWTWN")
 }
 
-// CPYFE instruction have one single form from one single category:
+// CPYFE instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only
 //
@@ -11050,7 +11050,7 @@ func (self *Program) CPYFE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFE")
 }
 
-// CPYFEN instruction have one single form from one single category:
+// CPYFEN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes non-temporal
 //
@@ -11177,7 +11177,7 @@ func (self *Program) CPYFEN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEN")
 }
 
-// CPYFERN instruction have one single form from one single category:
+// CPYFERN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads non-temporal
 //
@@ -11304,7 +11304,7 @@ func (self *Program) CPYFERN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFERN")
 }
 
-// CPYFERT instruction have one single form from one single category:
+// CPYFERT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged
 //
@@ -11431,7 +11431,7 @@ func (self *Program) CPYFERT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFERT")
 }
 
-// CPYFERTN instruction have one single form from one single category:
+// CPYFERTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, reads and writes non-temporal
 //
@@ -11562,7 +11562,7 @@ func (self *Program) CPYFERTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFERTN")
 }
 
-// CPYFERTRN instruction have one single form from one single category:
+// CPYFERTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged and non-temporal
 //
@@ -11693,7 +11693,7 @@ func (self *Program) CPYFERTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFERTRN")
 }
 
-// CPYFERTWN instruction have one single form from one single category:
+// CPYFERTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, writes non-temporal
 //
@@ -11824,7 +11824,7 @@ func (self *Program) CPYFERTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFERTWN")
 }
 
-// CPYFET instruction have one single form from one single category:
+// CPYFET instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged
 //
@@ -11951,7 +11951,7 @@ func (self *Program) CPYFET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFET")
 }
 
-// CPYFETN instruction have one single form from one single category:
+// CPYFETN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged and non-temporal
 //
@@ -12078,7 +12078,7 @@ func (self *Program) CPYFETN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFETN")
 }
 
-// CPYFETRN instruction have one single form from one single category:
+// CPYFETRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, reads non-temporal
 //
@@ -12209,7 +12209,7 @@ func (self *Program) CPYFETRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFETRN")
 }
 
-// CPYFETWN instruction have one single form from one single category:
+// CPYFETWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, writes non-temporal
 //
@@ -12340,7 +12340,7 @@ func (self *Program) CPYFETWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFETWN")
 }
 
-// CPYFEWN instruction have one single form from one single category:
+// CPYFEWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes non-temporal
 //
@@ -12467,7 +12467,7 @@ func (self *Program) CPYFEWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEWN")
 }
 
-// CPYFEWT instruction have one single form from one single category:
+// CPYFEWT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged
 //
@@ -12594,7 +12594,7 @@ func (self *Program) CPYFEWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEWT")
 }
 
-// CPYFEWTN instruction have one single form from one single category:
+// CPYFEWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads and writes non-temporal
 //
@@ -12725,7 +12725,7 @@ func (self *Program) CPYFEWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEWTN")
 }
 
-// CPYFEWTRN instruction have one single form from one single category:
+// CPYFEWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads non-temporal
 //
@@ -12856,7 +12856,7 @@ func (self *Program) CPYFEWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEWTRN")
 }
 
-// CPYFEWTWN instruction have one single form from one single category:
+// CPYFEWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged and non-temporal
 //
@@ -12987,7 +12987,7 @@ func (self *Program) CPYFEWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFEWTWN")
 }
 
-// CPYFM instruction have one single form from one single category:
+// CPYFM instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only
 //
@@ -13113,7 +13113,7 @@ func (self *Program) CPYFM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFM")
 }
 
-// CPYFMN instruction have one single form from one single category:
+// CPYFMN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes non-temporal
 //
@@ -13240,7 +13240,7 @@ func (self *Program) CPYFMN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMN")
 }
 
-// CPYFMRN instruction have one single form from one single category:
+// CPYFMRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads non-temporal
 //
@@ -13367,7 +13367,7 @@ func (self *Program) CPYFMRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMRN")
 }
 
-// CPYFMRT instruction have one single form from one single category:
+// CPYFMRT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged
 //
@@ -13494,7 +13494,7 @@ func (self *Program) CPYFMRT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMRT")
 }
 
-// CPYFMRTN instruction have one single form from one single category:
+// CPYFMRTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, reads and writes non-temporal
 //
@@ -13625,7 +13625,7 @@ func (self *Program) CPYFMRTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMRTN")
 }
 
-// CPYFMRTRN instruction have one single form from one single category:
+// CPYFMRTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged and non-temporal
 //
@@ -13756,7 +13756,7 @@ func (self *Program) CPYFMRTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMRTRN")
 }
 
-// CPYFMRTWN instruction have one single form from one single category:
+// CPYFMRTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, writes non-temporal
 //
@@ -13887,7 +13887,7 @@ func (self *Program) CPYFMRTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMRTWN")
 }
 
-// CPYFMT instruction have one single form from one single category:
+// CPYFMT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged
 //
@@ -14014,7 +14014,7 @@ func (self *Program) CPYFMT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMT")
 }
 
-// CPYFMTN instruction have one single form from one single category:
+// CPYFMTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged and non-temporal
 //
@@ -14141,7 +14141,7 @@ func (self *Program) CPYFMTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMTN")
 }
 
-// CPYFMTRN instruction have one single form from one single category:
+// CPYFMTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, reads non-temporal
 //
@@ -14272,7 +14272,7 @@ func (self *Program) CPYFMTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMTRN")
 }
 
-// CPYFMTWN instruction have one single form from one single category:
+// CPYFMTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, writes non-temporal
 //
@@ -14403,7 +14403,7 @@ func (self *Program) CPYFMTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMTWN")
 }
 
-// CPYFMWN instruction have one single form from one single category:
+// CPYFMWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes non-temporal
 //
@@ -14530,7 +14530,7 @@ func (self *Program) CPYFMWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMWN")
 }
 
-// CPYFMWT instruction have one single form from one single category:
+// CPYFMWT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged
 //
@@ -14657,7 +14657,7 @@ func (self *Program) CPYFMWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMWT")
 }
 
-// CPYFMWTN instruction have one single form from one single category:
+// CPYFMWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads and writes non-temporal
 //
@@ -14788,7 +14788,7 @@ func (self *Program) CPYFMWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMWTN")
 }
 
-// CPYFMWTRN instruction have one single form from one single category:
+// CPYFMWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads non-temporal
 //
@@ -14919,7 +14919,7 @@ func (self *Program) CPYFMWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMWTRN")
 }
 
-// CPYFMWTWN instruction have one single form from one single category:
+// CPYFMWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged and non-temporal
 //
@@ -15050,7 +15050,7 @@ func (self *Program) CPYFMWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFMWTWN")
 }
 
-// CPYFP instruction have one single form from one single category:
+// CPYFP instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only
 //
@@ -15176,7 +15176,7 @@ func (self *Program) CPYFP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFP")
 }
 
-// CPYFPN instruction have one single form from one single category:
+// CPYFPN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes non-temporal
 //
@@ -15303,7 +15303,7 @@ func (self *Program) CPYFPN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPN")
 }
 
-// CPYFPRN instruction have one single form from one single category:
+// CPYFPRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads non-temporal
 //
@@ -15430,7 +15430,7 @@ func (self *Program) CPYFPRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPRN")
 }
 
-// CPYFPRT instruction have one single form from one single category:
+// CPYFPRT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged
 //
@@ -15557,7 +15557,7 @@ func (self *Program) CPYFPRT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPRT")
 }
 
-// CPYFPRTN instruction have one single form from one single category:
+// CPYFPRTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, reads and writes non-temporal
 //
@@ -15688,7 +15688,7 @@ func (self *Program) CPYFPRTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPRTN")
 }
 
-// CPYFPRTRN instruction have one single form from one single category:
+// CPYFPRTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged and non-temporal
 //
@@ -15819,7 +15819,7 @@ func (self *Program) CPYFPRTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPRTRN")
 }
 
-// CPYFPRTWN instruction have one single form from one single category:
+// CPYFPRTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads unprivileged, writes non-temporal
 //
@@ -15950,7 +15950,7 @@ func (self *Program) CPYFPRTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPRTWN")
 }
 
-// CPYFPT instruction have one single form from one single category:
+// CPYFPT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged
 //
@@ -16077,7 +16077,7 @@ func (self *Program) CPYFPT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPT")
 }
 
-// CPYFPTN instruction have one single form from one single category:
+// CPYFPTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged and non-temporal
 //
@@ -16204,7 +16204,7 @@ func (self *Program) CPYFPTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPTN")
 }
 
-// CPYFPTRN instruction have one single form from one single category:
+// CPYFPTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, reads non-temporal
 //
@@ -16335,7 +16335,7 @@ func (self *Program) CPYFPTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPTRN")
 }
 
-// CPYFPTWN instruction have one single form from one single category:
+// CPYFPTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, reads and writes unprivileged, writes non-temporal
 //
@@ -16466,7 +16466,7 @@ func (self *Program) CPYFPTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPTWN")
 }
 
-// CPYFPWN instruction have one single form from one single category:
+// CPYFPWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes non-temporal
 //
@@ -16593,7 +16593,7 @@ func (self *Program) CPYFPWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPWN")
 }
 
-// CPYFPWT instruction have one single form from one single category:
+// CPYFPWT instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged
 //
@@ -16720,7 +16720,7 @@ func (self *Program) CPYFPWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPWT")
 }
 
-// CPYFPWTN instruction have one single form from one single category:
+// CPYFPWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads and writes non-temporal
 //
@@ -16851,7 +16851,7 @@ func (self *Program) CPYFPWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPWTN")
 }
 
-// CPYFPWTRN instruction have one single form from one single category:
+// CPYFPWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged, reads non-temporal
 //
@@ -16982,7 +16982,7 @@ func (self *Program) CPYFPWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPWTRN")
 }
 
-// CPYFPWTWN instruction have one single form from one single category:
+// CPYFPWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy Forward-only, writes unprivileged and non-temporal
 //
@@ -17113,7 +17113,7 @@ func (self *Program) CPYFPWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYFPWTWN")
 }
 
-// CPYM instruction have one single form from one single category:
+// CPYM instruction have one single form across one single category:
 //
 // 1. Memory Copy
 //
@@ -17326,7 +17326,7 @@ func (self *Program) CPYM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYM")
 }
 
-// CPYMN instruction have one single form from one single category:
+// CPYMN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes non-temporal
 //
@@ -17540,7 +17540,7 @@ func (self *Program) CPYMN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMN")
 }
 
-// CPYMRN instruction have one single form from one single category:
+// CPYMRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads non-temporal
 //
@@ -17753,7 +17753,7 @@ func (self *Program) CPYMRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMRN")
 }
 
-// CPYMRT instruction have one single form from one single category:
+// CPYMRT instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged
 //
@@ -17966,7 +17966,7 @@ func (self *Program) CPYMRT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMRT")
 }
 
-// CPYMRTN instruction have one single form from one single category:
+// CPYMRTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, reads and writes non-temporal
 //
@@ -18180,7 +18180,7 @@ func (self *Program) CPYMRTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMRTN")
 }
 
-// CPYMRTRN instruction have one single form from one single category:
+// CPYMRTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged and non-temporal
 //
@@ -18398,7 +18398,7 @@ func (self *Program) CPYMRTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMRTRN")
 }
 
-// CPYMRTWN instruction have one single form from one single category:
+// CPYMRTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, writes non-temporal
 //
@@ -18616,7 +18616,7 @@ func (self *Program) CPYMRTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMRTWN")
 }
 
-// CPYMT instruction have one single form from one single category:
+// CPYMT instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged
 //
@@ -18830,7 +18830,7 @@ func (self *Program) CPYMT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMT")
 }
 
-// CPYMTN instruction have one single form from one single category:
+// CPYMTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged and non-temporal
 //
@@ -19044,7 +19044,7 @@ func (self *Program) CPYMTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMTN")
 }
 
-// CPYMTRN instruction have one single form from one single category:
+// CPYMTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, reads non-temporal
 //
@@ -19258,7 +19258,7 @@ func (self *Program) CPYMTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMTRN")
 }
 
-// CPYMTWN instruction have one single form from one single category:
+// CPYMTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, writes non-temporal
 //
@@ -19472,7 +19472,7 @@ func (self *Program) CPYMTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMTWN")
 }
 
-// CPYMWN instruction have one single form from one single category:
+// CPYMWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes non-temporal
 //
@@ -19685,7 +19685,7 @@ func (self *Program) CPYMWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMWN")
 }
 
-// CPYMWT instruction have one single form from one single category:
+// CPYMWT instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged
 //
@@ -19898,7 +19898,7 @@ func (self *Program) CPYMWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMWT")
 }
 
-// CPYMWTN instruction have one single form from one single category:
+// CPYMWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads and writes non-temporal
 //
@@ -20112,7 +20112,7 @@ func (self *Program) CPYMWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMWTN")
 }
 
-// CPYMWTRN instruction have one single form from one single category:
+// CPYMWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads non-temporal
 //
@@ -20330,7 +20330,7 @@ func (self *Program) CPYMWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMWTRN")
 }
 
-// CPYMWTWN instruction have one single form from one single category:
+// CPYMWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged and non-temporal
 //
@@ -20548,7 +20548,7 @@ func (self *Program) CPYMWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYMWTWN")
 }
 
-// CPYP instruction have one single form from one single category:
+// CPYP instruction have one single form across one single category:
 //
 // 1. Memory Copy
 //
@@ -20761,7 +20761,7 @@ func (self *Program) CPYP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYP")
 }
 
-// CPYPN instruction have one single form from one single category:
+// CPYPN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes non-temporal
 //
@@ -20975,7 +20975,7 @@ func (self *Program) CPYPN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPN")
 }
 
-// CPYPRN instruction have one single form from one single category:
+// CPYPRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads non-temporal
 //
@@ -21188,7 +21188,7 @@ func (self *Program) CPYPRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPRN")
 }
 
-// CPYPRT instruction have one single form from one single category:
+// CPYPRT instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged
 //
@@ -21401,7 +21401,7 @@ func (self *Program) CPYPRT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPRT")
 }
 
-// CPYPRTN instruction have one single form from one single category:
+// CPYPRTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, reads and writes non-temporal
 //
@@ -21615,7 +21615,7 @@ func (self *Program) CPYPRTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPRTN")
 }
 
-// CPYPRTRN instruction have one single form from one single category:
+// CPYPRTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged and non-temporal
 //
@@ -21833,7 +21833,7 @@ func (self *Program) CPYPRTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPRTRN")
 }
 
-// CPYPRTWN instruction have one single form from one single category:
+// CPYPRTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads unprivileged, writes non-temporal
 //
@@ -22051,7 +22051,7 @@ func (self *Program) CPYPRTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPRTWN")
 }
 
-// CPYPT instruction have one single form from one single category:
+// CPYPT instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged
 //
@@ -22265,7 +22265,7 @@ func (self *Program) CPYPT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPT")
 }
 
-// CPYPTN instruction have one single form from one single category:
+// CPYPTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged and non-temporal
 //
@@ -22479,7 +22479,7 @@ func (self *Program) CPYPTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPTN")
 }
 
-// CPYPTRN instruction have one single form from one single category:
+// CPYPTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, reads non-temporal
 //
@@ -22693,7 +22693,7 @@ func (self *Program) CPYPTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPTRN")
 }
 
-// CPYPTWN instruction have one single form from one single category:
+// CPYPTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, reads and writes unprivileged, writes non-temporal
 //
@@ -22907,7 +22907,7 @@ func (self *Program) CPYPTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPTWN")
 }
 
-// CPYPWN instruction have one single form from one single category:
+// CPYPWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes non-temporal
 //
@@ -23120,7 +23120,7 @@ func (self *Program) CPYPWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPWN")
 }
 
-// CPYPWT instruction have one single form from one single category:
+// CPYPWT instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged
 //
@@ -23333,7 +23333,7 @@ func (self *Program) CPYPWT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPWT")
 }
 
-// CPYPWTN instruction have one single form from one single category:
+// CPYPWTN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads and writes non-temporal
 //
@@ -23547,7 +23547,7 @@ func (self *Program) CPYPWTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPWTN")
 }
 
-// CPYPWTRN instruction have one single form from one single category:
+// CPYPWTRN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged, reads non-temporal
 //
@@ -23765,7 +23765,7 @@ func (self *Program) CPYPWTRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPWTRN")
 }
 
-// CPYPWTWN instruction have one single form from one single category:
+// CPYPWTWN instruction have one single form across one single category:
 //
 // 1. Memory Copy, writes unprivileged and non-temporal
 //
@@ -23983,7 +23983,7 @@ func (self *Program) CPYPWTWN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CPYPWTWN")
 }
 
-// CRC32B instruction have one single form from one single category:
+// CRC32B instruction have one single form across one single category:
 //
 // 1. CRC32 checksum
 //
@@ -24017,7 +24017,7 @@ func (self *Program) CRC32B(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32B")
 }
 
-// CRC32CB instruction have one single form from one single category:
+// CRC32CB instruction have one single form across one single category:
 //
 // 1. CRC32C checksum
 //
@@ -24051,7 +24051,7 @@ func (self *Program) CRC32CB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32CB")
 }
 
-// CRC32CH instruction have one single form from one single category:
+// CRC32CH instruction have one single form across one single category:
 //
 // 1. CRC32C checksum
 //
@@ -24085,7 +24085,7 @@ func (self *Program) CRC32CH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32CH")
 }
 
-// CRC32CW instruction have one single form from one single category:
+// CRC32CW instruction have one single form across one single category:
 //
 // 1. CRC32C checksum
 //
@@ -24119,7 +24119,7 @@ func (self *Program) CRC32CW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32CW")
 }
 
-// CRC32CX instruction have one single form from one single category:
+// CRC32CX instruction have one single form across one single category:
 //
 // 1. CRC32C checksum
 //
@@ -24153,7 +24153,7 @@ func (self *Program) CRC32CX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32CX")
 }
 
-// CRC32H instruction have one single form from one single category:
+// CRC32H instruction have one single form across one single category:
 //
 // 1. CRC32 checksum
 //
@@ -24187,7 +24187,7 @@ func (self *Program) CRC32H(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32H")
 }
 
-// CRC32W instruction have one single form from one single category:
+// CRC32W instruction have one single form across one single category:
 //
 // 1. CRC32 checksum
 //
@@ -24221,7 +24221,7 @@ func (self *Program) CRC32W(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32W")
 }
 
-// CRC32X instruction have one single form from one single category:
+// CRC32X instruction have one single form across one single category:
 //
 // 1. CRC32 checksum
 //
@@ -24255,7 +24255,7 @@ func (self *Program) CRC32X(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CRC32X")
 }
 
-// CSDB instruction have one single form from one single category:
+// CSDB instruction have one single form across one single category:
 //
 // 1. Consumption of Speculative Data Barrier
 //
@@ -24290,7 +24290,7 @@ func (self *Program) CSDB() *Instruction {
     return p.setins(hints(2, 4))
 }
 
-// CSEL instruction have 2 forms from one single category:
+// CSEL instruction have 2 forms across one single category:
 //
 // 1. Conditional Select
 //
@@ -24326,7 +24326,7 @@ func (self *Program) CSEL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSEL")
 }
 
-// CSET instruction have 2 forms from one single category:
+// CSET instruction have 2 forms across one single category:
 //
 // 1. Conditional Set
 //
@@ -24357,7 +24357,7 @@ func (self *Program) CSET(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSET")
 }
 
-// CSETM instruction have 2 forms from one single category:
+// CSETM instruction have 2 forms across one single category:
 //
 // 1. Conditional Set Mask
 //
@@ -24388,7 +24388,7 @@ func (self *Program) CSETM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSETM")
 }
 
-// CSINC instruction have 2 forms from one single category:
+// CSINC instruction have 2 forms across one single category:
 //
 // 1. Conditional Select Increment
 //
@@ -24424,7 +24424,7 @@ func (self *Program) CSINC(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSINC")
 }
 
-// CSINV instruction have 2 forms from one single category:
+// CSINV instruction have 2 forms across one single category:
 //
 // 1. Conditional Select Invert
 //
@@ -24460,7 +24460,7 @@ func (self *Program) CSINV(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSINV")
 }
 
-// CSNEG instruction have 2 forms from one single category:
+// CSNEG instruction have 2 forms across one single category:
 //
 // 1. Conditional Select Negation
 //
@@ -24496,7 +24496,7 @@ func (self *Program) CSNEG(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CSNEG")
 }
 
-// CTZ instruction have 2 forms from one single category:
+// CTZ instruction have 2 forms across one single category:
 //
 // 1. Count Trailing Zeros
 //
@@ -24530,7 +24530,7 @@ func (self *Program) CTZ(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for CTZ")
 }
 
-// DC instruction have one single form from one single category:
+// DC instruction have one single form across one single category:
 //
 // 1. Data Cache operation
 //
@@ -24551,7 +24551,7 @@ func (self *Program) DC(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DC")
 }
 
-// DCPS1 instruction have one single form from one single category:
+// DCPS1 instruction have one single form across one single category:
 //
 // 1. Debug Change PE State to EL1
 //
@@ -24591,7 +24591,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS1", 1, asm.Operands { vv[0] })
         default : panic("aarch64: instruction DCPS1 takes 0 or 1 operands")
     }
-    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
         if len(vv) == 1 {
@@ -24603,7 +24603,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DCPS1")
 }
 
-// DCPS2 instruction have one single form from one single category:
+// DCPS2 instruction have one single form across one single category:
 //
 // 1. Debug Change PE State to EL2
 //
@@ -24646,7 +24646,7 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS2", 1, asm.Operands { vv[0] })
         default : panic("aarch64: instruction DCPS2 takes 0 or 1 operands")
     }
-    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
         if len(vv) == 1 {
@@ -24658,7 +24658,7 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DCPS2")
 }
 
-// DCPS3 instruction have one single form from one single category:
+// DCPS3 instruction have one single form across one single category:
 //
 // 1. Debug Change PE State to EL3
 //
@@ -24696,7 +24696,7 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("DCPS3", 1, asm.Operands { vv[0] })
         default : panic("aarch64: instruction DCPS3 takes 0 or 1 operands")
     }
-    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isUimm16(vv[0])) {
+    if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
         if len(vv) == 1 {
@@ -24708,7 +24708,7 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DCPS3")
 }
 
-// DGH instruction have one single form from one single category:
+// DGH instruction have one single form across one single category:
 //
 // 1. Data Gathering Hint
 //
@@ -24727,7 +24727,7 @@ func (self *Program) DGH() *Instruction {
     return p.setins(hints(0, 6))
 }
 
-// DMB instruction have one single form from one single category:
+// DMB instruction have one single form across one single category:
 //
 // 1. Data Memory Barrier
 //
@@ -24748,7 +24748,7 @@ func (self *Program) DMB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DMB")
 }
 
-// DRPS instruction have one single form from one single category:
+// DRPS instruction have one single form across one single category:
 //
 // 1. Debug restore process state
 //
@@ -24760,7 +24760,7 @@ func (self *Program) DRPS() *Instruction {
     return p.setins(branch_reg(5, 31, 0, 31, 0))
 }
 
-// DSB instruction have 2 forms from one single category:
+// DSB instruction have 2 forms across one single category:
 //
 // 1. Data Synchronization Barrier
 //
@@ -24800,7 +24800,7 @@ func (self *Program) DSB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DSB")
 }
 
-// DUP instruction have 3 forms from 2 categories:
+// DUP instruction have 3 forms across 2 categories:
 //
 // 1. Duplicate vector element to vector or scalar
 //
@@ -24972,7 +24972,7 @@ func (self *Program) DUP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DUP")
 }
 
-// DVP instruction have one single form from one single category:
+// DVP instruction have one single form across one single category:
 //
 // 1. Data Value Prediction Restriction by Context
 //
@@ -25001,7 +25001,7 @@ func (self *Program) DVP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for DVP")
 }
 
-// EON instruction have 2 forms from one single category:
+// EON instruction have 2 forms across one single category:
 //
 // 1. Bitwise Exclusive-OR NOT (shifted register)
 //
@@ -25072,7 +25072,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for EON")
 }
 
-// EOR instruction have 5 forms from 3 categories:
+// EOR instruction have 5 forms across 3 categories:
 //
 // 1. Bitwise Exclusive-OR (vector)
 //
@@ -25200,7 +25200,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for EOR")
 }
 
-// EOR3 instruction have one single form from one single category:
+// EOR3 instruction have one single form across one single category:
 //
 // 1. Three-way Exclusive-OR
 //
@@ -25234,7 +25234,7 @@ func (self *Program) EOR3(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for EOR3")
 }
 
-// ERET instruction have one single form from one single category:
+// ERET instruction have one single form across one single category:
 //
 // 1. Exception Return
 //
@@ -25255,7 +25255,7 @@ func (self *Program) ERET() *Instruction {
     return p.setins(branch_reg(4, 31, 0, 31, 0))
 }
 
-// ERETAA instruction have one single form from one single category:
+// ERETAA instruction have one single form across one single category:
 //
 // 1. Exception Return, with pointer authentication
 //
@@ -25286,7 +25286,7 @@ func (self *Program) ERETAA() *Instruction {
     return p.setins(branch_reg(4, 31, 2, 31, 31))
 }
 
-// ERETAB instruction have one single form from one single category:
+// ERETAB instruction have one single form across one single category:
 //
 // 1. Exception Return, with pointer authentication
 //
@@ -25317,7 +25317,7 @@ func (self *Program) ERETAB() *Instruction {
     return p.setins(branch_reg(4, 31, 3, 31, 31))
 }
 
-// ESB instruction have one single form from one single category:
+// ESB instruction have one single form across one single category:
 //
 // 1. Error Synchronization Barrier
 //
@@ -25342,7 +25342,7 @@ func (self *Program) ESB() *Instruction {
     return p.setins(hints(2, 0))
 }
 
-// EXT instruction have one single form from one single category:
+// EXT instruction have one single form across one single category:
 //
 // 1. Extract vector from pair of vectors
 //
@@ -25394,7 +25394,7 @@ func (self *Program) EXT(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for EXT")
 }
 
-// EXTR instruction have 2 forms from one single category:
+// EXTR instruction have 2 forms across one single category:
 //
 // 1. Extract register
 //
@@ -25406,7 +25406,7 @@ func (self *Program) EXT(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("EXTR", 4, asm.Operands { v0, v1, v2, v3 })
     // EXTR  <Wd>, <Wn>, <Wm>, #<lsb>
-    if isWr(v0) && isWr(v1) && isWr(v2) && isUimm6(v3) {
+    if isWr(v0) && isWr(v1) && isWr(v2) && isInRange(v3, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -25415,7 +25415,7 @@ func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(extract(0, 0, 0, 0, sa_wm, sa_lsb, sa_wn, sa_wd))
     }
     // EXTR  <Xd>, <Xn>, <Xm>, #<lsb>
-    if isXr(v0) && isXr(v1) && isXr(v2) && isUimm6(v3) {
+    if isXr(v0) && isXr(v1) && isXr(v2) && isInRange(v3, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -25428,7 +25428,7 @@ func (self *Program) EXTR(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for EXTR")
 }
 
-// FABD instruction have 4 forms from one single category:
+// FABD instruction have 4 forms across one single category:
 //
 // 1. Floating-point Absolute Difference (vector)
 //
@@ -25530,7 +25530,7 @@ func (self *Program) FABD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FABD")
 }
 
-// FABS instruction have 5 forms from 2 categories:
+// FABS instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Absolute value (vector)
 //
@@ -25621,7 +25621,7 @@ func (self *Program) FABS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FABS")
 }
 
-// FACGE instruction have 4 forms from one single category:
+// FACGE instruction have 4 forms across one single category:
 //
 // 1. Floating-point Absolute Compare Greater than or Equal (vector)
 //
@@ -25725,7 +25725,7 @@ func (self *Program) FACGE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FACGE")
 }
 
-// FACGT instruction have 4 forms from one single category:
+// FACGT instruction have 4 forms across one single category:
 //
 // 1. Floating-point Absolute Compare Greater than (vector)
 //
@@ -25829,7 +25829,7 @@ func (self *Program) FACGT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FACGT")
 }
 
-// FADD instruction have 5 forms from 2 categories:
+// FADD instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Add (vector)
 //
@@ -25946,7 +25946,7 @@ func (self *Program) FADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FADD")
 }
 
-// FADDP instruction have 4 forms from 2 categories:
+// FADDP instruction have 4 forms across 2 categories:
 //
 // 1. Floating-point Add Pair of elements (scalar)
 //
@@ -26095,7 +26095,7 @@ func (self *Program) FADDP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FADDP")
 }
 
-// FCADD instruction have one single form from one single category:
+// FCADD instruction have one single form across one single category:
 //
 // 1. Floating-point Complex Add
 //
@@ -26164,7 +26164,7 @@ func (self *Program) FCADD(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCADD")
 }
 
-// FCCMP instruction have 3 forms from one single category:
+// FCCMP instruction have 3 forms across one single category:
 //
 // 1. Floating-point Conditional quiet Compare (scalar)
 //
@@ -26192,7 +26192,7 @@ func (self *Program) FCADD(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FCCMP", 4, asm.Operands { v0, v1, v2, v3 })
     // FCCMP  <Dn>, <Dm>, #<nzcv>, <cond>
-    if isDr(v0) && isDr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isDr(v0) && isDr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
@@ -26201,7 +26201,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(floatccmp(0, 0, 1, sa_dm, sa_cond, sa_dn, 0, sa_nzcv))
     }
     // FCCMP  <Hn>, <Hm>, #<nzcv>, <cond>
-    if isHr(v0) && isHr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isHr(v0) && isHr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
@@ -26210,7 +26210,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(floatccmp(0, 0, 3, sa_hm, sa_cond, sa_hn, 0, sa_nzcv))
     }
     // FCCMP  <Sn>, <Sm>, #<nzcv>, <cond>
-    if isSr(v0) && isSr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isSr(v0) && isSr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
@@ -26223,7 +26223,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCCMP")
 }
 
-// FCCMPE instruction have 3 forms from one single category:
+// FCCMPE instruction have 3 forms across one single category:
 //
 // 1. Floating-point Conditional signaling Compare (scalar)
 //
@@ -26251,7 +26251,7 @@ func (self *Program) FCCMP(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("FCCMPE", 4, asm.Operands { v0, v1, v2, v3 })
     // FCCMPE  <Dn>, <Dm>, #<nzcv>, <cond>
-    if isDr(v0) && isDr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isDr(v0) && isDr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_dn := uint32(v0.(asm.Register).ID())
         sa_dm := uint32(v1.(asm.Register).ID())
@@ -26260,7 +26260,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(floatccmp(0, 0, 1, sa_dm, sa_cond, sa_dn, 1, sa_nzcv))
     }
     // FCCMPE  <Hn>, <Hm>, #<nzcv>, <cond>
-    if isHr(v0) && isHr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isHr(v0) && isHr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_hn := uint32(v0.(asm.Register).ID())
         sa_hm := uint32(v1.(asm.Register).ID())
@@ -26269,7 +26269,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(floatccmp(0, 0, 3, sa_hm, sa_cond, sa_hn, 1, sa_nzcv))
     }
     // FCCMPE  <Sn>, <Sm>, #<nzcv>, <cond>
-    if isSr(v0) && isSr(v1) && isUimm4(v2) && isBrCond(v3) {
+    if isSr(v0) && isSr(v1) && isInRange(v2, 0, 15) && isBrCond(v3) {
         p.Domain = DomainFloat
         sa_sn := uint32(v0.(asm.Register).ID())
         sa_sm := uint32(v1.(asm.Register).ID())
@@ -26282,7 +26282,7 @@ func (self *Program) FCCMPE(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCCMPE")
 }
 
-// FCMEQ instruction have 8 forms from 2 categories:
+// FCMEQ instruction have 8 forms across 2 categories:
 //
 // 1. Floating-point Compare Equal (vector)
 //
@@ -26470,7 +26470,7 @@ func (self *Program) FCMEQ(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMEQ")
 }
 
-// FCMGE instruction have 8 forms from 2 categories:
+// FCMGE instruction have 8 forms across 2 categories:
 //
 // 1. Floating-point Compare Greater than or Equal (vector)
 //
@@ -26658,7 +26658,7 @@ func (self *Program) FCMGE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMGE")
 }
 
-// FCMGT instruction have 8 forms from 2 categories:
+// FCMGT instruction have 8 forms across 2 categories:
 //
 // 1. Floating-point Compare Greater than (vector)
 //
@@ -26846,7 +26846,7 @@ func (self *Program) FCMGT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMGT")
 }
 
-// FCMLA instruction have 3 forms from 2 categories:
+// FCMLA instruction have 3 forms across 2 categories:
 //
 // 1. Floating-point Complex Multiply Accumulate (by element)
 //
@@ -27079,7 +27079,7 @@ func (self *Program) FCMLA(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMLA")
 }
 
-// FCMLE instruction have 4 forms from one single category:
+// FCMLE instruction have 4 forms across one single category:
 //
 // 1. Floating-point Compare Less than or Equal to zero (vector)
 //
@@ -27173,7 +27173,7 @@ func (self *Program) FCMLE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMLE")
 }
 
-// FCMLT instruction have 4 forms from one single category:
+// FCMLT instruction have 4 forms across one single category:
 //
 // 1. Floating-point Compare Less than zero (vector)
 //
@@ -27267,7 +27267,7 @@ func (self *Program) FCMLT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMLT")
 }
 
-// FCMP instruction have 6 forms from one single category:
+// FCMP instruction have 6 forms across one single category:
 //
 // 1. Floating-point quiet Compare (scalar)
 //
@@ -27340,7 +27340,7 @@ func (self *Program) FCMP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMP")
 }
 
-// FCMPE instruction have 6 forms from one single category:
+// FCMPE instruction have 6 forms across one single category:
 //
 // 1. Floating-point signaling Compare (scalar)
 //
@@ -27413,7 +27413,7 @@ func (self *Program) FCMPE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCMPE")
 }
 
-// FCSEL instruction have 3 forms from one single category:
+// FCSEL instruction have 3 forms across one single category:
 //
 // 1. Floating-point Conditional Select (scalar)
 //
@@ -27465,7 +27465,7 @@ func (self *Program) FCSEL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCSEL")
 }
 
-// FCVT instruction have 6 forms from one single category:
+// FCVT instruction have 6 forms across one single category:
 //
 // 1. Floating-point Convert precision (scalar)
 //
@@ -27534,7 +27534,7 @@ func (self *Program) FCVT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVT")
 }
 
-// FCVTAS instruction have 10 forms from 2 categories:
+// FCVTAS instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Signed integer, rounding to nearest with ties to
 //    Away (vector)
@@ -27689,7 +27689,7 @@ func (self *Program) FCVTAS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTAS")
 }
 
-// FCVTAU instruction have 10 forms from 2 categories:
+// FCVTAU instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Unsigned integer, rounding to nearest with ties to
 //    Away (vector)
@@ -27845,7 +27845,7 @@ func (self *Program) FCVTAU(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTAU")
 }
 
-// FCVTL instruction have one single form from one single category:
+// FCVTL instruction have one single form across one single category:
 //
 // 1. Floating-point Convert to higher precision Long (vector)
 //
@@ -27903,7 +27903,7 @@ func (self *Program) FCVTL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTL")
 }
 
-// FCVTL2 instruction have one single form from one single category:
+// FCVTL2 instruction have one single form across one single category:
 //
 // 1. Floating-point Convert to higher precision Long (vector)
 //
@@ -27961,7 +27961,7 @@ func (self *Program) FCVTL2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTL2")
 }
 
-// FCVTMS instruction have 10 forms from 2 categories:
+// FCVTMS instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Signed integer, rounding toward Minus infinity
 //    (vector)
@@ -28117,7 +28117,7 @@ func (self *Program) FCVTMS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTMS")
 }
 
-// FCVTMU instruction have 10 forms from 2 categories:
+// FCVTMU instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Unsigned integer, rounding toward Minus infinity
 //    (vector)
@@ -28273,7 +28273,7 @@ func (self *Program) FCVTMU(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTMU")
 }
 
-// FCVTN instruction have one single form from one single category:
+// FCVTN instruction have one single form across one single category:
 //
 // 1. Floating-point Convert to lower precision Narrow (vector)
 //
@@ -28334,7 +28334,7 @@ func (self *Program) FCVTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTN")
 }
 
-// FCVTN2 instruction have one single form from one single category:
+// FCVTN2 instruction have one single form across one single category:
 //
 // 1. Floating-point Convert to lower precision Narrow (vector)
 //
@@ -28395,7 +28395,7 @@ func (self *Program) FCVTN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTN2")
 }
 
-// FCVTNS instruction have 10 forms from 2 categories:
+// FCVTNS instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Signed integer, rounding to nearest with ties to
 //    even (vector)
@@ -28550,7 +28550,7 @@ func (self *Program) FCVTNS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTNS")
 }
 
-// FCVTNU instruction have 10 forms from 2 categories:
+// FCVTNU instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Unsigned integer, rounding to nearest with ties to
 //    even (vector)
@@ -28706,7 +28706,7 @@ func (self *Program) FCVTNU(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTNU")
 }
 
-// FCVTPS instruction have 10 forms from 2 categories:
+// FCVTPS instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Signed integer, rounding toward Plus infinity
 //    (vector)
@@ -28862,7 +28862,7 @@ func (self *Program) FCVTPS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTPS")
 }
 
-// FCVTPU instruction have 10 forms from 2 categories:
+// FCVTPU instruction have 10 forms across 2 categories:
 //
 // 1. Floating-point Convert to Unsigned integer, rounding toward Plus infinity
 //    (vector)
@@ -29018,7 +29018,7 @@ func (self *Program) FCVTPU(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTPU")
 }
 
-// FCVTXN instruction have 2 forms from one single category:
+// FCVTXN instruction have 2 forms across one single category:
 //
 // 1. Floating-point Convert to lower precision Narrow, rounding to odd (vector)
 //
@@ -29113,7 +29113,7 @@ func (self *Program) FCVTXN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTXN")
 }
 
-// FCVTXN2 instruction have one single form from one single category:
+// FCVTXN2 instruction have one single form across one single category:
 //
 // 1. Floating-point Convert to lower precision Narrow, rounding to odd (vector)
 //
@@ -29183,7 +29183,7 @@ func (self *Program) FCVTXN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FCVTXN2")
 }
 
-// FCVTZS instruction have 18 forms from 4 categories:
+// FCVTZS instruction have 18 forms across 4 categories:
 //
 // 1. Floating-point Convert to Signed fixed-point, rounding toward Zero (vector)
 //
@@ -29409,7 +29409,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(asisdmiscfp16(0, 1, 27, sa_hn, sa_hd))
     }
     // FCVTZS  <Wd>, <Dn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isDr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isDr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
@@ -29417,7 +29417,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 1, 3, 0, sa_fbits, sa_dn, sa_wd))
     }
     // FCVTZS  <Wd>, <Hn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isHr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isHr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
@@ -29425,7 +29425,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 3, 3, 0, sa_fbits, sa_hn, sa_wd))
     }
     // FCVTZS  <Wd>, <Sn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isSr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isSr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
@@ -29433,7 +29433,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 0, 3, 0, sa_fbits, sa_sn, sa_wd))
     }
     // FCVTZS  <Xd>, <Dn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isDr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isDr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
@@ -29441,7 +29441,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(1, 0, 1, 3, 0, sa_fbits_1, sa_dn, sa_xd))
     }
     // FCVTZS  <Xd>, <Hn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isHr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isHr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
@@ -29449,7 +29449,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(1, 0, 3, 3, 0, sa_fbits_1, sa_hn, sa_xd))
     }
     // FCVTZS  <Xd>, <Sn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isSr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isSr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
@@ -29503,7 +29503,7 @@ func (self *Program) FCVTZS(v0, v1 interface{}, vv ...interface{}) *Instruction 
     panic("aarch64: invalid combination of operands for FCVTZS")
 }
 
-// FCVTZU instruction have 18 forms from 4 categories:
+// FCVTZU instruction have 18 forms across 4 categories:
 //
 // 1. Floating-point Convert to Unsigned fixed-point, rounding toward Zero (vector)
 //
@@ -29729,7 +29729,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(asisdmiscfp16(1, 1, 27, sa_hn, sa_hd))
     }
     // FCVTZU  <Wd>, <Dn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isDr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isDr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
@@ -29737,7 +29737,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 1, 3, 1, sa_fbits, sa_dn, sa_wd))
     }
     // FCVTZU  <Wd>, <Hn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isHr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isHr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
@@ -29745,7 +29745,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 3, 3, 1, sa_fbits, sa_hn, sa_wd))
     }
     // FCVTZU  <Wd>, <Sn>, #<fbits>
-    if len(vv) == 1 && isWr(v0) && isSr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isWr(v0) && isSr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
@@ -29753,7 +29753,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(0, 0, 0, 3, 1, sa_fbits, sa_sn, sa_wd))
     }
     // FCVTZU  <Xd>, <Dn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isDr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isDr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_dn := uint32(v1.(asm.Register).ID())
@@ -29761,7 +29761,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(1, 0, 1, 3, 1, sa_fbits_1, sa_dn, sa_xd))
     }
     // FCVTZU  <Xd>, <Hn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isHr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isHr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_hn := uint32(v1.(asm.Register).ID())
@@ -29769,7 +29769,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
         return p.setins(float2fix(1, 0, 3, 3, 1, sa_fbits_1, sa_hn, sa_xd))
     }
     // FCVTZU  <Xd>, <Sn>, #<fbits>
-    if len(vv) == 1 && isXr(v0) && isSr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isXr(v0) && isSr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_sn := uint32(v1.(asm.Register).ID())
@@ -29823,7 +29823,7 @@ func (self *Program) FCVTZU(v0, v1 interface{}, vv ...interface{}) *Instruction 
     panic("aarch64: invalid combination of operands for FCVTZU")
 }
 
-// FDIV instruction have 5 forms from 2 categories:
+// FDIV instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Divide (vector)
 //
@@ -29942,7 +29942,7 @@ func (self *Program) FDIV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FDIV")
 }
 
-// FJCVTZS instruction have one single form from one single category:
+// FJCVTZS instruction have one single form across one single category:
 //
 // 1. Floating-point Javascript Convert to Signed fixed-point, rounding toward Zero
 //
@@ -29978,7 +29978,7 @@ func (self *Program) FJCVTZS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FJCVTZS")
 }
 
-// FMADD instruction have 3 forms from one single category:
+// FMADD instruction have 3 forms across one single category:
 //
 // 1. Floating-point fused Multiply-Add (scalar)
 //
@@ -30034,7 +30034,7 @@ func (self *Program) FMADD(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMADD")
 }
 
-// FMAX instruction have 5 forms from 2 categories:
+// FMAX instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Maximum (vector)
 //
@@ -30181,7 +30181,7 @@ func (self *Program) FMAX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMAX")
 }
 
-// FMAXNM instruction have 5 forms from 2 categories:
+// FMAXNM instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Maximum Number (vector)
 //
@@ -30318,7 +30318,7 @@ func (self *Program) FMAXNM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMAXNM")
 }
 
-// FMAXNMP instruction have 4 forms from 2 categories:
+// FMAXNMP instruction have 4 forms across 2 categories:
 //
 // 1. Floating-point Maximum Number of Pair of elements (scalar)
 //
@@ -30490,7 +30490,7 @@ func (self *Program) FMAXNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for FMAXNMP")
 }
 
-// FMAXNMV instruction have 2 forms from one single category:
+// FMAXNMV instruction have 2 forms across one single category:
 //
 // 1. Floating-point Maximum Number across Vector
 //
@@ -30564,7 +30564,7 @@ func (self *Program) FMAXNMV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMAXNMV")
 }
 
-// FMAXP instruction have 4 forms from 2 categories:
+// FMAXP instruction have 4 forms across 2 categories:
 //
 // 1. Floating-point Maximum of Pair of elements (scalar)
 //
@@ -30742,7 +30742,7 @@ func (self *Program) FMAXP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMAXP")
 }
 
-// FMAXV instruction have 2 forms from one single category:
+// FMAXV instruction have 2 forms across one single category:
 //
 // 1. Floating-point Maximum across Vector
 //
@@ -30821,7 +30821,7 @@ func (self *Program) FMAXV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMAXV")
 }
 
-// FMIN instruction have 5 forms from 2 categories:
+// FMIN instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point minimum (vector)
 //
@@ -30968,7 +30968,7 @@ func (self *Program) FMIN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMIN")
 }
 
-// FMINNM instruction have 5 forms from 2 categories:
+// FMINNM instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Minimum Number (vector)
 //
@@ -31105,7 +31105,7 @@ func (self *Program) FMINNM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMINNM")
 }
 
-// FMINNMP instruction have 4 forms from 2 categories:
+// FMINNMP instruction have 4 forms across 2 categories:
 //
 // 1. Floating-point Minimum Number of Pair of elements (scalar)
 //
@@ -31277,7 +31277,7 @@ func (self *Program) FMINNMP(v0, v1 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for FMINNMP")
 }
 
-// FMINNMV instruction have 2 forms from one single category:
+// FMINNMV instruction have 2 forms across one single category:
 //
 // 1. Floating-point Minimum Number across Vector
 //
@@ -31351,7 +31351,7 @@ func (self *Program) FMINNMV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMINNMV")
 }
 
-// FMINP instruction have 4 forms from 2 categories:
+// FMINP instruction have 4 forms across 2 categories:
 //
 // 1. Floating-point Minimum of Pair of elements (scalar)
 //
@@ -31529,7 +31529,7 @@ func (self *Program) FMINP(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMINP")
 }
 
-// FMINV instruction have 2 forms from one single category:
+// FMINV instruction have 2 forms across one single category:
 //
 // 1. Floating-point Minimum across Vector
 //
@@ -31608,7 +31608,7 @@ func (self *Program) FMINV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMINV")
 }
 
-// FMLA instruction have 6 forms from 2 categories:
+// FMLA instruction have 6 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Add to accumulator (by element)
 //
@@ -31837,7 +31837,7 @@ func (self *Program) FMLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLA")
 }
 
-// FMLAL instruction have 2 forms from 2 categories:
+// FMLAL instruction have 2 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Add Long to accumulator (by element)
 //
@@ -31968,7 +31968,7 @@ func (self *Program) FMLAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLAL")
 }
 
-// FMLAL2 instruction have 2 forms from 2 categories:
+// FMLAL2 instruction have 2 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Add Long to accumulator (by element)
 //
@@ -32099,7 +32099,7 @@ func (self *Program) FMLAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLAL2")
 }
 
-// FMLS instruction have 6 forms from 2 categories:
+// FMLS instruction have 6 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Subtract from accumulator (by element)
 //
@@ -32328,7 +32328,7 @@ func (self *Program) FMLS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLS")
 }
 
-// FMLSL instruction have 2 forms from 2 categories:
+// FMLSL instruction have 2 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Subtract Long from accumulator (by element)
 //
@@ -32460,7 +32460,7 @@ func (self *Program) FMLSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLSL")
 }
 
-// FMLSL2 instruction have 2 forms from 2 categories:
+// FMLSL2 instruction have 2 forms across 2 categories:
 //
 // 1. Floating-point fused Multiply-Subtract Long from accumulator (by element)
 //
@@ -32592,7 +32592,7 @@ func (self *Program) FMLSL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMLSL2")
 }
 
-// FMOV instruction have 19 forms from 4 categories:
+// FMOV instruction have 19 forms across 4 categories:
 //
 // 1. Floating-point move immediate (vector)
 //
@@ -32850,7 +32850,7 @@ func (self *Program) FMOV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMOV")
 }
 
-// FMSUB instruction have 3 forms from one single category:
+// FMSUB instruction have 3 forms across one single category:
 //
 // 1. Floating-point Fused Multiply-Subtract (scalar)
 //
@@ -32906,7 +32906,7 @@ func (self *Program) FMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMSUB")
 }
 
-// FMUL instruction have 9 forms from 3 categories:
+// FMUL instruction have 9 forms across 3 categories:
 //
 // 1. Floating-point Multiply (by element)
 //
@@ -33177,7 +33177,7 @@ func (self *Program) FMUL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMUL")
 }
 
-// FMULX instruction have 8 forms from 2 categories:
+// FMULX instruction have 8 forms across 2 categories:
 //
 // 1. Floating-point Multiply extended (by element)
 //
@@ -33440,7 +33440,7 @@ func (self *Program) FMULX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FMULX")
 }
 
-// FNEG instruction have 5 forms from 2 categories:
+// FNEG instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Negate (vector)
 //
@@ -33531,7 +33531,7 @@ func (self *Program) FNEG(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FNEG")
 }
 
-// FNMADD instruction have 3 forms from one single category:
+// FNMADD instruction have 3 forms across one single category:
 //
 // 1. Floating-point Negated fused Multiply-Add (scalar)
 //
@@ -33587,7 +33587,7 @@ func (self *Program) FNMADD(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FNMADD")
 }
 
-// FNMSUB instruction have 3 forms from one single category:
+// FNMSUB instruction have 3 forms across one single category:
 //
 // 1. Floating-point Negated fused Multiply-Subtract (scalar)
 //
@@ -33643,7 +33643,7 @@ func (self *Program) FNMSUB(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FNMSUB")
 }
 
-// FNMUL instruction have 3 forms from one single category:
+// FNMUL instruction have 3 forms across one single category:
 //
 // 1. Floating-point Multiply-Negate (scalar)
 //
@@ -33695,7 +33695,7 @@ func (self *Program) FNMUL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FNMUL")
 }
 
-// FRECPE instruction have 4 forms from one single category:
+// FRECPE instruction have 4 forms across one single category:
 //
 // 1. Floating-point Reciprocal Estimate
 //
@@ -33782,7 +33782,7 @@ func (self *Program) FRECPE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRECPE")
 }
 
-// FRECPS instruction have 4 forms from one single category:
+// FRECPS instruction have 4 forms across one single category:
 //
 // 1. Floating-point Reciprocal Step
 //
@@ -33883,7 +33883,7 @@ func (self *Program) FRECPS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRECPS")
 }
 
-// FRECPX instruction have 2 forms from one single category:
+// FRECPX instruction have 2 forms across one single category:
 //
 // 1. Floating-point Reciprocal exponent (scalar)
 //
@@ -33933,7 +33933,7 @@ func (self *Program) FRECPX(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRECPX")
 }
 
-// FRINT32X instruction have 3 forms from 2 categories:
+// FRINT32X instruction have 3 forms across 2 categories:
 //
 // 1. Floating-point Round to 32-bit Integer, using current rounding mode (vector)
 //
@@ -34031,7 +34031,7 @@ func (self *Program) FRINT32X(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINT32X")
 }
 
-// FRINT32Z instruction have 3 forms from 2 categories:
+// FRINT32Z instruction have 3 forms across 2 categories:
 //
 // 1. Floating-point Round to 32-bit Integer toward Zero (vector)
 //
@@ -34130,7 +34130,7 @@ func (self *Program) FRINT32Z(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINT32Z")
 }
 
-// FRINT64X instruction have 3 forms from 2 categories:
+// FRINT64X instruction have 3 forms across 2 categories:
 //
 // 1. Floating-point Round to 64-bit Integer, using current rounding mode (vector)
 //
@@ -34228,7 +34228,7 @@ func (self *Program) FRINT64X(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINT64X")
 }
 
-// FRINT64Z instruction have 3 forms from 2 categories:
+// FRINT64Z instruction have 3 forms across 2 categories:
 //
 // 1. Floating-point Round to 64-bit Integer toward Zero (vector)
 //
@@ -34327,7 +34327,7 @@ func (self *Program) FRINT64Z(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINT64Z")
 }
 
-// FRINTA instruction have 5 forms from 2 categories:
+// FRINTA instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, to nearest with ties to Away (vector)
 //
@@ -34440,7 +34440,7 @@ func (self *Program) FRINTA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTA")
 }
 
-// FRINTI instruction have 5 forms from 2 categories:
+// FRINTI instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, using current rounding mode (vector)
 //
@@ -34553,7 +34553,7 @@ func (self *Program) FRINTI(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTI")
 }
 
-// FRINTM instruction have 5 forms from 2 categories:
+// FRINTM instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, toward Minus infinity (vector)
 //
@@ -34666,7 +34666,7 @@ func (self *Program) FRINTM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTM")
 }
 
-// FRINTN instruction have 5 forms from 2 categories:
+// FRINTN instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, to nearest with ties to even (vector)
 //
@@ -34778,7 +34778,7 @@ func (self *Program) FRINTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTN")
 }
 
-// FRINTP instruction have 5 forms from 2 categories:
+// FRINTP instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, toward Plus infinity (vector)
 //
@@ -34891,7 +34891,7 @@ func (self *Program) FRINTP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTP")
 }
 
-// FRINTX instruction have 5 forms from 2 categories:
+// FRINTX instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral exact, using current rounding mode (vector)
 //
@@ -35006,7 +35006,7 @@ func (self *Program) FRINTX(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTX")
 }
 
-// FRINTZ instruction have 5 forms from 2 categories:
+// FRINTZ instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Round to Integral, toward Zero (vector)
 //
@@ -35117,7 +35117,7 @@ func (self *Program) FRINTZ(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRINTZ")
 }
 
-// FRSQRTE instruction have 4 forms from one single category:
+// FRSQRTE instruction have 4 forms across one single category:
 //
 // 1. Floating-point Reciprocal Square Root Estimate
 //
@@ -35204,7 +35204,7 @@ func (self *Program) FRSQRTE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRSQRTE")
 }
 
-// FRSQRTS instruction have 4 forms from one single category:
+// FRSQRTS instruction have 4 forms across one single category:
 //
 // 1. Floating-point Reciprocal Square Root Step
 //
@@ -35306,7 +35306,7 @@ func (self *Program) FRSQRTS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FRSQRTS")
 }
 
-// FSQRT instruction have 5 forms from 2 categories:
+// FSQRT instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Square Root (vector)
 //
@@ -35407,7 +35407,7 @@ func (self *Program) FSQRT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FSQRT")
 }
 
-// FSUB instruction have 5 forms from 2 categories:
+// FSUB instruction have 5 forms across 2 categories:
 //
 // 1. Floating-point Subtract (vector)
 //
@@ -35525,7 +35525,7 @@ func (self *Program) FSUB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for FSUB")
 }
 
-// GCSB instruction have one single form from one single category:
+// GCSB instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Barrier
 //
@@ -35547,7 +35547,7 @@ func (self *Program) GCSB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSB")
 }
 
-// GCSPOPCX instruction have one single form from one single category:
+// GCSPOPCX instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Pop and Compare exception return record
 //
@@ -35579,7 +35579,7 @@ func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSPOPCX")
 }
 
-// GCSPOPM instruction have one single form from one single category:
+// GCSPOPM instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Pop
 //
@@ -35602,7 +35602,7 @@ func (self *Program) GCSPOPM(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSPOPM")
 }
 
-// GCSPOPX instruction have one single form from one single category:
+// GCSPOPX instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Pop exception return record
 //
@@ -35633,7 +35633,7 @@ func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSPOPX")
 }
 
-// GCSPUSHM instruction have one single form from one single category:
+// GCSPUSHM instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Push
 //
@@ -35655,7 +35655,7 @@ func (self *Program) GCSPUSHM(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSPUSHM")
 }
 
-// GCSPUSHX instruction have one single form from one single category:
+// GCSPUSHX instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Push exception return record
 //
@@ -35686,7 +35686,7 @@ func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSPUSHX")
 }
 
-// GCSSS1 instruction have one single form from one single category:
+// GCSSS1 instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Switch Stack 1
 //
@@ -35709,7 +35709,7 @@ func (self *Program) GCSSS1(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSSS1")
 }
 
-// GCSSS2 instruction have one single form from one single category:
+// GCSSS2 instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Switch Stack 2
 //
@@ -35733,7 +35733,7 @@ func (self *Program) GCSSS2(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSSS2")
 }
 
-// GCSSTR instruction have one single form from one single category:
+// GCSSTR instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack Store
 //
@@ -35755,7 +35755,7 @@ func (self *Program) GCSSTR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSSTR")
 }
 
-// GCSSTTR instruction have one single form from one single category:
+// GCSSTTR instruction have one single form across one single category:
 //
 // 1. Guarded Control Stack unprivileged Store
 //
@@ -35789,7 +35789,7 @@ func (self *Program) GCSSTTR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GCSSTTR")
 }
 
-// GMI instruction have one single form from one single category:
+// GMI instruction have one single form across one single category:
 //
 // 1. Tag Mask Insert
 //
@@ -35819,7 +35819,7 @@ func (self *Program) GMI(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for GMI")
 }
 
-// HINT instruction have one single form from one single category:
+// HINT instruction have one single form across one single category:
 //
 // 1. Hint instruction
 //
@@ -35835,7 +35835,7 @@ func (self *Program) GMI(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) HINT(v0 interface{}) *Instruction {
     p := self.alloc("HINT", 1, asm.Operands { v0 })
-    if isUimm7(v0) {
+    if isInRange(v0, 0, 127) {
         p.Domain = DomainSystem
         sa_imm := asUimm7(v0)
         return p.setins(hints(ubfx(sa_imm, 3, 4), mask(sa_imm, 3)))
@@ -35844,7 +35844,7 @@ func (self *Program) HINT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for HINT")
 }
 
-// HLT instruction have one single form from one single category:
+// HLT instruction have one single form across one single category:
 //
 // 1. Halt instruction
 //
@@ -35855,7 +35855,7 @@ func (self *Program) HINT(v0 interface{}) *Instruction {
 //
 func (self *Program) HLT(v0 interface{}) *Instruction {
     p := self.alloc("HLT", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(2, sa_imm, 0, 0))
@@ -35864,7 +35864,7 @@ func (self *Program) HLT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for HLT")
 }
 
-// HVC instruction have one single form from one single category:
+// HVC instruction have one single form across one single category:
 //
 // 1. Hypervisor Call
 //
@@ -35887,7 +35887,7 @@ func (self *Program) HLT(v0 interface{}) *Instruction {
 //
 func (self *Program) HVC(v0 interface{}) *Instruction {
     p := self.alloc("HVC", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 2))
@@ -35896,7 +35896,7 @@ func (self *Program) HVC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for HVC")
 }
 
-// IC instruction have one single form from one single category:
+// IC instruction have one single form across one single category:
 //
 // 1. Instruction Cache operation
 //
@@ -35925,7 +35925,7 @@ func (self *Program) IC(v0 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for IC")
 }
 
-// INS instruction have 2 forms from 2 categories:
+// INS instruction have 2 forms across 2 categories:
 //
 // 1. Insert vector element from another vector element
 //
@@ -36031,7 +36031,7 @@ func (self *Program) INS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for INS")
 }
 
-// IRG instruction have one single form from one single category:
+// IRG instruction have one single form across one single category:
 //
 // 1. Insert Random Tag
 //
@@ -36070,7 +36070,7 @@ func (self *Program) IRG(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for IRG")
 }
 
-// ISB instruction have one single form from one single category:
+// ISB instruction have one single form across one single category:
 //
 // 1. Instruction Synchronization Barrier
 //
@@ -36103,7 +36103,7 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ISB")
 }
 
-// LD1 instruction have 24 forms from 2 categories:
+// LD1 instruction have 24 forms across 2 categories:
 //
 // 1. Load multiple single-element structures to one, two, three, or four registers
 //
@@ -36639,7 +36639,7 @@ func (self *Program) LD1(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD1")
 }
 
-// LD1R instruction have 3 forms from one single category:
+// LD1R instruction have 3 forms across one single category:
 //
 // 1. Load one single-element structure and Replicate to all lanes (of one
 //    register)
@@ -36725,7 +36725,7 @@ func (self *Program) LD1R(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD1R")
 }
 
-// LD2 instruction have 15 forms from 2 categories:
+// LD2 instruction have 15 forms across 2 categories:
 //
 // 1. Load multiple 2-element structures to two registers
 //
@@ -37065,7 +37065,7 @@ func (self *Program) LD2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD2")
 }
 
-// LD2R instruction have 3 forms from one single category:
+// LD2R instruction have 3 forms across one single category:
 //
 // 1. Load single 2-element structure and Replicate to all lanes of two registers
 //
@@ -37150,7 +37150,7 @@ func (self *Program) LD2R(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD2R")
 }
 
-// LD3 instruction have 15 forms from 2 categories:
+// LD3 instruction have 15 forms across 2 categories:
 //
 // 1. Load multiple 3-element structures to three registers
 //
@@ -37491,7 +37491,7 @@ func (self *Program) LD3(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD3")
 }
 
-// LD3R instruction have 3 forms from one single category:
+// LD3R instruction have 3 forms across one single category:
 //
 // 1. Load single 3-element structure and Replicate to all lanes of three registers
 //
@@ -37576,7 +37576,7 @@ func (self *Program) LD3R(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD3R")
 }
 
-// LD4 instruction have 15 forms from 2 categories:
+// LD4 instruction have 15 forms across 2 categories:
 //
 // 1. Load multiple 4-element structures to four registers
 //
@@ -37916,7 +37916,7 @@ func (self *Program) LD4(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD4")
 }
 
-// LD4R instruction have 3 forms from one single category:
+// LD4R instruction have 3 forms across one single category:
 //
 // 1. Load single 4-element structure and Replicate to all lanes of four registers
 //
@@ -38001,7 +38001,7 @@ func (self *Program) LD4R(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD4R")
 }
 
-// LD64B instruction have one single form from one single category:
+// LD64B instruction have one single form across one single category:
 //
 // 1. Single-copy Atomic 64-byte Load
 //
@@ -38030,7 +38030,7 @@ func (self *Program) LD64B(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LD64B")
 }
 
-// LDADD instruction have 2 forms from one single category:
+// LDADD instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory
 //
@@ -38089,7 +38089,7 @@ func (self *Program) LDADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADD")
 }
 
-// LDADDA instruction have 2 forms from one single category:
+// LDADDA instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory
 //
@@ -38148,7 +38148,7 @@ func (self *Program) LDADDA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDA")
 }
 
-// LDADDAB instruction have one single form from one single category:
+// LDADDAB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory
 //
@@ -38188,7 +38188,7 @@ func (self *Program) LDADDAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDAB")
 }
 
-// LDADDAH instruction have one single form from one single category:
+// LDADDAH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory
 //
@@ -38228,7 +38228,7 @@ func (self *Program) LDADDAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDAH")
 }
 
-// LDADDAL instruction have 2 forms from one single category:
+// LDADDAL instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory
 //
@@ -38287,7 +38287,7 @@ func (self *Program) LDADDAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDAL")
 }
 
-// LDADDALB instruction have one single form from one single category:
+// LDADDALB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory
 //
@@ -38327,7 +38327,7 @@ func (self *Program) LDADDALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDALB")
 }
 
-// LDADDALH instruction have one single form from one single category:
+// LDADDALH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory
 //
@@ -38367,7 +38367,7 @@ func (self *Program) LDADDALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDALH")
 }
 
-// LDADDB instruction have one single form from one single category:
+// LDADDB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory
 //
@@ -38407,7 +38407,7 @@ func (self *Program) LDADDB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDB")
 }
 
-// LDADDH instruction have one single form from one single category:
+// LDADDH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory
 //
@@ -38447,7 +38447,7 @@ func (self *Program) LDADDH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDH")
 }
 
-// LDADDL instruction have 2 forms from one single category:
+// LDADDL instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory
 //
@@ -38506,7 +38506,7 @@ func (self *Program) LDADDL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDL")
 }
 
-// LDADDLB instruction have one single form from one single category:
+// LDADDLB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory
 //
@@ -38546,7 +38546,7 @@ func (self *Program) LDADDLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDLB")
 }
 
-// LDADDLH instruction have one single form from one single category:
+// LDADDLH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory
 //
@@ -38586,7 +38586,7 @@ func (self *Program) LDADDLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDADDLH")
 }
 
-// LDAP1 instruction have one single form from one single category:
+// LDAP1 instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc one single-element structure to one lane of one register
 //
@@ -38635,7 +38635,7 @@ func (self *Program) LDAP1(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAP1")
 }
 
-// LDAPR instruction have 4 forms from one single category:
+// LDAPR instruction have 4 forms across one single category:
 //
 // 1. Load-Acquire RCpc Register
 //
@@ -38711,7 +38711,7 @@ func (self *Program) LDAPR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPR")
 }
 
-// LDAPRB instruction have one single form from one single category:
+// LDAPRB instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc Register Byte
 //
@@ -38753,7 +38753,7 @@ func (self *Program) LDAPRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPRB")
 }
 
-// LDAPRH instruction have one single form from one single category:
+// LDAPRH instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc Register Halfword
 //
@@ -38795,7 +38795,7 @@ func (self *Program) LDAPRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPRH")
 }
 
-// LDAPUR instruction have 7 forms from 2 categories:
+// LDAPUR instruction have 7 forms across 2 categories:
 //
 // 1. Load-Acquire RCpc SIMD&FP Register (unscaled offset)
 //
@@ -38851,7 +38851,12 @@ func (self *Program) LDAPRH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPUR", 2, asm.Operands { v0, v1 })
     // LDAPUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -38860,7 +38865,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDAPUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
@@ -38869,7 +38879,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(3, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDAPUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
@@ -38878,7 +38893,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDAPUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
@@ -38887,7 +38907,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDAPUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
@@ -38896,7 +38921,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(2, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDAPUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38905,7 +38935,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(2, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -38918,7 +38953,7 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPUR")
 }
 
-// LDAPURB instruction have one single form from one single category:
+// LDAPURB instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc Register Byte (unscaled)
 //
@@ -38944,7 +38979,12 @@ func (self *Program) LDAPUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38956,7 +38996,7 @@ func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPURB")
 }
 
-// LDAPURH instruction have one single form from one single category:
+// LDAPURH instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc Register Halfword (unscaled)
 //
@@ -38982,7 +39022,12 @@ func (self *Program) LDAPURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -38994,7 +39039,7 @@ func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPURH")
 }
 
-// LDAPURSB instruction have 2 forms from one single category:
+// LDAPURSB instruction have 2 forms across one single category:
 //
 // 1. Load-Acquire RCpc Register Signed Byte (unscaled)
 //
@@ -39022,7 +39067,12 @@ func (self *Program) LDAPURH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSB", 2, asm.Operands { v0, v1 })
     // LDAPURSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -39031,7 +39081,12 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPURSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39044,7 +39099,7 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPURSB")
 }
 
-// LDAPURSH instruction have 2 forms from one single category:
+// LDAPURSH instruction have 2 forms across one single category:
 //
 // 1. Load-Acquire RCpc Register Signed Halfword (unscaled)
 //
@@ -39072,7 +39127,12 @@ func (self *Program) LDAPURSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSH", 2, asm.Operands { v0, v1 })
     // LDAPURSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -39081,7 +39141,12 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(1, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDAPURSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39094,7 +39159,7 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPURSH")
 }
 
-// LDAPURSW instruction have one single form from one single category:
+// LDAPURSW instruction have one single form across one single category:
 //
 // 1. Load-Acquire RCpc Register Signed Word (unscaled)
 //
@@ -39120,7 +39185,12 @@ func (self *Program) LDAPURSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDAPURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDAPURSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -39132,7 +39202,7 @@ func (self *Program) LDAPURSW(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAPURSW")
 }
 
-// LDAR instruction have 2 forms from one single category:
+// LDAR instruction have 2 forms across one single category:
 //
 // 1. Load-Acquire Register
 //
@@ -39181,7 +39251,7 @@ func (self *Program) LDAR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAR")
 }
 
-// LDARB instruction have one single form from one single category:
+// LDARB instruction have one single form across one single category:
 //
 // 1. Load-Acquire Register Byte
 //
@@ -39214,7 +39284,7 @@ func (self *Program) LDARB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDARB")
 }
 
-// LDARH instruction have one single form from one single category:
+// LDARH instruction have one single form across one single category:
 //
 // 1. Load-Acquire Register Halfword
 //
@@ -39248,7 +39318,7 @@ func (self *Program) LDARH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDARH")
 }
 
-// LDAXP instruction have 2 forms from one single category:
+// LDAXP instruction have 2 forms across one single category:
 //
 // 1. Load-Acquire Exclusive Pair of Registers
 //
@@ -39304,7 +39374,7 @@ func (self *Program) LDAXP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAXP")
 }
 
-// LDAXR instruction have 2 forms from one single category:
+// LDAXR instruction have 2 forms across one single category:
 //
 // 1. Load-Acquire Exclusive Register
 //
@@ -39350,7 +39420,7 @@ func (self *Program) LDAXR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAXR")
 }
 
-// LDAXRB instruction have one single form from one single category:
+// LDAXRB instruction have one single form across one single category:
 //
 // 1. Load-Acquire Exclusive Register Byte
 //
@@ -39381,7 +39451,7 @@ func (self *Program) LDAXRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAXRB")
 }
 
-// LDAXRH instruction have one single form from one single category:
+// LDAXRH instruction have one single form across one single category:
 //
 // 1. Load-Acquire Exclusive Register Halfword
 //
@@ -39412,7 +39482,7 @@ func (self *Program) LDAXRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDAXRH")
 }
 
-// LDCLR instruction have 2 forms from one single category:
+// LDCLR instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory
 //
@@ -39471,7 +39541,7 @@ func (self *Program) LDCLR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLR")
 }
 
-// LDCLRA instruction have 2 forms from one single category:
+// LDCLRA instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory
 //
@@ -39530,7 +39600,7 @@ func (self *Program) LDCLRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRA")
 }
 
-// LDCLRAB instruction have one single form from one single category:
+// LDCLRAB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory
 //
@@ -39571,7 +39641,7 @@ func (self *Program) LDCLRAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRAB")
 }
 
-// LDCLRAH instruction have one single form from one single category:
+// LDCLRAH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory
 //
@@ -39612,7 +39682,7 @@ func (self *Program) LDCLRAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRAH")
 }
 
-// LDCLRAL instruction have 2 forms from one single category:
+// LDCLRAL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory
 //
@@ -39671,7 +39741,7 @@ func (self *Program) LDCLRAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRAL")
 }
 
-// LDCLRALB instruction have one single form from one single category:
+// LDCLRALB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory
 //
@@ -39712,7 +39782,7 @@ func (self *Program) LDCLRALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRALB")
 }
 
-// LDCLRALH instruction have one single form from one single category:
+// LDCLRALH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory
 //
@@ -39753,7 +39823,7 @@ func (self *Program) LDCLRALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRALH")
 }
 
-// LDCLRB instruction have one single form from one single category:
+// LDCLRB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory
 //
@@ -39794,7 +39864,7 @@ func (self *Program) LDCLRB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRB")
 }
 
-// LDCLRH instruction have one single form from one single category:
+// LDCLRH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory
 //
@@ -39835,7 +39905,7 @@ func (self *Program) LDCLRH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRH")
 }
 
-// LDCLRL instruction have 2 forms from one single category:
+// LDCLRL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory
 //
@@ -39894,7 +39964,7 @@ func (self *Program) LDCLRL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRL")
 }
 
-// LDCLRLB instruction have one single form from one single category:
+// LDCLRLB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory
 //
@@ -39935,7 +40005,7 @@ func (self *Program) LDCLRLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRLB")
 }
 
-// LDCLRLH instruction have one single form from one single category:
+// LDCLRLH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory
 //
@@ -39976,7 +40046,7 @@ func (self *Program) LDCLRLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRLH")
 }
 
-// LDCLRP instruction have one single form from one single category:
+// LDCLRP instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on quadword in memory
 //
@@ -40011,7 +40081,7 @@ func (self *Program) LDCLRP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRP")
 }
 
-// LDCLRPA instruction have one single form from one single category:
+// LDCLRPA instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on quadword in memory
 //
@@ -40046,7 +40116,7 @@ func (self *Program) LDCLRPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRPA")
 }
 
-// LDCLRPAL instruction have one single form from one single category:
+// LDCLRPAL instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on quadword in memory
 //
@@ -40081,7 +40151,7 @@ func (self *Program) LDCLRPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRPAL")
 }
 
-// LDCLRPL instruction have one single form from one single category:
+// LDCLRPL instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on quadword in memory
 //
@@ -40116,7 +40186,7 @@ func (self *Program) LDCLRPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDCLRPL")
 }
 
-// LDEOR instruction have 2 forms from one single category:
+// LDEOR instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory
 //
@@ -40175,7 +40245,7 @@ func (self *Program) LDEOR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEOR")
 }
 
-// LDEORA instruction have 2 forms from one single category:
+// LDEORA instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory
 //
@@ -40234,7 +40304,7 @@ func (self *Program) LDEORA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORA")
 }
 
-// LDEORAB instruction have one single form from one single category:
+// LDEORAB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory
 //
@@ -40275,7 +40345,7 @@ func (self *Program) LDEORAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORAB")
 }
 
-// LDEORAH instruction have one single form from one single category:
+// LDEORAH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory
 //
@@ -40316,7 +40386,7 @@ func (self *Program) LDEORAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORAH")
 }
 
-// LDEORAL instruction have 2 forms from one single category:
+// LDEORAL instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory
 //
@@ -40375,7 +40445,7 @@ func (self *Program) LDEORAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORAL")
 }
 
-// LDEORALB instruction have one single form from one single category:
+// LDEORALB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory
 //
@@ -40416,7 +40486,7 @@ func (self *Program) LDEORALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORALB")
 }
 
-// LDEORALH instruction have one single form from one single category:
+// LDEORALH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory
 //
@@ -40457,7 +40527,7 @@ func (self *Program) LDEORALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORALH")
 }
 
-// LDEORB instruction have one single form from one single category:
+// LDEORB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory
 //
@@ -40498,7 +40568,7 @@ func (self *Program) LDEORB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORB")
 }
 
-// LDEORH instruction have one single form from one single category:
+// LDEORH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory
 //
@@ -40539,7 +40609,7 @@ func (self *Program) LDEORH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORH")
 }
 
-// LDEORL instruction have 2 forms from one single category:
+// LDEORL instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory
 //
@@ -40598,7 +40668,7 @@ func (self *Program) LDEORL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORL")
 }
 
-// LDEORLB instruction have one single form from one single category:
+// LDEORLB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory
 //
@@ -40639,7 +40709,7 @@ func (self *Program) LDEORLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORLB")
 }
 
-// LDEORLH instruction have one single form from one single category:
+// LDEORLH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory
 //
@@ -40680,7 +40750,7 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDEORLH")
 }
 
-// LDG instruction have one single form from one single category:
+// LDG instruction have one single form across one single category:
 //
 // 1. Load Allocation Tag
 //
@@ -40693,7 +40763,13 @@ func (self *Program) LDEORLH(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) LDG(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDG", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -40709,7 +40785,7 @@ func (self *Program) LDG(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDG")
 }
 
-// LDGM instruction have one single form from one single category:
+// LDGM instruction have one single form across one single category:
 //
 // 1. Load Tag Multiple
 //
@@ -40741,7 +40817,7 @@ func (self *Program) LDGM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDGM")
 }
 
-// LDIAPP instruction have 4 forms from one single category:
+// LDIAPP instruction have 4 forms across one single category:
 //
 // 1. Load-Acquire RCpc ordered Pair of registers
 //
@@ -40840,7 +40916,7 @@ func (self *Program) LDIAPP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDIAPP")
 }
 
-// LDLAR instruction have 2 forms from one single category:
+// LDLAR instruction have 2 forms across one single category:
 //
 // 1. Load LOAcquire Register
 //
@@ -40890,7 +40966,7 @@ func (self *Program) LDLAR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDLAR")
 }
 
-// LDLARB instruction have one single form from one single category:
+// LDLARB instruction have one single form across one single category:
 //
 // 1. Load LOAcquire Register Byte
 //
@@ -40924,7 +41000,7 @@ func (self *Program) LDLARB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDLARB")
 }
 
-// LDLARH instruction have one single form from one single category:
+// LDLARH instruction have one single form across one single category:
 //
 // 1. Load LOAcquire Register Halfword
 //
@@ -40958,7 +41034,7 @@ func (self *Program) LDLARH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDLARH")
 }
 
-// LDNP instruction have 5 forms from 2 categories:
+// LDNP instruction have 5 forms across 2 categories:
 //
 // 1. Load Pair of SIMD&FP registers, with Non-temporal hint
 //
@@ -41002,48 +41078,83 @@ func (self *Program) LDLARH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDNP", 3, asm.Operands { v0, v1, v2 })
     // LDNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 8)
         return p.setins(ldstnapair_offs(1, 1, 1, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 16)
         return p.setins(ldstnapair_offs(2, 1, 1, sa_imm_1, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 4)
         return p.setins(ldstnapair_offs(0, 1, 1, sa_imm_2, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 4)
         return p.setins(ldstnapair_offs(0, 0, 1, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstnapair_offs(2, 0, 1, sa_imm_1, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // none of above
@@ -41051,7 +41162,7 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDNP")
 }
 
-// LDP instruction have 15 forms from 2 categories:
+// LDP instruction have 15 forms across 2 categories:
 //
 // 1. Load Pair of SIMD&FP registers
 //
@@ -41098,138 +41209,243 @@ func (self *Program) LDNP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDP", 3, asm.Operands { v0, v1, v2 })
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_off(1, 1, 1, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>], #<imm>
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_post(1, 1, 1, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDP  <Dt1>, <Dt2>, [<Xn|SP>, #<imm>]!
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_pre(1, 1, 1, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_off(2, 1, 1, sa_imm_2, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>], #<imm>
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_post(2, 1, 1, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDP  <Qt1>, <Qt2>, [<Xn|SP>, #<imm>]!
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_pre(2, 1, 1, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // LDP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_4 := uint32(moffs(v2))
+        sa_imm_4 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_off(0, 1, 1, sa_imm_4, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDP  <St1>, <St2>, [<Xn|SP>], #<imm>
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_5 := uint32(moffs(v2))
+        sa_imm_5 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_post(0, 1, 1, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDP  <St1>, <St2>, [<Xn|SP>, #<imm>]!
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_5 := uint32(moffs(v2))
+        sa_imm_5 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_pre(0, 1, 1, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_off(0, 0, 1, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>], #<imm>
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_post(0, 0, 1, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDP  <Wt1>, <Wt2>, [<Xn|SP>, #<imm>]!
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_pre(0, 0, 1, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_off(2, 0, 1, sa_imm_2, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_post(2, 0, 1, sa_imm_3, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // LDP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_pre(2, 0, 1, sa_imm_3, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // none of above
@@ -41237,7 +41453,7 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDP")
 }
 
-// LDPSW instruction have 3 forms from one single category:
+// LDPSW instruction have 3 forms across one single category:
 //
 // 1. Load Pair of Registers Signed Word
 //
@@ -41257,30 +41473,51 @@ func (self *Program) LDP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("LDPSW", 3, asm.Operands { v0, v1, v2 })
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_off(1, 0, 1, sa_imm, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_post(1, 0, 1, sa_imm_1, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // LDPSW  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_pre(1, 0, 1, sa_imm_1, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // none of above
@@ -41288,7 +41525,7 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDPSW")
 }
 
-// LDR instruction have 39 forms from 6 categories:
+// LDR instruction have 39 forms across 6 categories:
 //
 // 1. Load SIMD&FP Register (immediate offset)
 //
@@ -41396,7 +41633,12 @@ func (self *Program) LDPSW(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDR", 2, asm.Operands { v0, v1 })
     // LDR  <Bt>, [<Xn|SP>], #<simm>
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41404,7 +41646,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 1, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDR  <Bt>, [<Xn|SP>, #<simm>]!
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41412,7 +41659,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDR  <Bt>, [<Xn|SP>{, #<pimm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41420,7 +41672,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_pos(0, 1, 1, sa_pimm, sa_xn_sp, sa_bt))
     }
     // LDR  <Dt>, [<Xn|SP>], #<simm>
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41428,7 +41685,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(3, 1, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDR  <Dt>, [<Xn|SP>, #<simm>]!
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41436,15 +41698,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 1, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDR  <Dt>, [<Xn|SP>{, #<pimm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 32760) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_1 := uint32(moffs(v1))
+        sa_pimm_1 := uint32(moffs(v1) / 8)
         return p.setins(ldst_pos(3, 1, 1, sa_pimm_1, sa_xn_sp, sa_dt))
     }
     // LDR  <Ht>, [<Xn|SP>], #<simm>
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41452,7 +41725,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDR  <Ht>, [<Xn|SP>, #<simm>]!
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41460,15 +41738,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDR  <Ht>, [<Xn|SP>{, #<pimm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_2 := uint32(moffs(v1))
+        sa_pimm_2 := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 1, 1, sa_pimm_2, sa_xn_sp, sa_ht))
     }
     // LDR  <Qt>, [<Xn|SP>], #<simm>
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41476,7 +41765,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 1, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDR  <Qt>, [<Xn|SP>, #<simm>]!
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41484,15 +41778,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDR  <Qt>, [<Xn|SP>{, #<pimm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 65520) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_3 := uint32(moffs(v1))
+        sa_pimm_3 := uint32(moffs(v1) / 16)
         return p.setins(ldst_pos(0, 1, 3, sa_pimm_3, sa_xn_sp, sa_qt))
     }
     // LDR  <St>, [<Xn|SP>], #<simm>
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41500,7 +41805,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(2, 1, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDR  <St>, [<Xn|SP>, #<simm>]!
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41508,15 +41818,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 1, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDR  <St>, [<Xn|SP>{, #<pimm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 16380) &&
+       isMultipleOf(moffs(v1), 4) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_4 := uint32(moffs(v1))
+        sa_pimm_4 := uint32(moffs(v1) / 4)
         return p.setins(ldst_pos(2, 1, 1, sa_pimm_4, sa_xn_sp, sa_st))
     }
     // LDR  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41524,7 +41845,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDR  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41532,15 +41858,26 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDR  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 16380) &&
+       isMultipleOf(moffs(v1), 4) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 4)
         return p.setins(ldst_pos(2, 0, 1, sa_pimm, sa_xn_sp, sa_wt))
     }
     // LDR  <Xt>, [<Xn|SP>], #<simm>
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41548,7 +41885,12 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(3, 0, 1, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDR  <Xt>, [<Xn|SP>, #<simm>]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -41556,11 +41898,17 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 0, 1, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDR  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 32760) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_1 := uint32(moffs(v1))
+        sa_pimm_1 := uint32(moffs(v1) / 8)
         return p.setins(ldst_pos(3, 0, 1, sa_pimm_1, sa_xn_sp, sa_xt))
     }
     // LDR  <Dt>, <label>
@@ -41876,7 +42224,7 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDR")
 }
 
-// LDRAA instruction have 2 forms from one single category:
+// LDRAA instruction have 2 forms across one single category:
 //
 // 1. Load Register, with pointer authentication
 //
@@ -41904,21 +42252,33 @@ func (self *Program) LDR(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRAA", 2, asm.Operands { v0, v1 })
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4088) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_simm := uint32(moffs(v1))
+        sa_simm := uint32(moffs(v1) / 8)
         return p.setins(ldst_pac(3, 0, 0, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAA  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4088) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_simm := uint32(moffs(v1))
+        sa_simm := uint32(moffs(v1) / 8)
         return p.setins(ldst_pac(3, 0, 0, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
     }
     // none of above
@@ -41926,7 +42286,7 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRAA")
 }
 
-// LDRAB instruction have 2 forms from one single category:
+// LDRAB instruction have 2 forms across one single category:
 //
 // 1. Load Register, with pointer authentication
 //
@@ -41954,21 +42314,33 @@ func (self *Program) LDRAA(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRAB", 2, asm.Operands { v0, v1 })
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4088) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_simm := uint32(moffs(v1))
+        sa_simm := uint32(moffs(v1) / 8)
         return p.setins(ldst_pac(3, 0, 1, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 1, sa_xn_sp, sa_xt))
     }
     // LDRAB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4088) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_PAuth)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_simm := uint32(moffs(v1))
+        sa_simm := uint32(moffs(v1) / 8)
         return p.setins(ldst_pac(3, 0, 1, ubfx(sa_simm, 9, 1), mask(sa_simm, 9), 0, sa_xn_sp, sa_xt))
     }
     // none of above
@@ -41976,7 +42348,7 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRAB")
 }
 
-// LDRB instruction have 5 forms from 2 categories:
+// LDRB instruction have 5 forms across 2 categories:
 //
 // 1. Load Register Byte (immediate)
 //
@@ -42006,7 +42378,12 @@ func (self *Program) LDRAB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRB", 2, asm.Operands { v0, v1 })
     // LDRB  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42014,7 +42391,12 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRB  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42022,7 +42404,12 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42070,7 +42457,7 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRB")
 }
 
-// LDRH instruction have 4 forms from 2 categories:
+// LDRH instruction have 4 forms across 2 categories:
 //
 // 1. Load Register Halfword (immediate)
 //
@@ -42099,7 +42486,12 @@ func (self *Program) LDRB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRH", 2, asm.Operands { v0, v1 })
     // LDRH  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42107,7 +42499,12 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRH  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42115,11 +42512,17 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 0, 1, sa_pimm, sa_xn_sp, sa_wt))
     }
     // LDRH  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -42159,7 +42562,7 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRH")
 }
 
-// LDRSB instruction have 10 forms from 2 categories:
+// LDRSB instruction have 10 forms across 2 categories:
 //
 // 1. Load Register Signed Byte (immediate)
 //
@@ -42194,7 +42597,12 @@ func (self *Program) LDRH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSB", 2, asm.Operands { v0, v1 })
     // LDRSB  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42202,7 +42610,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSB  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42210,7 +42623,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42218,7 +42636,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_pos(0, 0, 3, sa_pimm, sa_xn_sp, sa_wt))
     }
     // LDRSB  <Xt>, [<Xn|SP>], #<simm>
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42226,7 +42649,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSB  <Xt>, [<Xn|SP>, #<simm>]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42234,7 +42662,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSB  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42318,7 +42751,7 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRSB")
 }
 
-// LDRSH instruction have 8 forms from 2 categories:
+// LDRSH instruction have 8 forms across 2 categories:
 //
 // 1. Load Register Signed Halfword (immediate)
 //
@@ -42352,7 +42785,12 @@ func (self *Program) LDRSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSH", 2, asm.Operands { v0, v1 })
     // LDRSH  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42360,7 +42798,12 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSH  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42368,15 +42811,26 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDRSH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 0, 3, sa_pimm, sa_xn_sp, sa_wt))
     }
     // LDRSH  <Xt>, [<Xn|SP>], #<simm>
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42384,7 +42838,12 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSH  <Xt>, [<Xn|SP>, #<simm>]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42392,11 +42851,17 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSH  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 0, 2, sa_pimm, sa_xn_sp, sa_xt))
     }
     // LDRSH  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -42468,7 +42933,7 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRSH")
 }
 
-// LDRSW instruction have 6 forms from 3 categories:
+// LDRSW instruction have 6 forms across 3 categories:
 //
 // 1. Load Register Signed Word (immediate)
 //
@@ -42507,7 +42972,12 @@ func (self *Program) LDRSH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDRSW", 2, asm.Operands { v0, v1 })
     // LDRSW  <Xt>, [<Xn|SP>], #<simm>
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42515,7 +42985,12 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(2, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSW  <Xt>, [<Xn|SP>, #<simm>]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -42523,11 +42998,17 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 2, sa_simm, sa_xn_sp, sa_xt))
     }
     // LDRSW  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 16380) &&
+       isMultipleOf(moffs(v1), 4) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 4)
         return p.setins(ldst_pos(2, 0, 2, sa_pimm, sa_xn_sp, sa_xt))
     }
     // LDRSW  <Xt>, <label>
@@ -42583,7 +43064,7 @@ func (self *Program) LDRSW(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDRSW")
 }
 
-// LDSET instruction have 2 forms from one single category:
+// LDSET instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory
 //
@@ -42642,7 +43123,7 @@ func (self *Program) LDSET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSET")
 }
 
-// LDSETA instruction have 2 forms from one single category:
+// LDSETA instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory
 //
@@ -42701,7 +43182,7 @@ func (self *Program) LDSETA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETA")
 }
 
-// LDSETAB instruction have one single form from one single category:
+// LDSETAB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory
 //
@@ -42742,7 +43223,7 @@ func (self *Program) LDSETAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETAB")
 }
 
-// LDSETAH instruction have one single form from one single category:
+// LDSETAH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory
 //
@@ -42783,7 +43264,7 @@ func (self *Program) LDSETAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETAH")
 }
 
-// LDSETAL instruction have 2 forms from one single category:
+// LDSETAL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory
 //
@@ -42842,7 +43323,7 @@ func (self *Program) LDSETAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETAL")
 }
 
-// LDSETALB instruction have one single form from one single category:
+// LDSETALB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory
 //
@@ -42883,7 +43364,7 @@ func (self *Program) LDSETALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETALB")
 }
 
-// LDSETALH instruction have one single form from one single category:
+// LDSETALH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory
 //
@@ -42924,7 +43405,7 @@ func (self *Program) LDSETALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETALH")
 }
 
-// LDSETB instruction have one single form from one single category:
+// LDSETB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory
 //
@@ -42965,7 +43446,7 @@ func (self *Program) LDSETB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETB")
 }
 
-// LDSETH instruction have one single form from one single category:
+// LDSETH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory
 //
@@ -43006,7 +43487,7 @@ func (self *Program) LDSETH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETH")
 }
 
-// LDSETL instruction have 2 forms from one single category:
+// LDSETL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory
 //
@@ -43065,7 +43546,7 @@ func (self *Program) LDSETL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETL")
 }
 
-// LDSETLB instruction have one single form from one single category:
+// LDSETLB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory
 //
@@ -43106,7 +43587,7 @@ func (self *Program) LDSETLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETLB")
 }
 
-// LDSETLH instruction have one single form from one single category:
+// LDSETLH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory
 //
@@ -43147,7 +43628,7 @@ func (self *Program) LDSETLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETLH")
 }
 
-// LDSETP instruction have one single form from one single category:
+// LDSETP instruction have one single form across one single category:
 //
 // 1. Atomic bit set on quadword in memory
 //
@@ -43182,7 +43663,7 @@ func (self *Program) LDSETP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETP")
 }
 
-// LDSETPA instruction have one single form from one single category:
+// LDSETPA instruction have one single form across one single category:
 //
 // 1. Atomic bit set on quadword in memory
 //
@@ -43217,7 +43698,7 @@ func (self *Program) LDSETPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETPA")
 }
 
-// LDSETPAL instruction have one single form from one single category:
+// LDSETPAL instruction have one single form across one single category:
 //
 // 1. Atomic bit set on quadword in memory
 //
@@ -43252,7 +43733,7 @@ func (self *Program) LDSETPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETPAL")
 }
 
-// LDSETPL instruction have one single form from one single category:
+// LDSETPL instruction have one single form across one single category:
 //
 // 1. Atomic bit set on quadword in memory
 //
@@ -43287,7 +43768,7 @@ func (self *Program) LDSETPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSETPL")
 }
 
-// LDSMAX instruction have 2 forms from one single category:
+// LDSMAX instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory
 //
@@ -43347,7 +43828,7 @@ func (self *Program) LDSMAX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAX")
 }
 
-// LDSMAXA instruction have 2 forms from one single category:
+// LDSMAXA instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory
 //
@@ -43407,7 +43888,7 @@ func (self *Program) LDSMAXA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXA")
 }
 
-// LDSMAXAB instruction have one single form from one single category:
+// LDSMAXAB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory
 //
@@ -43448,7 +43929,7 @@ func (self *Program) LDSMAXAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXAB")
 }
 
-// LDSMAXAH instruction have one single form from one single category:
+// LDSMAXAH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory
 //
@@ -43489,7 +43970,7 @@ func (self *Program) LDSMAXAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXAH")
 }
 
-// LDSMAXAL instruction have 2 forms from one single category:
+// LDSMAXAL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory
 //
@@ -43549,7 +44030,7 @@ func (self *Program) LDSMAXAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXAL")
 }
 
-// LDSMAXALB instruction have one single form from one single category:
+// LDSMAXALB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory
 //
@@ -43590,7 +44071,7 @@ func (self *Program) LDSMAXALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXALB")
 }
 
-// LDSMAXALH instruction have one single form from one single category:
+// LDSMAXALH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory
 //
@@ -43631,7 +44112,7 @@ func (self *Program) LDSMAXALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXALH")
 }
 
-// LDSMAXB instruction have one single form from one single category:
+// LDSMAXB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory
 //
@@ -43672,7 +44153,7 @@ func (self *Program) LDSMAXB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXB")
 }
 
-// LDSMAXH instruction have one single form from one single category:
+// LDSMAXH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory
 //
@@ -43713,7 +44194,7 @@ func (self *Program) LDSMAXH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXH")
 }
 
-// LDSMAXL instruction have 2 forms from one single category:
+// LDSMAXL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory
 //
@@ -43773,7 +44254,7 @@ func (self *Program) LDSMAXL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXL")
 }
 
-// LDSMAXLB instruction have one single form from one single category:
+// LDSMAXLB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory
 //
@@ -43814,7 +44295,7 @@ func (self *Program) LDSMAXLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXLB")
 }
 
-// LDSMAXLH instruction have one single form from one single category:
+// LDSMAXLH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory
 //
@@ -43855,7 +44336,7 @@ func (self *Program) LDSMAXLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMAXLH")
 }
 
-// LDSMIN instruction have 2 forms from one single category:
+// LDSMIN instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory
 //
@@ -43915,7 +44396,7 @@ func (self *Program) LDSMIN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMIN")
 }
 
-// LDSMINA instruction have 2 forms from one single category:
+// LDSMINA instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory
 //
@@ -43975,7 +44456,7 @@ func (self *Program) LDSMINA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINA")
 }
 
-// LDSMINAB instruction have one single form from one single category:
+// LDSMINAB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory
 //
@@ -44016,7 +44497,7 @@ func (self *Program) LDSMINAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINAB")
 }
 
-// LDSMINAH instruction have one single form from one single category:
+// LDSMINAH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory
 //
@@ -44057,7 +44538,7 @@ func (self *Program) LDSMINAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINAH")
 }
 
-// LDSMINAL instruction have 2 forms from one single category:
+// LDSMINAL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory
 //
@@ -44117,7 +44598,7 @@ func (self *Program) LDSMINAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINAL")
 }
 
-// LDSMINALB instruction have one single form from one single category:
+// LDSMINALB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory
 //
@@ -44158,7 +44639,7 @@ func (self *Program) LDSMINALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINALB")
 }
 
-// LDSMINALH instruction have one single form from one single category:
+// LDSMINALH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory
 //
@@ -44199,7 +44680,7 @@ func (self *Program) LDSMINALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINALH")
 }
 
-// LDSMINB instruction have one single form from one single category:
+// LDSMINB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory
 //
@@ -44240,7 +44721,7 @@ func (self *Program) LDSMINB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINB")
 }
 
-// LDSMINH instruction have one single form from one single category:
+// LDSMINH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory
 //
@@ -44281,7 +44762,7 @@ func (self *Program) LDSMINH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINH")
 }
 
-// LDSMINL instruction have 2 forms from one single category:
+// LDSMINL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory
 //
@@ -44341,7 +44822,7 @@ func (self *Program) LDSMINL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINL")
 }
 
-// LDSMINLB instruction have one single form from one single category:
+// LDSMINLB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory
 //
@@ -44382,7 +44863,7 @@ func (self *Program) LDSMINLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINLB")
 }
 
-// LDSMINLH instruction have one single form from one single category:
+// LDSMINLH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory
 //
@@ -44423,7 +44904,7 @@ func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDSMINLH")
 }
 
-// LDTR instruction have 2 forms from one single category:
+// LDTR instruction have 2 forms across one single category:
 //
 // 1. Load Register (unprivileged)
 //
@@ -44448,7 +44929,12 @@ func (self *Program) LDSMINLH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTR", 2, asm.Operands { v0, v1 })
     // LDTR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44456,7 +44942,12 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44468,7 +44959,7 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTR")
 }
 
-// LDTRB instruction have one single form from one single category:
+// LDTRB instruction have one single form across one single category:
 //
 // 1. Load Register Byte (unprivileged)
 //
@@ -44491,7 +44982,12 @@ func (self *Program) LDTR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44502,7 +44998,7 @@ func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTRB")
 }
 
-// LDTRH instruction have one single form from one single category:
+// LDTRH instruction have one single form across one single category:
 //
 // 1. Load Register Halfword (unprivileged)
 //
@@ -44525,7 +45021,12 @@ func (self *Program) LDTRB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44536,7 +45037,7 @@ func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTRH")
 }
 
-// LDTRSB instruction have 2 forms from one single category:
+// LDTRSB instruction have 2 forms across one single category:
 //
 // 1. Load Register Signed Byte (unprivileged)
 //
@@ -44561,7 +45062,12 @@ func (self *Program) LDTRH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSB", 2, asm.Operands { v0, v1 })
     // LDTRSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44569,7 +45075,12 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTRSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44581,7 +45092,7 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTRSB")
 }
 
-// LDTRSH instruction have 2 forms from one single category:
+// LDTRSH instruction have 2 forms across one single category:
 //
 // 1. Load Register Signed Halfword (unprivileged)
 //
@@ -44607,7 +45118,12 @@ func (self *Program) LDTRSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSH", 2, asm.Operands { v0, v1 })
     // LDTRSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44615,7 +45131,12 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDTRSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44627,7 +45148,7 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTRSH")
 }
 
-// LDTRSW instruction have one single form from one single category:
+// LDTRSW instruction have one single form across one single category:
 //
 // 1. Load Register Signed Word (unprivileged)
 //
@@ -44650,7 +45171,12 @@ func (self *Program) LDTRSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDTRSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDTRSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -44661,7 +45187,7 @@ func (self *Program) LDTRSW(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDTRSW")
 }
 
-// LDUMAX instruction have 2 forms from one single category:
+// LDUMAX instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory
 //
@@ -44721,7 +45247,7 @@ func (self *Program) LDUMAX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAX")
 }
 
-// LDUMAXA instruction have 2 forms from one single category:
+// LDUMAXA instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory
 //
@@ -44781,7 +45307,7 @@ func (self *Program) LDUMAXA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXA")
 }
 
-// LDUMAXAB instruction have one single form from one single category:
+// LDUMAXAB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory
 //
@@ -44822,7 +45348,7 @@ func (self *Program) LDUMAXAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXAB")
 }
 
-// LDUMAXAH instruction have one single form from one single category:
+// LDUMAXAH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory
 //
@@ -44863,7 +45389,7 @@ func (self *Program) LDUMAXAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXAH")
 }
 
-// LDUMAXAL instruction have 2 forms from one single category:
+// LDUMAXAL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory
 //
@@ -44923,7 +45449,7 @@ func (self *Program) LDUMAXAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXAL")
 }
 
-// LDUMAXALB instruction have one single form from one single category:
+// LDUMAXALB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory
 //
@@ -44964,7 +45490,7 @@ func (self *Program) LDUMAXALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXALB")
 }
 
-// LDUMAXALH instruction have one single form from one single category:
+// LDUMAXALH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory
 //
@@ -45005,7 +45531,7 @@ func (self *Program) LDUMAXALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXALH")
 }
 
-// LDUMAXB instruction have one single form from one single category:
+// LDUMAXB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory
 //
@@ -45046,7 +45572,7 @@ func (self *Program) LDUMAXB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXB")
 }
 
-// LDUMAXH instruction have one single form from one single category:
+// LDUMAXH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory
 //
@@ -45087,7 +45613,7 @@ func (self *Program) LDUMAXH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXH")
 }
 
-// LDUMAXL instruction have 2 forms from one single category:
+// LDUMAXL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory
 //
@@ -45147,7 +45673,7 @@ func (self *Program) LDUMAXL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXL")
 }
 
-// LDUMAXLB instruction have one single form from one single category:
+// LDUMAXLB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory
 //
@@ -45188,7 +45714,7 @@ func (self *Program) LDUMAXLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXLB")
 }
 
-// LDUMAXLH instruction have one single form from one single category:
+// LDUMAXLH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory
 //
@@ -45229,7 +45755,7 @@ func (self *Program) LDUMAXLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMAXLH")
 }
 
-// LDUMIN instruction have 2 forms from one single category:
+// LDUMIN instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory
 //
@@ -45289,7 +45815,7 @@ func (self *Program) LDUMIN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMIN")
 }
 
-// LDUMINA instruction have 2 forms from one single category:
+// LDUMINA instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory
 //
@@ -45349,7 +45875,7 @@ func (self *Program) LDUMINA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINA")
 }
 
-// LDUMINAB instruction have one single form from one single category:
+// LDUMINAB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory
 //
@@ -45390,7 +45916,7 @@ func (self *Program) LDUMINAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINAB")
 }
 
-// LDUMINAH instruction have one single form from one single category:
+// LDUMINAH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory
 //
@@ -45431,7 +45957,7 @@ func (self *Program) LDUMINAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINAH")
 }
 
-// LDUMINAL instruction have 2 forms from one single category:
+// LDUMINAL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory
 //
@@ -45491,7 +46017,7 @@ func (self *Program) LDUMINAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINAL")
 }
 
-// LDUMINALB instruction have one single form from one single category:
+// LDUMINALB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory
 //
@@ -45532,7 +46058,7 @@ func (self *Program) LDUMINALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINALB")
 }
 
-// LDUMINALH instruction have one single form from one single category:
+// LDUMINALH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory
 //
@@ -45573,7 +46099,7 @@ func (self *Program) LDUMINALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINALH")
 }
 
-// LDUMINB instruction have one single form from one single category:
+// LDUMINB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory
 //
@@ -45614,7 +46140,7 @@ func (self *Program) LDUMINB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINB")
 }
 
-// LDUMINH instruction have one single form from one single category:
+// LDUMINH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory
 //
@@ -45655,7 +46181,7 @@ func (self *Program) LDUMINH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINH")
 }
 
-// LDUMINL instruction have 2 forms from one single category:
+// LDUMINL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory
 //
@@ -45715,7 +46241,7 @@ func (self *Program) LDUMINL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINL")
 }
 
-// LDUMINLB instruction have one single form from one single category:
+// LDUMINLB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory
 //
@@ -45756,7 +46282,7 @@ func (self *Program) LDUMINLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINLB")
 }
 
-// LDUMINLH instruction have one single form from one single category:
+// LDUMINLH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory
 //
@@ -45797,7 +46323,7 @@ func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUMINLH")
 }
 
-// LDUR instruction have 7 forms from 2 categories:
+// LDUR instruction have 7 forms across 2 categories:
 //
 // 1. Load SIMD&FP Register (unscaled offset)
 //
@@ -45828,7 +46354,12 @@ func (self *Program) LDUMINLH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDUR", 2, asm.Operands { v0, v1 })
     // LDUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45836,7 +46367,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 1, sa_simm, sa_xn_sp, sa_bt))
     }
     // LDUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45844,7 +46380,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(3, 1, 1, sa_simm, sa_xn_sp, sa_dt))
     }
     // LDUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45852,7 +46393,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 1, 1, sa_simm, sa_xn_sp, sa_ht))
     }
     // LDUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45860,7 +46406,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 3, sa_simm, sa_xn_sp, sa_qt))
     }
     // LDUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45868,7 +46419,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 1, 1, sa_simm, sa_xn_sp, sa_st))
     }
     // LDUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45876,7 +46432,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 0, 1, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45888,7 +46449,7 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDUR")
 }
 
-// LDURB instruction have one single form from one single category:
+// LDURB instruction have one single form across one single category:
 //
 // 1. Load Register Byte (unscaled)
 //
@@ -45901,7 +46462,12 @@ func (self *Program) LDUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45912,7 +46478,7 @@ func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDURB")
 }
 
-// LDURH instruction have one single form from one single category:
+// LDURH instruction have one single form across one single category:
 //
 // 1. Load Register Halfword (unscaled)
 //
@@ -45925,7 +46491,12 @@ func (self *Program) LDURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45936,7 +46507,7 @@ func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDURH")
 }
 
-// LDURSB instruction have 2 forms from one single category:
+// LDURSB instruction have 2 forms across one single category:
 //
 // 1. Load Register Signed Byte (unscaled)
 //
@@ -45951,7 +46522,12 @@ func (self *Program) LDURH(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSB", 2, asm.Operands { v0, v1 })
     // LDURSB  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45959,7 +46535,12 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDURSB  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45971,7 +46552,7 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDURSB")
 }
 
-// LDURSH instruction have 2 forms from one single category:
+// LDURSH instruction have 2 forms across one single category:
 //
 // 1. Load Register Signed Halfword (unscaled)
 //
@@ -45986,7 +46567,12 @@ func (self *Program) LDURSB(v0, v1 interface{}) *Instruction {
 func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSH", 2, asm.Operands { v0, v1 })
     // LDURSH  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -45994,7 +46580,12 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 0, 3, sa_simm, sa_xn_sp, sa_wt))
     }
     // LDURSH  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -46006,7 +46597,7 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDURSH")
 }
 
-// LDURSW instruction have one single form from one single category:
+// LDURSW instruction have one single form across one single category:
 //
 // 1. Load Register Signed Word (unscaled)
 //
@@ -46019,7 +46610,12 @@ func (self *Program) LDURSH(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) LDURSW(v0, v1 interface{}) *Instruction {
     p := self.alloc("LDURSW", 2, asm.Operands { v0, v1 })
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -46030,7 +46626,7 @@ func (self *Program) LDURSW(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDURSW")
 }
 
-// LDXP instruction have 2 forms from one single category:
+// LDXP instruction have 2 forms across one single category:
 //
 // 1. Load Exclusive Pair of Registers
 //
@@ -46085,7 +46681,7 @@ func (self *Program) LDXP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDXP")
 }
 
-// LDXR instruction have 2 forms from one single category:
+// LDXR instruction have 2 forms across one single category:
 //
 // 1. Load Exclusive Register
 //
@@ -46130,7 +46726,7 @@ func (self *Program) LDXR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDXR")
 }
 
-// LDXRB instruction have one single form from one single category:
+// LDXRB instruction have one single form across one single category:
 //
 // 1. Load Exclusive Register Byte
 //
@@ -46160,7 +46756,7 @@ func (self *Program) LDXRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDXRB")
 }
 
-// LDXRH instruction have one single form from one single category:
+// LDXRH instruction have one single form across one single category:
 //
 // 1. Load Exclusive Register Halfword
 //
@@ -46190,7 +46786,7 @@ func (self *Program) LDXRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LDXRH")
 }
 
-// LSL instruction have 4 forms from 2 categories:
+// LSL instruction have 4 forms across 2 categories:
 //
 // 1. Logical Shift Left (register)
 //
@@ -46230,7 +46826,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
         return p.setins(dp_2src(1, 0, sa_xm, 8, sa_xn, sa_xd))
     }
     // LSL  <Wd>, <Wn>, #<shift>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -46238,7 +46834,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
         return p.setins(bitfield(0, 2, 0, ubfx(sa_shift_1, 6, 6), mask(sa_shift_1, 6), sa_wn, sa_wd))
     }
     // LSL  <Xd>, <Xn>, #<shift>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -46250,7 +46846,7 @@ func (self *Program) LSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LSL")
 }
 
-// LSLV instruction have 2 forms from one single category:
+// LSLV instruction have 2 forms across one single category:
 //
 // 1. Logical Shift Left Variable
 //
@@ -46285,7 +46881,7 @@ func (self *Program) LSLV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LSLV")
 }
 
-// LSR instruction have 4 forms from 2 categories:
+// LSR instruction have 4 forms across 2 categories:
 //
 // 1. Logical Shift Right (register)
 //
@@ -46326,7 +46922,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(dp_2src(1, 0, sa_xm, 9, sa_xn, sa_xd))
     }
     // LSR  <Wd>, <Wn>, #<shift>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -46334,7 +46930,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(bitfield(0, 2, 0, sa_shift, 31, sa_wn, sa_wd))
     }
     // LSR  <Xd>, <Xn>, #<shift>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -46346,7 +46942,7 @@ func (self *Program) LSR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LSR")
 }
 
-// LSRV instruction have 2 forms from one single category:
+// LSRV instruction have 2 forms across one single category:
 //
 // 1. Logical Shift Right Variable
 //
@@ -46381,7 +46977,7 @@ func (self *Program) LSRV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for LSRV")
 }
 
-// MADD instruction have 2 forms from one single category:
+// MADD instruction have 2 forms across one single category:
 //
 // 1. Multiply-Add
 //
@@ -46416,7 +47012,7 @@ func (self *Program) MADD(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MADD")
 }
 
-// MLA instruction have 2 forms from 2 categories:
+// MLA instruction have 2 forms across 2 categories:
 //
 // 1. Multiply-Add to accumulator (vector, by element)
 //
@@ -46521,7 +47117,7 @@ func (self *Program) MLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MLA")
 }
 
-// MLS instruction have 2 forms from 2 categories:
+// MLS instruction have 2 forms across 2 categories:
 //
 // 1. Multiply-Subtract from accumulator (vector, by element)
 //
@@ -46627,7 +47223,7 @@ func (self *Program) MLS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MLS")
 }
 
-// MNEG instruction have 2 forms from one single category:
+// MNEG instruction have 2 forms across one single category:
 //
 // 1. Multiply-Negate
 //
@@ -46660,7 +47256,7 @@ func (self *Program) MNEG(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MNEG")
 }
 
-// MOV instruction have 16 forms from 10 categories:
+// MOV instruction have 16 forms across 10 categories:
 //
 // 1. Move between register and stack pointer
 //
@@ -46980,7 +47576,7 @@ func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MOV")
 }
 
-// MOVI instruction have 6 forms from one single category:
+// MOVI instruction have 6 forms across one single category:
 //
 // 1. Move Immediate (vector)
 //
@@ -47212,7 +47808,7 @@ func (self *Program) MOVI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MOVI")
 }
 
-// MOVK instruction have 2 forms from one single category:
+// MOVK instruction have 2 forms across one single category:
 //
 // 1. Move wide with keep
 //
@@ -47230,7 +47826,10 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("aarch64: instruction MOVK takes 2 or 3 operands")
     }
     // MOVK  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -47241,7 +47840,10 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 3, sa_shift, sa_imm, sa_wd))
     }
     // MOVK  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -47256,7 +47858,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MOVK")
 }
 
-// MOVN instruction have 2 forms from one single category:
+// MOVN instruction have 2 forms across one single category:
 //
 // 1. Move wide with NOT
 //
@@ -47274,7 +47876,10 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("aarch64: instruction MOVN takes 2 or 3 operands")
     }
     // MOVN  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -47285,7 +47890,10 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 0, sa_shift, sa_imm, sa_wd))
     }
     // MOVN  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -47300,7 +47908,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MOVN")
 }
 
-// MOVZ instruction have 2 forms from one single category:
+// MOVZ instruction have 2 forms across one single category:
 //
 // 1. Move wide with zero
 //
@@ -47318,7 +47926,10 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         default : panic("aarch64: instruction MOVZ takes 2 or 3 operands")
     }
     // MOVZ  <Wd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isWr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isWr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -47329,7 +47940,10 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(movewide(0, 2, sa_shift, sa_imm, sa_wd))
     }
     // MOVZ  <Xd>, #<imm>{, LSL #<shift>}
-    if (len(vv) == 0 || len(vv) == 1) && isXr(v0) && isUimm16(v1) && (len(vv) == 0 || modt(vv[0]) == ModLSL) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXr(v0) &&
+       isInRange(v1, 0, 65535) &&
+       (len(vv) == 0 || modt(vv[0]) == ModLSL) {
         p.Domain = asm.DomainGeneric
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -47344,7 +47958,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MOVZ")
 }
 
-// MRRS instruction have one single form from one single category:
+// MRRS instruction have one single form across one single category:
 //
 // 1. Move System Register to two adjacent general-purpose registers
 //
@@ -47375,7 +47989,7 @@ func (self *Program) MRRS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MRRS")
 }
 
-// MRS instruction have one single form from one single category:
+// MRS instruction have one single form across one single category:
 //
 // 1. Move System Register to general-purpose register
 //
@@ -47404,7 +48018,7 @@ func (self *Program) MRS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MRS")
 }
 
-// MSR instruction have 2 forms from 2 categories:
+// MSR instruction have 2 forms across 2 categories:
 //
 // 1. Move immediate value to Special Register
 //
@@ -47461,7 +48075,7 @@ func (self *Program) MSR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MSR")
 }
 
-// MSRR instruction have one single form from one single category:
+// MSRR instruction have one single form across one single category:
 //
 // 1. Move two adjacent general-purpose registers to System Register
 //
@@ -47492,7 +48106,7 @@ func (self *Program) MSRR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MSRR")
 }
 
-// MSUB instruction have 2 forms from one single category:
+// MSUB instruction have 2 forms across one single category:
 //
 // 1. Multiply-Subtract
 //
@@ -47527,7 +48141,7 @@ func (self *Program) MSUB(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MSUB")
 }
 
-// MUL instruction have 4 forms from 3 categories:
+// MUL instruction have 4 forms across 3 categories:
 //
 // 1. Multiply
 //
@@ -47653,7 +48267,7 @@ func (self *Program) MUL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MUL")
 }
 
-// MVN instruction have 3 forms from 2 categories:
+// MVN instruction have 3 forms across 2 categories:
 //
 // 1. Bitwise NOT (vector)
 //
@@ -47744,7 +48358,7 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MVN")
 }
 
-// MVNI instruction have 3 forms from one single category:
+// MVNI instruction have 3 forms across one single category:
 //
 // 1. Move inverted Immediate (vector)
 //
@@ -47901,7 +48515,7 @@ func (self *Program) MVNI(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for MVNI")
 }
 
-// NEG instruction have 4 forms from 2 categories:
+// NEG instruction have 4 forms across 2 categories:
 //
 // 1. Negate (shifted register)
 //
@@ -48012,7 +48626,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for NEG")
 }
 
-// NEGS instruction have 2 forms from one single category:
+// NEGS instruction have 2 forms across one single category:
 //
 // 1. Negate, setting flags
 //
@@ -48077,7 +48691,7 @@ func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for NEGS")
 }
 
-// NGC instruction have 2 forms from one single category:
+// NGC instruction have 2 forms across one single category:
 //
 // 1. Negate with Carry
 //
@@ -48108,7 +48722,7 @@ func (self *Program) NGC(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for NGC")
 }
 
-// NGCS instruction have 2 forms from one single category:
+// NGCS instruction have 2 forms across one single category:
 //
 // 1. Negate with Carry, setting flags
 //
@@ -48140,7 +48754,7 @@ func (self *Program) NGCS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for NGCS")
 }
 
-// NOP instruction have one single form from one single category:
+// NOP instruction have one single form across one single category:
 //
 // 1. No Operation
 //
@@ -48161,7 +48775,7 @@ func (self *Program) NOP() *Instruction {
     return p.setins(hints(0, 0))
 }
 
-// NOT instruction have one single form from one single category:
+// NOT instruction have one single form across one single category:
 //
 // 1. Bitwise NOT (vector)
 //
@@ -48193,7 +48807,7 @@ func (self *Program) NOT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for NOT")
 }
 
-// ORN instruction have 3 forms from 2 categories:
+// ORN instruction have 3 forms across 2 categories:
 //
 // 1. Bitwise inclusive OR NOT (vector)
 //
@@ -48297,7 +48911,7 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for ORN")
 }
 
-// ORR instruction have 7 forms from 4 categories:
+// ORR instruction have 7 forms across 4 categories:
 //
 // 1. Bitwise inclusive OR (vector, immediate)
 //
@@ -48531,7 +49145,7 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ORR")
 }
 
-// PACDA instruction have one single form from one single category:
+// PACDA instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Data address, using key A
 //
@@ -48562,7 +49176,7 @@ func (self *Program) PACDA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACDA")
 }
 
-// PACDB instruction have one single form from one single category:
+// PACDB instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Data address, using key B
 //
@@ -48593,7 +49207,7 @@ func (self *Program) PACDB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACDB")
 }
 
-// PACDZA instruction have one single form from one single category:
+// PACDZA instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Data address, using key A
 //
@@ -48623,7 +49237,7 @@ func (self *Program) PACDZA(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACDZA")
 }
 
-// PACDZB instruction have one single form from one single category:
+// PACDZB instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Data address, using key B
 //
@@ -48653,7 +49267,7 @@ func (self *Program) PACDZB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACDZB")
 }
 
-// PACGA instruction have one single form from one single category:
+// PACGA instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code, using Generic key
 //
@@ -48680,7 +49294,7 @@ func (self *Program) PACGA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACGA")
 }
 
-// PACIA instruction have one single form from one single category:
+// PACIA instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key A
 //
@@ -48718,7 +49332,7 @@ func (self *Program) PACIA(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACIA")
 }
 
-// PACIA1716 instruction have one single form from one single category:
+// PACIA1716 instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key A
 //
@@ -48750,7 +49364,7 @@ func (self *Program) PACIA1716() *Instruction {
     return p.setins(hints(1, 0))
 }
 
-// PACIASP instruction have one single form from one single category:
+// PACIASP instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key A
 //
@@ -48782,7 +49396,7 @@ func (self *Program) PACIASP() *Instruction {
     return p.setins(hints(3, 1))
 }
 
-// PACIAZ instruction have one single form from one single category:
+// PACIAZ instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key A
 //
@@ -48814,7 +49428,7 @@ func (self *Program) PACIAZ() *Instruction {
     return p.setins(hints(3, 0))
 }
 
-// PACIB instruction have one single form from one single category:
+// PACIB instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key B
 //
@@ -48852,7 +49466,7 @@ func (self *Program) PACIB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACIB")
 }
 
-// PACIB1716 instruction have one single form from one single category:
+// PACIB1716 instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key B
 //
@@ -48884,7 +49498,7 @@ func (self *Program) PACIB1716() *Instruction {
     return p.setins(hints(1, 2))
 }
 
-// PACIBSP instruction have one single form from one single category:
+// PACIBSP instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key B
 //
@@ -48916,7 +49530,7 @@ func (self *Program) PACIBSP() *Instruction {
     return p.setins(hints(3, 3))
 }
 
-// PACIBZ instruction have one single form from one single category:
+// PACIBZ instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key B
 //
@@ -48948,7 +49562,7 @@ func (self *Program) PACIBZ() *Instruction {
     return p.setins(hints(3, 2))
 }
 
-// PACIZA instruction have one single form from one single category:
+// PACIZA instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key A
 //
@@ -48985,7 +49599,7 @@ func (self *Program) PACIZA(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACIZA")
 }
 
-// PACIZB instruction have one single form from one single category:
+// PACIZB instruction have one single form across one single category:
 //
 // 1. Pointer Authentication Code for Instruction address, using key B
 //
@@ -49022,7 +49636,7 @@ func (self *Program) PACIZB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PACIZB")
 }
 
-// PMUL instruction have one single form from one single category:
+// PMUL instruction have one single form across one single category:
 //
 // 1. Polynomial Multiply
 //
@@ -49065,7 +49679,7 @@ func (self *Program) PMUL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PMUL")
 }
 
-// PMULL instruction have one single form from one single category:
+// PMULL instruction have one single form across one single category:
 //
 // 1. Polynomial Multiply Long
 //
@@ -49130,7 +49744,7 @@ func (self *Program) PMULL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PMULL")
 }
 
-// PMULL2 instruction have one single form from one single category:
+// PMULL2 instruction have one single form across one single category:
 //
 // 1. Polynomial Multiply Long
 //
@@ -49195,7 +49809,7 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PMULL2")
 }
 
-// PRFM instruction have 4 forms from 3 categories:
+// PRFM instruction have 4 forms across 3 categories:
 //
 // 1. Prefetch Memory (immediate)
 //
@@ -49246,11 +49860,17 @@ func (self *Program) PMULL2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFM", 2, asm.Operands { v0, v1 })
     // PRFM  (<prfop>|#<imm5>), [<Xn|SP>{, #<pimm>}]
-    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBasicPrf(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 32760) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_prfop := asBasicPrefetchOp(v0)
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 8)
         return p.setins(ldst_pos(3, 0, 2, sa_pimm, sa_xn_sp, sa_prfop))
     }
     // PRFM  (<prfop>|#<imm5>), <label>
@@ -49306,7 +49926,7 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PRFM")
 }
 
-// PRFUM instruction have one single form from one single category:
+// PRFUM instruction have one single form across one single category:
 //
 // 1. Prefetch Memory (unscaled offset)
 //
@@ -49325,7 +49945,12 @@ func (self *Program) PRFM(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
     p := self.alloc("PRFUM", 2, asm.Operands { v0, v1 })
-    if isBasicPrf(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBasicPrf(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_prfop := asBasicPrefetchOp(v0)
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -49336,7 +49961,7 @@ func (self *Program) PRFUM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PRFUM")
 }
 
-// PSB instruction have one single form from one single category:
+// PSB instruction have one single form across one single category:
 //
 // 1. Profiling Synchronization Barrier
 //
@@ -49362,7 +49987,7 @@ func (self *Program) PSB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for PSB")
 }
 
-// PSSBB instruction have one single form from one single category:
+// PSSBB instruction have one single form across one single category:
 //
 // 1. Physical Speculative Store Bypass Barrier
 //
@@ -49379,7 +50004,7 @@ func (self *Program) PSSBB() *Instruction {
     return p.setins(barriers(4, 4, 31))
 }
 
-// RADDHN instruction have one single form from one single category:
+// RADDHN instruction have one single form across one single category:
 //
 // 1. Rounding Add returning High Narrow
 //
@@ -49444,7 +50069,7 @@ func (self *Program) RADDHN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RADDHN")
 }
 
-// RADDHN2 instruction have one single form from one single category:
+// RADDHN2 instruction have one single form across one single category:
 //
 // 1. Rounding Add returning High Narrow
 //
@@ -49509,7 +50134,7 @@ func (self *Program) RADDHN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RADDHN2")
 }
 
-// RAX1 instruction have one single form from one single category:
+// RAX1 instruction have one single form across one single category:
 //
 // 1. Rotate and Exclusive-OR
 //
@@ -49536,7 +50161,7 @@ func (self *Program) RAX1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RAX1")
 }
 
-// RBIT instruction have 3 forms from 2 categories:
+// RBIT instruction have 3 forms across 2 categories:
 //
 // 1. Reverse Bit order (vector)
 //
@@ -49591,7 +50216,7 @@ func (self *Program) RBIT(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RBIT")
 }
 
-// RCWCAS instruction have one single form from one single category:
+// RCWCAS instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap doubleword in memory
 //
@@ -49630,7 +50255,7 @@ func (self *Program) RCWCAS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCAS")
 }
 
-// RCWCASA instruction have one single form from one single category:
+// RCWCASA instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap doubleword in memory
 //
@@ -49669,7 +50294,7 @@ func (self *Program) RCWCASA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASA")
 }
 
-// RCWCASAL instruction have one single form from one single category:
+// RCWCASAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap doubleword in memory
 //
@@ -49708,7 +50333,7 @@ func (self *Program) RCWCASAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASAL")
 }
 
-// RCWCASL instruction have one single form from one single category:
+// RCWCASL instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap doubleword in memory
 //
@@ -49747,7 +50372,7 @@ func (self *Program) RCWCASL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASL")
 }
 
-// RCWCASP instruction have one single form from one single category:
+// RCWCASP instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap quadword in memory
 //
@@ -49791,7 +50416,7 @@ func (self *Program) RCWCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASP")
 }
 
-// RCWCASPA instruction have one single form from one single category:
+// RCWCASPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap quadword in memory
 //
@@ -49835,7 +50460,7 @@ func (self *Program) RCWCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASPA")
 }
 
-// RCWCASPAL instruction have one single form from one single category:
+// RCWCASPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap quadword in memory
 //
@@ -49879,7 +50504,7 @@ func (self *Program) RCWCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASPAL")
 }
 
-// RCWCASPL instruction have one single form from one single category:
+// RCWCASPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Compare and Swap quadword in memory
 //
@@ -49923,7 +50548,7 @@ func (self *Program) RCWCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCASPL")
 }
 
-// RCWCLR instruction have one single form from one single category:
+// RCWCLR instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on doubleword in memory
 //
@@ -49961,7 +50586,7 @@ func (self *Program) RCWCLR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLR")
 }
 
-// RCWCLRA instruction have one single form from one single category:
+// RCWCLRA instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on doubleword in memory
 //
@@ -49999,7 +50624,7 @@ func (self *Program) RCWCLRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRA")
 }
 
-// RCWCLRAL instruction have one single form from one single category:
+// RCWCLRAL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on doubleword in memory
 //
@@ -50037,7 +50662,7 @@ func (self *Program) RCWCLRAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRAL")
 }
 
-// RCWCLRL instruction have one single form from one single category:
+// RCWCLRL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on doubleword in memory
 //
@@ -50075,7 +50700,7 @@ func (self *Program) RCWCLRL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRL")
 }
 
-// RCWCLRP instruction have one single form from one single category:
+// RCWCLRP instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on quadword in memory
 //
@@ -50114,7 +50739,7 @@ func (self *Program) RCWCLRP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRP")
 }
 
-// RCWCLRPA instruction have one single form from one single category:
+// RCWCLRPA instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on quadword in memory
 //
@@ -50153,7 +50778,7 @@ func (self *Program) RCWCLRPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRPA")
 }
 
-// RCWCLRPAL instruction have one single form from one single category:
+// RCWCLRPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on quadword in memory
 //
@@ -50192,7 +50817,7 @@ func (self *Program) RCWCLRPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRPAL")
 }
 
-// RCWCLRPL instruction have one single form from one single category:
+// RCWCLRPL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Clear on quadword in memory
 //
@@ -50231,7 +50856,7 @@ func (self *Program) RCWCLRPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWCLRPL")
 }
 
-// RCWSCAS instruction have one single form from one single category:
+// RCWSCAS instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap doubleword in memory
 //
@@ -50270,7 +50895,7 @@ func (self *Program) RCWSCAS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCAS")
 }
 
-// RCWSCASA instruction have one single form from one single category:
+// RCWSCASA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap doubleword in memory
 //
@@ -50309,7 +50934,7 @@ func (self *Program) RCWSCASA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASA")
 }
 
-// RCWSCASAL instruction have one single form from one single category:
+// RCWSCASAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap doubleword in memory
 //
@@ -50348,7 +50973,7 @@ func (self *Program) RCWSCASAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASAL")
 }
 
-// RCWSCASL instruction have one single form from one single category:
+// RCWSCASL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap doubleword in memory
 //
@@ -50387,7 +51012,7 @@ func (self *Program) RCWSCASL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASL")
 }
 
-// RCWSCASP instruction have one single form from one single category:
+// RCWSCASP instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap quadword in memory
 //
@@ -50431,7 +51056,7 @@ func (self *Program) RCWSCASP(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASP")
 }
 
-// RCWSCASPA instruction have one single form from one single category:
+// RCWSCASPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap quadword in memory
 //
@@ -50475,7 +51100,7 @@ func (self *Program) RCWSCASPA(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASPA")
 }
 
-// RCWSCASPAL instruction have one single form from one single category:
+// RCWSCASPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap quadword in memory
 //
@@ -50519,7 +51144,7 @@ func (self *Program) RCWSCASPAL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASPAL")
 }
 
-// RCWSCASPL instruction have one single form from one single category:
+// RCWSCASPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Compare and Swap quadword in memory
 //
@@ -50563,7 +51188,7 @@ func (self *Program) RCWSCASPL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCASPL")
 }
 
-// RCWSCLR instruction have one single form from one single category:
+// RCWSCLR instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on doubleword in memory
 //
@@ -50601,7 +51226,7 @@ func (self *Program) RCWSCLR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLR")
 }
 
-// RCWSCLRA instruction have one single form from one single category:
+// RCWSCLRA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on doubleword in memory
 //
@@ -50639,7 +51264,7 @@ func (self *Program) RCWSCLRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRA")
 }
 
-// RCWSCLRAL instruction have one single form from one single category:
+// RCWSCLRAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on doubleword in memory
 //
@@ -50677,7 +51302,7 @@ func (self *Program) RCWSCLRAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRAL")
 }
 
-// RCWSCLRL instruction have one single form from one single category:
+// RCWSCLRL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on doubleword in memory
 //
@@ -50715,7 +51340,7 @@ func (self *Program) RCWSCLRL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRL")
 }
 
-// RCWSCLRP instruction have one single form from one single category:
+// RCWSCLRP instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on quadword in memory
 //
@@ -50754,7 +51379,7 @@ func (self *Program) RCWSCLRP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRP")
 }
 
-// RCWSCLRPA instruction have one single form from one single category:
+// RCWSCLRPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on quadword in memory
 //
@@ -50793,7 +51418,7 @@ func (self *Program) RCWSCLRPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRPA")
 }
 
-// RCWSCLRPAL instruction have one single form from one single category:
+// RCWSCLRPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on quadword in memory
 //
@@ -50832,7 +51457,7 @@ func (self *Program) RCWSCLRPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRPAL")
 }
 
-// RCWSCLRPL instruction have one single form from one single category:
+// RCWSCLRPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Clear on quadword in memory
 //
@@ -50871,7 +51496,7 @@ func (self *Program) RCWSCLRPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSCLRPL")
 }
 
-// RCWSET instruction have one single form from one single category:
+// RCWSET instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on doubleword in memory
 //
@@ -50909,7 +51534,7 @@ func (self *Program) RCWSET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSET")
 }
 
-// RCWSETA instruction have one single form from one single category:
+// RCWSETA instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on doubleword in memory
 //
@@ -50947,7 +51572,7 @@ func (self *Program) RCWSETA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETA")
 }
 
-// RCWSETAL instruction have one single form from one single category:
+// RCWSETAL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on doubleword in memory
 //
@@ -50985,7 +51610,7 @@ func (self *Program) RCWSETAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETAL")
 }
 
-// RCWSETL instruction have one single form from one single category:
+// RCWSETL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on doubleword in memory
 //
@@ -51023,7 +51648,7 @@ func (self *Program) RCWSETL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETL")
 }
 
-// RCWSETP instruction have one single form from one single category:
+// RCWSETP instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on quadword in memory
 //
@@ -51061,7 +51686,7 @@ func (self *Program) RCWSETP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETP")
 }
 
-// RCWSETPA instruction have one single form from one single category:
+// RCWSETPA instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on quadword in memory
 //
@@ -51099,7 +51724,7 @@ func (self *Program) RCWSETPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETPA")
 }
 
-// RCWSETPAL instruction have one single form from one single category:
+// RCWSETPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on quadword in memory
 //
@@ -51137,7 +51762,7 @@ func (self *Program) RCWSETPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETPAL")
 }
 
-// RCWSETPL instruction have one single form from one single category:
+// RCWSETPL instruction have one single form across one single category:
 //
 // 1. Read Check Write atomic bit Set on quadword in memory
 //
@@ -51175,7 +51800,7 @@ func (self *Program) RCWSETPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSETPL")
 }
 
-// RCWSSET instruction have one single form from one single category:
+// RCWSSET instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on doubleword in memory
 //
@@ -51213,7 +51838,7 @@ func (self *Program) RCWSSET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSET")
 }
 
-// RCWSSETA instruction have one single form from one single category:
+// RCWSSETA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on doubleword in memory
 //
@@ -51251,7 +51876,7 @@ func (self *Program) RCWSSETA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETA")
 }
 
-// RCWSSETAL instruction have one single form from one single category:
+// RCWSSETAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on doubleword in memory
 //
@@ -51289,7 +51914,7 @@ func (self *Program) RCWSSETAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETAL")
 }
 
-// RCWSSETL instruction have one single form from one single category:
+// RCWSSETL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on doubleword in memory
 //
@@ -51327,7 +51952,7 @@ func (self *Program) RCWSSETL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETL")
 }
 
-// RCWSSETP instruction have one single form from one single category:
+// RCWSSETP instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on quadword in memory
 //
@@ -51366,7 +51991,7 @@ func (self *Program) RCWSSETP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETP")
 }
 
-// RCWSSETPA instruction have one single form from one single category:
+// RCWSSETPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on quadword in memory
 //
@@ -51405,7 +52030,7 @@ func (self *Program) RCWSSETPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETPA")
 }
 
-// RCWSSETPAL instruction have one single form from one single category:
+// RCWSSETPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on quadword in memory
 //
@@ -51444,7 +52069,7 @@ func (self *Program) RCWSSETPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETPAL")
 }
 
-// RCWSSETPL instruction have one single form from one single category:
+// RCWSSETPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software atomic bit Set on quadword in memory
 //
@@ -51483,7 +52108,7 @@ func (self *Program) RCWSSETPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSETPL")
 }
 
-// RCWSSWP instruction have one single form from one single category:
+// RCWSSWP instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap doubleword in memory
 //
@@ -51520,7 +52145,7 @@ func (self *Program) RCWSSWP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWP")
 }
 
-// RCWSSWPA instruction have one single form from one single category:
+// RCWSSWPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap doubleword in memory
 //
@@ -51557,7 +52182,7 @@ func (self *Program) RCWSSWPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPA")
 }
 
-// RCWSSWPAL instruction have one single form from one single category:
+// RCWSSWPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap doubleword in memory
 //
@@ -51594,7 +52219,7 @@ func (self *Program) RCWSSWPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPAL")
 }
 
-// RCWSSWPL instruction have one single form from one single category:
+// RCWSSWPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap doubleword in memory
 //
@@ -51631,7 +52256,7 @@ func (self *Program) RCWSSWPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPL")
 }
 
-// RCWSSWPP instruction have one single form from one single category:
+// RCWSSWPP instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap quadword in memory
 //
@@ -51669,7 +52294,7 @@ func (self *Program) RCWSSWPP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPP")
 }
 
-// RCWSSWPPA instruction have one single form from one single category:
+// RCWSSWPPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap quadword in memory
 //
@@ -51707,7 +52332,7 @@ func (self *Program) RCWSSWPPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPPA")
 }
 
-// RCWSSWPPAL instruction have one single form from one single category:
+// RCWSSWPPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap quadword in memory
 //
@@ -51745,7 +52370,7 @@ func (self *Program) RCWSSWPPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPPAL")
 }
 
-// RCWSSWPPL instruction have one single form from one single category:
+// RCWSSWPPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Software Swap quadword in memory
 //
@@ -51783,7 +52408,7 @@ func (self *Program) RCWSSWPPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSSWPPL")
 }
 
-// RCWSWP instruction have one single form from one single category:
+// RCWSWP instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap doubleword in memory
 //
@@ -51820,7 +52445,7 @@ func (self *Program) RCWSWP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWP")
 }
 
-// RCWSWPA instruction have one single form from one single category:
+// RCWSWPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap doubleword in memory
 //
@@ -51857,7 +52482,7 @@ func (self *Program) RCWSWPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPA")
 }
 
-// RCWSWPAL instruction have one single form from one single category:
+// RCWSWPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap doubleword in memory
 //
@@ -51894,7 +52519,7 @@ func (self *Program) RCWSWPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPAL")
 }
 
-// RCWSWPL instruction have one single form from one single category:
+// RCWSWPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap doubleword in memory
 //
@@ -51931,7 +52556,7 @@ func (self *Program) RCWSWPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPL")
 }
 
-// RCWSWPP instruction have one single form from one single category:
+// RCWSWPP instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap quadword in memory
 //
@@ -51969,7 +52594,7 @@ func (self *Program) RCWSWPP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPP")
 }
 
-// RCWSWPPA instruction have one single form from one single category:
+// RCWSWPPA instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap quadword in memory
 //
@@ -52007,7 +52632,7 @@ func (self *Program) RCWSWPPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPPA")
 }
 
-// RCWSWPPAL instruction have one single form from one single category:
+// RCWSWPPAL instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap quadword in memory
 //
@@ -52045,7 +52670,7 @@ func (self *Program) RCWSWPPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPPAL")
 }
 
-// RCWSWPPL instruction have one single form from one single category:
+// RCWSWPPL instruction have one single form across one single category:
 //
 // 1. Read Check Write Swap quadword in memory
 //
@@ -52083,7 +52708,7 @@ func (self *Program) RCWSWPPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RCWSWPPL")
 }
 
-// RET instruction have one single form from one single category:
+// RET instruction have one single form across one single category:
 //
 // 1. Return from subroutine
 //
@@ -52111,7 +52736,7 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RET")
 }
 
-// RETAA instruction have one single form from one single category:
+// RETAA instruction have one single form across one single category:
 //
 // 1. Return from subroutine, with pointer authentication
 //
@@ -52137,7 +52762,7 @@ func (self *Program) RETAA() *Instruction {
     return p.setins(branch_reg(2, 31, 2, 31, 31))
 }
 
-// RETAB instruction have one single form from one single category:
+// RETAB instruction have one single form across one single category:
 //
 // 1. Return from subroutine, with pointer authentication
 //
@@ -52163,7 +52788,7 @@ func (self *Program) RETAB() *Instruction {
     return p.setins(branch_reg(2, 31, 3, 31, 31))
 }
 
-// REV instruction have 2 forms from one single category:
+// REV instruction have 2 forms across one single category:
 //
 // 1. Reverse Bytes
 //
@@ -52193,7 +52818,7 @@ func (self *Program) REV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for REV")
 }
 
-// REV16 instruction have 3 forms from 2 categories:
+// REV16 instruction have 3 forms across 2 categories:
 //
 // 1. Reverse elements in 16-bit halfwords (vector)
 //
@@ -52250,7 +52875,7 @@ func (self *Program) REV16(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for REV16")
 }
 
-// REV32 instruction have 2 forms from 2 categories:
+// REV32 instruction have 2 forms across 2 categories:
 //
 // 1. Reverse elements in 32-bit words (vector)
 //
@@ -52305,7 +52930,7 @@ func (self *Program) REV32(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for REV32")
 }
 
-// REV64 instruction have 2 forms from 2 categories:
+// REV64 instruction have 2 forms across 2 categories:
 //
 // 1. Reverse Bytes
 //
@@ -52365,7 +52990,7 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for REV64")
 }
 
-// RMIF instruction have one single form from one single category:
+// RMIF instruction have one single form across one single category:
 //
 // 1. Rotate, Mask Insert Flags
 //
@@ -52378,7 +53003,7 @@ func (self *Program) REV64(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) RMIF(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("RMIF", 3, asm.Operands { v0, v1, v2 })
-    if isXr(v0) && isUimm6(v1) && isUimm4(v2) {
+    if isXr(v0) && isInRange(v1, 0, 63) && isInRange(v2, 0, 15) {
         self.Arch.Require(FEAT_FlagM)
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(v0.(asm.Register).ID())
@@ -52390,7 +53015,7 @@ func (self *Program) RMIF(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RMIF")
 }
 
-// ROR instruction have 4 forms from 2 categories:
+// ROR instruction have 4 forms across 2 categories:
 //
 // 1. Rotate right (immediate)
 //
@@ -52415,7 +53040,7 @@ func (self *Program) RMIF(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("ROR", 3, asm.Operands { v0, v1, v2 })
     // ROR  <Wd>, <Ws>, #<shift>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_ws := uint32(v1.(asm.Register).ID())
@@ -52423,7 +53048,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(extract(0, 0, 0, 0, ubfx(sa_ws, 5, 5), sa_shift, mask(sa_ws, 5), sa_wd))
     }
     // ROR  <Xd>, <Xs>, #<shift>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xs := uint32(v1.(asm.Register).ID())
@@ -52451,7 +53076,7 @@ func (self *Program) ROR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ROR")
 }
 
-// RORV instruction have 2 forms from one single category:
+// RORV instruction have 2 forms across one single category:
 //
 // 1. Rotate Right Variable
 //
@@ -52487,7 +53112,7 @@ func (self *Program) RORV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RORV")
 }
 
-// RPRFM instruction have one single form from one single category:
+// RPRFM instruction have one single form across one single category:
 //
 // 1. Range Prefetch Memory
 //
@@ -52591,7 +53216,7 @@ func (self *Program) RPRFM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RPRFM")
 }
 
-// RSHRN instruction have one single form from one single category:
+// RSHRN instruction have one single form across one single category:
 //
 // 1. Rounding Shift Right Narrow (immediate)
 //
@@ -52677,7 +53302,7 @@ func (self *Program) RSHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RSHRN")
 }
 
-// RSHRN2 instruction have one single form from one single category:
+// RSHRN2 instruction have one single form across one single category:
 //
 // 1. Rounding Shift Right Narrow (immediate)
 //
@@ -52763,7 +53388,7 @@ func (self *Program) RSHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RSHRN2")
 }
 
-// RSUBHN instruction have one single form from one single category:
+// RSUBHN instruction have one single form across one single category:
 //
 // 1. Rounding Subtract returning High Narrow
 //
@@ -52828,7 +53453,7 @@ func (self *Program) RSUBHN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RSUBHN")
 }
 
-// RSUBHN2 instruction have one single form from one single category:
+// RSUBHN2 instruction have one single form across one single category:
 //
 // 1. Rounding Subtract returning High Narrow
 //
@@ -52893,7 +53518,7 @@ func (self *Program) RSUBHN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for RSUBHN2")
 }
 
-// SABA instruction have one single form from one single category:
+// SABA instruction have one single form across one single category:
 //
 // 1. Signed Absolute difference and Accumulate
 //
@@ -52939,7 +53564,7 @@ func (self *Program) SABA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABA")
 }
 
-// SABAL instruction have one single form from one single category:
+// SABAL instruction have one single form across one single category:
 //
 // 1. Signed Absolute difference and Accumulate Long
 //
@@ -53002,7 +53627,7 @@ func (self *Program) SABAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABAL")
 }
 
-// SABAL2 instruction have one single form from one single category:
+// SABAL2 instruction have one single form across one single category:
 //
 // 1. Signed Absolute difference and Accumulate Long
 //
@@ -53065,7 +53690,7 @@ func (self *Program) SABAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABAL2")
 }
 
-// SABD instruction have one single form from one single category:
+// SABD instruction have one single form across one single category:
 //
 // 1. Signed Absolute Difference
 //
@@ -53110,7 +53735,7 @@ func (self *Program) SABD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABD")
 }
 
-// SABDL instruction have one single form from one single category:
+// SABDL instruction have one single form across one single category:
 //
 // 1. Signed Absolute Difference Long
 //
@@ -53173,7 +53798,7 @@ func (self *Program) SABDL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABDL")
 }
 
-// SABDL2 instruction have one single form from one single category:
+// SABDL2 instruction have one single form across one single category:
 //
 // 1. Signed Absolute Difference Long
 //
@@ -53236,7 +53861,7 @@ func (self *Program) SABDL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SABDL2")
 }
 
-// SADALP instruction have one single form from one single category:
+// SADALP instruction have one single form across one single category:
 //
 // 1. Signed Add and Accumulate Long Pairwise
 //
@@ -53293,7 +53918,7 @@ func (self *Program) SADALP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADALP")
 }
 
-// SADDL instruction have one single form from one single category:
+// SADDL instruction have one single form across one single category:
 //
 // 1. Signed Add Long (vector)
 //
@@ -53356,7 +53981,7 @@ func (self *Program) SADDL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDL")
 }
 
-// SADDL2 instruction have one single form from one single category:
+// SADDL2 instruction have one single form across one single category:
 //
 // 1. Signed Add Long (vector)
 //
@@ -53419,7 +54044,7 @@ func (self *Program) SADDL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDL2")
 }
 
-// SADDLP instruction have one single form from one single category:
+// SADDLP instruction have one single form across one single category:
 //
 // 1. Signed Add Long Pairwise
 //
@@ -53475,7 +54100,7 @@ func (self *Program) SADDLP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDLP")
 }
 
-// SADDLV instruction have one single form from one single category:
+// SADDLV instruction have one single form across one single category:
 //
 // 1. Signed Add Long across Vector
 //
@@ -53522,7 +54147,7 @@ func (self *Program) SADDLV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDLV")
 }
 
-// SADDW instruction have one single form from one single category:
+// SADDW instruction have one single form across one single category:
 //
 // 1. Signed Add Wide
 //
@@ -53583,7 +54208,7 @@ func (self *Program) SADDW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDW")
 }
 
-// SADDW2 instruction have one single form from one single category:
+// SADDW2 instruction have one single form across one single category:
 //
 // 1. Signed Add Wide
 //
@@ -53644,7 +54269,7 @@ func (self *Program) SADDW2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SADDW2")
 }
 
-// SB instruction have one single form from one single category:
+// SB instruction have one single form across one single category:
 //
 // 1. Speculation Barrier
 //
@@ -53692,7 +54317,7 @@ func (self *Program) SB() *Instruction {
     return p.setins(barriers(0, 7, 31))
 }
 
-// SBC instruction have 2 forms from one single category:
+// SBC instruction have 2 forms across one single category:
 //
 // 1. Subtract with Carry
 //
@@ -53725,7 +54350,7 @@ func (self *Program) SBC(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBC")
 }
 
-// SBCS instruction have 2 forms from one single category:
+// SBCS instruction have 2 forms across one single category:
 //
 // 1. Subtract with Carry, setting flags
 //
@@ -53759,7 +54384,7 @@ func (self *Program) SBCS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBCS")
 }
 
-// SBFIZ instruction have 2 forms from one single category:
+// SBFIZ instruction have 2 forms across one single category:
 //
 // 1. Signed Bitfield Insert in Zero
 //
@@ -53774,7 +54399,7 @@ func (self *Program) SBCS(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFIZ", 4, asm.Operands { v0, v1, v2, v3 })
     // SBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -53783,7 +54408,7 @@ func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 0, 0, sa_lsb, sa_width, sa_wn, sa_wd))
     }
     // SBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -53796,7 +54421,7 @@ func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBFIZ")
 }
 
-// SBFM instruction have 2 forms from one single category:
+// SBFM instruction have 2 forms across one single category:
 //
 // 1. Signed Bitfield Move
 //
@@ -53822,7 +54447,7 @@ func (self *Program) SBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFM", 4, asm.Operands { v0, v1, v2, v3 })
     // SBFM  <Wd>, <Wn>, #<immr>, #<imms>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isInRange(v3, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -53831,7 +54456,7 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 0, 0, sa_immr, sa_imms, sa_wn, sa_wd))
     }
     // SBFM  <Xd>, <Xn>, #<immr>, #<imms>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isInRange(v3, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -53844,7 +54469,7 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBFM")
 }
 
-// SBFX instruction have 2 forms from one single category:
+// SBFX instruction have 2 forms across one single category:
 //
 // 1. Signed Bitfield Extract
 //
@@ -53859,7 +54484,7 @@ func (self *Program) SBFM(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SBFX", 4, asm.Operands { v0, v1, v2, v3 })
     // SBFX  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -53868,7 +54493,7 @@ func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 0, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
     }
     // SBFX  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -53881,7 +54506,7 @@ func (self *Program) SBFX(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SBFX")
 }
 
-// SCVTF instruction have 18 forms from 4 categories:
+// SCVTF instruction have 18 forms across 4 categories:
 //
 // 1. Signed fixed-point Convert to Floating-point (vector)
 //
@@ -54106,7 +54731,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asisdmiscfp16(0, 0, 29, sa_hn, sa_hd))
     }
     // SCVTF  <Dd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isDr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isDr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -54114,7 +54739,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 1, 0, 2, sa_fbits, sa_wn, sa_dd))
     }
     // SCVTF  <Dd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isDr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isDr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -54122,7 +54747,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(1, 0, 1, 0, 2, sa_fbits_1, sa_xn, sa_dd))
     }
     // SCVTF  <Hd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isHr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isHr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -54130,7 +54755,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 3, 0, 2, sa_fbits, sa_wn, sa_hd))
     }
     // SCVTF  <Hd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isHr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isHr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -54138,7 +54763,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(1, 0, 3, 0, 2, sa_fbits_1, sa_xn, sa_hd))
     }
     // SCVTF  <Sd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isSr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isSr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -54146,7 +54771,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 0, 0, 2, sa_fbits, sa_wn, sa_sd))
     }
     // SCVTF  <Sd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isSr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isSr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -54200,7 +54825,7 @@ func (self *Program) SCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SCVTF")
 }
 
-// SDIV instruction have 2 forms from one single category:
+// SDIV instruction have 2 forms across one single category:
 //
 // 1. Signed Divide
 //
@@ -54234,7 +54859,7 @@ func (self *Program) SDIV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SDIV")
 }
 
-// SDOT instruction have 2 forms from 2 categories:
+// SDOT instruction have 2 forms across 2 categories:
 //
 // 1. Dot Product signed arithmetic (vector, by element)
 //
@@ -54354,7 +54979,7 @@ func (self *Program) SDOT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SDOT")
 }
 
-// SETE instruction have one single form from one single category:
+// SETE instruction have one single form across one single category:
 //
 // 1. Memory Set
 //
@@ -54463,7 +55088,7 @@ func (self *Program) SETE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETE")
 }
 
-// SETEN instruction have one single form from one single category:
+// SETEN instruction have one single form across one single category:
 //
 // 1. Memory Set, non-temporal
 //
@@ -54572,7 +55197,7 @@ func (self *Program) SETEN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETEN")
 }
 
-// SETET instruction have one single form from one single category:
+// SETET instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged
 //
@@ -54681,7 +55306,7 @@ func (self *Program) SETET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETET")
 }
 
-// SETETN instruction have one single form from one single category:
+// SETETN instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged and non-temporal
 //
@@ -54790,7 +55415,7 @@ func (self *Program) SETETN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETETN")
 }
 
-// SETF16 instruction have one single form from one single category:
+// SETF16 instruction have one single form across one single category:
 //
 // 1. Evaluation of 8 or 16 bit flag values
 //
@@ -54814,7 +55439,7 @@ func (self *Program) SETF16(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETF16")
 }
 
-// SETF8 instruction have one single form from one single category:
+// SETF8 instruction have one single form across one single category:
 //
 // 1. Evaluation of 8 or 16 bit flag values
 //
@@ -54838,7 +55463,7 @@ func (self *Program) SETF8(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETF8")
 }
 
-// SETGE instruction have one single form from one single category:
+// SETGE instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting
 //
@@ -54949,7 +55574,7 @@ func (self *Program) SETGE(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGE")
 }
 
-// SETGEN instruction have one single form from one single category:
+// SETGEN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, non-temporal
 //
@@ -55060,7 +55685,7 @@ func (self *Program) SETGEN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGEN")
 }
 
-// SETGET instruction have one single form from one single category:
+// SETGET instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged
 //
@@ -55171,7 +55796,7 @@ func (self *Program) SETGET(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGET")
 }
 
-// SETGETN instruction have one single form from one single category:
+// SETGETN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged and non-temporal
 //
@@ -55282,7 +55907,7 @@ func (self *Program) SETGETN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGETN")
 }
 
-// SETGM instruction have one single form from one single category:
+// SETGM instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting
 //
@@ -55393,7 +56018,7 @@ func (self *Program) SETGM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGM")
 }
 
-// SETGMN instruction have one single form from one single category:
+// SETGMN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, non-temporal
 //
@@ -55504,7 +56129,7 @@ func (self *Program) SETGMN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGMN")
 }
 
-// SETGMT instruction have one single form from one single category:
+// SETGMT instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged
 //
@@ -55615,7 +56240,7 @@ func (self *Program) SETGMT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGMT")
 }
 
-// SETGMTN instruction have one single form from one single category:
+// SETGMTN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged and non-temporal
 //
@@ -55726,7 +56351,7 @@ func (self *Program) SETGMTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGMTN")
 }
 
-// SETGP instruction have one single form from one single category:
+// SETGP instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting
 //
@@ -55837,7 +56462,7 @@ func (self *Program) SETGP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGP")
 }
 
-// SETGPN instruction have one single form from one single category:
+// SETGPN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, non-temporal
 //
@@ -55948,7 +56573,7 @@ func (self *Program) SETGPN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGPN")
 }
 
-// SETGPT instruction have one single form from one single category:
+// SETGPT instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged
 //
@@ -56059,7 +56684,7 @@ func (self *Program) SETGPT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGPT")
 }
 
-// SETGPTN instruction have one single form from one single category:
+// SETGPTN instruction have one single form across one single category:
 //
 // 1. Memory Set with tag setting, unprivileged and non-temporal
 //
@@ -56170,7 +56795,7 @@ func (self *Program) SETGPTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETGPTN")
 }
 
-// SETM instruction have one single form from one single category:
+// SETM instruction have one single form across one single category:
 //
 // 1. Memory Set
 //
@@ -56279,7 +56904,7 @@ func (self *Program) SETM(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETM")
 }
 
-// SETMN instruction have one single form from one single category:
+// SETMN instruction have one single form across one single category:
 //
 // 1. Memory Set, non-temporal
 //
@@ -56388,7 +57013,7 @@ func (self *Program) SETMN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETMN")
 }
 
-// SETMT instruction have one single form from one single category:
+// SETMT instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged
 //
@@ -56497,7 +57122,7 @@ func (self *Program) SETMT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETMT")
 }
 
-// SETMTN instruction have one single form from one single category:
+// SETMTN instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged and non-temporal
 //
@@ -56606,7 +57231,7 @@ func (self *Program) SETMTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETMTN")
 }
 
-// SETP instruction have one single form from one single category:
+// SETP instruction have one single form across one single category:
 //
 // 1. Memory Set
 //
@@ -56715,7 +57340,7 @@ func (self *Program) SETP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETP")
 }
 
-// SETPN instruction have one single form from one single category:
+// SETPN instruction have one single form across one single category:
 //
 // 1. Memory Set, non-temporal
 //
@@ -56824,7 +57449,7 @@ func (self *Program) SETPN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETPN")
 }
 
-// SETPT instruction have one single form from one single category:
+// SETPT instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged
 //
@@ -56933,7 +57558,7 @@ func (self *Program) SETPT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETPT")
 }
 
-// SETPTN instruction have one single form from one single category:
+// SETPTN instruction have one single form across one single category:
 //
 // 1. Memory Set, unprivileged and non-temporal
 //
@@ -57042,7 +57667,7 @@ func (self *Program) SETPTN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SETPTN")
 }
 
-// SEV instruction have one single form from one single category:
+// SEV instruction have one single form across one single category:
 //
 // 1. Send Event
 //
@@ -57058,7 +57683,7 @@ func (self *Program) SEV() *Instruction {
     return p.setins(hints(0, 4))
 }
 
-// SEVL instruction have one single form from one single category:
+// SEVL instruction have one single form across one single category:
 //
 // 1. Send Event Local
 //
@@ -57075,7 +57700,7 @@ func (self *Program) SEVL() *Instruction {
     return p.setins(hints(0, 5))
 }
 
-// SHA1C instruction have one single form from one single category:
+// SHA1C instruction have one single form across one single category:
 //
 // 1. SHA1 hash update (choose)
 //
@@ -57097,7 +57722,7 @@ func (self *Program) SHA1C(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1C")
 }
 
-// SHA1H instruction have one single form from one single category:
+// SHA1H instruction have one single form across one single category:
 //
 // 1. SHA1 fixed rotate
 //
@@ -57118,7 +57743,7 @@ func (self *Program) SHA1H(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1H")
 }
 
-// SHA1M instruction have one single form from one single category:
+// SHA1M instruction have one single form across one single category:
 //
 // 1. SHA1 hash update (majority)
 //
@@ -57140,7 +57765,7 @@ func (self *Program) SHA1M(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1M")
 }
 
-// SHA1P instruction have one single form from one single category:
+// SHA1P instruction have one single form across one single category:
 //
 // 1. SHA1 hash update (parity)
 //
@@ -57162,7 +57787,7 @@ func (self *Program) SHA1P(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1P")
 }
 
-// SHA1SU0 instruction have one single form from one single category:
+// SHA1SU0 instruction have one single form across one single category:
 //
 // 1. SHA1 schedule update 0
 //
@@ -57184,7 +57809,7 @@ func (self *Program) SHA1SU0(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1SU0")
 }
 
-// SHA1SU1 instruction have one single form from one single category:
+// SHA1SU1 instruction have one single form across one single category:
 //
 // 1. SHA1 schedule update 1
 //
@@ -57205,7 +57830,7 @@ func (self *Program) SHA1SU1(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA1SU1")
 }
 
-// SHA256H instruction have one single form from one single category:
+// SHA256H instruction have one single form across one single category:
 //
 // 1. SHA256 hash update (part 1)
 //
@@ -57227,7 +57852,7 @@ func (self *Program) SHA256H(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA256H")
 }
 
-// SHA256H2 instruction have one single form from one single category:
+// SHA256H2 instruction have one single form across one single category:
 //
 // 1. SHA256 hash update (part 2)
 //
@@ -57249,7 +57874,7 @@ func (self *Program) SHA256H2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA256H2")
 }
 
-// SHA256SU0 instruction have one single form from one single category:
+// SHA256SU0 instruction have one single form across one single category:
 //
 // 1. SHA256 schedule update 0
 //
@@ -57270,7 +57895,7 @@ func (self *Program) SHA256SU0(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA256SU0")
 }
 
-// SHA256SU1 instruction have one single form from one single category:
+// SHA256SU1 instruction have one single form across one single category:
 //
 // 1. SHA256 schedule update 1
 //
@@ -57292,7 +57917,7 @@ func (self *Program) SHA256SU1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA256SU1")
 }
 
-// SHA512H instruction have one single form from one single category:
+// SHA512H instruction have one single form across one single category:
 //
 // 1. SHA512 Hash update part 1
 //
@@ -57319,7 +57944,7 @@ func (self *Program) SHA512H(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA512H")
 }
 
-// SHA512H2 instruction have one single form from one single category:
+// SHA512H2 instruction have one single form across one single category:
 //
 // 1. SHA512 Hash update part 2
 //
@@ -57346,7 +57971,7 @@ func (self *Program) SHA512H2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA512H2")
 }
 
-// SHA512SU0 instruction have one single form from one single category:
+// SHA512SU0 instruction have one single form across one single category:
 //
 // 1. SHA512 Schedule Update 0
 //
@@ -57373,7 +57998,7 @@ func (self *Program) SHA512SU0(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA512SU0")
 }
 
-// SHA512SU1 instruction have one single form from one single category:
+// SHA512SU1 instruction have one single form across one single category:
 //
 // 1. SHA512 Schedule Update 1
 //
@@ -57401,7 +58026,7 @@ func (self *Program) SHA512SU1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHA512SU1")
 }
 
-// SHADD instruction have one single form from one single category:
+// SHADD instruction have one single form across one single category:
 //
 // 1. Signed Halving Add
 //
@@ -57448,7 +58073,7 @@ func (self *Program) SHADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHADD")
 }
 
-// SHL instruction have 2 forms from one single category:
+// SHL instruction have 2 forms across one single category:
 //
 // 1. Shift Left (immediate)
 //
@@ -57511,7 +58136,7 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
     }
     // SHL  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 0, 63) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -57540,7 +58165,7 @@ func (self *Program) SHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHL")
 }
 
-// SHLL instruction have one single form from one single category:
+// SHLL instruction have one single form across one single category:
 //
 // 1. Shift Left Long (by element size)
 //
@@ -57606,7 +58231,7 @@ func (self *Program) SHLL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHLL")
 }
 
-// SHLL2 instruction have one single form from one single category:
+// SHLL2 instruction have one single form across one single category:
 //
 // 1. Shift Left Long (by element size)
 //
@@ -57672,7 +58297,7 @@ func (self *Program) SHLL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHLL2")
 }
 
-// SHRN instruction have one single form from one single category:
+// SHRN instruction have one single form across one single category:
 //
 // 1. Shift Right Narrow (immediate)
 //
@@ -57758,7 +58383,7 @@ func (self *Program) SHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHRN")
 }
 
-// SHRN2 instruction have one single form from one single category:
+// SHRN2 instruction have one single form across one single category:
 //
 // 1. Shift Right Narrow (immediate)
 //
@@ -57844,7 +58469,7 @@ func (self *Program) SHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHRN2")
 }
 
-// SHSUB instruction have one single form from one single category:
+// SHSUB instruction have one single form across one single category:
 //
 // 1. Signed Halving Subtract
 //
@@ -57890,7 +58515,7 @@ func (self *Program) SHSUB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SHSUB")
 }
 
-// SLI instruction have 2 forms from one single category:
+// SLI instruction have 2 forms across one single category:
 //
 // 1. Shift Left and Insert (immediate)
 //
@@ -57959,7 +58584,7 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 10, sa_vn, sa_vd))
     }
     // SLI  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 0, 63) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -57988,7 +58613,7 @@ func (self *Program) SLI(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SLI")
 }
 
-// SM3PARTW1 instruction have one single form from one single category:
+// SM3PARTW1 instruction have one single form across one single category:
 //
 // 1. SM3PARTW1
 //
@@ -58015,7 +58640,7 @@ func (self *Program) SM3PARTW1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3PARTW1")
 }
 
-// SM3PARTW2 instruction have one single form from one single category:
+// SM3PARTW2 instruction have one single form across one single category:
 //
 // 1. SM3PARTW2
 //
@@ -58042,7 +58667,7 @@ func (self *Program) SM3PARTW2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3PARTW2")
 }
 
-// SM3SS1 instruction have one single form from one single category:
+// SM3SS1 instruction have one single form across one single category:
 //
 // 1. SM3SS1
 //
@@ -58079,7 +58704,7 @@ func (self *Program) SM3SS1(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3SS1")
 }
 
-// SM3TT1A instruction have one single form from one single category:
+// SM3TT1A instruction have one single form across one single category:
 //
 // 1. SM3TT1A
 //
@@ -58119,7 +58744,7 @@ func (self *Program) SM3TT1A(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3TT1A")
 }
 
-// SM3TT1B instruction have one single form from one single category:
+// SM3TT1B instruction have one single form across one single category:
 //
 // 1. SM3TT1B
 //
@@ -58159,7 +58784,7 @@ func (self *Program) SM3TT1B(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3TT1B")
 }
 
-// SM3TT2A instruction have one single form from one single category:
+// SM3TT2A instruction have one single form across one single category:
 //
 // 1. SM3TT2A
 //
@@ -58201,7 +58826,7 @@ func (self *Program) SM3TT2A(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3TT2A")
 }
 
-// SM3TT2B instruction have one single form from one single category:
+// SM3TT2B instruction have one single form across one single category:
 //
 // 1. SM3TT2B
 //
@@ -58243,7 +58868,7 @@ func (self *Program) SM3TT2B(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM3TT2B")
 }
 
-// SM4E instruction have one single form from one single category:
+// SM4E instruction have one single form across one single category:
 //
 // 1. SM4 Encode
 //
@@ -58270,7 +58895,7 @@ func (self *Program) SM4E(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM4E")
 }
 
-// SM4EKEY instruction have one single form from one single category:
+// SM4EKEY instruction have one single form across one single category:
 //
 // 1. SM4 Key
 //
@@ -58297,7 +58922,7 @@ func (self *Program) SM4EKEY(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SM4EKEY")
 }
 
-// SMADDL instruction have one single form from one single category:
+// SMADDL instruction have one single form across one single category:
 //
 // 1. Signed Multiply-Add Long
 //
@@ -58320,7 +58945,7 @@ func (self *Program) SMADDL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMADDL")
 }
 
-// SMAX instruction have 5 forms from 3 categories:
+// SMAX instruction have 5 forms across 3 categories:
 //
 // 1. Signed Maximum (vector)
 //
@@ -58379,7 +59004,7 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // SMAX  <Wd>, <Wn>, #<simm>
-    if isWr(v0) && isWr(v1) && isImm8(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, -128, 127) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -58388,7 +59013,7 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(minmax_imm(0, 0, 0, 0, sa_simm, sa_wn, sa_wd))
     }
     // SMAX  <Xd>, <Xn>, #<simm>
-    if isXr(v0) && isXr(v1) && isImm8(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, -128, 127) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -58419,7 +59044,7 @@ func (self *Program) SMAX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMAX")
 }
 
-// SMAXP instruction have one single form from one single category:
+// SMAXP instruction have one single form across one single category:
 //
 // 1. Signed Maximum Pairwise
 //
@@ -58466,7 +59091,7 @@ func (self *Program) SMAXP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMAXP")
 }
 
-// SMAXV instruction have one single form from one single category:
+// SMAXV instruction have one single form across one single category:
 //
 // 1. Signed Maximum across Vector
 //
@@ -58512,7 +59137,7 @@ func (self *Program) SMAXV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMAXV")
 }
 
-// SMC instruction have one single form from one single category:
+// SMC instruction have one single form across one single category:
 //
 // 1. Secure Monitor Call
 //
@@ -58536,7 +59161,7 @@ func (self *Program) SMAXV(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) SMC(v0 interface{}) *Instruction {
     p := self.alloc("SMC", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 3))
@@ -58545,7 +59170,7 @@ func (self *Program) SMC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMC")
 }
 
-// SMIN instruction have 5 forms from 3 categories:
+// SMIN instruction have 5 forms across 3 categories:
 //
 // 1. Signed Minimum (vector)
 //
@@ -58604,7 +59229,7 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 0, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // SMIN  <Wd>, <Wn>, #<simm>
-    if isWr(v0) && isWr(v1) && isImm8(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, -128, 127) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -58613,7 +59238,7 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(minmax_imm(0, 0, 0, 2, sa_simm, sa_wn, sa_wd))
     }
     // SMIN  <Xd>, <Xn>, #<simm>
-    if isXr(v0) && isXr(v1) && isImm8(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, -128, 127) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -58644,7 +59269,7 @@ func (self *Program) SMIN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMIN")
 }
 
-// SMINP instruction have one single form from one single category:
+// SMINP instruction have one single form across one single category:
 //
 // 1. Signed Minimum Pairwise
 //
@@ -58691,7 +59316,7 @@ func (self *Program) SMINP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMINP")
 }
 
-// SMINV instruction have one single form from one single category:
+// SMINV instruction have one single form across one single category:
 //
 // 1. Signed Minimum across Vector
 //
@@ -58737,7 +59362,7 @@ func (self *Program) SMINV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMINV")
 }
 
-// SMLAL instruction have 2 forms from 2 categories:
+// SMLAL instruction have 2 forms across 2 categories:
 //
 // 1. Signed Multiply-Add Long (vector, by element)
 //
@@ -58872,7 +59497,7 @@ func (self *Program) SMLAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMLAL")
 }
 
-// SMLAL2 instruction have 2 forms from 2 categories:
+// SMLAL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed Multiply-Add Long (vector, by element)
 //
@@ -59007,7 +59632,7 @@ func (self *Program) SMLAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMLAL2")
 }
 
-// SMLSL instruction have 2 forms from 2 categories:
+// SMLSL instruction have 2 forms across 2 categories:
 //
 // 1. Signed Multiply-Subtract Long (vector, by element)
 //
@@ -59142,7 +59767,7 @@ func (self *Program) SMLSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMLSL")
 }
 
-// SMLSL2 instruction have 2 forms from 2 categories:
+// SMLSL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed Multiply-Subtract Long (vector, by element)
 //
@@ -59277,7 +59902,7 @@ func (self *Program) SMLSL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMLSL2")
 }
 
-// SMMLA instruction have one single form from one single category:
+// SMMLA instruction have one single form across one single category:
 //
 // 1. Signed 8-bit integer matrix multiply-accumulate (vector)
 //
@@ -59308,7 +59933,7 @@ func (self *Program) SMMLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMMLA")
 }
 
-// SMNEGL instruction have one single form from one single category:
+// SMNEGL instruction have one single form across one single category:
 //
 // 1. Signed Multiply-Negate Long
 //
@@ -59330,7 +59955,7 @@ func (self *Program) SMNEGL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMNEGL")
 }
 
-// SMOV instruction have 2 forms from one single category:
+// SMOV instruction have 2 forms across one single category:
 //
 // 1. Signed Move vector element to general-purpose register
 //
@@ -59401,7 +60026,7 @@ func (self *Program) SMOV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMOV")
 }
 
-// SMSTART instruction have one single form from one single category:
+// SMSTART instruction have one single form across one single category:
 //
 // 1. Enables access to Streaming SVE mode and SME architectural state
 //
@@ -59436,7 +60061,7 @@ func (self *Program) SMSTART(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMSTART")
 }
 
-// SMSTOP instruction have one single form from one single category:
+// SMSTOP instruction have one single form across one single category:
 //
 // 1. Disables access to Streaming SVE mode and SME architectural state
 //
@@ -59471,7 +60096,7 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMSTOP")
 }
 
-// SMSUBL instruction have one single form from one single category:
+// SMSUBL instruction have one single form across one single category:
 //
 // 1. Signed Multiply-Subtract Long
 //
@@ -59495,7 +60120,7 @@ func (self *Program) SMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMSUBL")
 }
 
-// SMULH instruction have one single form from one single category:
+// SMULH instruction have one single form across one single category:
 //
 // 1. Signed Multiply High
 //
@@ -59517,7 +60142,7 @@ func (self *Program) SMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMULH")
 }
 
-// SMULL instruction have 3 forms from 3 categories:
+// SMULL instruction have 3 forms across 3 categories:
 //
 // 1. Signed Multiply Long
 //
@@ -59669,7 +60294,7 @@ func (self *Program) SMULL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMULL")
 }
 
-// SMULL2 instruction have 2 forms from 2 categories:
+// SMULL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed Multiply Long (vector, by element)
 //
@@ -59806,7 +60431,7 @@ func (self *Program) SMULL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SMULL2")
 }
 
-// SQABS instruction have 2 forms from one single category:
+// SQABS instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Absolute value
 //
@@ -59869,7 +60494,7 @@ func (self *Program) SQABS(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQABS")
 }
 
-// SQADD instruction have 2 forms from one single category:
+// SQADD instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Add
 //
@@ -59936,7 +60561,7 @@ func (self *Program) SQADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQADD")
 }
 
-// SQDMLAL instruction have 4 forms from 2 categories:
+// SQDMLAL instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply-Add Long (by element)
 //
@@ -60143,7 +60768,7 @@ func (self *Program) SQDMLAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMLAL")
 }
 
-// SQDMLAL2 instruction have 2 forms from 2 categories:
+// SQDMLAL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply-Add Long (by element)
 //
@@ -60282,7 +60907,7 @@ func (self *Program) SQDMLAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMLAL2")
 }
 
-// SQDMLSL instruction have 4 forms from 2 categories:
+// SQDMLSL instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply-Subtract Long (by element)
 //
@@ -60490,7 +61115,7 @@ func (self *Program) SQDMLSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMLSL")
 }
 
-// SQDMLSL2 instruction have 2 forms from 2 categories:
+// SQDMLSL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply-Subtract Long (by element)
 //
@@ -60630,7 +61255,7 @@ func (self *Program) SQDMLSL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMLSL2")
 }
 
-// SQDMULH instruction have 4 forms from 2 categories:
+// SQDMULH instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply returning High half (by element)
 //
@@ -60795,7 +61420,7 @@ func (self *Program) SQDMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMULH")
 }
 
-// SQDMULL instruction have 4 forms from 2 categories:
+// SQDMULL instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply Long (by element)
 //
@@ -61000,7 +61625,7 @@ func (self *Program) SQDMULL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMULL")
 }
 
-// SQDMULL2 instruction have 2 forms from 2 categories:
+// SQDMULL2 instruction have 2 forms across 2 categories:
 //
 // 1. Signed saturating Doubling Multiply Long (by element)
 //
@@ -61137,7 +61762,7 @@ func (self *Program) SQDMULL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQDMULL2")
 }
 
-// SQNEG instruction have 2 forms from one single category:
+// SQNEG instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Negate
 //
@@ -61200,7 +61825,7 @@ func (self *Program) SQNEG(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQNEG")
 }
 
-// SQRDMLAH instruction have 4 forms from 2 categories:
+// SQRDMLAH instruction have 4 forms across 2 categories:
 //
 // 1. Signed Saturating Rounding Doubling Multiply Accumulate returning High Half
 //    (by element)
@@ -61372,7 +61997,7 @@ func (self *Program) SQRDMLAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRDMLAH")
 }
 
-// SQRDMLSH instruction have 4 forms from 2 categories:
+// SQRDMLSH instruction have 4 forms across 2 categories:
 //
 // 1. Signed Saturating Rounding Doubling Multiply Subtract returning High Half (by
 //    element)
@@ -61544,7 +62169,7 @@ func (self *Program) SQRDMLSH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRDMLSH")
 }
 
-// SQRDMULH instruction have 4 forms from 2 categories:
+// SQRDMULH instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Rounding Doubling Multiply returning High half (by element)
 //
@@ -61712,7 +62337,7 @@ func (self *Program) SQRDMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRDMULH")
 }
 
-// SQRSHL instruction have 2 forms from one single category:
+// SQRSHL instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Rounding Shift Left (register)
 //
@@ -61784,7 +62409,7 @@ func (self *Program) SQRSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRSHL")
 }
 
-// SQRSHRN instruction have 2 forms from one single category:
+// SQRSHRN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Rounded Shift Right Narrow (immediate)
 //
@@ -61922,7 +62547,7 @@ func (self *Program) SQRSHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRSHRN")
 }
 
-// SQRSHRN2 instruction have one single form from one single category:
+// SQRSHRN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating Rounded Shift Right Narrow (immediate)
 //
@@ -62012,7 +62637,7 @@ func (self *Program) SQRSHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRSHRN2")
 }
 
-// SQRSHRUN instruction have 2 forms from one single category:
+// SQRSHRUN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Rounded Shift Right Unsigned Narrow (immediate)
 //
@@ -62148,7 +62773,7 @@ func (self *Program) SQRSHRUN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRSHRUN")
 }
 
-// SQRSHRUN2 instruction have one single form from one single category:
+// SQRSHRUN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating Rounded Shift Right Unsigned Narrow (immediate)
 //
@@ -62236,7 +62861,7 @@ func (self *Program) SQRSHRUN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQRSHRUN2")
 }
 
-// SQSHL instruction have 4 forms from 2 categories:
+// SQSHL instruction have 4 forms across 2 categories:
 //
 // 1. Signed saturating Shift Left (immediate)
 //
@@ -62405,7 +63030,7 @@ func (self *Program) SQSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHL")
 }
 
-// SQSHLU instruction have 2 forms from one single category:
+// SQSHLU instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Shift Left Unsigned (immediate)
 //
@@ -62510,7 +63135,7 @@ func (self *Program) SQSHLU(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHLU")
 }
 
-// SQSHRN instruction have 2 forms from one single category:
+// SQSHRN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Shift Right Narrow (immediate)
 //
@@ -62648,7 +63273,7 @@ func (self *Program) SQSHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHRN")
 }
 
-// SQSHRN2 instruction have one single form from one single category:
+// SQSHRN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating Shift Right Narrow (immediate)
 //
@@ -62738,7 +63363,7 @@ func (self *Program) SQSHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHRN2")
 }
 
-// SQSHRUN instruction have 2 forms from one single category:
+// SQSHRUN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Shift Right Unsigned Narrow (immediate)
 //
@@ -62874,7 +63499,7 @@ func (self *Program) SQSHRUN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHRUN")
 }
 
-// SQSHRUN2 instruction have one single form from one single category:
+// SQSHRUN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating Shift Right Unsigned Narrow (immediate)
 //
@@ -62962,7 +63587,7 @@ func (self *Program) SQSHRUN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSHRUN2")
 }
 
-// SQSUB instruction have 2 forms from one single category:
+// SQSUB instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Subtract
 //
@@ -63030,7 +63655,7 @@ func (self *Program) SQSUB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQSUB")
 }
 
-// SQXTN instruction have 2 forms from one single category:
+// SQXTN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating extract Narrow
 //
@@ -63120,7 +63745,7 @@ func (self *Program) SQXTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQXTN")
 }
 
-// SQXTN2 instruction have one single form from one single category:
+// SQXTN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating extract Narrow
 //
@@ -63183,7 +63808,7 @@ func (self *Program) SQXTN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQXTN2")
 }
 
-// SQXTUN instruction have 2 forms from one single category:
+// SQXTUN instruction have 2 forms across one single category:
 //
 // 1. Signed saturating extract Unsigned Narrow
 //
@@ -63272,7 +63897,7 @@ func (self *Program) SQXTUN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQXTUN")
 }
 
-// SQXTUN2 instruction have one single form from one single category:
+// SQXTUN2 instruction have one single form across one single category:
 //
 // 1. Signed saturating extract Unsigned Narrow
 //
@@ -63334,7 +63959,7 @@ func (self *Program) SQXTUN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SQXTUN2")
 }
 
-// SRHADD instruction have one single form from one single category:
+// SRHADD instruction have one single form across one single category:
 //
 // 1. Signed Rounding Halving Add
 //
@@ -63381,7 +64006,7 @@ func (self *Program) SRHADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SRHADD")
 }
 
-// SRI instruction have 2 forms from one single category:
+// SRI instruction have 2 forms across one single category:
 //
 // 1. Shift Right and Insert (immediate)
 //
@@ -63450,7 +64075,7 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 8, sa_vn, sa_vd))
     }
     // SRI  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -63479,7 +64104,7 @@ func (self *Program) SRI(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SRI")
 }
 
-// SRSHL instruction have 2 forms from one single category:
+// SRSHL instruction have 2 forms across one single category:
 //
 // 1. Signed Rounding Shift Left (register)
 //
@@ -63546,7 +64171,7 @@ func (self *Program) SRSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SRSHL")
 }
 
-// SRSHR instruction have 2 forms from one single category:
+// SRSHR instruction have 2 forms across one single category:
 //
 // 1. Signed Rounding Shift Right (immediate)
 //
@@ -63611,7 +64236,7 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
     }
     // SRSHR  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -63640,7 +64265,7 @@ func (self *Program) SRSHR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SRSHR")
 }
 
-// SRSRA instruction have 2 forms from one single category:
+// SRSRA instruction have 2 forms across one single category:
 //
 // 1. Signed Rounding Shift Right and Accumulate (immediate)
 //
@@ -63706,7 +64331,7 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
     }
     // SRSRA  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -63735,7 +64360,7 @@ func (self *Program) SRSRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SRSRA")
 }
 
-// SSBB instruction have one single form from one single category:
+// SSBB instruction have one single form across one single category:
 //
 // 1. Speculative Store Bypass Barrier
 //
@@ -63752,7 +64377,7 @@ func (self *Program) SSBB() *Instruction {
     return p.setins(barriers(0, 4, 31))
 }
 
-// SSHL instruction have 2 forms from one single category:
+// SSHL instruction have 2 forms across one single category:
 //
 // 1. Signed Shift Left (register)
 //
@@ -63819,7 +64444,7 @@ func (self *Program) SSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSHL")
 }
 
-// SSHLL instruction have one single form from one single category:
+// SSHLL instruction have one single form across one single category:
 //
 // 1. Signed Shift Left Long (immediate)
 //
@@ -63904,7 +64529,7 @@ func (self *Program) SSHLL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSHLL")
 }
 
-// SSHLL2 instruction have one single form from one single category:
+// SSHLL2 instruction have one single form across one single category:
 //
 // 1. Signed Shift Left Long (immediate)
 //
@@ -63989,7 +64614,7 @@ func (self *Program) SSHLL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSHLL2")
 }
 
-// SSHR instruction have 2 forms from one single category:
+// SSHR instruction have 2 forms across one single category:
 //
 // 1. Signed Shift Right (immediate)
 //
@@ -64054,7 +64679,7 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
     }
     // SSHR  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -64083,7 +64708,7 @@ func (self *Program) SSHR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSHR")
 }
 
-// SSRA instruction have 2 forms from one single category:
+// SSRA instruction have 2 forms across one single category:
 //
 // 1. Signed Shift Right and Accumulate (immediate)
 //
@@ -64148,7 +64773,7 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 0, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
     }
     // SSRA  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -64177,7 +64802,7 @@ func (self *Program) SSRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSRA")
 }
 
-// SSUBL instruction have one single form from one single category:
+// SSUBL instruction have one single form across one single category:
 //
 // 1. Signed Subtract Long
 //
@@ -64240,7 +64865,7 @@ func (self *Program) SSUBL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSUBL")
 }
 
-// SSUBL2 instruction have one single form from one single category:
+// SSUBL2 instruction have one single form across one single category:
 //
 // 1. Signed Subtract Long
 //
@@ -64303,7 +64928,7 @@ func (self *Program) SSUBL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSUBL2")
 }
 
-// SSUBW instruction have one single form from one single category:
+// SSUBW instruction have one single form across one single category:
 //
 // 1. Signed Subtract Wide
 //
@@ -64365,7 +64990,7 @@ func (self *Program) SSUBW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSUBW")
 }
 
-// SSUBW2 instruction have one single form from one single category:
+// SSUBW2 instruction have one single form across one single category:
 //
 // 1. Signed Subtract Wide
 //
@@ -64427,7 +65052,7 @@ func (self *Program) SSUBW2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SSUBW2")
 }
 
-// ST1 instruction have 24 forms from 2 categories:
+// ST1 instruction have 24 forms across 2 categories:
 //
 // 1. Store multiple single-element structures from one, two, three, or four
 //    registers
@@ -64963,7 +65588,7 @@ func (self *Program) ST1(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST1")
 }
 
-// ST2 instruction have 15 forms from 2 categories:
+// ST2 instruction have 15 forms across 2 categories:
 //
 // 1. Store multiple 2-element structures from two registers
 //
@@ -65300,7 +65925,7 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST2")
 }
 
-// ST2G instruction have 3 forms from one single category:
+// ST2G instruction have 3 forms across one single category:
 //
 // 1. Store Allocation Tags
 //
@@ -65318,7 +65943,13 @@ func (self *Program) ST2(v0, v1 interface{}) *Instruction {
 func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("ST2G", 2, asm.Operands { v0, v1 })
     // ST2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -65331,7 +65962,13 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(2, sa_simm, 2, Rn, Rt))
     }
     // ST2G  <Xt|SP>, [<Xn|SP>], #<simm>
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PostIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -65344,7 +65981,13 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(2, sa_simm, 1, Rn, Rt))
     }
     // ST2G  <Xt|SP>, [<Xn|SP>, #<simm>]!
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -65361,7 +66004,7 @@ func (self *Program) ST2G(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST2G")
 }
 
-// ST3 instruction have 15 forms from 2 categories:
+// ST3 instruction have 15 forms across 2 categories:
 //
 // 1. Store multiple 3-element structures from three registers
 //
@@ -65698,7 +66341,7 @@ func (self *Program) ST3(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST3")
 }
 
-// ST4 instruction have 15 forms from 2 categories:
+// ST4 instruction have 15 forms across 2 categories:
 //
 // 1. Store multiple 4-element structures from four registers
 //
@@ -66035,7 +66678,7 @@ func (self *Program) ST4(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST4")
 }
 
-// ST64B instruction have one single form from one single category:
+// ST64B instruction have one single form across one single category:
 //
 // 1. Single-copy Atomic 64-byte Store without Return
 //
@@ -66063,7 +66706,7 @@ func (self *Program) ST64B(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST64B")
 }
 
-// ST64BV instruction have one single form from one single category:
+// ST64BV instruction have one single form across one single category:
 //
 // 1. Single-copy Atomic 64-byte Store with Return
 //
@@ -66094,7 +66737,7 @@ func (self *Program) ST64BV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST64BV")
 }
 
-// ST64BV0 instruction have one single form from one single category:
+// ST64BV0 instruction have one single form across one single category:
 //
 // 1. Single-copy Atomic 64-byte EL0 Store with Return
 //
@@ -66126,7 +66769,7 @@ func (self *Program) ST64BV0(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ST64BV0")
 }
 
-// STADD instruction have 2 forms from one single category:
+// STADD instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory, without return
 //
@@ -66166,7 +66809,7 @@ func (self *Program) STADD(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADD")
 }
 
-// STADDB instruction have one single form from one single category:
+// STADDB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory, without return
 //
@@ -66195,7 +66838,7 @@ func (self *Program) STADDB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADDB")
 }
 
-// STADDH instruction have one single form from one single category:
+// STADDH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory, without return
 //
@@ -66224,7 +66867,7 @@ func (self *Program) STADDH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADDH")
 }
 
-// STADDL instruction have 2 forms from one single category:
+// STADDL instruction have 2 forms across one single category:
 //
 // 1. Atomic add on word or doubleword in memory, without return
 //
@@ -66264,7 +66907,7 @@ func (self *Program) STADDL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADDL")
 }
 
-// STADDLB instruction have one single form from one single category:
+// STADDLB instruction have one single form across one single category:
 //
 // 1. Atomic add on byte in memory, without return
 //
@@ -66293,7 +66936,7 @@ func (self *Program) STADDLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADDLB")
 }
 
-// STADDLH instruction have one single form from one single category:
+// STADDLH instruction have one single form across one single category:
 //
 // 1. Atomic add on halfword in memory, without return
 //
@@ -66322,7 +66965,7 @@ func (self *Program) STADDLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STADDLH")
 }
 
-// STCLR instruction have 2 forms from one single category:
+// STCLR instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory, without return
 //
@@ -66363,7 +67006,7 @@ func (self *Program) STCLR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLR")
 }
 
-// STCLRB instruction have one single form from one single category:
+// STCLRB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory, without return
 //
@@ -66392,7 +67035,7 @@ func (self *Program) STCLRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLRB")
 }
 
-// STCLRH instruction have one single form from one single category:
+// STCLRH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory, without return
 //
@@ -66421,7 +67064,7 @@ func (self *Program) STCLRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLRH")
 }
 
-// STCLRL instruction have 2 forms from one single category:
+// STCLRL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit clear on word or doubleword in memory, without return
 //
@@ -66462,7 +67105,7 @@ func (self *Program) STCLRL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLRL")
 }
 
-// STCLRLB instruction have one single form from one single category:
+// STCLRLB instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on byte in memory, without return
 //
@@ -66491,7 +67134,7 @@ func (self *Program) STCLRLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLRLB")
 }
 
-// STCLRLH instruction have one single form from one single category:
+// STCLRLH instruction have one single form across one single category:
 //
 // 1. Atomic bit clear on halfword in memory, without return
 //
@@ -66520,7 +67163,7 @@ func (self *Program) STCLRLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STCLRLH")
 }
 
-// STEOR instruction have 2 forms from one single category:
+// STEOR instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory, without return
 //
@@ -66560,7 +67203,7 @@ func (self *Program) STEOR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEOR")
 }
 
-// STEORB instruction have one single form from one single category:
+// STEORB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory, without return
 //
@@ -66589,7 +67232,7 @@ func (self *Program) STEORB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEORB")
 }
 
-// STEORH instruction have one single form from one single category:
+// STEORH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory, without return
 //
@@ -66618,7 +67261,7 @@ func (self *Program) STEORH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEORH")
 }
 
-// STEORL instruction have 2 forms from one single category:
+// STEORL instruction have 2 forms across one single category:
 //
 // 1. Atomic Exclusive-OR on word or doubleword in memory, without return
 //
@@ -66658,7 +67301,7 @@ func (self *Program) STEORL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEORL")
 }
 
-// STEORLB instruction have one single form from one single category:
+// STEORLB instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on byte in memory, without return
 //
@@ -66687,7 +67330,7 @@ func (self *Program) STEORLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEORLB")
 }
 
-// STEORLH instruction have one single form from one single category:
+// STEORLH instruction have one single form across one single category:
 //
 // 1. Atomic Exclusive-OR on halfword in memory, without return
 //
@@ -66716,7 +67359,7 @@ func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STEORLH")
 }
 
-// STG instruction have 3 forms from one single category:
+// STG instruction have 3 forms across one single category:
 //
 // 1. Store Allocation Tag
 //
@@ -66734,7 +67377,13 @@ func (self *Program) STEORLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STG", 2, asm.Operands { v0, v1 })
     // STG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -66747,7 +67396,13 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(0, sa_simm, 2, Rn, Rt))
     }
     // STG  <Xt|SP>, [<Xn|SP>], #<simm>
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PostIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -66760,7 +67415,13 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(0, sa_simm, 1, Rn, Rt))
     }
     // STG  <Xt|SP>, [<Xn|SP>, #<simm>]!
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -66777,7 +67438,7 @@ func (self *Program) STG(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STG")
 }
 
-// STGM instruction have one single form from one single category:
+// STGM instruction have one single form across one single category:
 //
 // 1. Store Tag Multiple
 //
@@ -66808,7 +67469,7 @@ func (self *Program) STGM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STGM")
 }
 
-// STGP instruction have 3 forms from one single category:
+// STGP instruction have 3 forms across one single category:
 //
 // 1. Store Allocation Tag and Pair of registers
 //
@@ -66827,7 +67488,14 @@ func (self *Program) STGM(v0, v1 interface{}) *Instruction {
 func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STGP", 3, asm.Operands { v0, v1, v2 })
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -66845,7 +67513,14 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_off(1, 0, 0, imm7, Rt2, Rn, Rt))
     }
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PostIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -66863,7 +67538,14 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
         return p.setins(ldstpair_post(1, 0, 0, imm7, Rt2, Rn, Rt))
     }
     // STGP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PreIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
@@ -66885,7 +67567,7 @@ func (self *Program) STGP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STGP")
 }
 
-// STILP instruction have 4 forms from one single category:
+// STILP instruction have 4 forms across one single category:
 //
 // 1. Store-Release ordered Pair of registers
 //
@@ -66981,7 +67663,7 @@ func (self *Program) STILP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STILP")
 }
 
-// STL1 instruction have one single form from one single category:
+// STL1 instruction have one single form across one single category:
 //
 // 1. Store-Release a single-element structure from one lane of one register
 //
@@ -67018,7 +67700,7 @@ func (self *Program) STL1(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STL1")
 }
 
-// STLLR instruction have 2 forms from one single category:
+// STLLR instruction have 2 forms across one single category:
 //
 // 1. Store LORelease Register
 //
@@ -67063,7 +67745,7 @@ func (self *Program) STLLR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLLR")
 }
 
-// STLLRB instruction have one single form from one single category:
+// STLLRB instruction have one single form across one single category:
 //
 // 1. Store LORelease Register Byte
 //
@@ -67092,7 +67774,7 @@ func (self *Program) STLLRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLLRB")
 }
 
-// STLLRH instruction have one single form from one single category:
+// STLLRH instruction have one single form across one single category:
 //
 // 1. Store LORelease Register Halfword
 //
@@ -67121,7 +67803,7 @@ func (self *Program) STLLRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLLRH")
 }
 
-// STLR instruction have 4 forms from one single category:
+// STLR instruction have 4 forms across one single category:
 //
 // 1. Store-Release Register
 //
@@ -67182,7 +67864,7 @@ func (self *Program) STLR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLR")
 }
 
-// STLRB instruction have one single form from one single category:
+// STLRB instruction have one single form across one single category:
 //
 // 1. Store-Release Register Byte
 //
@@ -67210,7 +67892,7 @@ func (self *Program) STLRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLRB")
 }
 
-// STLRH instruction have one single form from one single category:
+// STLRH instruction have one single form across one single category:
 //
 // 1. Store-Release Register Halfword
 //
@@ -67238,7 +67920,7 @@ func (self *Program) STLRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLRH")
 }
 
-// STLUR instruction have 7 forms from 2 categories:
+// STLUR instruction have 7 forms across 2 categories:
 //
 // 1. Store-Release SIMD&FP Register (unscaled offset)
 //
@@ -67276,7 +67958,12 @@ func (self *Program) STLRH(v0, v1 interface{}) *Instruction {
 func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLUR", 2, asm.Operands { v0, v1 })
     // STLUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
@@ -67285,7 +67972,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STLUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
@@ -67294,7 +67986,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(3, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STLUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
@@ -67303,7 +68000,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STLUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
@@ -67312,7 +68014,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(0, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STLUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC3)
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
@@ -67321,7 +68028,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_simd(2, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STLUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -67330,7 +68042,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldapstl_unscaled(2, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STLUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
@@ -67343,7 +68060,7 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLUR")
 }
 
-// STLURB instruction have one single form from one single category:
+// STLURB instruction have one single form across one single category:
 //
 // 1. Store-Release Register Byte (unscaled)
 //
@@ -67360,7 +68077,12 @@ func (self *Program) STLUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -67372,7 +68094,7 @@ func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLURB")
 }
 
-// STLURH instruction have one single form from one single category:
+// STLURH instruction have one single form across one single category:
 //
 // 1. Store-Release Register Halfword (unscaled)
 //
@@ -67389,7 +68111,12 @@ func (self *Program) STLURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STLURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STLURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_LRCPC2)
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
@@ -67401,7 +68128,7 @@ func (self *Program) STLURH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLURH")
 }
 
-// STLXP instruction have 2 forms from one single category:
+// STLXP instruction have 2 forms across one single category:
 //
 // 1. Store-Release Exclusive Pair of registers
 //
@@ -67462,7 +68189,7 @@ func (self *Program) STLXP(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLXP")
 }
 
-// STLXR instruction have 2 forms from one single category:
+// STLXR instruction have 2 forms across one single category:
 //
 // 1. Store-Release Exclusive Register
 //
@@ -67516,7 +68243,7 @@ func (self *Program) STLXR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLXR")
 }
 
-// STLXRB instruction have one single form from one single category:
+// STLXRB instruction have one single form across one single category:
 //
 // 1. Store-Release Exclusive Register Byte
 //
@@ -67553,7 +68280,7 @@ func (self *Program) STLXRB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLXRB")
 }
 
-// STLXRH instruction have one single form from one single category:
+// STLXRH instruction have one single form across one single category:
 //
 // 1. Store-Release Exclusive Register Halfword
 //
@@ -67590,7 +68317,7 @@ func (self *Program) STLXRH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STLXRH")
 }
 
-// STNP instruction have 5 forms from 2 categories:
+// STNP instruction have 5 forms across 2 categories:
 //
 // 1. Store Pair of SIMD&FP registers, with Non-temporal hint
 //
@@ -67624,48 +68351,83 @@ func (self *Program) STLXRH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STNP", 3, asm.Operands { v0, v1, v2 })
     // STNP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 8)
         return p.setins(ldstnapair_offs(1, 1, 0, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STNP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 16)
         return p.setins(ldstnapair_offs(2, 1, 0, sa_imm_1, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STNP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 4)
         return p.setins(ldstnapair_offs(0, 1, 0, sa_imm_2, sa_st2, sa_xn_sp, sa_st1))
     }
     // STNP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 4)
         return p.setins(ldstnapair_offs(0, 0, 0, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STNP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstnapair_offs(2, 0, 0, sa_imm_1, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // none of above
@@ -67673,7 +68435,7 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STNP")
 }
 
-// STP instruction have 15 forms from 2 categories:
+// STP instruction have 15 forms across 2 categories:
 //
 // 1. Store Pair of SIMD&FP registers
 //
@@ -67716,138 +68478,243 @@ func (self *Program) STNP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("STP", 3, asm.Operands { v0, v1, v2 })
     // STP  <Dt1>, <Dt2>, [<Xn|SP>{, #<imm>}]
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_off(1, 1, 0, sa_imm, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STP  <Dt1>, <Dt2>, [<Xn|SP>], #<imm>
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_post(1, 1, 0, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STP  <Dt1>, <Dt2>, [<Xn|SP>, #<imm>]!
-    if isDr(v0) && isDr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isDr(v0) &&
+       isDr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_dt1 := uint32(v0.(asm.Register).ID())
         sa_dt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_pre(1, 1, 0, sa_imm_1, sa_dt2, sa_xn_sp, sa_dt1))
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>{, #<imm>}]
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_off(2, 1, 0, sa_imm_2, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>], #<imm>
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_post(2, 1, 0, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STP  <Qt1>, <Qt2>, [<Xn|SP>, #<imm>]!
-    if isQr(v0) && isQr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isQr(v0) &&
+       isQr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -1024, 1008) &&
+       isMultipleOf(moffs(v2), 16) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_qt1 := uint32(v0.(asm.Register).ID())
         sa_qt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 16)
         return p.setins(ldstpair_pre(2, 1, 0, sa_imm_3, sa_qt2, sa_xn_sp, sa_qt1))
     }
     // STP  <St1>, <St2>, [<Xn|SP>{, #<imm>}]
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_4 := uint32(moffs(v2))
+        sa_imm_4 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_off(0, 1, 0, sa_imm_4, sa_st2, sa_xn_sp, sa_st1))
     }
     // STP  <St1>, <St2>, [<Xn|SP>], #<imm>
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PostIndex {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_5 := uint32(moffs(v2))
+        sa_imm_5 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_post(0, 1, 0, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // STP  <St1>, <St2>, [<Xn|SP>, #<imm>]!
-    if isSr(v0) && isSr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isSr(v0) &&
+       isSr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PreIndex {
         p.Domain = DomainFpSimd
         sa_st1 := uint32(v0.(asm.Register).ID())
         sa_st2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_5 := uint32(moffs(v2))
+        sa_imm_5 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_pre(0, 1, 0, sa_imm_5, sa_st2, sa_xn_sp, sa_st1))
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>{, #<imm>}]
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm := uint32(moffs(v2))
+        sa_imm := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_off(0, 0, 0, sa_imm, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>], #<imm>
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_post(0, 0, 0, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STP  <Wt1>, <Wt2>, [<Xn|SP>, #<imm>]!
-    if isWr(v0) && isWr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isWr(v0) &&
+       isWr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -256, 252) &&
+       isMultipleOf(moffs(v2), 4) &&
+       mext(v2) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt1 := uint32(v0.(asm.Register).ID())
         sa_wt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_1 := uint32(moffs(v2))
+        sa_imm_1 := uint32(moffs(v2) / 4)
         return p.setins(ldstpair_pre(0, 0, 0, sa_imm_1, sa_wt2, sa_xn_sp, sa_wt1))
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>{, #<imm>}]
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == Basic {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_2 := uint32(moffs(v2))
+        sa_imm_2 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_off(2, 0, 0, sa_imm_2, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>], #<imm>
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PostIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_post(2, 0, 0, sa_imm_3, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // STP  <Xt1>, <Xt2>, [<Xn|SP>, #<imm>]!
-    if isXr(v0) && isXr(v1) && isMem(v2) && isXrOrSP(mbase(v2)) && midx(v2) == nil && mext(v2) == PreIndex {
+    if isXr(v0) &&
+       isXr(v1) &&
+       isMem(v2) &&
+       isXrOrSP(mbase(v2)) &&
+       midx(v2) == nil &&
+       isInRange(moffs(v2), -512, 504) &&
+       isMultipleOf(moffs(v2), 8) &&
+       mext(v2) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt1 := uint32(v0.(asm.Register).ID())
         sa_xt2 := uint32(v1.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v2).ID())
-        sa_imm_3 := uint32(moffs(v2))
+        sa_imm_3 := uint32(moffs(v2) / 8)
         return p.setins(ldstpair_pre(2, 0, 0, sa_imm_3, sa_xt2, sa_xn_sp, sa_xt1))
     }
     // none of above
@@ -67855,7 +68722,7 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STP")
 }
 
-// STR instruction have 29 forms from 4 categories:
+// STR instruction have 29 forms across 4 categories:
 //
 // 1. Store SIMD&FP register (immediate offset)
 //
@@ -67932,7 +68799,12 @@ func (self *Program) STP(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STR", 2, asm.Operands { v0, v1 })
     // STR  <Bt>, [<Xn|SP>], #<simm>
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67940,7 +68812,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 1, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STR  <Bt>, [<Xn|SP>, #<simm>]!
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67948,7 +68825,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STR  <Bt>, [<Xn|SP>{, #<pimm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67956,7 +68838,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_pos(0, 1, 0, sa_pimm, sa_xn_sp, sa_bt))
     }
     // STR  <Dt>, [<Xn|SP>], #<simm>
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67964,7 +68851,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(3, 1, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STR  <Dt>, [<Xn|SP>, #<simm>]!
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67972,15 +68864,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 1, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STR  <Dt>, [<Xn|SP>{, #<pimm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 32760) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_1 := uint32(moffs(v1))
+        sa_pimm_1 := uint32(moffs(v1) / 8)
         return p.setins(ldst_pos(3, 1, 0, sa_pimm_1, sa_xn_sp, sa_dt))
     }
     // STR  <Ht>, [<Xn|SP>], #<simm>
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67988,7 +68891,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STR  <Ht>, [<Xn|SP>, #<simm>]!
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -67996,15 +68904,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STR  <Ht>, [<Xn|SP>{, #<pimm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_2 := uint32(moffs(v1))
+        sa_pimm_2 := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 1, 0, sa_pimm_2, sa_xn_sp, sa_ht))
     }
     // STR  <Qt>, [<Xn|SP>], #<simm>
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68012,7 +68931,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 1, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STR  <Qt>, [<Xn|SP>, #<simm>]!
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68020,15 +68944,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 1, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STR  <Qt>, [<Xn|SP>{, #<pimm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 65520) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_3 := uint32(moffs(v1))
+        sa_pimm_3 := uint32(moffs(v1) / 16)
         return p.setins(ldst_pos(0, 1, 2, sa_pimm_3, sa_xn_sp, sa_qt))
     }
     // STR  <St>, [<Xn|SP>], #<simm>
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68036,7 +68971,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(2, 1, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STR  <St>, [<Xn|SP>, #<simm>]!
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68044,15 +68984,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 1, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STR  <St>, [<Xn|SP>{, #<pimm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 16380) &&
+       isMultipleOf(moffs(v1), 4) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_4 := uint32(moffs(v1))
+        sa_pimm_4 := uint32(moffs(v1) / 4)
         return p.setins(ldst_pos(2, 1, 0, sa_pimm_4, sa_xn_sp, sa_st))
     }
     // STR  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68060,7 +69011,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STR  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68068,15 +69024,26 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STR  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 16380) &&
+       isMultipleOf(moffs(v1), 4) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 4)
         return p.setins(ldst_pos(2, 0, 0, sa_pimm, sa_xn_sp, sa_wt))
     }
     // STR  <Xt>, [<Xn|SP>], #<simm>
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68084,7 +69051,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(3, 0, 0, sa_simm, sa_xn_sp, sa_xt))
     }
     // STR  <Xt>, [<Xn|SP>, #<simm>]!
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68092,11 +69064,17 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(3, 0, 0, sa_simm, sa_xn_sp, sa_xt))
     }
     // STR  <Xt>, [<Xn|SP>{, #<pimm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 32760) &&
+       isMultipleOf(moffs(v1), 8) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm_1 := uint32(moffs(v1))
+        sa_pimm_1 := uint32(moffs(v1) / 8)
         return p.setins(ldst_pos(3, 0, 0, sa_pimm_1, sa_xn_sp, sa_xt))
     }
     // STR  <Bt>, [<Xn|SP>, <Xm>{, LSL <amount>}]
@@ -68332,7 +69310,7 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STR")
 }
 
-// STRB instruction have 5 forms from 2 categories:
+// STRB instruction have 5 forms across 2 categories:
 //
 // 1. Store Register Byte (immediate)
 //
@@ -68366,7 +69344,12 @@ func (self *Program) STR(v0, v1 interface{}) *Instruction {
 func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STRB", 2, asm.Operands { v0, v1 })
     // STRB  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68374,7 +69357,12 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(0, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRB  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68382,7 +69370,12 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(0, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRB  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 4095) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68430,7 +69423,7 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STRB")
 }
 
-// STRH instruction have 4 forms from 2 categories:
+// STRH instruction have 4 forms across 2 categories:
 //
 // 1. Store Register Halfword (immediate)
 //
@@ -68463,7 +69456,12 @@ func (self *Program) STRB(v0, v1 interface{}) *Instruction {
 func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STRH", 2, asm.Operands { v0, v1 })
     // STRH  <Wt>, [<Xn|SP>], #<simm>
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PostIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68471,7 +69469,12 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpost(1, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRH  <Wt>, [<Xn|SP>, #<simm>]!
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == PreIndex {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -68479,11 +69482,17 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_immpre(1, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STRH  <Wt>, [<Xn|SP>{, #<pimm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), 0, 8190) &&
+       isMultipleOf(moffs(v1), 2) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
-        sa_pimm := uint32(moffs(v1))
+        sa_pimm := uint32(moffs(v1) / 2)
         return p.setins(ldst_pos(1, 0, 0, sa_pimm, sa_xn_sp, sa_wt))
     }
     // STRH  <Wt>, [<Xn|SP>, (<Wm>|<Xm>){, <extend> {<amount>}}]
@@ -68523,7 +69532,7 @@ func (self *Program) STRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STRH")
 }
 
-// STSET instruction have 2 forms from one single category:
+// STSET instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory, without return
 //
@@ -68563,7 +69572,7 @@ func (self *Program) STSET(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSET")
 }
 
-// STSETB instruction have one single form from one single category:
+// STSETB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory, without return
 //
@@ -68592,7 +69601,7 @@ func (self *Program) STSETB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSETB")
 }
 
-// STSETH instruction have one single form from one single category:
+// STSETH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory, without return
 //
@@ -68621,7 +69630,7 @@ func (self *Program) STSETH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSETH")
 }
 
-// STSETL instruction have 2 forms from one single category:
+// STSETL instruction have 2 forms across one single category:
 //
 // 1. Atomic bit set on word or doubleword in memory, without return
 //
@@ -68661,7 +69670,7 @@ func (self *Program) STSETL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSETL")
 }
 
-// STSETLB instruction have one single form from one single category:
+// STSETLB instruction have one single form across one single category:
 //
 // 1. Atomic bit set on byte in memory, without return
 //
@@ -68690,7 +69699,7 @@ func (self *Program) STSETLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSETLB")
 }
 
-// STSETLH instruction have one single form from one single category:
+// STSETLH instruction have one single form across one single category:
 //
 // 1. Atomic bit set on halfword in memory, without return
 //
@@ -68719,7 +69728,7 @@ func (self *Program) STSETLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSETLH")
 }
 
-// STSMAX instruction have 2 forms from one single category:
+// STSMAX instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory, without return
 //
@@ -68760,7 +69769,7 @@ func (self *Program) STSMAX(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAX")
 }
 
-// STSMAXB instruction have one single form from one single category:
+// STSMAXB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory, without return
 //
@@ -68789,7 +69798,7 @@ func (self *Program) STSMAXB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAXB")
 }
 
-// STSMAXH instruction have one single form from one single category:
+// STSMAXH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory, without return
 //
@@ -68819,7 +69828,7 @@ func (self *Program) STSMAXH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAXH")
 }
 
-// STSMAXL instruction have 2 forms from one single category:
+// STSMAXL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed maximum on word or doubleword in memory, without return
 //
@@ -68860,7 +69869,7 @@ func (self *Program) STSMAXL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAXL")
 }
 
-// STSMAXLB instruction have one single form from one single category:
+// STSMAXLB instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on byte in memory, without return
 //
@@ -68889,7 +69898,7 @@ func (self *Program) STSMAXLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAXLB")
 }
 
-// STSMAXLH instruction have one single form from one single category:
+// STSMAXLH instruction have one single form across one single category:
 //
 // 1. Atomic signed maximum on halfword in memory, without return
 //
@@ -68919,7 +69928,7 @@ func (self *Program) STSMAXLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMAXLH")
 }
 
-// STSMIN instruction have 2 forms from one single category:
+// STSMIN instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory, without return
 //
@@ -68960,7 +69969,7 @@ func (self *Program) STSMIN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMIN")
 }
 
-// STSMINB instruction have one single form from one single category:
+// STSMINB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory, without return
 //
@@ -68989,7 +69998,7 @@ func (self *Program) STSMINB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMINB")
 }
 
-// STSMINH instruction have one single form from one single category:
+// STSMINH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory, without return
 //
@@ -69019,7 +70028,7 @@ func (self *Program) STSMINH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMINH")
 }
 
-// STSMINL instruction have 2 forms from one single category:
+// STSMINL instruction have 2 forms across one single category:
 //
 // 1. Atomic signed minimum on word or doubleword in memory, without return
 //
@@ -69060,7 +70069,7 @@ func (self *Program) STSMINL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMINL")
 }
 
-// STSMINLB instruction have one single form from one single category:
+// STSMINLB instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on byte in memory, without return
 //
@@ -69089,7 +70098,7 @@ func (self *Program) STSMINLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMINLB")
 }
 
-// STSMINLH instruction have one single form from one single category:
+// STSMINLH instruction have one single form across one single category:
 //
 // 1. Atomic signed minimum on halfword in memory, without return
 //
@@ -69119,7 +70128,7 @@ func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STSMINLH")
 }
 
-// STTR instruction have 2 forms from one single category:
+// STTR instruction have 2 forms across one single category:
 //
 // 1. Store Register (unprivileged)
 //
@@ -69144,7 +70153,12 @@ func (self *Program) STSMINLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STTR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTR", 2, asm.Operands { v0, v1 })
     // STTR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69152,7 +70166,12 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unpriv(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STTR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69164,7 +70183,7 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STTR")
 }
 
-// STTRB instruction have one single form from one single category:
+// STTRB instruction have one single form across one single category:
 //
 // 1. Store Register Byte (unprivileged)
 //
@@ -69187,7 +70206,12 @@ func (self *Program) STTR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69198,7 +70222,7 @@ func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STTRB")
 }
 
-// STTRH instruction have one single form from one single category:
+// STTRH instruction have one single form across one single category:
 //
 // 1. Store Register Halfword (unprivileged)
 //
@@ -69221,7 +70245,12 @@ func (self *Program) STTRB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STTRH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69232,7 +70261,7 @@ func (self *Program) STTRH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STTRH")
 }
 
-// STUMAX instruction have 2 forms from one single category:
+// STUMAX instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory, without return
 //
@@ -69273,7 +70302,7 @@ func (self *Program) STUMAX(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAX")
 }
 
-// STUMAXB instruction have one single form from one single category:
+// STUMAXB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory, without return
 //
@@ -69302,7 +70331,7 @@ func (self *Program) STUMAXB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAXB")
 }
 
-// STUMAXH instruction have one single form from one single category:
+// STUMAXH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory, without return
 //
@@ -69332,7 +70361,7 @@ func (self *Program) STUMAXH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAXH")
 }
 
-// STUMAXL instruction have 2 forms from one single category:
+// STUMAXL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned maximum on word or doubleword in memory, without return
 //
@@ -69373,7 +70402,7 @@ func (self *Program) STUMAXL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAXL")
 }
 
-// STUMAXLB instruction have one single form from one single category:
+// STUMAXLB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on byte in memory, without return
 //
@@ -69402,7 +70431,7 @@ func (self *Program) STUMAXLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAXLB")
 }
 
-// STUMAXLH instruction have one single form from one single category:
+// STUMAXLH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned maximum on halfword in memory, without return
 //
@@ -69432,7 +70461,7 @@ func (self *Program) STUMAXLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMAXLH")
 }
 
-// STUMIN instruction have 2 forms from one single category:
+// STUMIN instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory, without return
 //
@@ -69473,7 +70502,7 @@ func (self *Program) STUMIN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMIN")
 }
 
-// STUMINB instruction have one single form from one single category:
+// STUMINB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory, without return
 //
@@ -69503,7 +70532,7 @@ func (self *Program) STUMINB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMINB")
 }
 
-// STUMINH instruction have one single form from one single category:
+// STUMINH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory, without return
 //
@@ -69533,7 +70562,7 @@ func (self *Program) STUMINH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMINH")
 }
 
-// STUMINL instruction have 2 forms from one single category:
+// STUMINL instruction have 2 forms across one single category:
 //
 // 1. Atomic unsigned minimum on word or doubleword in memory, without return
 //
@@ -69574,7 +70603,7 @@ func (self *Program) STUMINL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMINL")
 }
 
-// STUMINLB instruction have one single form from one single category:
+// STUMINLB instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on byte in memory, without return
 //
@@ -69604,7 +70633,7 @@ func (self *Program) STUMINLB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMINLB")
 }
 
-// STUMINLH instruction have one single form from one single category:
+// STUMINLH instruction have one single form across one single category:
 //
 // 1. Atomic unsigned minimum on halfword in memory, without return
 //
@@ -69634,7 +70663,7 @@ func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUMINLH")
 }
 
-// STUR instruction have 7 forms from 2 categories:
+// STUR instruction have 7 forms across 2 categories:
 //
 // 1. Store SIMD&FP register (unscaled offset)
 //
@@ -69665,7 +70694,12 @@ func (self *Program) STUMINLH(v0, v1 interface{}) *Instruction {
 func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     p := self.alloc("STUR", 2, asm.Operands { v0, v1 })
     // STUR  <Bt>, [<Xn|SP>{, #<simm>}]
-    if isBr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isBr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_bt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69673,7 +70707,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 0, sa_simm, sa_xn_sp, sa_bt))
     }
     // STUR  <Dt>, [<Xn|SP>{, #<simm>}]
-    if isDr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isDr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_dt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69681,7 +70720,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(3, 1, 0, sa_simm, sa_xn_sp, sa_dt))
     }
     // STUR  <Ht>, [<Xn|SP>{, #<simm>}]
-    if isHr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isHr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_ht := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69689,7 +70733,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(1, 1, 0, sa_simm, sa_xn_sp, sa_ht))
     }
     // STUR  <Qt>, [<Xn|SP>{, #<simm>}]
-    if isQr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isQr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_qt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69697,7 +70746,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(0, 1, 2, sa_simm, sa_xn_sp, sa_qt))
     }
     // STUR  <St>, [<Xn|SP>{, #<simm>}]
-    if isSr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isSr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = DomainFpSimd
         sa_st := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69705,7 +70759,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 1, 0, sa_simm, sa_xn_sp, sa_st))
     }
     // STUR  <Wt>, [<Xn|SP>{, #<simm>}]
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69713,7 +70772,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
         return p.setins(ldst_unscaled(2, 0, 0, sa_simm, sa_xn_sp, sa_wt))
     }
     // STUR  <Xt>, [<Xn|SP>{, #<simm>}]
-    if isXr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69725,7 +70789,7 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STUR")
 }
 
-// STURB instruction have one single form from one single category:
+// STURB instruction have one single form across one single category:
 //
 // 1. Store Register Byte (unscaled)
 //
@@ -69738,7 +70802,12 @@ func (self *Program) STUR(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STURB(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURB", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69749,7 +70818,7 @@ func (self *Program) STURB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STURB")
 }
 
-// STURH instruction have one single form from one single category:
+// STURH instruction have one single form across one single category:
 //
 // 1. Store Register Halfword (unscaled)
 //
@@ -69762,7 +70831,12 @@ func (self *Program) STURB(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) STURH(v0, v1 interface{}) *Instruction {
     p := self.alloc("STURH", 2, asm.Operands { v0, v1 })
-    if isWr(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isWr(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -256, 255) &&
+       mext(v1) == Basic {
         p.Domain = asm.DomainGeneric
         sa_wt := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(mbase(v1).ID())
@@ -69773,7 +70847,7 @@ func (self *Program) STURH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STURH")
 }
 
-// STXP instruction have 2 forms from one single category:
+// STXP instruction have 2 forms across one single category:
 //
 // 1. Store Exclusive Pair of registers
 //
@@ -69833,7 +70907,7 @@ func (self *Program) STXP(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STXP")
 }
 
-// STXR instruction have 2 forms from one single category:
+// STXR instruction have 2 forms across one single category:
 //
 // 1. Store Exclusive Register
 //
@@ -69885,7 +70959,7 @@ func (self *Program) STXR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STXR")
 }
 
-// STXRB instruction have one single form from one single category:
+// STXRB instruction have one single form across one single category:
 //
 // 1. Store Exclusive Register Byte
 //
@@ -69921,7 +70995,7 @@ func (self *Program) STXRB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STXRB")
 }
 
-// STXRH instruction have one single form from one single category:
+// STXRH instruction have one single form across one single category:
 //
 // 1. Store Exclusive Register Halfword
 //
@@ -69953,7 +71027,7 @@ func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STXRH")
 }
 
-// STZ2G instruction have 3 forms from one single category:
+// STZ2G instruction have 3 forms across one single category:
 //
 // 1. Store Allocation Tags, Zeroing
 //
@@ -69972,7 +71046,13 @@ func (self *Program) STXRH(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZ2G", 2, asm.Operands { v0, v1 })
     // STZ2G  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -69985,7 +71065,13 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(3, sa_simm, 2, Rn, Rt))
     }
     // STZ2G  <Xt|SP>, [<Xn|SP>], #<simm>
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PostIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -69998,7 +71084,13 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(3, sa_simm, 1, Rn, Rt))
     }
     // STZ2G  <Xt|SP>, [<Xn|SP>, #<simm>]!
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -70015,7 +71107,7 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STZ2G")
 }
 
-// STZG instruction have 3 forms from one single category:
+// STZG instruction have 3 forms across one single category:
 //
 // 1. Store Allocation Tag, Zeroing
 //
@@ -70034,7 +71126,13 @@ func (self *Program) STZ2G(v0, v1 interface{}) *Instruction {
 func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     p := self.alloc("STZG", 2, asm.Operands { v0, v1 })
     // STZG  <Xt|SP>, [<Xn|SP>{, #<simm>}]
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == Basic {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == Basic {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -70047,7 +71145,13 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(1, sa_simm, 2, Rn, Rt))
     }
     // STZG  <Xt|SP>, [<Xn|SP>], #<simm>
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PostIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PostIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -70060,7 +71164,13 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
         return p.setins(ldsttags(1, sa_simm, 1, Rn, Rt))
     }
     // STZG  <Xt|SP>, [<Xn|SP>, #<simm>]!
-    if isXrOrSP(v0) && isMem(v1) && isXrOrSP(mbase(v1)) && midx(v1) == nil && mext(v1) == PreIndex {
+    if isXrOrSP(v0) &&
+       isMem(v1) &&
+       isXrOrSP(mbase(v1)) &&
+       midx(v1) == nil &&
+       isInRange(moffs(v1), -4096, 4080) &&
+       isMultipleOf(moffs(v1), 16) &&
+       mext(v1) == PreIndex {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xt_sp := uint32(v0.(asm.Register).ID())
@@ -70077,7 +71187,7 @@ func (self *Program) STZG(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STZG")
 }
 
-// STZGM instruction have one single form from one single category:
+// STZGM instruction have one single form across one single category:
 //
 // 1. Store Tag and Zero Multiple
 //
@@ -70109,7 +71219,7 @@ func (self *Program) STZGM(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for STZGM")
 }
 
-// SUB instruction have 10 forms from 4 categories:
+// SUB instruction have 10 forms across 4 categories:
 //
 // 1. Subtract (extended register)
 //
@@ -70237,7 +71347,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     if (len(vv) == 0 || len(vv) == 1) &&
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -70279,7 +71389,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     if (len(vv) == 0 || len(vv) == 1) &&
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -70407,7 +71517,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
     panic("aarch64: invalid combination of operands for SUB")
 }
 
-// SUBG instruction have one single form from one single category:
+// SUBG instruction have one single form across one single category:
 //
 // 1. Subtract with Tag
 //
@@ -70421,7 +71531,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 //
 func (self *Program) SUBG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SUBG", 4, asm.Operands { v0, v1, v2, v3 })
-    if isXrOrSP(v0) && isXrOrSP(v1) && isUimm6(v2) && isUimm4(v3) {
+    if isXrOrSP(v0) && isXrOrSP(v1) && isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) && isInRange(v3, 0, 15) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -70438,7 +71548,7 @@ func (self *Program) SUBG(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBG")
 }
 
-// SUBHN instruction have one single form from one single category:
+// SUBHN instruction have one single form across one single category:
 //
 // 1. Subtract returning High Narrow
 //
@@ -70504,7 +71614,7 @@ func (self *Program) SUBHN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBHN")
 }
 
-// SUBHN2 instruction have one single form from one single category:
+// SUBHN2 instruction have one single form across one single category:
 //
 // 1. Subtract returning High Narrow
 //
@@ -70570,7 +71680,7 @@ func (self *Program) SUBHN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBHN2")
 }
 
-// SUBP instruction have one single form from one single category:
+// SUBP instruction have one single form across one single category:
 //
 // 1. Subtract Pointer
 //
@@ -70600,7 +71710,7 @@ func (self *Program) SUBP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBP")
 }
 
-// SUBPS instruction have one single form from one single category:
+// SUBPS instruction have one single form across one single category:
 //
 // 1. Subtract Pointer, setting Flags
 //
@@ -70631,7 +71741,7 @@ func (self *Program) SUBPS(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUBPS")
 }
 
-// SUBS instruction have 8 forms from 3 categories:
+// SUBS instruction have 8 forms across 3 categories:
 //
 // 1. Subtract (extended register), setting flags
 //
@@ -70748,7 +71858,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     if (len(vv) == 0 || len(vv) == 1) &&
        isWr(v0) &&
        isWrOrWSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -70790,7 +71900,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     if (len(vv) == 0 || len(vv) == 1) &&
        isXr(v0) &&
        isXrOrSP(v1) &&
-       isImm12(v2) &&
+       isInRange(v2, 0, 4095) &&
        (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
@@ -70879,7 +71989,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
     panic("aarch64: invalid combination of operands for SUBS")
 }
 
-// SUDOT instruction have one single form from one single category:
+// SUDOT instruction have one single form across one single category:
 //
 // 1. Dot product with signed and unsigned integers (vector, by element)
 //
@@ -70941,7 +72051,7 @@ func (self *Program) SUDOT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUDOT")
 }
 
-// SUQADD instruction have 2 forms from one single category:
+// SUQADD instruction have 2 forms across one single category:
 //
 // 1. Signed saturating Accumulate of Unsigned value
 //
@@ -71005,7 +72115,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SUQADD")
 }
 
-// SVC instruction have one single form from one single category:
+// SVC instruction have one single form across one single category:
 //
 // 1. Supervisor Call
 //
@@ -71019,7 +72129,7 @@ func (self *Program) SUQADD(v0, v1 interface{}) *Instruction {
 //
 func (self *Program) SVC(v0 interface{}) *Instruction {
     p := self.alloc("SVC", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
         return p.setins(exception(0, sa_imm, 0, 1))
@@ -71028,7 +72138,7 @@ func (self *Program) SVC(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SVC")
 }
 
-// SWP instruction have 2 forms from one single category:
+// SWP instruction have 2 forms across one single category:
 //
 // 1. Swap word or doubleword in memory
 //
@@ -71087,7 +72197,7 @@ func (self *Program) SWP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWP")
 }
 
-// SWPA instruction have 2 forms from one single category:
+// SWPA instruction have 2 forms across one single category:
 //
 // 1. Swap word or doubleword in memory
 //
@@ -71146,7 +72256,7 @@ func (self *Program) SWPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPA")
 }
 
-// SWPAB instruction have one single form from one single category:
+// SWPAB instruction have one single form across one single category:
 //
 // 1. Swap byte in memory
 //
@@ -71186,7 +72296,7 @@ func (self *Program) SWPAB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPAB")
 }
 
-// SWPAH instruction have one single form from one single category:
+// SWPAH instruction have one single form across one single category:
 //
 // 1. Swap halfword in memory
 //
@@ -71227,7 +72337,7 @@ func (self *Program) SWPAH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPAH")
 }
 
-// SWPAL instruction have 2 forms from one single category:
+// SWPAL instruction have 2 forms across one single category:
 //
 // 1. Swap word or doubleword in memory
 //
@@ -71286,7 +72396,7 @@ func (self *Program) SWPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPAL")
 }
 
-// SWPALB instruction have one single form from one single category:
+// SWPALB instruction have one single form across one single category:
 //
 // 1. Swap byte in memory
 //
@@ -71326,7 +72436,7 @@ func (self *Program) SWPALB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPALB")
 }
 
-// SWPALH instruction have one single form from one single category:
+// SWPALH instruction have one single form across one single category:
 //
 // 1. Swap halfword in memory
 //
@@ -71367,7 +72477,7 @@ func (self *Program) SWPALH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPALH")
 }
 
-// SWPB instruction have one single form from one single category:
+// SWPB instruction have one single form across one single category:
 //
 // 1. Swap byte in memory
 //
@@ -71407,7 +72517,7 @@ func (self *Program) SWPB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPB")
 }
 
-// SWPH instruction have one single form from one single category:
+// SWPH instruction have one single form across one single category:
 //
 // 1. Swap halfword in memory
 //
@@ -71448,7 +72558,7 @@ func (self *Program) SWPH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPH")
 }
 
-// SWPL instruction have 2 forms from one single category:
+// SWPL instruction have 2 forms across one single category:
 //
 // 1. Swap word or doubleword in memory
 //
@@ -71507,7 +72617,7 @@ func (self *Program) SWPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPL")
 }
 
-// SWPLB instruction have one single form from one single category:
+// SWPLB instruction have one single form across one single category:
 //
 // 1. Swap byte in memory
 //
@@ -71547,7 +72657,7 @@ func (self *Program) SWPLB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPLB")
 }
 
-// SWPLH instruction have one single form from one single category:
+// SWPLH instruction have one single form across one single category:
 //
 // 1. Swap halfword in memory
 //
@@ -71588,7 +72698,7 @@ func (self *Program) SWPLH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPLH")
 }
 
-// SWPP instruction have one single form from one single category:
+// SWPP instruction have one single form across one single category:
 //
 // 1. Swap quadword in memory
 //
@@ -71623,7 +72733,7 @@ func (self *Program) SWPP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPP")
 }
 
-// SWPPA instruction have one single form from one single category:
+// SWPPA instruction have one single form across one single category:
 //
 // 1. Swap quadword in memory
 //
@@ -71658,7 +72768,7 @@ func (self *Program) SWPPA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPPA")
 }
 
-// SWPPAL instruction have one single form from one single category:
+// SWPPAL instruction have one single form across one single category:
 //
 // 1. Swap quadword in memory
 //
@@ -71693,7 +72803,7 @@ func (self *Program) SWPPAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPPAL")
 }
 
-// SWPPL instruction have one single form from one single category:
+// SWPPL instruction have one single form across one single category:
 //
 // 1. Swap quadword in memory
 //
@@ -71728,7 +72838,7 @@ func (self *Program) SWPPL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SWPPL")
 }
 
-// SXTB instruction have 2 forms from one single category:
+// SXTB instruction have 2 forms across one single category:
 //
 // 1. Signed Extend Byte
 //
@@ -71759,7 +72869,7 @@ func (self *Program) SXTB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SXTB")
 }
 
-// SXTH instruction have 2 forms from one single category:
+// SXTH instruction have 2 forms across one single category:
 //
 // 1. Sign Extend Halfword
 //
@@ -71790,7 +72900,7 @@ func (self *Program) SXTH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SXTH")
 }
 
-// SXTL instruction have one single form from one single category:
+// SXTL instruction have one single form across one single category:
 //
 // 1. Signed extend Long
 //
@@ -71865,7 +72975,7 @@ func (self *Program) SXTL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SXTL")
 }
 
-// SXTL2 instruction have one single form from one single category:
+// SXTL2 instruction have one single form across one single category:
 //
 // 1. Signed extend Long
 //
@@ -71940,7 +73050,7 @@ func (self *Program) SXTL2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SXTL2")
 }
 
-// SXTW instruction have one single form from one single category:
+// SXTW instruction have one single form across one single category:
 //
 // 1. Sign Extend Word
 //
@@ -71961,7 +73071,7 @@ func (self *Program) SXTW(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SXTW")
 }
 
-// SYS instruction have one single form from one single category:
+// SYS instruction have one single form across one single category:
 //
 // 1. System instruction
 //
@@ -71979,10 +73089,10 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
         default : panic("aarch64: instruction SYS takes 4 or 5 operands")
     }
     if (len(vv) == 0 || len(vv) == 1) &&
-       isUimm3(v0) &&
+       isInRange(v0, 0, 7) &&
        isUimm4(v1) &&
        isUimm4(v2) &&
-       isUimm3(v3) &&
+       isInRange(v3, 0, 7) &&
        (len(vv) == 0 || isXr(vv[0])) {
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
@@ -71999,7 +73109,7 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
     panic("aarch64: invalid combination of operands for SYS")
 }
 
-// SYSL instruction have one single form from one single category:
+// SYSL instruction have one single form across one single category:
 //
 // 1. System instruction with result
 //
@@ -72011,7 +73121,7 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
 //
 func (self *Program) SYSL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     p := self.alloc("SYSL", 5, asm.Operands { v0, v1, v2, v3, v4 })
-    if isXr(v0) && isUimm3(v1) && isUimm4(v2) && isUimm4(v3) && isUimm3(v4) {
+    if isXr(v0) && isInRange(v1, 0, 7) && isUimm4(v2) && isUimm4(v3) && isInRange(v4, 0, 7) {
         p.Domain = DomainSystem
         sa_xt := uint32(v0.(asm.Register).ID())
         sa_op1 := asUimm3(v1)
@@ -72024,7 +73134,7 @@ func (self *Program) SYSL(v0, v1, v2, v3, v4 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for SYSL")
 }
 
-// SYSP instruction have one single form from one single category:
+// SYSP instruction have one single form across one single category:
 //
 // 1. 128-bit System instruction
 //
@@ -72040,10 +73150,10 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
         default : panic("aarch64: instruction SYSP takes 4 or 6 operands")
     }
     if (len(vv) == 0 || len(vv) == 2) &&
-       isUimm3(v0) &&
+       isInRange(v0, 0, 6) &&
        isUimm4(v1) &&
        isUimm4(v2) &&
-       isUimm3(v3) &&
+       isInRange(v3, 0, 7) &&
        (len(vv) == 0 || isXr(vv[0])) &&
        (len(vv) == 0 || isXr(vv[1])) {
         self.Arch.Require(FEAT_SYSINSTR128)
@@ -72067,7 +73177,7 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
     panic("aarch64: invalid combination of operands for SYSP")
 }
 
-// TBL instruction have 4 forms from one single category:
+// TBL instruction have 4 forms across one single category:
 //
 // 1. Table vector Lookup
 //
@@ -72176,7 +73286,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBL")
 }
 
-// TBNZ instruction have 2 forms from one single category:
+// TBNZ instruction have 2 forms across one single category:
 //
 // 1. Test bit and Branch if Nonzero
 //
@@ -72191,7 +73301,7 @@ func (self *Program) TBL(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBNZ", 3, asm.Operands { v0, v1, v2 })
     // TBNZ  <R><t>, #<imm>, <label>
-    if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
+    if isWrOrXr(v0) && isInRange(v1, 0, 63) && isLabel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
@@ -72210,7 +73320,7 @@ func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
         })
     }
     // TBNZ  <R><t>, #<imm>, .±<offs>
-    if isWrOrXr(v0) && isUimm6(v1) && isPCrel(v2) {
+    if isWrOrXr(v0) && isInRange(v1, 0, 63) && isPCrel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
@@ -72231,7 +73341,7 @@ func (self *Program) TBNZ(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBNZ")
 }
 
-// TBX instruction have 4 forms from one single category:
+// TBX instruction have 4 forms across one single category:
 //
 // 1. Table vector lookup extension
 //
@@ -72340,7 +73450,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBX")
 }
 
-// TBZ instruction have 2 forms from one single category:
+// TBZ instruction have 2 forms across one single category:
 //
 // 1. Test bit and Branch if Zero
 //
@@ -72355,7 +73465,7 @@ func (self *Program) TBX(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("TBZ", 3, asm.Operands { v0, v1, v2 })
     // TBZ  <R><t>, #<imm>, <label>
-    if isWrOrXr(v0) && isUimm6(v1) && isLabel(v2) {
+    if isWrOrXr(v0) && isInRange(v1, 0, 63) && isLabel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
@@ -72374,7 +73484,7 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
         })
     }
     // TBZ  <R><t>, #<imm>, .±<offs>
-    if isWrOrXr(v0) && isUimm6(v1) && isPCrel(v2) {
+    if isWrOrXr(v0) && isInRange(v1, 0, 63) && isPCrel(v2) {
         p.Domain = asm.DomainGeneric
         var sa_r uint32
         sa_t := uint32(v0.(asm.Register).ID())
@@ -72395,7 +73505,7 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TBZ")
 }
 
-// TCANCEL instruction have one single form from one single category:
+// TCANCEL instruction have one single form across one single category:
 //
 // 1. Cancel current transaction
 //
@@ -72409,7 +73519,7 @@ func (self *Program) TBZ(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) TCANCEL(v0 interface{}) *Instruction {
     p := self.alloc("TCANCEL", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         self.Arch.Require(FEAT_TME)
         p.Domain = DomainSystem
         sa_imm := asUimm16(v0)
@@ -72419,7 +73529,7 @@ func (self *Program) TCANCEL(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TCANCEL")
 }
 
-// TCOMMIT instruction have one single form from one single category:
+// TCOMMIT instruction have one single form across one single category:
 //
 // 1. Commit current transaction
 //
@@ -72439,7 +73549,7 @@ func (self *Program) TCOMMIT() *Instruction {
     return p.setins(barriers(0, 3, 31))
 }
 
-// TLBI instruction have one single form from one single category:
+// TLBI instruction have one single form across one single category:
 //
 // 1. TLB Invalidate operation
 //
@@ -72475,7 +73585,7 @@ func (self *Program) TLBI(v0 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TLBI")
 }
 
-// TLBIP instruction have one single form from one single category:
+// TLBIP instruction have one single form across one single category:
 //
 // 1. TLB Invalidate Pair operation
 //
@@ -72519,7 +73629,7 @@ func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TLBIP")
 }
 
-// TRCIT instruction have one single form from one single category:
+// TRCIT instruction have one single form across one single category:
 //
 // 1. Trace Instrumentation
 //
@@ -72540,7 +73650,7 @@ func (self *Program) TRCIT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TRCIT")
 }
 
-// TRN1 instruction have one single form from one single category:
+// TRN1 instruction have one single form across one single category:
 //
 // 1. Transpose vectors (primary)
 //
@@ -72595,7 +73705,7 @@ func (self *Program) TRN1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TRN1")
 }
 
-// TRN2 instruction have one single form from one single category:
+// TRN2 instruction have one single form across one single category:
 //
 // 1. Transpose vectors (secondary)
 //
@@ -72650,7 +73760,7 @@ func (self *Program) TRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TRN2")
 }
 
-// TSB instruction have one single form from one single category:
+// TSB instruction have one single form across one single category:
 //
 // 1. Trace Synchronization Barrier
 //
@@ -72673,7 +73783,7 @@ func (self *Program) TSB(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TSB")
 }
 
-// TST instruction have 4 forms from 2 categories:
+// TST instruction have 4 forms across 2 categories:
 //
 // 1. Test bits (immediate)
 //
@@ -72759,7 +73869,7 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TST")
 }
 
-// TSTART instruction have one single form from one single category:
+// TSTART instruction have one single form across one single category:
 //
 // 1. Start transaction
 //
@@ -72783,7 +73893,7 @@ func (self *Program) TSTART(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TSTART")
 }
 
-// TTEST instruction have one single form from one single category:
+// TTEST instruction have one single form across one single category:
 //
 // 1. Test transaction state
 //
@@ -72804,7 +73914,7 @@ func (self *Program) TTEST(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for TTEST")
 }
 
-// UABA instruction have one single form from one single category:
+// UABA instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute difference and Accumulate
 //
@@ -72850,7 +73960,7 @@ func (self *Program) UABA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABA")
 }
 
-// UABAL instruction have one single form from one single category:
+// UABAL instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute difference and Accumulate Long
 //
@@ -72914,7 +74024,7 @@ func (self *Program) UABAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABAL")
 }
 
-// UABAL2 instruction have one single form from one single category:
+// UABAL2 instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute difference and Accumulate Long
 //
@@ -72978,7 +74088,7 @@ func (self *Program) UABAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABAL2")
 }
 
-// UABD instruction have one single form from one single category:
+// UABD instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute Difference (vector)
 //
@@ -73024,7 +74134,7 @@ func (self *Program) UABD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABD")
 }
 
-// UABDL instruction have one single form from one single category:
+// UABDL instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute Difference Long
 //
@@ -73088,7 +74198,7 @@ func (self *Program) UABDL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABDL")
 }
 
-// UABDL2 instruction have one single form from one single category:
+// UABDL2 instruction have one single form across one single category:
 //
 // 1. Unsigned Absolute Difference Long
 //
@@ -73152,7 +74262,7 @@ func (self *Program) UABDL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UABDL2")
 }
 
-// UADALP instruction have one single form from one single category:
+// UADALP instruction have one single form across one single category:
 //
 // 1. Unsigned Add and Accumulate Long Pairwise
 //
@@ -73209,7 +74319,7 @@ func (self *Program) UADALP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADALP")
 }
 
-// UADDL instruction have one single form from one single category:
+// UADDL instruction have one single form across one single category:
 //
 // 1. Unsigned Add Long (vector)
 //
@@ -73272,7 +74382,7 @@ func (self *Program) UADDL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDL")
 }
 
-// UADDL2 instruction have one single form from one single category:
+// UADDL2 instruction have one single form across one single category:
 //
 // 1. Unsigned Add Long (vector)
 //
@@ -73335,7 +74445,7 @@ func (self *Program) UADDL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDL2")
 }
 
-// UADDLP instruction have one single form from one single category:
+// UADDLP instruction have one single form across one single category:
 //
 // 1. Unsigned Add Long Pairwise
 //
@@ -73391,7 +74501,7 @@ func (self *Program) UADDLP(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDLP")
 }
 
-// UADDLV instruction have one single form from one single category:
+// UADDLV instruction have one single form across one single category:
 //
 // 1. Unsigned sum Long across Vector
 //
@@ -73438,7 +74548,7 @@ func (self *Program) UADDLV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDLV")
 }
 
-// UADDW instruction have one single form from one single category:
+// UADDW instruction have one single form across one single category:
 //
 // 1. Unsigned Add Wide
 //
@@ -73502,7 +74612,7 @@ func (self *Program) UADDW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDW")
 }
 
-// UADDW2 instruction have one single form from one single category:
+// UADDW2 instruction have one single form across one single category:
 //
 // 1. Unsigned Add Wide
 //
@@ -73566,7 +74676,7 @@ func (self *Program) UADDW2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UADDW2")
 }
 
-// UBFIZ instruction have 2 forms from one single category:
+// UBFIZ instruction have 2 forms across one single category:
 //
 // 1. Unsigned Bitfield Insert in Zero
 //
@@ -73581,7 +74691,7 @@ func (self *Program) UADDW2(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFIZ", 4, asm.Operands { v0, v1, v2, v3 })
     // UBFIZ  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73590,7 +74700,7 @@ func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 2, 0, sa_lsb, sa_width, sa_wn, sa_wd))
     }
     // UBFIZ  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -73603,7 +74713,7 @@ func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UBFIZ")
 }
 
-// UBFM instruction have 2 forms from one single category:
+// UBFM instruction have 2 forms across one single category:
 //
 // 1. Unsigned Bitfield Move
 //
@@ -73627,7 +74737,7 @@ func (self *Program) UBFIZ(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFM", 4, asm.Operands { v0, v1, v2, v3 })
     // UBFM  <Wd>, <Wn>, #<immr>, #<imms>
-    if isWr(v0) && isWr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isInRange(v3, 0, 31) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73636,7 +74746,7 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 2, 0, sa_immr, sa_imms, sa_wn, sa_wd))
     }
     // UBFM  <Xd>, <Xn>, #<immr>, #<imms>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isUimm6(v3) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isInRange(v3, 0, 63) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -73649,7 +74759,7 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UBFM")
 }
 
-// UBFX instruction have 2 forms from one single category:
+// UBFX instruction have 2 forms across one single category:
 //
 // 1. Unsigned Bitfield Extract
 //
@@ -73663,7 +74773,7 @@ func (self *Program) UBFM(v0, v1, v2, v3 interface{}) *Instruction {
 func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("UBFX", 4, asm.Operands { v0, v1, v2, v3 })
     // UBFX  <Wd>, <Wn>, #<lsb>, #<width>
-    if isWr(v0) && isWr(v1) && isUimm5(v2) && isBFxWidth(v2, v3, 32) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 31) && isBFxWidth(v2, v3, 32) {
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73672,7 +74782,7 @@ func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
         return p.setins(bitfield(0, 2, 0, sa_lsb_1, sa_width, sa_wn, sa_wd))
     }
     // UBFX  <Xd>, <Xn>, #<lsb>, #<width>
-    if isXr(v0) && isXr(v1) && isUimm6(v2) && isBFxWidth(v2, v3, 64) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 63) && isBFxWidth(v2, v3, 64) {
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -73685,7 +74795,7 @@ func (self *Program) UBFX(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UBFX")
 }
 
-// UCVTF instruction have 18 forms from 4 categories:
+// UCVTF instruction have 18 forms across 4 categories:
 //
 // 1. Unsigned fixed-point Convert to Floating-point (vector)
 //
@@ -73910,7 +75020,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(asisdmiscfp16(1, 0, 29, sa_hn, sa_hd))
     }
     // UCVTF  <Dd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isDr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isDr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73918,7 +75028,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 1, 0, 3, sa_fbits, sa_wn, sa_dd))
     }
     // UCVTF  <Dd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isDr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isDr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_dd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -73926,7 +75036,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(1, 0, 1, 0, 3, sa_fbits_1, sa_xn, sa_dd))
     }
     // UCVTF  <Hd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isHr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isHr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73934,7 +75044,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 3, 0, 3, sa_fbits, sa_wn, sa_hd))
     }
     // UCVTF  <Hd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isHr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isHr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_hd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -73942,7 +75052,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(1, 0, 3, 0, 3, sa_fbits_1, sa_xn, sa_hd))
     }
     // UCVTF  <Sd>, <Wn>, #<fbits>
-    if len(vv) == 1 && isSr(v0) && isWr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isSr(v0) && isWr(v1) && isInRange(vv[0], 1, 32) {
         p.Domain = DomainFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
@@ -73950,7 +75060,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
         return p.setins(float2fix(0, 0, 0, 0, 3, sa_fbits, sa_wn, sa_sd))
     }
     // UCVTF  <Sd>, <Xn>, #<fbits>
-    if len(vv) == 1 && isSr(v0) && isXr(v1) && isFpBits(vv[0]) {
+    if len(vv) == 1 && isSr(v0) && isXr(v1) && isInRange(vv[0], 1, 64) {
         p.Domain = DomainFloat
         sa_sd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
@@ -74004,7 +75114,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UCVTF")
 }
 
-// UDF instruction have one single form from one single category:
+// UDF instruction have one single form across one single category:
 //
 // 1. Permanently Undefined
 //
@@ -74016,7 +75126,7 @@ func (self *Program) UCVTF(v0, v1 interface{}, vv ...interface{}) *Instruction {
 //
 func (self *Program) UDF(v0 interface{}) *Instruction {
     p := self.alloc("UDF", 1, asm.Operands { v0 })
-    if isUimm16(v0) {
+    if isInRange(v0, 0, 65535) {
         p.Domain = asm.DomainGeneric
         sa_imm := asUimm16(v0)
         return p.setins(perm_undef(sa_imm))
@@ -74025,7 +75135,7 @@ func (self *Program) UDF(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UDF")
 }
 
-// UDIV instruction have 2 forms from one single category:
+// UDIV instruction have 2 forms across one single category:
 //
 // 1. Unsigned Divide
 //
@@ -74059,7 +75169,7 @@ func (self *Program) UDIV(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UDIV")
 }
 
-// UDOT instruction have 2 forms from 2 categories:
+// UDOT instruction have 2 forms across 2 categories:
 //
 // 1. Dot Product unsigned arithmetic (vector, by element)
 //
@@ -74179,7 +75289,7 @@ func (self *Program) UDOT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UDOT")
 }
 
-// UHADD instruction have one single form from one single category:
+// UHADD instruction have one single form across one single category:
 //
 // 1. Unsigned Halving Add
 //
@@ -74226,7 +75336,7 @@ func (self *Program) UHADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UHADD")
 }
 
-// UHSUB instruction have one single form from one single category:
+// UHSUB instruction have one single form across one single category:
 //
 // 1. Unsigned Halving Subtract
 //
@@ -74271,7 +75381,7 @@ func (self *Program) UHSUB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UHSUB")
 }
 
-// UMADDL instruction have one single form from one single category:
+// UMADDL instruction have one single form across one single category:
 //
 // 1. Unsigned Multiply-Add Long
 //
@@ -74294,7 +75404,7 @@ func (self *Program) UMADDL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMADDL")
 }
 
-// UMAX instruction have 5 forms from 3 categories:
+// UMAX instruction have 5 forms across 3 categories:
 //
 // 1. Unsigned Maximum (vector)
 //
@@ -74353,7 +75463,7 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 12, sa_vn, sa_vd))
     }
     // UMAX  <Wd>, <Wn>, #<uimm>
-    if isWr(v0) && isWr(v1) && isUimm8(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 255) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -74362,7 +75472,7 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
         return p.setins(minmax_imm(0, 0, 0, 1, sa_uimm, sa_wn, sa_wd))
     }
     // UMAX  <Xd>, <Xn>, #<uimm>
-    if isXr(v0) && isXr(v1) && isUimm8(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 255) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -74393,7 +75503,7 @@ func (self *Program) UMAX(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMAX")
 }
 
-// UMAXP instruction have one single form from one single category:
+// UMAXP instruction have one single form across one single category:
 //
 // 1. Unsigned Maximum Pairwise
 //
@@ -74440,7 +75550,7 @@ func (self *Program) UMAXP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMAXP")
 }
 
-// UMAXV instruction have one single form from one single category:
+// UMAXV instruction have one single form across one single category:
 //
 // 1. Unsigned Maximum across Vector
 //
@@ -74486,7 +75596,7 @@ func (self *Program) UMAXV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMAXV")
 }
 
-// UMIN instruction have 5 forms from 3 categories:
+// UMIN instruction have 5 forms across 3 categories:
 //
 // 1. Unsigned Minimum (vector)
 //
@@ -74545,7 +75655,7 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdsame(mask(sa_t, 1), 1, ubfx(sa_t, 1, 2), sa_vm, 13, sa_vn, sa_vd))
     }
     // UMIN  <Wd>, <Wn>, #<uimm>
-    if isWr(v0) && isWr(v1) && isUimm8(v2) {
+    if isWr(v0) && isWr(v1) && isInRange(v2, 0, 255) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_wd := uint32(v0.(asm.Register).ID())
@@ -74554,7 +75664,7 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
         return p.setins(minmax_imm(0, 0, 0, 3, sa_uimm, sa_wn, sa_wd))
     }
     // UMIN  <Xd>, <Xn>, #<uimm>
-    if isXr(v0) && isXr(v1) && isUimm8(v2) {
+    if isXr(v0) && isXr(v1) && isInRange(v2, 0, 255) {
         self.Arch.Require(FEAT_CSSC)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -74585,7 +75695,7 @@ func (self *Program) UMIN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMIN")
 }
 
-// UMINP instruction have one single form from one single category:
+// UMINP instruction have one single form across one single category:
 //
 // 1. Unsigned Minimum Pairwise
 //
@@ -74632,7 +75742,7 @@ func (self *Program) UMINP(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMINP")
 }
 
-// UMINV instruction have one single form from one single category:
+// UMINV instruction have one single form across one single category:
 //
 // 1. Unsigned Minimum across Vector
 //
@@ -74678,7 +75788,7 @@ func (self *Program) UMINV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMINV")
 }
 
-// UMLAL instruction have 2 forms from 2 categories:
+// UMLAL instruction have 2 forms across 2 categories:
 //
 // 1. Unsigned Multiply-Add Long (vector, by element)
 //
@@ -74814,7 +75924,7 @@ func (self *Program) UMLAL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMLAL")
 }
 
-// UMLAL2 instruction have 2 forms from 2 categories:
+// UMLAL2 instruction have 2 forms across 2 categories:
 //
 // 1. Unsigned Multiply-Add Long (vector, by element)
 //
@@ -74950,7 +76060,7 @@ func (self *Program) UMLAL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMLAL2")
 }
 
-// UMLSL instruction have 2 forms from 2 categories:
+// UMLSL instruction have 2 forms across 2 categories:
 //
 // 1. Unsigned Multiply-Subtract Long (vector, by element)
 //
@@ -75086,7 +76196,7 @@ func (self *Program) UMLSL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMLSL")
 }
 
-// UMLSL2 instruction have 2 forms from 2 categories:
+// UMLSL2 instruction have 2 forms across 2 categories:
 //
 // 1. Unsigned Multiply-Subtract Long (vector, by element)
 //
@@ -75222,7 +76332,7 @@ func (self *Program) UMLSL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMLSL2")
 }
 
-// UMMLA instruction have one single form from one single category:
+// UMMLA instruction have one single form across one single category:
 //
 // 1. Unsigned 8-bit integer matrix multiply-accumulate (vector)
 //
@@ -75253,7 +76363,7 @@ func (self *Program) UMMLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMMLA")
 }
 
-// UMNEGL instruction have one single form from one single category:
+// UMNEGL instruction have one single form across one single category:
 //
 // 1. Unsigned Multiply-Negate Long
 //
@@ -75275,7 +76385,7 @@ func (self *Program) UMNEGL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMNEGL")
 }
 
-// UMOV instruction have 2 forms from one single category:
+// UMOV instruction have 2 forms across one single category:
 //
 // 1. Unsigned Move vector element to general-purpose register
 //
@@ -75344,7 +76454,7 @@ func (self *Program) UMOV(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMOV")
 }
 
-// UMSUBL instruction have one single form from one single category:
+// UMSUBL instruction have one single form across one single category:
 //
 // 1. Unsigned Multiply-Subtract Long
 //
@@ -75368,7 +76478,7 @@ func (self *Program) UMSUBL(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMSUBL")
 }
 
-// UMULH instruction have one single form from one single category:
+// UMULH instruction have one single form across one single category:
 //
 // 1. Unsigned Multiply High
 //
@@ -75390,7 +76500,7 @@ func (self *Program) UMULH(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMULH")
 }
 
-// UMULL instruction have 3 forms from 3 categories:
+// UMULL instruction have 3 forms across 3 categories:
 //
 // 1. Unsigned Multiply Long
 //
@@ -75540,7 +76650,7 @@ func (self *Program) UMULL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMULL")
 }
 
-// UMULL2 instruction have 2 forms from 2 categories:
+// UMULL2 instruction have 2 forms across 2 categories:
 //
 // 1. Unsigned Multiply Long (vector, by element)
 //
@@ -75675,7 +76785,7 @@ func (self *Program) UMULL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UMULL2")
 }
 
-// UQADD instruction have 2 forms from one single category:
+// UQADD instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Add
 //
@@ -75742,7 +76852,7 @@ func (self *Program) UQADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQADD")
 }
 
-// UQRSHL instruction have 2 forms from one single category:
+// UQRSHL instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Rounding Shift Left (register)
 //
@@ -75814,7 +76924,7 @@ func (self *Program) UQRSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQRSHL")
 }
 
-// UQRSHRN instruction have 2 forms from one single category:
+// UQRSHRN instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Rounded Shift Right Narrow (immediate)
 //
@@ -75951,7 +77061,7 @@ func (self *Program) UQRSHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQRSHRN")
 }
 
-// UQRSHRN2 instruction have one single form from one single category:
+// UQRSHRN2 instruction have one single form across one single category:
 //
 // 1. Unsigned saturating Rounded Shift Right Narrow (immediate)
 //
@@ -76040,7 +77150,7 @@ func (self *Program) UQRSHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQRSHRN2")
 }
 
-// UQSHL instruction have 4 forms from 2 categories:
+// UQSHL instruction have 4 forms across 2 categories:
 //
 // 1. Unsigned saturating Shift Left (immediate)
 //
@@ -76208,7 +77318,7 @@ func (self *Program) UQSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQSHL")
 }
 
-// UQSHRN instruction have 2 forms from one single category:
+// UQSHRN instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Shift Right Narrow (immediate)
 //
@@ -76346,7 +77456,7 @@ func (self *Program) UQSHRN(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQSHRN")
 }
 
-// UQSHRN2 instruction have one single form from one single category:
+// UQSHRN2 instruction have one single form across one single category:
 //
 // 1. Unsigned saturating Shift Right Narrow (immediate)
 //
@@ -76436,7 +77546,7 @@ func (self *Program) UQSHRN2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQSHRN2")
 }
 
-// UQSUB instruction have 2 forms from one single category:
+// UQSUB instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Subtract
 //
@@ -76504,7 +77614,7 @@ func (self *Program) UQSUB(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQSUB")
 }
 
-// UQXTN instruction have 2 forms from one single category:
+// UQXTN instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating extract Narrow
 //
@@ -76592,7 +77702,7 @@ func (self *Program) UQXTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQXTN")
 }
 
-// UQXTN2 instruction have one single form from one single category:
+// UQXTN2 instruction have one single form across one single category:
 //
 // 1. Unsigned saturating extract Narrow
 //
@@ -76653,7 +77763,7 @@ func (self *Program) UQXTN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UQXTN2")
 }
 
-// URECPE instruction have one single form from one single category:
+// URECPE instruction have one single form across one single category:
 //
 // 1. Unsigned Reciprocal Estimate
 //
@@ -76688,7 +77798,7 @@ func (self *Program) URECPE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URECPE")
 }
 
-// URHADD instruction have one single form from one single category:
+// URHADD instruction have one single form across one single category:
 //
 // 1. Unsigned Rounding Halving Add
 //
@@ -76735,7 +77845,7 @@ func (self *Program) URHADD(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URHADD")
 }
 
-// URSHL instruction have 2 forms from one single category:
+// URSHL instruction have 2 forms across one single category:
 //
 // 1. Unsigned Rounding Shift Left (register)
 //
@@ -76801,7 +77911,7 @@ func (self *Program) URSHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URSHL")
 }
 
-// URSHR instruction have 2 forms from one single category:
+// URSHR instruction have 2 forms across one single category:
 //
 // 1. Unsigned Rounding Shift Right (immediate)
 //
@@ -76866,7 +77976,7 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 4, sa_vn, sa_vd))
     }
     // URSHR  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -76895,7 +78005,7 @@ func (self *Program) URSHR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URSHR")
 }
 
-// URSQRTE instruction have one single form from one single category:
+// URSQRTE instruction have one single form across one single category:
 //
 // 1. Unsigned Reciprocal Square Root Estimate
 //
@@ -76931,7 +78041,7 @@ func (self *Program) URSQRTE(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URSQRTE")
 }
 
-// URSRA instruction have 2 forms from one single category:
+// URSRA instruction have 2 forms across one single category:
 //
 // 1. Unsigned Rounding Shift Right and Accumulate (immediate)
 //
@@ -76997,7 +78107,7 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 6, sa_vn, sa_vd))
     }
     // URSRA  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -77026,7 +78136,7 @@ func (self *Program) URSRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for URSRA")
 }
 
-// USDOT instruction have 2 forms from 2 categories:
+// USDOT instruction have 2 forms across 2 categories:
 //
 // 1. Dot Product with unsigned and signed integers (vector, by element)
 //
@@ -77135,7 +78245,7 @@ func (self *Program) USDOT(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USDOT")
 }
 
-// USHL instruction have 2 forms from one single category:
+// USHL instruction have 2 forms across one single category:
 //
 // 1. Unsigned Shift Left (register)
 //
@@ -77202,7 +78312,7 @@ func (self *Program) USHL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USHL")
 }
 
-// USHLL instruction have one single form from one single category:
+// USHLL instruction have one single form across one single category:
 //
 // 1. Unsigned Shift Left Long (immediate)
 //
@@ -77286,7 +78396,7 @@ func (self *Program) USHLL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USHLL")
 }
 
-// USHLL2 instruction have one single form from one single category:
+// USHLL2 instruction have one single form across one single category:
 //
 // 1. Unsigned Shift Left Long (immediate)
 //
@@ -77370,7 +78480,7 @@ func (self *Program) USHLL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USHLL2")
 }
 
-// USHR instruction have 2 forms from one single category:
+// USHR instruction have 2 forms across one single category:
 //
 // 1. Unsigned Shift Right (immediate)
 //
@@ -77435,7 +78545,7 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 0, sa_vn, sa_vd))
     }
     // USHR  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -77464,7 +78574,7 @@ func (self *Program) USHR(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USHR")
 }
 
-// USMMLA instruction have one single form from one single category:
+// USMMLA instruction have one single form across one single category:
 //
 // 1. Unsigned and signed 8-bit integer matrix multiply-accumulate (vector)
 //
@@ -77495,7 +78605,7 @@ func (self *Program) USMMLA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USMMLA")
 }
 
-// USQADD instruction have 2 forms from one single category:
+// USQADD instruction have 2 forms across one single category:
 //
 // 1. Unsigned saturating Accumulate of Signed value
 //
@@ -77559,7 +78669,7 @@ func (self *Program) USQADD(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USQADD")
 }
 
-// USRA instruction have 2 forms from one single category:
+// USRA instruction have 2 forms across one single category:
 //
 // 1. Unsigned Shift Right and Accumulate (immediate)
 //
@@ -77625,7 +78735,7 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
         return p.setins(asimdshf(mask(sa_t, 1), 1, ubfx(sa_shift, 3, 4), mask(sa_shift, 3), 2, sa_vn, sa_vd))
     }
     // USRA  <V><d>, <V><n>, #<shift>
-    if isAdvSIMD(v0) && isAdvSIMD(v1) && isFpBits(v2) && isSameType(v0, v1) {
+    if isAdvSIMD(v0) && isAdvSIMD(v1) && isInRange(v2, 1, 64) && isSameType(v0, v1) {
         p.Domain = DomainAdvSimd
         var sa_shift_1 uint32
         var sa_v uint32
@@ -77654,7 +78764,7 @@ func (self *Program) USRA(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USRA")
 }
 
-// USUBL instruction have one single form from one single category:
+// USUBL instruction have one single form across one single category:
 //
 // 1. Unsigned Subtract Long
 //
@@ -77717,7 +78827,7 @@ func (self *Program) USUBL(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USUBL")
 }
 
-// USUBL2 instruction have one single form from one single category:
+// USUBL2 instruction have one single form across one single category:
 //
 // 1. Unsigned Subtract Long
 //
@@ -77780,7 +78890,7 @@ func (self *Program) USUBL2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USUBL2")
 }
 
-// USUBW instruction have one single form from one single category:
+// USUBW instruction have one single form across one single category:
 //
 // 1. Unsigned Subtract Wide
 //
@@ -77845,7 +78955,7 @@ func (self *Program) USUBW(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USUBW")
 }
 
-// USUBW2 instruction have one single form from one single category:
+// USUBW2 instruction have one single form across one single category:
 //
 // 1. Unsigned Subtract Wide
 //
@@ -77910,7 +79020,7 @@ func (self *Program) USUBW2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for USUBW2")
 }
 
-// UXTB instruction have one single form from one single category:
+// UXTB instruction have one single form across one single category:
 //
 // 1. Unsigned Extend Byte
 //
@@ -77931,7 +79041,7 @@ func (self *Program) UXTB(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UXTB")
 }
 
-// UXTH instruction have one single form from one single category:
+// UXTH instruction have one single form across one single category:
 //
 // 1. Unsigned Extend Halfword
 //
@@ -77953,7 +79063,7 @@ func (self *Program) UXTH(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UXTH")
 }
 
-// UXTL instruction have one single form from one single category:
+// UXTL instruction have one single form across one single category:
 //
 // 1. Unsigned extend Long
 //
@@ -78027,7 +79137,7 @@ func (self *Program) UXTL(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UXTL")
 }
 
-// UXTL2 instruction have one single form from one single category:
+// UXTL2 instruction have one single form across one single category:
 //
 // 1. Unsigned extend Long
 //
@@ -78101,7 +79211,7 @@ func (self *Program) UXTL2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UXTL2")
 }
 
-// UZP1 instruction have one single form from one single category:
+// UZP1 instruction have one single form across one single category:
 //
 // 1. Unzip vectors (primary)
 //
@@ -78155,7 +79265,7 @@ func (self *Program) UZP1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UZP1")
 }
 
-// UZP2 instruction have one single form from one single category:
+// UZP2 instruction have one single form across one single category:
 //
 // 1. Unzip vectors (secondary)
 //
@@ -78209,7 +79319,7 @@ func (self *Program) UZP2(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for UZP2")
 }
 
-// WFE instruction have one single form from one single category:
+// WFE instruction have one single form across one single category:
 //
 // 1. Wait For Event
 //
@@ -78231,7 +79341,7 @@ func (self *Program) WFE() *Instruction {
     return p.setins(hints(0, 2))
 }
 
-// WFET instruction have one single form from one single category:
+// WFET instruction have one single form across one single category:
 //
 // 1. Wait For Event with Timeout
 //
@@ -78261,7 +79371,7 @@ func (self *Program) WFET(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for WFET")
 }
 
-// WFI instruction have one single form from one single category:
+// WFI instruction have one single form across one single category:
 //
 // 1. Wait For Interrupt
 //
@@ -78281,7 +79391,7 @@ func (self *Program) WFI() *Instruction {
     return p.setins(hints(0, 3))
 }
 
-// WFIT instruction have one single form from one single category:
+// WFIT instruction have one single form across one single category:
 //
 // 1. Wait For Interrupt with Timeout
 //
@@ -78309,7 +79419,7 @@ func (self *Program) WFIT(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for WFIT")
 }
 
-// XAFLAG instruction have one single form from one single category:
+// XAFLAG instruction have one single form across one single category:
 //
 // 1. Convert floating-point condition flags from external format to Arm format
 //
@@ -78327,7 +79437,7 @@ func (self *Program) XAFLAG() *Instruction {
     return p.setins(pstate(0, 0, 1, 31))
 }
 
-// XAR instruction have one single form from one single category:
+// XAR instruction have one single form across one single category:
 //
 // 1. Exclusive-OR and Rotate
 //
@@ -78355,7 +79465,7 @@ func (self *Program) XAR(v0, v1, v2, v3 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for XAR")
 }
 
-// XPACD instruction have one single form from one single category:
+// XPACD instruction have one single form across one single category:
 //
 // 1. Strip Pointer Authentication Code
 //
@@ -78380,7 +79490,7 @@ func (self *Program) XPACD(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for XPACD")
 }
 
-// XPACI instruction have one single form from one single category:
+// XPACI instruction have one single form across one single category:
 //
 // 1. Strip Pointer Authentication Code
 //
@@ -78405,7 +79515,7 @@ func (self *Program) XPACI(v0 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for XPACI")
 }
 
-// XPACLRI instruction have one single form from one single category:
+// XPACLRI instruction have one single form across one single category:
 //
 // 1. Strip Pointer Authentication Code
 //
@@ -78425,7 +79535,7 @@ func (self *Program) XPACLRI() *Instruction {
     return p.setins(hints(0, 7))
 }
 
-// XTN instruction have one single form from one single category:
+// XTN instruction have one single form across one single category:
 //
 // 1. Extract Narrow
 //
@@ -78484,7 +79594,7 @@ func (self *Program) XTN(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for XTN")
 }
 
-// XTN2 instruction have one single form from one single category:
+// XTN2 instruction have one single form across one single category:
 //
 // 1. Extract Narrow
 //
@@ -78543,7 +79653,7 @@ func (self *Program) XTN2(v0, v1 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for XTN2")
 }
 
-// YIELD instruction have one single form from one single category:
+// YIELD instruction have one single form across one single category:
 //
 // 1. YIELD
 //
@@ -78564,7 +79674,7 @@ func (self *Program) YIELD() *Instruction {
     return p.setins(hints(0, 1))
 }
 
-// ZIP1 instruction have one single form from one single category:
+// ZIP1 instruction have one single form across one single category:
 //
 // 1. Zip vectors (primary)
 //
@@ -78618,7 +79728,7 @@ func (self *Program) ZIP1(v0, v1, v2 interface{}) *Instruction {
     panic("aarch64: invalid combination of operands for ZIP1")
 }
 
-// ZIP2 instruction have one single form from one single category:
+// ZIP2 instruction have one single form across one single category:
 //
 // 1. Zip vectors (secondary)
 //

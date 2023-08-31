@@ -16,13 +16,6 @@ type _VecElem struct {
     fmt string
 }
 
-var _VectorModes = map[VecIndexMode]bool {
-    ModeB: true,
-    ModeH: true,
-    ModeS: true,
-    ModeD: true,
-}
-
 type _SymPair struct {
     sym string
     val interface{}
@@ -32,6 +25,23 @@ func mksym(sym string, val interface{}) (p _SymPair) {
     p.sym = sym
     p.val = val
     return
+}
+
+var _LutInt = [...]int64 {
+    asm.PuncPlus  : 1,
+    asm.PuncMinus : -1,
+}
+
+var _LutFp64 = [...]float64 {
+    asm.PuncPlus  : 1,
+    asm.PuncMinus : -1,
+}
+
+var _VectorModes = map[VecIndexMode]bool {
+    ModeB: true,
+    ModeH: true,
+    ModeS: true,
+    ModeD: true,
 }
 
 type _ParserImpl struct {
@@ -69,7 +79,7 @@ func (self *_ParserImpl) rela() asm.RelativeOffset {
     tp := self.lex.Pos
     tr := self.lex.Row
 
-    /* a single dot */
+    /* a single dot, read the offset sign */
     if tk = self.lex.Next(); tk.Ty == asm.TokenPunc {
         switch tk.Punc() {
             case asm.PuncPlus  : iv = 1
@@ -130,10 +140,10 @@ func (self *_ParserImpl) name(tk asm.Token) interface{} {
     upper := strings.ToUpper(ident)
 
     /* symbols, modifiers and trivial register names */
-    if sym, ok := _Symbols[ident]       ; ok { return mksym(ident, sym) }
-    if val, ok := _PStateTab[ident]     ; ok { return val }
+    if sym, ok := _Symbols[upper]       ; ok { return mksym(ident, sym) }
+    if val, ok := _PStateTab[upper]     ; ok { return val }
     if mod, ok := _Modifiers[upper]     ; ok { return mod(self.modsize()) }
-    if reg, ok := _SysRegisters[ident]  ; ok { return reg }
+    if reg, ok := _SysRegisters[upper]  ; ok { return reg }
     if reg, ok := _CoreRegisters[upper] ; ok { return reg }
     if reg, ok := _SimdRegisters[upper] ; ok { return reg }
 
@@ -346,11 +356,11 @@ func (self *_ParserImpl) modifier() Modifier {
 func (self *_ParserImpl) preindex(mem asm.MemoryAddress, offs int64) asm.MemoryAddress {
     if !self.lex.MatchPunc(asm.PuncBang) {
         mem.Ext = Basic
-        mem.Offset = int32(offs & 0xfff)
+        mem.Offset = int32(offs)
         return mem
     } else {
         mem.Ext = PreIndex
-        mem.Offset = int32(offs & 0x1ff)
+        mem.Offset = int32(offs)
         return mem
     }
 }
@@ -369,7 +379,7 @@ func (self *_ParserImpl) postindex(mem asm.MemoryAddress) asm.MemoryAddress {
     if tok.IsPunc(asm.PuncComma) {
         if self.lex.Next().IsPunc(asm.PuncHash) {
             mem.Ext = PostIndex
-            mem.Offset = int32(self.lex.Value(nil) & 0xfff)
+            mem.Offset = int32(self.lex.Value(nil))
             return mem
         }
     }
@@ -420,10 +430,39 @@ func (self *_ParserImpl) value(ins *asm.ParsedInstruction) {
 
         /* immediate values */
         case tk.IsPunc(asm.PuncHash) && !self.isMemCopy: {
+            row := self.lex.Row
+            pos := self.lex.Pos
+
+            /* read the next token */
             switch tk = self.lex.Read(); tk.Ty {
+                default: {
+                    panic(self.err(tk.Pos, "immediate value expected"))
+                }
+
+                /* basic values */
                 case asm.TokenInt  : ins.Imm(int64(tk.Uint))
                 case asm.TokenFp64 : ins.FpImm(tk.Fp64)
-                default            : panic(self.err(tk.Pos, "immediate value expected"))
+
+                /* expressions, need special handling of signed fp64 values */
+                case asm.TokenPunc: {
+                    ok := false
+                    pk := tk.Punc()
+
+                    /* check for special cases */
+                    if pk == asm.PuncPlus || pk == asm.PuncMinus {
+                        switch tk = self.lex.Read(); tk.Ty {
+                            case asm.TokenInt  : ok = true; ins.Imm(_LutInt[pk] * int64(tk.Uint))
+                            case asm.TokenFp64 : ok = true; ins.FpImm(_LutFp64[pk] * tk.Fp64)
+                        }
+                    }
+
+                    /* not special case, rollback and evaluate the term */
+                    if !ok {
+                        self.lex.Pos = pos
+                        self.lex.Row = row
+                        ins.Imm(self.lex.Value(nil))
+                    }
+                }
             }
         }
 

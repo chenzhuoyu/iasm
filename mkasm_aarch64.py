@@ -19,6 +19,7 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
 DOC_FILE       = 'isa_docs/ISA_A64_xml_A_profile-2023-03_OPT/onebigfile.xml'
+LOG_QUIET      = '-q' in sys.argv
 MAX_TEXT_WIDTH = 80
 MAX_LINE_WIDTH = 120
 
@@ -41,11 +42,13 @@ class CodeGen:
         self.level += 1
 
 def status(*args):
-    sys.stdout.write('\x1b[#F\x1b[K')
-    print(*args)
+    if not LOG_QUIET:
+        sys.stdout.write('\x1b[#F\x1b[K')
+        print(*args)
 
-print()
-status('* Preparing ...')
+if not LOG_QUIET:
+    print()
+    status('* Preparing ...')
 
 ### ---------- Instruction Encoding Classes ---------- ###
 
@@ -61,47 +64,63 @@ class HardcodedExtend(NamedTuple):
 class Account:
     name: str
     desc: str
+    mult: int
+    divs: int
     altr: bool
     defv: str | HardcodedExtend
+    valr: tuple[int, int] | None
 
-    def __init__(self, name: str, desc: str, altr: bool, defv: str | HardcodedExtend):
+    def __init__(self,
+        name: str,
+        desc: str,
+        mult: int,
+        idiv: int,
+        altr: bool,
+        defv: str | HardcodedExtend,
+        valr: tuple[int, int] | None,
+    ):
         self.name = name
         self.desc = desc
+        self.mult = mult
+        self.divs = idiv
         self.altr = altr
         self.defv = defv
+        self.valr = valr
 
     def __repr__(self) -> str:
-        return '%s %s%s%s' % (
+        return '%s %s%s%s%s%s%s' % (
             self.name,
             self.desc,
             '' if not self.altr else ' (altr)',
             '' if not self.defv else ' (default = %s)' % self.defv,
+            '' if not self.valr else ' (range = [%d, %d])' % self.valr,
+            '' if self.mult == 1 else ' (multiply = %d)' % self.mult,
+            '' if self.divs == 1 else ' (scale = %d)' % self.divs,
         )
 
-class Definition:
-    name: str
-    desc: str
-    altr: bool
-    defv: str | HardcodedExtend
+class Definition(Account):
     refs: list[str]
     bits: dict[str, set[str]]
 
-    def __init__(self, name: str, desc: str, altr: bool, defv: str | HardcodedExtend, refs: list[str], bits: dict[str, set[str]]):
-        self.name = name
-        self.desc = desc
-        self.altr = altr
-        self.defv = defv
+    def __init__(self,
+        name: str,
+        desc: str,
+        mult: int,
+        divs: int,
+        altr: bool,
+        defv: str | HardcodedExtend,
+        valr: tuple[int, int] | None,
+        refs: list[str],
+        bits: dict[str, set[str]],
+    ):
+        super().__init__(name, desc, mult, divs, altr, defv, valr)
         self.refs = refs
         self.bits = bits
 
     def __repr__(self) -> str:
-        return '%s %s (=%s) [%s]%s%s' % (
-            self.name,
-            self.desc,
+        return super().__repr__() + ' (=%s) [%s]' % (
             ':'.join(self.refs[::-1]),
             ' '.join('%s={%s}' % (k, ':'.join(sorted(v))) for k, v in self.bits.items()),
-            '' if not self.altr else ' (altr)',
-            '' if not self.defv else ' (default = %s)' % str(self.defv),
         )
 
 class Instruction:
@@ -448,8 +467,8 @@ for iclass in sorted(isadocs.findall('.//encodingindex/iclass_sect'), key = lamb
     bits = Instruction()
     bits.update(iclass.findall('regdiagram/box'))
 
-    cond = set()
     vals = bits.bits[:]
+    cond = set[tuple[str, str, str]]()
     argv = sorted(bits.refs.items(), key = lambda x: x[1], reverse = True)
     args = [v for v, _ in argv]
 
@@ -471,13 +490,6 @@ for iclass in sorted(isadocs.findall('.//encodingindex/iclass_sect'), key = lamb
     cc.line('func %s(%s uint32) uint32 {' % (name, ', '.join(args)))
     cc.indent()
 
-    for th, (_, n) in argv:
-        cc.line('if %s &^ %s != 0 {' % (th, hex((1 << n) - 1)))
-        cc.indent()
-        cc.line('panic("%s: invalid %s")' % (name, th))
-        cc.dedent()
-        cc.line('}')
-
     for key, op, val in sorted(cond):
         assert op == '!=', 'decode constraint is not implemented: %s %s %s' % (key, op, val)
         cc.line('if %s == 0b%s {' % (key, val))
@@ -489,11 +501,11 @@ for iclass in sorted(isadocs.findall('.//encodingindex/iclass_sect'), key = lamb
     assert None not in vals, 'unset bit in %s: %r' % (name, vals)
     cc.line('ret := uint32(0x%08x)' % int(''.join(map(str, vals))[::-1], 2))
 
-    for th, (p, _) in argv:
+    for th, (p, n) in argv:
         if p == 0:
-            cc.line('ret |= ' + th)
+            cc.line('ret |= %s & %s' % (th, hex((1 << n) - 1)))
         else:
-            cc.line('ret |= %s << %d' % (th, p))
+            cc.line('ret |= (%s & %s) << %d' % (th, hex((1 << n) - 1), p))
 
     cc.line('return ret;')
     cc.dedent()
@@ -1388,6 +1400,10 @@ def parse_symdef(defs: Element) -> tuple[list[str], dict[str, set[str]]]:
     else:
         return refs, rets
 
+MANUAL_RANGE = {
+    'MSR_SI_pstate': ['sa_imm'],
+}
+
 MISSING_ENCODING_IN = {
     'DSB_BOn_barriers': {
         'sa_option_1': 'imm2',
@@ -1405,7 +1421,10 @@ for expl in isadocs.findall('.//explanation'):
     if symbol is None or (symacc is None) is (symdef is None):
         raise AssertionError('invalid explanation')
 
+    mult = 1
+    divs = 1
     defv = ''
+    valr = None
     altr = False
     desc = symbol.text or ''
     name = symbol.attrib['link']
@@ -1421,10 +1440,21 @@ for expl in isadocs.findall('.//explanation'):
     if re.search(r'When\s+option<0>\s+is set to\s+\d', text):
         altr = True
 
+    if mt := re.search(r'a multiple of (\d+)\s', text):
+        mult = int(mt.group(1))
+
     if mt := re.search(r'[Dd]efaults to #?([^., ]+)', text):
         defv = mt.group(1)
     elif mt := re.search(r'[Dd]efaulting to ([^, ]+)', text):
         defv = mt.group(1)
+
+    if mt := re.search(r'in the range ([+-]?\d+) to ([+-]?\d+)[,.]', text):
+        valr = (int(mt.group(1)), int(mt.group(2)))
+
+    if mt := re.search(r'encoded in the ".+" fields? as <(.+)>(\D+)(\d+)', text):
+        assert mt.group(1) == name.split('_')[1], 'field key mismatch: %s != %s' % (mt.group(1), name)
+        assert mt.group(2) == '/', 'unimplemented operation for field %s: %s' % (name, mt.group(2))
+        divs = int(mt.group(3))
 
     enclist = [
         v.strip()
@@ -1489,9 +1519,12 @@ for expl in isadocs.findall('.//explanation'):
             dest = sym
 
         if refs is None or bits is None:
-            defs = Account(dest, desc, altr, defv)
+            defs = Account(dest, desc, mult, divs, altr, defv, valr)
         else:
-            defs = Definition(dest, desc, altr, defv, refs, bits)
+            defs = Definition(dest, desc, mult, divs, altr, defv, valr, refs, bits)
+
+        if name in MANUAL_RANGE.get(enc, []):
+            defs.valr = None
 
         tab = fieldtab.setdefault(enc, {})
         tab[name] = defs
@@ -1597,27 +1630,13 @@ SYM_CHECKS = {
 }
 
 IMM_CHECKS = {
-    'CRm'             : 'isUimm4(%s)',
-    'CRm:op2'         : 'isUimm7(%s)',
     'N:immr:imms'     : 'isMask64(%s)',
     'Q:imm4'          : 'isExtIndex(v0, %s)',
     'a:b:c:d:e:f:g:h' : 'isUimm8(%s)',
-    'b40:b5'          : 'isUimm6(%s)',
     'imm5'            : 'isUimm5(%s)',
     'imm6'            : 'isUimm6(%s)',
-    'imm12'           : 'isImm12(%s)',
-    'imm16'           : 'isUimm16(%s)',
     'immh:immb'       : 'isFpBits(%s)',
-    'immr'            : 'isUimm6(%s)',
     'immr:imms'       : 'isMask32(%s)',
-    'imms'            : 'isUimm6(%s)',
-    'mask'            : 'isUimm4(%s)',
-    'nzcv'            : 'isUimm4(%s)',
-    'op1'             : 'isUimm3(%s)',
-    'op2'             : 'isUimm3(%s)',
-    'scale'           : 'isFpBits(%s)',
-    'uimm4'           : 'isUimm4(%s)',
-    'uimm6'           : 'isUimm6(%s)',
 }
 
 IMM_SPECIAL_CHECKS = {
@@ -1632,14 +1651,6 @@ IMM_SPECIAL_CHECKS = {
     'FMOV_asimdimm_D2_d'   : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
     'FMOV_asimdimm_H_h'    : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
     'FMOV_asimdimm_S_s'    : { 'a:b:c:d:e:f:g:h' : 'isFpImm8(%s)' },
-    'SMAX_32_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
-    'SMAX_64_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
-    'SMIN_32_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
-    'SMIN_64_minmax_imm'   : { 'imm8'            : 'isImm8(%s)' },
-    'UMAX_32U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
-    'UMAX_64U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
-    'UMIN_32U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
-    'UMIN_64U_minmax_imm'  : { 'imm8'            : 'isUimm8(%s)' },
 }
 
 REG_CHECKS = {
@@ -1833,18 +1844,6 @@ SIGNED_IMM = {
     'sa_imm_1',
     'sa_imm_2',
     'sa_imm_3',
-    'sa_imm_4',
-    'sa_imm_5',
-    'sa_simm',
-    'sa_pimm',
-    'sa_pimm_1',
-    'sa_pimm_2',
-    'sa_pimm_3',
-    'sa_pimm_4',
-}
-
-UNSIGNED_IMM = {
-    'sa_uimm',
 }
 
 SCALAR_TYPES = {
@@ -2161,12 +2160,19 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                 opt = val.offs[1]
 
                 if isinstance(off, Imm):
-                    if off in SIGNED_IMM:
-                        yield 'midx(%s) == nil' % name
-                    elif off in UNSIGNED_IMM:
-                        yield from ['midx(%s) == nil' % name, 'moffs(%s) >= 0' % name]
+                    fx = form.fields[off.name]
+                    yield 'midx(%s) == nil' % name
+
+                    if fx.valr is None:
+                        if off not in SIGNED_IMM:
+                            raise RuntimeError('invalid offset type ' + repr(off))
+
                     else:
-                        raise RuntimeError('invalid offset type ' + repr(off))
+                        lo, hi = fx.valr
+                        yield 'isInRange(moffs(%s), %d, %d)' % (name, lo, hi)
+
+                        if fx.mult > 1:
+                            yield 'isMultipleOf(moffs(%s), %d)' % (name, fx.mult)
 
                 elif isinstance(off, Reg):
                     key = 'midx(%s)' % name
@@ -2227,20 +2233,25 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
             yield from match_modifier(form, name, val, bool(optcond), *optcond)
 
         elif isinstance(val, Imm):
+            fm = []
             fv = form.fields[val.name]
             bm = XBFM_CHECKS.get(form.enctab.name, {}).get(val.name)
-            fc = IMM_SPECIAL_CHECKS.get(form.enctab.name, {}).get(fv.name)
 
-            if fc is None:
-                fc = IMM_CHECKS.get(fv.name)
+            if fv.valr is not None:
+                fc = 'isInRange(%%s, %d, %d)' % fv.valr
+            else:
+                fc = IMM_SPECIAL_CHECKS.get(form.enctab.name, {}).get(fv.name) or IMM_CHECKS.get(fv.name)
+
+            if fv.mult > 1:
+                fm.append('isMultipleOf(%s, %d)' % (name, fv.mult))
 
             if fc is not None:
-                yield Or(*optcond, fc % name)
+                yield Or(*optcond, And(fc % name, *fm))
             elif isinstance(fv, Definition):
                 bits = [x for x in sorted(fv.bits) if x != 'RESERVED' and not x.startswith('SEE')]
-                yield Or(*optcond, 'isIntLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))))
+                yield Or(*optcond, And('isIntLit(%s, %s)' % (name, ', '.join(map(str, sorted(map(int, bits))))), *fm))
             elif not fv.name and bm is not None:
-                yield Or(*optcond, bm % name)
+                yield Or(*optcond, And(bm % name, *fm))
             else:
                 raise RuntimeError("cannot match immediate field '%s.%s (%s)'" % (form.enctab.name, val.name, fv.name))
 
@@ -2971,7 +2982,13 @@ def encode_operand(
             opt = val.offs[1]
 
             if isinstance(off, Imm):
-                vals[off.name] = 'uint32(moffs(%s))' % name
+                vv = 'moffs(%s)' % name
+                fx = form.fields[off.name]
+
+                if fx.divs == 1:
+                    vals[off.name] = 'uint32(%s)' % vv
+                else:
+                    vals[off.name] = 'uint32(%s / %d)' % (vv, fx.divs)
 
             elif isinstance(off, Reg):
                 if opt:
@@ -3010,6 +3027,7 @@ def encode_operand(
         ref = form.fields[val.name]
         bfm = XBFM_ENCODER.get(form.enctab.name, {}).get(val.name)
         ime = IMM_SPECIAL_ENCODER.get(form.enctab.name, {}).get(ref.name)
+        assert ref.divs == 1, 'unimplemented: scaled immediate'
 
         if ime is None:
             ime = IMM_ENCODER.get(ref.name)
@@ -3348,7 +3366,7 @@ instforms = preprocess_instr_forms(formtab)
 instforms = list(instforms)
 
 for mnemonic, forms in instforms:
-    nops = set()
+    nops = set[int]()
     always = False
     status('* Instruction:', mnemonic)
     assert forms, 'instruction %s have no form' % mnemonic
@@ -3368,7 +3386,7 @@ for mnemonic, forms in instforms:
     else:
         form_name = 'one single form'
 
-    cc.line('// %s instruction have %s from %s:' % (mnemonic, form_name, cat_name))
+    cc.line('// %s instruction have %s across %s:' % (mnemonic, form_name, cat_name))
     cc.line('//')
 
     for form in forms:
@@ -3944,7 +3962,7 @@ cc.line('}')
 cc.line()
 
 for mnemonic, forms in instforms:
-    nops = set()
+    nops = set[int]()
 
     for form in forms:
         nop = len(form.inst.operands.req)
