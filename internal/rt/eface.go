@@ -23,6 +23,15 @@ const (
     _KindMask = (1 << 5) - 1
 )
 
+// This lookup table must be large enough to hold all the `reflect.Kind` values.
+var _SignedTy = [27]bool {
+    reflect.Int   : true,
+    reflect.Int8  : true,
+    reflect.Int16 : true,
+    reflect.Int32 : true,
+    reflect.Int64 : true,
+}
+
 func (self *GoType) Kind() reflect.Kind {
     return reflect.Kind(self.KindFlags & _KindMask)
 }
@@ -36,6 +45,26 @@ type GoSlice struct {
 type GoEface struct {
     Ty  *GoType
     Ptr unsafe.Pointer
+}
+
+func (self GoEface) s64(ty string) int64 {
+    switch self.Ty.Size {
+        case 1  : return int64(*(*int8)(self.Ptr))
+        case 2  : return int64(*(*int16)(self.Ptr))
+        case 4  : return int64(*(*int32)(self.Ptr))
+        case 8  : return *(*int64)(self.Ptr)
+        default : panic("cannot convert " + self.Kind().String() + " to " + ty)
+    }
+}
+
+func (self GoEface) u64(ty string) uint64 {
+    switch self.Ty.Size {
+        case 1  : return uint64(*(*uint8)(self.Ptr))
+        case 2  : return uint64(*(*uint16)(self.Ptr))
+        case 4  : return uint64(*(*uint32)(self.Ptr))
+        case 8  : return *(*uint64)(self.Ptr)
+        default : panic("cannot convert " + self.Kind().String() + " to " + ty)
+    }
 }
 
 func (self GoEface) Kind() reflect.Kind {
@@ -52,22 +81,18 @@ func (self GoEface) Pack() (ret interface{}) {
 }
 
 func (self GoEface) ToInt64() int64 {
-    switch self.Ty.Size {
-        case 1  : return int64(*(*int8)(self.Ptr))
-        case 2  : return int64(*(*int16)(self.Ptr))
-        case 4  : return int64(*(*int32)(self.Ptr))
-        case 8  : return *(*int64)(self.Ptr)
-        default : panic("cannot convert " + self.Kind().String() + " to int64")
+    if _SignedTy[self.Ty.Kind()] {
+        return self.s64("int64")
+    } else {
+        return int64(self.u64("int64"))
     }
 }
 
 func (self GoEface) ToUint64() uint64 {
-    switch self.Ty.Size {
-        case 1  : return uint64(*(*uint8)(self.Ptr))
-        case 2  : return uint64(*(*uint16)(self.Ptr))
-        case 4  : return uint64(*(*uint32)(self.Ptr))
-        case 8  : return *(*uint64)(self.Ptr)
-        default : panic("cannot convert " + self.Kind().String() + " to uint64")
+    if _SignedTy[self.Ty.Kind()] {
+        return uint64(self.s64("uint64"))
+    } else {
+        return self.u64("uint64")
     }
 }
 

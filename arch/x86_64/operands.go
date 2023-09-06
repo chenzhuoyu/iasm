@@ -282,14 +282,28 @@ const _IntMask =
     (1 << reflect.Uint64 ) |
     (1 << reflect.Uintptr)
 
+const _UintMask =
+    (1 << reflect.Uint   ) |
+    (1 << reflect.Uint8  ) |
+    (1 << reflect.Uint16 ) |
+    (1 << reflect.Uint32 ) |
+    (1 << reflect.Uint64 ) |
+    (1 << reflect.Uintptr)
+
 func isInt(k reflect.Kind) bool {
     return (_IntMask & (1 << k)) != 0
+}
+
+func isUint(k reflect.Kind) bool {
+    return (_UintMask & (1 << k)) != 0
 }
 
 func asInt64(v interface{}) (int64, bool) {
     if isSpecial(v) {
         return 0, false
     } else if x := rt.AsEface(v); isInt(x.Kind()) {
+        return x.ToInt64(), true
+    } else if isUint(x.Kind()) && x.ToUint64() <= math.MaxInt64 {
         return x.ToInt64(), true
     } else {
         return 0, false
