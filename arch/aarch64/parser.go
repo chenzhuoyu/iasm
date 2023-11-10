@@ -289,45 +289,47 @@ func (self *_ParserImpl) memory() (mem asm.MemoryAddress) {
 }
 
 func (self *_ParserImpl) modsize() uint8 {
-    for {
-        tp := self.lex.Pos
-        tr := self.lex.Row
-        tk := self.lex.Read()
+    tp := self.lex.Pos
+    tr := self.lex.Row
+    tk := self.lex.Next()
 
-        /* check token types */
-        switch tk.Ty {
-            default: {
-                self.lex.Pos = tp
-                self.lex.Row = tr
-                return 0
+    /* may have an additional hashtag */
+    if tk.Ty == asm.TokenPunc && tk.Punc() == asm.PuncHash {
+        tk = self.lex.Next()
+    }
+
+    /* check token types */
+    switch tk.Ty {
+        default: {
+            self.lex.Pos = tp
+            self.lex.Row = tr
+            return 0
+        }
+
+        /* simple cases */
+        case asm.TokenEnd   : return 0
+        case asm.TokenInt   : return uint8(tk.Uint)
+        case asm.TokenFp64  : panic(self.err(tk.Pos, "extension or shift amount must be integers"))
+
+        /* maybe unary operators, need further inspections */
+        case asm.TokenPunc: {
+            self.lex.Pos = tp
+            self.lex.Row = tr
+
+            /* only a handful of operators can act as value prefixes */
+            switch tk.Punc() {
+                case asm.PuncPlus   : break
+                case asm.PuncMinus  : break
+                case asm.PuncTilde  : break
+                case asm.PuncLBrace : break
+                default             : return 0
             }
 
-            /* simple cases */
-            case asm.TokenEnd   : return 0
-            case asm.TokenInt   : return uint8(tk.Uint)
-            case asm.TokenFp64  : panic(self.err(tk.Pos, "extension or shift amount must be integers"))
-            case asm.TokenSpace : break
-
-            /* maybe unary operators, need further inspections */
-            case asm.TokenPunc: {
-                self.lex.Pos = tp
-                self.lex.Row = tr
-
-                /* only a handful of operators can act as value prefixes */
-                switch tk.Punc() {
-                    case asm.PuncPlus   : break
-                    case asm.PuncMinus  : break
-                    case asm.PuncTilde  : break
-                    case asm.PuncLBrace : break
-                    default             : return 0
-                }
-
-                /* expression must be non-negative */
-                if n := self.lex.Value(nil); n < 0 {
-                    panic(self.err(tk.Pos, "extension or shift amount must be non-negative"))
-                } else {
-                    return uint8(n)
-                }
+            /* expression must be non-negative */
+            if n := self.lex.Value(nil); n < 0 {
+                panic(self.err(tk.Pos, "extension or shift amount must be non-negative"))
+            } else {
+                return uint8(n)
             }
         }
     }
