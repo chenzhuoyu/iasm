@@ -208,14 +208,15 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
+       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -237,7 +238,8 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
+       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_extend_1 := uint32(0b011)
@@ -256,7 +258,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             case isXr(v2): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -281,13 +283,14 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isInRange(v2, 0, 4095) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -301,13 +304,14 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isLabel(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -323,13 +327,14 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isInRange(v2, 0, 4095) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -343,13 +348,14 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isLabel(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -372,7 +378,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -395,7 +401,7 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -464,7 +470,11 @@ func (self *Program) ADD(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 //
 func (self *Program) ADDG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("ADDG", 4, asm.Operands { v0, v1, v2, v3 })
-    if isXrOrSP(v0) && isXrOrSP(v1) && isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) && isInRange(v3, 0, 15) {
+    if isXrOrSP(v0) &&
+       isXrOrSP(v1) &&
+       isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) &&
+       isInRange(v3, 0, 15) &&
+       (v0 == SP || v1 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -751,7 +761,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -792,7 +802,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             case isXr(v2): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -823,7 +833,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -843,7 +853,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -865,7 +875,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -885,7 +895,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -908,7 +918,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -931,7 +941,7 @@ func (self *Program) ADDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -1234,7 +1244,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -1258,7 +1268,7 @@ func (self *Program) AND(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -1330,7 +1340,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -1354,7 +1364,7 @@ func (self *Program) ANDS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -3972,14 +3982,14 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isWr(v0) &&
        isWr(v1) &&
        isWr(vv[0]) &&
-       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+       (len(vv) < 2 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(vv[0].(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 2 {
             switch vv[1].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -3996,14 +4006,14 @@ func (self *Program) BIC(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isXr(v0) &&
        isXr(v1) &&
        isXr(vv[0]) &&
-       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+       (len(vv) < 2 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
         p.Domain = asm.DomainGeneric
         sa_amount_1 := uint32(0)
         sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(vv[0].(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 2 {
             switch vv[1].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -4051,7 +4061,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -4075,7 +4085,7 @@ func (self *Program) BICS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -4570,7 +4580,7 @@ func (self *Program) BRB(v0 interface{}, vv ...interface{}) *Instruction {
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
         sa_brb_op := uint32(v0.(BRBOption))
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, 1, 7, 2, sa_brb_op, sa_xt))
@@ -4676,7 +4686,7 @@ func (self *Program) BTI(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_BTI)
         p.Domain = DomainSystem
         sa_targets := _BrOmitted
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_targets = vv[0].(BranchTarget)
         }
         op2 := uint32(0b000)
@@ -6051,7 +6061,7 @@ func (self *Program) CLREX(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 15)) {
         p.Domain = DomainSystem
         sa_imm := uint32(15)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_imm = asUimm4(vv[0])
         }
         return p.setins(barriers(sa_imm, 2, 31))
@@ -6837,7 +6847,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -6876,7 +6886,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
             case isXr(v1): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -6905,7 +6915,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -6923,7 +6933,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -6943,7 +6953,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -6961,7 +6971,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -6982,7 +6992,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -7003,7 +7013,7 @@ func (self *Program) CMN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -7069,7 +7079,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_extend := uint32(0b010)
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -7108,7 +7118,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
             case isXr(v1): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -7137,7 +7147,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -7155,7 +7165,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wn_wsp := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -7175,7 +7185,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_imm := asImm12(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -7193,7 +7203,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_xn_sp := uint32(v0.(asm.Register).ID())
         sa_label := v1.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -7214,7 +7224,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -7235,7 +7245,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -7263,7 +7273,7 @@ func (self *Program) CMP(v0, v1 interface{}, vv ...interface{}) *Instruction {
 //
 func (self *Program) CMPP(v0, v1 interface{}) *Instruction {
     p := self.alloc("CMPP", 2, asm.Operands { v0, v1 })
-    if isXrOrSP(v0) && isXrOrSP(v1) {
+    if isXrOrSP(v0) && isXrOrSP(v1) && (v0 == SP || v1 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xn_sp := uint32(v0.(asm.Register).ID())
@@ -24594,7 +24604,7 @@ func (self *Program) DCPS1(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_imm = asUimm16(vv[0])
         }
         return p.setins(exception(5, sa_imm, 0, 1))
@@ -24649,7 +24659,7 @@ func (self *Program) DCPS2(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_imm = asUimm16(vv[0])
         }
         return p.setins(exception(5, sa_imm, 0, 2))
@@ -24699,7 +24709,7 @@ func (self *Program) DCPS3(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isInRange(vv[0], 0, 65535)) {
         p.Domain = DomainSystem
         sa_imm := uint32(0)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_imm = asUimm16(vv[0])
         }
         return p.setins(exception(5, sa_imm, 0, 3))
@@ -25031,7 +25041,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -25055,7 +25065,7 @@ func (self *Program) EON(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -25159,7 +25169,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -25183,7 +25193,7 @@ func (self *Program) EOR(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -35570,7 +35580,7 @@ func (self *Program) GCSPOPCX(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_GCS)
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, 0, 7, 7, 5, sa_xt))
@@ -35624,7 +35634,7 @@ func (self *Program) GCSPOPX(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_GCS)
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, 0, 7, 7, 6, sa_xt))
@@ -35677,7 +35687,7 @@ func (self *Program) GCSPUSHX(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_GCS)
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, 0, 7, 7, 4, sa_xt))
@@ -35916,7 +35926,7 @@ func (self *Program) IC(v0 interface{}, vv ...interface{}) *Instruction {
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
         sa_ic_op := uint32(v0.(ICOption))
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, ubfx(sa_ic_op, 7, 3), 7, ubfx(sa_ic_op, 3, 4), mask(sa_ic_op, 3), sa_xt))
@@ -36049,13 +36059,17 @@ func (self *Program) IRG(v0, v1 interface{}, vv ...interface{}) *Instruction {
         case 1  : p = self.alloc("IRG", 3, asm.Operands { v0, v1, vv[0] })
         default : panic("aarch64: instruction IRG takes 2 or 3 operands")
     }
-    if (len(vv) == 0 || len(vv) == 1) && isXrOrSP(v0) && isXrOrSP(v1) && (len(vv) == 0 || isXr(vv[0])) {
+    if (len(vv) == 0 || len(vv) == 1) &&
+       isXrOrSP(v0) &&
+       isXrOrSP(v1) &&
+       (len(vv) == 0 || isXr(vv[0])) &&
+       (v0 == SP || v1 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xm := uint32(XZR.ID())
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xm = uint32(vv[0].(asm.Register).ID())
         }
         Rm := uint32(0b00000)
@@ -36090,7 +36104,7 @@ func (self *Program) ISB(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isOption(vv[0])) {
         p.Domain = DomainSystem
         sa_option := uint32(SY)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_option = asBarrierOption(vv[0])
         }
         sa_imm := sa_option
@@ -47363,14 +47377,14 @@ func (self *Program) MNEG(v0, v1, v2 interface{}) *Instruction {
 func (self *Program) MOV(v0, v1 interface{}) *Instruction {
     p := self.alloc("MOV", 2, asm.Operands { v0, v1 })
     // MOV  <Wd|WSP>, <Wn|WSP>
-    if isWrOrWSP(v0) && isWrOrWSP(v1) {
+    if isWrOrWSP(v0) && isWrOrWSP(v1) && (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         return p.setins(addsub_imm(0, 0, 0, 0, 0, sa_wn_wsp, sa_wd_wsp))
     }
     // MOV  <Xd|SP>, <Xn|SP>
-    if isXrOrSP(v0) && isXrOrSP(v1) {
+    if isXrOrSP(v0) && isXrOrSP(v1) && (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
@@ -47834,7 +47848,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 3, sa_shift, sa_imm, sa_wd))
@@ -47848,7 +47862,7 @@ func (self *Program) MOVK(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 3, sa_shift_1, sa_imm, sa_xd))
@@ -47884,7 +47898,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 0, sa_shift, sa_imm, sa_wd))
@@ -47898,7 +47912,7 @@ func (self *Program) MOVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 0, sa_shift_1, sa_imm, sa_xd))
@@ -47934,7 +47948,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift uint32
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift = asMOVxShift(vv[0], 32)
         }
         return p.setins(movewide(0, 2, sa_shift, sa_imm, sa_wd))
@@ -47948,7 +47962,7 @@ func (self *Program) MOVZ(v0, v1 interface{}, vv ...interface{}) *Instruction {
         var sa_shift_1 uint32
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_imm := asUimm16(v1)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_shift_1 = asMOVxShift(vv[0], 64)
         }
         return p.setins(movewide(1, 2, sa_shift_1, sa_imm, sa_xd))
@@ -48319,7 +48333,7 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48341,7 +48355,7 @@ func (self *Program) MVN(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48555,7 +48569,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48576,7 +48590,7 @@ func (self *Program) NEG(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48654,7 +48668,7 @@ func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48675,7 +48689,7 @@ func (self *Program) NEGS(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xm_1 := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48870,7 +48884,7 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -48894,7 +48908,7 @@ func (self *Program) ORN(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -49097,14 +49111,14 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isWr(v0) &&
        isWr(v1) &&
        isWr(vv[0]) &&
-       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+       (len(vv) < 2 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_shift := uint32(0b00)
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(vv[0].(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 2 {
             switch vv[1].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -49121,14 +49135,14 @@ func (self *Program) ORR(v0, v1 interface{}, vv ...interface{}) *Instruction {
        isXr(v0) &&
        isXr(v1) &&
        isXr(vv[0]) &&
-       (len(vv) == 0 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
+       (len(vv) < 2 || isMods(vv[1], ModASR, ModLSL, ModLSR, ModROR)) {
         p.Domain = asm.DomainGeneric
         sa_amount_1 := uint32(0)
         sa_shift := uint32(0b00)
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(vv[0].(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 2 {
             switch vv[1].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -52727,7 +52741,7 @@ func (self *Program) RET(vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 1) && (len(vv) == 0 || isXr(vv[0])) {
         p.Domain = asm.DomainGeneric
         sa_xn := uint32(X30.ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xn = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(branch_reg(2, 31, 0, sa_xn, 0))
@@ -60052,7 +60066,7 @@ func (self *Program) SMSTART(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_SME)
         p.Domain = DomainSystem
         sa_pstatefield := uint32(0b0111)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
         }
         return p.setins(pstate(3, mask(sa_pstatefield, 4), 3, 31))
@@ -60087,7 +60101,7 @@ func (self *Program) SMSTOP(vv ...interface{}) *Instruction {
         self.Arch.Require(FEAT_SME)
         p.Domain = DomainSystem
         sa_pstatefield := uint32(0b0111)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_pstatefield = uint32(vv[0].(SMEOption))
         }
         return p.setins(pstate(3, mask(sa_pstatefield, 4), 3, 31))
@@ -71275,14 +71289,15 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isWr(v2) &&
-       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) {
+       (len(vv) == 0 && (v0 == WSP || v1 == WSP) || len(vv) == 1 && modt(vv[0]) == ModUXTW) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_extend := uint32(0b010)
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -71304,7 +71319,8 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isWrOrXr(v2) &&
-       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) {
+       (len(vv) == 0 && (v0 == SP || v1 == SP) || len(vv) == 1 && modt(vv[0]) == ModUXTX) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         sa_amount := uint32(0)
         sa_extend_1 := uint32(0b011)
@@ -71323,7 +71339,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
             case isXr(v2): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -71348,13 +71364,14 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isInRange(v2, 0, 4095) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71368,13 +71385,14 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isWrOrWSP(v0) &&
        isWrOrWSP(v1) &&
        isLabel(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == WSP || v1 == WSP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_wd_wsp := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71390,13 +71408,14 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isInRange(v2, 0, 4095) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71410,13 +71429,14 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
        isXrOrSP(v0) &&
        isXrOrSP(v1) &&
        isLabel(v2) &&
-       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) {
+       (len(vv) == 0 || isMods(vv[0], ModLSL) && isIntLit(modn(vv[0]), 0, 12)) &&
+       (v0 == SP || v1 == SP) {
         p.Domain = asm.DomainGeneric
         var sa_shift uint32
         sa_xd_sp := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71439,7 +71459,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -71462,7 +71482,7 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -71531,7 +71551,11 @@ func (self *Program) SUB(v0, v1, v2 interface{}, vv ...interface{}) *Instruction
 //
 func (self *Program) SUBG(v0, v1, v2, v3 interface{}) *Instruction {
     p := self.alloc("SUBG", 4, asm.Operands { v0, v1, v2, v3 })
-    if isXrOrSP(v0) && isXrOrSP(v1) && isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) && isInRange(v3, 0, 15) {
+    if isXrOrSP(v0) &&
+       isXrOrSP(v1) &&
+       isInRange(v2, 0, 1008) && isMultipleOf(v2, 16) &&
+       isInRange(v3, 0, 15) &&
+       (v0 == SP || v1 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd_sp := uint32(v0.(asm.Register).ID())
@@ -71692,7 +71716,7 @@ func (self *Program) SUBHN2(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) SUBP(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SUBP", 3, asm.Operands { v0, v1, v2 })
-    if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) {
+    if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) && (v1 == SP || v2 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -71723,7 +71747,7 @@ func (self *Program) SUBP(v0, v1, v2 interface{}) *Instruction {
 //
 func (self *Program) SUBPS(v0, v1, v2 interface{}) *Instruction {
     p := self.alloc("SUBPS", 3, asm.Operands { v0, v1, v2 })
-    if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) {
+    if isXr(v0) && isXrOrSP(v1) && isXrOrSP(v2) && (v1 == SP || v2 == SP) {
         self.Arch.Require(FEAT_MTE)
         p.Domain = asm.DomainGeneric
         sa_xd := uint32(v0.(asm.Register).ID())
@@ -71793,7 +71817,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend = 0b000
                 case ModUXTH: sa_extend = 0b001
@@ -71834,7 +71858,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
             case isXr(v2): sa_r__bit_mask = [4]uint32{0b011}
             default: panic("aarch64: unreachable")
         }
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModUXTB: sa_extend_1 = 0b000
                 case ModUXTH: sa_extend_1 = 0b001
@@ -71865,7 +71889,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71885,7 +71909,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn_wsp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71907,7 +71931,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_imm := asImm12(v2)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71927,7 +71951,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn_sp := uint32(v1.(asm.Register).ID())
         sa_label := v2.(*asm.Label)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch {
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 0: sa_shift = 0b0
                 case modt(vv[0]) == ModLSL && modn(vv[0]) == 12: sa_shift = 0b1
@@ -71950,7 +71974,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_wd := uint32(v0.(asm.Register).ID())
         sa_wn := uint32(v1.(asm.Register).ID())
         sa_wm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -71973,7 +71997,7 @@ func (self *Program) SUBS(v0, v1, v2 interface{}, vv ...interface{}) *Instructio
         sa_xd := uint32(v0.(asm.Register).ID())
         sa_xn := uint32(v1.(asm.Register).ID())
         sa_xm := uint32(v2.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -73100,7 +73124,7 @@ func (self *Program) SYS(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instruc
         sa_cn := asUimm4(v1)
         sa_cm := asUimm4(v2)
         sa_op2 := asUimm3(v3)
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(0, sa_op1, sa_cn, sa_cm, sa_op2, sa_xt))
@@ -73155,7 +73179,7 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
        isUimm4(v2) &&
        isInRange(v3, 0, 7) &&
        (len(vv) == 0 || isXr(vv[0])) &&
-       (len(vv) == 0 || isXr(vv[1])) {
+       (len(vv) < 2 || isXr(vv[1])) {
         self.Arch.Require(FEAT_SYSINSTR128)
         p.Domain = DomainSystem
         sa_xt1 := uint32(0b11111)
@@ -73164,7 +73188,7 @@ func (self *Program) SYSP(v0, v1, v2, v3 interface{}, vv ...interface{}) *Instru
         sa_cn := asUimm4(v1)
         sa_cm := asUimm4(v2)
         sa_op2 := asUimm3(v3)
-        if len(vv) == 2 {
+        if len(vv) >= 2 {
             sa_xt1 = uint32(vv[0].(asm.Register).ID())
             sa_xt2 = uint32(vv[1].(asm.Register).ID())
         }
@@ -73569,7 +73593,7 @@ func (self *Program) TLBI(v0 interface{}, vv ...interface{}) *Instruction {
         p.Domain = DomainSystem
         sa_xt := uint32(0b11111)
         sa_tlbi_op := uint32(v0.(TLBIOption))
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             sa_xt = uint32(vv[0].(asm.Register).ID())
         }
         return p.setins(systeminstrs(
@@ -73603,13 +73627,13 @@ func (self *Program) TLBIP(v0 interface{}, vv ...interface{}) *Instruction {
     if (len(vv) == 0 || len(vv) == 2) &&
        isTLBIPOption(v0) &&
        (len(vv) == 0 || isXr(vv[0])) &&
-       (len(vv) == 0 || isXr(vv[1])) {
+       (len(vv) < 2 || isXr(vv[1])) {
         self.Arch.Require(FEAT_D128)
         p.Domain = DomainSystem
         sa_xt1 := uint32(0b11111)
         sa_xt2 := uint32(0b11111)
         sa_tlbip_op := uint32(v0.(TLBIOption))
-        if len(vv) == 2 {
+        if len(vv) >= 2 {
             sa_xt1 = uint32(vv[0].(asm.Register).ID())
             sa_xt2 = uint32(vv[1].(asm.Register).ID())
         }
@@ -73830,7 +73854,7 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_wn := uint32(v0.(asm.Register).ID())
         sa_wm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01
@@ -73852,7 +73876,7 @@ func (self *Program) TST(v0, v1 interface{}, vv ...interface{}) *Instruction {
         sa_shift := uint32(0b00)
         sa_xn := uint32(v0.(asm.Register).ID())
         sa_xm := uint32(v1.(asm.Register).ID())
-        if len(vv) == 1 {
+        if len(vv) >= 1 {
             switch vv[0].(Modifier).Type() {
                 case ModLSL: sa_shift = 0b00
                 case ModLSR: sa_shift = 0b01

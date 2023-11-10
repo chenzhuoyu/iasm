@@ -83,10 +83,10 @@ func (self *IASM) readLine() string {
     for {
         if ret, err = self.efd.GetLine(); err == nil {
             break
-        } else if err != libedit.ErrInterrupted {
-            panic(err)
-        } else {
+        } else if errors.Is(err, libedit.ErrInterrupted) {
             println("^C")
+        } else {
+            panic(err)
         }
     }
 

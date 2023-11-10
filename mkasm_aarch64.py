@@ -1723,6 +1723,11 @@ REG_CHECKS = {
     'sa_xt_sp'       : 'isXrOrSP(%s)',
 }
 
+REG_SP_CHECKS = {
+    'isXrOrSP(%s)'  : 'SP',
+    'isWrOrWSP(%s)' : 'WSP',
+}
+
 REG_SPECIAL_CHECKS = {
     'CINC_CSINC_32_condsel'  : { 'sa_cond_1': 'isBrCond(%s)' },
     'CINC_CSINC_64_condsel'  : { 'sa_cond_1': 'isBrCond(%s)' },
@@ -1997,7 +2002,10 @@ def match_modifier(form: InstrForm, name: str, mod: Mod, optional: bool, *extra_
                 yield Or(*extra_cond, And(base, Or('modn(%s) == 0' % name, 'modn(%s) == %d' % (name, imm.val))))
 
 def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
+    nadd = 0
     argv = form.inst.operands.req[:]
+    nreq = len(form.inst.operands.req)
+    spreg = []
     regtab = {}
     dynvec = {}
     fixedvec = {}
@@ -2008,18 +2016,22 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
     if len(argv) > argc:
         narg = len(argv) - argc
         nopt = len(form.inst.operands.opt)
+        nadd = narg - nopt
 
         if not nopt:
             yield 'len(vv) == %d' % narg
         else:
-            yield Or('len(vv) == %d' % (narg - nopt), 'len(vv) == %d' % narg)
+            yield Or('len(vv) == %d' % nadd, 'len(vv) == %d' % narg)
 
     for i, val in enumerate(argv):
         name = 'v%d' % i if i < argc else 'vv[%d]' % (i - argc)
         optcond = []
 
-        if i >= len(form.inst.operands.req):
-            optcond.append('len(vv) == 0')
+        if i >= nreq:
+            if nadd + i == nreq:
+                optcond.append('len(vv) == 0')
+            else:
+                optcond.append('len(vv) < %d' % (nadd + i - nreq + 1))
 
         if isinstance(val, Reg):
             if optcond:
@@ -2028,8 +2040,9 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
                    val.mode is not None or \
                    val.vidx is not None:
                     raise RuntimeError('optional complex reg operand is not supported')
-                else:
-                    yield Or(*optcond, REG_CHECKS[val.name] % name)
+
+                assert REG_CHECKS[val.name] not in REG_SP_CHECKS, 'optional SP register is not supported'
+                yield Or(*optcond, REG_CHECKS[val.name] % name)
 
             elif val.altr is not None:
                 raise RuntimeError('union register is not supported')
@@ -2116,6 +2129,9 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
                 if rc is None:
                     rc = REG_CHECKS.get(val.name)
+
+                if rc in REG_SP_CHECKS:
+                    spreg.append('%s == %s' % (name, REG_SP_CHECKS[rc]))
 
                 if rc is not None:
                     yield rc % name
@@ -2270,6 +2286,9 @@ def match_operands(form: InstrForm, argc: int) -> Iterator['And | Or | str']:
 
         else:
             raise RuntimeError('invalid operand type')
+
+    if len(spreg) > 1:
+        yield Or(*spreg)
 
     yield from (
         'vfmt(%s) == vfmt(%s)' % (v[i], v[i + 1])
@@ -3515,6 +3534,8 @@ for mnemonic, forms in instforms:
 
         fmap = {}
         args = []
+        nreq = len(form.inst.operands.req)
+        nopt = len(form.inst.operands.opt)
         cc.line('p.Domain = %s' % INSTR_CLASSES[form.opts.get('instr-class', 'general')])
 
         if form.inst.modifier is not None:
@@ -3535,8 +3556,8 @@ for mnemonic, forms in instforms:
             if not isinstance(val, (Reg, Mod, Imm, Sym)):
                 raise RuntimeError('invalid optional operand')
             else:
-                idx = len(form.inst.operands.req) - nfix + i
-                cond = 'len(vv) == %d' % len(form.inst.operands.opt)
+                idx = nreq - nfix + i
+                cond = 'len(vv) >= %d' % (nopt + nreq - nfix)
                 encode_operand(form, 'vv[%d]' % idx, val, vals, opts, spcond, cond)
 
         for var in sorted(opts):
