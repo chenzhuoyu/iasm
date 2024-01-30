@@ -31,12 +31,10 @@ func (self *Instruction) encode(m *[]byte) int {
     }
 
     /* encode the instruction */
-    if self.instr != 0 {
+    if self.encoder == nil {
         iv = self.instr
-    } else if self.encoder != nil {
+    } else {
         iv = self.encoder(pc)
-    } else{
-        panic("aarch64: uninitialized instruction")
     }
 
     /* add to buffer */
