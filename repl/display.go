@@ -21,7 +21,7 @@ func vector(v []byte, indent int) string {
 
     /* join them together */
     return fmt.Sprintf(
-        "{%s}",
+        "{ %s }",
         strings.Join(m, ", "),
     )
 }
@@ -35,7 +35,7 @@ func display(v byte) string {
 }
 
 func vecdiff(v0 []byte, v1 []byte, indent int) string {
-    return vector(v0, indent) + strings.Repeat(" ", indent - 2) + "->" + vector(v1, indent)
+    return vector(v0, indent) + "\n" + strings.Repeat(" ", indent - 3) + "-> " + vector(v1, indent)
 }
 
 func asmdump(m []byte, pos uintptr, src string) string {

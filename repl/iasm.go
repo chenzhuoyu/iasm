@@ -14,6 +14,7 @@ import (
     `unsafe`
 
     `github.com/chenzhuoyu/iasm/asm`
+    `github.com/chenzhuoyu/iasm/utils`
     `github.com/knz/go-libedit`
 )
 
@@ -518,7 +519,9 @@ func (self *IASM) _cmd_asm(v string) {
 
         /* save the machine code */
         ptr := mem.buf()
+        utils.EnableMemWrite(&ptr[off], len(buf))
         copy(ptr[off:], buf)
+        utils.DisableMemWrite(&ptr[off], len(buf))
 
         /* update the prompt and offsets */
         rem -= uint64(len(buf))

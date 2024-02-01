@@ -2,10 +2,15 @@ package repl
 
 import (
     `os`
-    `reflect`
     `syscall`
     `unsafe`
 )
+
+type _Slice struct {
+    ptr uintptr
+    len int
+    cap int
+}
 
 type _Memory struct {
     size uint64
@@ -18,10 +23,10 @@ func (self _Memory) p() (v unsafe.Pointer) {
 }
 
 func (self _Memory) buf() (v []byte) {
-    p := (*reflect.SliceHeader)(unsafe.Pointer(&v))
-    p.Cap = int(self.size)
-    p.Len = int(self.size)
-    p.Data = self.addr
+    p := (*_Slice)(unsafe.Pointer(&v))
+    p.ptr = self.addr
+    p.len = int(self.size)
+    p.cap = int(self.size)
     return
 }
 
