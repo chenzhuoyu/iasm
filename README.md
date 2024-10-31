@@ -1,3 +1,7 @@
+# PROJECT MOVED TO [https://github.com/cloudwego/iasm], PLEASE USE THAT INSTEAD
+
+------
+
 # `IASM` -- Interactive Assembler for Go.
 
 Dual-purpose assembly engine written in pure Golang.
